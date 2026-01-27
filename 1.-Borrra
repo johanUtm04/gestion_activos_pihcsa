@@ -1,0 +1,205 @@
+Instalacion del proyetco:
+composer create-project laravel/laravel control-activos-pihcsa
+cd control-activos-pihcsa
+composer require laravel/breeze --dev (Autenticacion)
+php artisan breeze:install (Css)
+npm install
+npm run dev
+
+2.-Instalacion de la plantilla
+composer require jeroennoten/laravel-adminlte
+php artisan adminlte:install
+dashboard.blade.php lo intente modificar para probar una tarjeta y guarde el code en whatsapp :)
+
+3.-Configuracion de la base de datos
+control_activos
+
+4.-Migracion de tablas
+equipo table 
+historial_lig table
+
+Alojar en un repositorio
+crear modelos
+definición de todas las relaciones (1:N, N:1, 1:1).
+Creación de la Vista del Dashboard
+
+👨‍💻CHECKLIST PARA TENER TU PROYECTO LARAVEL BIEN UBICADO👨‍💻
+Versiones del Entorno👨‍💻
+version de php
+    PHP 8.1.25
+
+version de composer
+    Composer version 2.7.1
+
+version de laravel
+    Laravel Framework 10.49.1
+
+version de Node & NPM
+    v22.17.0
+    11.4.2
+
+
+Estructura de estructura de carpetas y archivos clave👨‍💻
+/app/ → Lógica del proyecto
+    Models/ → Tablas de BD en versión PHP (equipo, usuario, ubicacion…)
+    Http/Controllers/ → Funciones que reciben la petición y devuelven respuesta.
+    Http/Middleware/ → Filtros (auth, permisos, etc.)
+
+/routes/ → Rutas del sistema
+    web.php → Rutas que devuelven vistas normales (HTML).
+    api.php → Rutas tipo API (JSON).
+
+/database/
+    migrations/ → Estructura de las tablas.
+    seeders/ → Datos iniciales.
+    factories/ → Datos falsos para pruebas.
+
+/resources/
+    views/ → Vistas Blade.
+    js/ y css/ → Frontend manejado por Vite.
+
+/public/
+    Archivos finales que ve el navegador (assets compilados).
+
+.env
+    Config de conexión: base de datos, mails, claves privadas, etc.
+
+composer.json
+    Lista de dependencias PHP del proyecto.
+
+vite.config.js
+    Config de compilación para JS/CSS.
+
+Kernel.php
+    Define qué middleware están activos.
+
+
+Comandos necesarios👨‍💻
+Migraciones
+    php artisan migrate
+    php artisan migrate:fresh
+    php artisan migrate:rollback
+
+Modelos y Controladores
+    php artisan make:model Equipo -m
+    php artisan make:controller EquipoController --resource
+
+Seeders
+    php artisan db:seed
+    php artisan make:seeder UsuarioSeeder
+
+Cache / Limpieza
+    php artisan cache:clear
+    php artisan config:clear
+    php artisan route:clear
+
+
+
+
+🔹 Sprint 2 – Interfaz y módulo de historial
+
+Objetivo: Mejorar la experiencia de usuario y completar el módulo de historial.
+
+Actividades:
+
+Desarrollo de formularios modulares
+
+Formularios con pestañas.
+
+Separación por secciones funcionales.
+
+Validaciones básicas.
+
+Detalles estéticos
+
+Ajustes visuales.
+
+Consistencia de estilos (AdminLTE).
+
+Mejora de legibilidad y orden de información.
+
+Desarrollo completo del módulo de historial
+
+Registro de cambios.
+
+Visualización por usuario y acción.
+
+Preparación para futuras exportaciones.
+
+Pausa para retroalimentación
+
+Revisión del avance con el ingeniero.
+
+Ajustes según comentarios.
+
+
+
+USE gestion_activos_pihcsa;
+
+-- ===============================
+-- ESTRUCTURA DE TABLAS (DDL)
+-- ===============================
+-- Muestra columnas, índices y llaves foráneas reales
+
+SHOW CREATE TABLE discos_duros\G
+SHOW CREATE TABLE equipos\G
+SHOW CREATE TABLE historiales_log\G
+SHOW CREATE TABLE migrations\G
+SHOW CREATE TABLE monitores\G
+SHOW CREATE TABLE perifericos\G
+SHOW CREATE TABLE personal_access_tokens\G
+SHOW CREATE TABLE procesadores\G
+SHOW CREATE TABLE products\G
+SHOW CREATE TABLE rams\G
+SHOW CREATE TABLE ubicaciones\G
+SHOW CREATE TABLE users\G
+
+
+-- ===============================
+-- DESCRIPCIÓN RÁPIDA DE COLUMNAS
+-- ===============================
+-- Más legible para humanos
+
+DESCRIBE discos_duros;
+DESCRIBE equipos;
+DESCRIBE historiales_log;
+DESCRIBE migrations;
+DESCRIBE monitores;
+DESCRIBE perifericos;
+DESCRIBE personal_access_tokens;
+DESCRIBE procesadores;
+DESCRIBE products;
+DESCRIBE rams;
+DESCRIBE ubicaciones;
+DESCRIBE users;
+
+
+-- ===============================
+-- LLAVES FORÁNEAS (FK)
+-- ===============================
+-- Vista clara de relaciones entre tablas
+
+SELECT 
+    TABLE_NAME,
+    COLUMN_NAME,
+    CONSTRAINT_NAME,
+    REFERENCED_TABLE_NAME,
+    REFERENCED_COLUMN_NAME
+FROM information_schema.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'gestion_activos_pihcsa'
+  AND REFERENCED_TABLE_NAME IS NOT NULL
+ORDER BY TABLE_NAME;
+
+
+-- ===============================
+-- ÍNDICES
+-- ===============================
+SHOW INDEX FROM discos_duros;
+SHOW INDEX FROM equipos;
+SHOW INDEX FROM historiales_log;
+SHOW INDEX FROM monitores;
+SHOW INDEX FROM perifericos;
+SHOW INDEX FROM procesadores;
+SHOW INDEX FROM rams;
+SHOW INDEX FROM ubicaciones;
+SHOW INDEX FROM users;
