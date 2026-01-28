@@ -18,38 +18,51 @@
         </div>
     </div>
 
-    {{-- LEYENDA DE TIPOS DE REGISTRO --}}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm border-0 bg-white" style="border-radius: 12px;">
-                <div class="card-body py-2 px-3">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between">
-                        <span class="text-muted small font-weight-bold mr-3 text-uppercase"><i class="fas fa-info-circle mr-1"></i> Tipos de Evento:</span>
-                        <div class="d-flex flex-wrap gap-3">
-                            <div class="mr-3 d-flex align-items-center">
-                                <span class="badge badge-success rounded-circle p-1 mr-2"><i class="fas fa-plus-circle" style="width:12px"></i></span>
-                                <small class="text-dark font-weight-bold">Creación</small>
-                            </div>
-                            <div class="mr-3 d-flex align-items-center">
-                                <span class="badge badge-warning text-white rounded-circle p-1 mr-2"><i class="fas fa-sync-alt" style="width:12px"></i></span>
-                                <small class="text-dark font-weight-bold">Actualización</small>
-                            </div>
-                            <div class="mr-3 d-flex align-items-center">
-                                <span class="badge badge-info text-white rounded-circle p-1 mr-2"><i class="fas fa-tools" style="width:12px"></i></span>
-                                <small class="text-dark font-weight-bold">Mantenimiento</small>
-                            </div>
-                            <div class="mr-3 d-flex align-items-center">
-                                <span class="badge rounded-circle p-1 mr-2 text-white" style="background-color: #fd7e14;"><i class="fas fa-memory" style="width:12px"></i></span>
-                                <small class="text-dark font-weight-bold">Componentes</small>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <span class="badge badge-danger rounded-circle p-1 mr-2"><i class="fas fa-trash-alt" style="width:12px"></i></span>
-                                <small class="text-dark font-weight-bold">Eliminación</small>
-                            </div>
+{{-- SECCIÓN DE FILTROS AVANZADOS --}}
+    <div class="card card-outline card-info shadow-sm mb-4 collapsed-card">
+        <div class="card-header">
+            <h3 class="card-title text-info font-weight-bold">
+                <i class="fas fa-filter mr-1"></i> Panel de Búsqueda
+            </h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-plus text-info"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('historial.index') }}" method="GET">
+                <div class="row align-items-end">
+                    {{-- Filtro por Usuario --}}
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <label class="small font-weight-bold text-muted text-uppercase">
+                                <i class="fas fa-user-tie mr-1"></i> Filtrar por Dueño del Activo
+                            </label>
+                            <select name="usuario_id" class="form-control form-control-sm select2 shadow-none">
+                                <option value="">-- Todos los usuarios --</option>
+                                @foreach($usuarios as $u)
+                                    <option value="{{ $u->id }}" {{ request('usuario_id') == $u->id ? 'selected' : '' }}>
+                                        {{ $u->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- Botones de Acción --}}
+                    <div class="col-md-3">
+                        <div class="btn-group w-100">
+                            <button type="submit" class="btn btn-info btn-sm shadow-sm font-weight-bold">
+                                <i class="fas fa-search mr-1"></i> Aplicar Filtro
+                            </button>
+                            <a href="{{ route('historial.index') }}" class="btn btn-default btn-sm shadow-sm border" title="Limpiar búsqueda">
+                                <i class="fas fa-undo-alt text-danger"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -71,7 +84,7 @@
                     <h6 class="mb-0 font-weight-bold text-dark">{{ $equipo->tipoActivo->nombre ?? 'Equipo sin nombre' }}</h6>
                     <div class="d-flex gap-2 mt-1">
                         <span class="badge badge-light border text-muted px-2 mr-2">ID: {{ $equipo->id }}</span>
-                        <small class="text-muted"><i class="fas fa-user-circle mr-1"></i> {{ $equipo->usuario->name ?? 'Sin asignar' }}</small>
+                        <small class="text-muted"><i class="fas fa-user-circle mr-1"></i>Dueño: {{ $equipo->usuario->name ?? 'Sin asignar' }}</small>
                     </div>
                 </div>
             </div>
