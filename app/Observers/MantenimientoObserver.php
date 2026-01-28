@@ -8,12 +8,8 @@ class MantenimientoObserver
 {
     //
     public function created (Historial_log $Historial_log){
-
-        //Obtenemos el Id del mantenimiento que se acaba de crear
         $historial = $Historial_log->actvo_id;
-
         if ($historial) {
-            # code...
                 Historial_log::create([
                     'activo_id'=> $historial->id,
                     'usuario_accion_id' => Auth::id() ?? 1,

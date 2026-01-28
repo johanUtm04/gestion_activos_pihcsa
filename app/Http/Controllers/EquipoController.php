@@ -290,7 +290,7 @@ public function update(Request $request, Equipo $equipo)
             // 3. Actualizar o Crear
             // Laravel buscar� por ID, si lo halla actualiza, si es null crea.
 
-            $data['is_active'] = isset($item['is_active']) ? 1 : 0;
+            $data['is_active'] = isset($item['is_active']) ? 1 : 0; 
             $relation->updateOrCreate(['id' => $id], $data);
         }
     }
@@ -314,6 +314,7 @@ public function update(Request $request, Equipo $equipo)
         $data = $request->validate([
             'tipo_evento'  => 'required|string',
             'tipo_evento_input' => 'required_if:tipo_evento,OTRO_VALOR|nullable|string|max:255',
+            'usuario_id' => 'required|string',
             'fecha_evento' => 'required|date',
             'contexto'     => 'nullable|string',
             'costo'        => 'nullable|numeric',
@@ -321,6 +322,7 @@ public function update(Request $request, Equipo $equipo)
 
         $data = $request->only([
             'tipo_evento',
+            'usuario_id',
             'fecha_evento',
             'contexto',
             'costo',
@@ -331,6 +333,9 @@ public function update(Request $request, Equipo $equipo)
         ? $request->tipo_evento_input
         : $request->tipo_evento;
 
+        $usuarioMantenimiento = User::find($data['usuario_id']);
+        $nombreUsuario = $usuarioMantenimiento->name;
+
             Historial_log::create([
                   'activo_id'         => $equipo->id,
                    'usuario_accion_id' => auth()->id(),
@@ -340,17 +345,18 @@ public function update(Request $request, Equipo $equipo)
                         'usuario_asignado' => $historial->name ?? 'conexion mal hecha we',
                         'rol' => $historial->rol ?? 'conexion mal hecha amor',
                         'cambios'          => [
-                            'Mantenimiento Creado' => [
-                                'antes'   => 'Inexistente',
-                                'despues' => "<ul class='list-unstyled mb-0'>" .
-                                "<li><b>Tipo de Evento:</b> $data[tipo_evento]</li>" .
-                                "<li><b>Fecha de Evento</b> $data[fecha_evento]</li>" .
-                                "<li><b>Contexto del Evento:</b> $data[contexto]</li>" .
-                                 "<li><b>Costo(De tenerlo):</b> $ $data[costo]</li>" .
-                                "</ul>"                    
-                                ]
-                        ]   
-                      ]
+                        'Detalles del Servicio' => [
+                            'antes'   => 'N/A',
+                            'despues' => "<div class='text-left'>" . 
+                                "Tipo de Evento: {$data['tipo_evento']}<br>" .
+                                "Usuario que realizó: {$nombreUsuario}<br>" .
+                                "Fecha de Evento: {$data['fecha_evento']}<br>" .
+                                "Contexto del Evento: " . ($data['contexto'] ?? 'N/A') . "<br>" .
+                                "Costo: $" . ($data['costo'] ?? '0.00') .
+                                "</div>"
+                                ]  
+                                    ]
+                                        ]
                 ]);
 
 

@@ -18,34 +18,49 @@ class EquipoObserver
 
     public function created(Equipo $equipo): void
     {
+        $resumenHardware = [
+            'Procesador'     => $equipo->procesadores->first()->marca ?? 'N/D',
+            'RAM'            => ($equipo->rams->first()->capacidad ?? 'N/D') . ' ' . ($equipo->rams->first()->tipo_memoria ?? ''),
+            'Almacenamiento' => ($equipo->discosDuros->first()->capacidad ?? 'N/D') . ' ' . ($equipo->discosDuros->first()->tipo_disco ?? ''),
+            'Monitor'        => $equipo->monitores->first()->marca ?? 'N/D',
+            'Periferico'     => $equipo->perifericos->first()->tipo ?? 'N/D',
+        ];
+
+        // dd($resumenHardware);
+
+        $hardwareString = collect($resumenHardware)
+        ->map(fn($v, $k) => "$k: $v")
+        ->implode(' | ');
+
         if (self::$registrado) return;
 
         $equipo->refresh();
         $equipo->load(['marca', 'tipoActivo', 'usuario']);
 
-        Historial_log::create([
-            'activo_id'         => $equipo->id,
-            'usuario_accion_id' => Auth::id() ?? 1,
-            'tipo_registro'     => $this->tiposMapeados['CREATED'],
-            'detalles_json'     => [
-                'mensaje' => 'Creacion de Equipo',
-                'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
-                'rol' => $equipo->usuario->rol ?? 'N/A',
-                'cambios' => [
-                    'Usuario Asignado' => ['antes' => 'N/A', 'despues' => $equipo->usuario->name ?? 'No encontrado'],
-                    'Marca del Equipo' => ['antes' => 'N/A', 'despues' => $equipo->marca->nombre ?? 'No generado'],
-                    'Tipo de Activo'   => ['antes' => 'N/A', 'despues' => $equipo->tipoActivo?->nombre ?? 'No disponible'],
-                    'Serial'           => ['antes' => 'N/A', 'despues' => $equipo->serial ?? 'No registrado'],
-                    'Sistema Operativo'=> ['antes' => 'N/A', 'despues' => str_replace('|', ' ', $equipo->sistema_operativo)],
-                    'Valor Inicial'    => [
-                        'antes'   => 'N/A', 
-                        'despues' => '$' . number_format($equipo->valor_inicial, 2)
-                    ],
-                    'Fecha de Adquisicion' => ['antes' => 'N/A', 'despues' => $equipo->fecha_adquisicion ?? 'No disponible'],
-                    'Vida Util estimada'   => ['antes' => 'N/A', 'despues' => ($equipo->vida_util_estimada ?? 0) . ' años'],
-                ]
-            ]
-        ]);
+        // Historial_log::create([
+        //     'activo_id'         => $equipo->id,
+        //     'usuario_accion_id' => Auth::id() ?? 1,
+        //     'tipo_registro'     => $this->tiposMapeados['CREATED'],
+        //     'detalles_json'     => [
+        //         'mensaje' => 'Registro integral de nuevo activo y componentes.',
+        //         'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
+        //         'rol' => $equipo->usuario->rol ?? 'N/A',
+        //         'cambios' => [
+        //             'Usuario Asignado' => ['antes' => 'N/A', 'despues' => $equipo->usuario->name ?? 'No encontrado'],
+        //             'Marca del Equipo' => ['antes' => 'N/A', 'despues' => $equipo->marca->nombre ?? 'No generado'],
+        //             'Tipo de Activo'   => ['antes' => 'N/A', 'despues' => $equipo->tipoActivo?->nombre ?? 'No disponible'],
+        //             'Serial'           => ['antes' => 'N/A', 'despues' => $equipo->serial ?? 'No registrado'],
+        //             'Hardware Inicial'     => ['antes' => 'N/A', 'despues' => $hardwareString],
+        //             'Sistema Operativo'=> ['antes' => 'N/A', 'despues' => str_replace('|', ' ', $equipo->sistema_operativo)],
+        //             'Valor Inicial'    => [
+        //                 'antes'   => 'N/A', 
+        //                 'despues' => '$' . number_format($equipo->valor_inicial, 2)
+        //             ],
+        //             'Fecha de Adquisicion' => ['antes' => 'N/A', 'despues' => $equipo->fecha_adquisicion ?? 'No disponible'],
+        //             'Vida Util estimada'   => ['antes' => 'N/A', 'despues' => ($equipo->vida_util_estimada ?? 0) . ' años'],
+        //         ]
+        //     ]
+        // ]);
 
         self::$registrado = true;
     }

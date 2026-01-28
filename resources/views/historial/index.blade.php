@@ -68,9 +68,9 @@
                     <i class="fas {{ $equipo->tipo_equipo == 'Laptop' ? 'fa-laptop text-primary' : 'fa-desktop text-purple' }} fa-lg"></i>
                 </div>
                 <div>
-                    <h6 class="mb-0 font-weight-bold text-dark">{{ $equipo->nombre_equipo ?? 'Equipo sin nombre' }}</h6>
+                    <h6 class="mb-0 font-weight-bold text-dark">{{ $equipo->tipoActivo->nombre ?? 'Equipo sin nombre' }}</h6>
                     <div class="d-flex gap-2 mt-1">
-                        <span class="badge badge-light border text-muted px-2 mr-2">SN: {{ $equipo->serie ?? $equipo->id }}</span>
+                        <span class="badge badge-light border text-muted px-2 mr-2">ID: {{ $equipo->id }}</span>
                         <small class="text-muted"><i class="fas fa-user-circle mr-1"></i> {{ $equipo->usuario->name ?? 'Sin asignar' }}</small>
                     </div>
                 </div>
@@ -104,6 +104,7 @@
                                     'eliminacion'      => ['bg' => 'bg-danger',  'icon' => 'fa-trash-alt'],
                                     'mantenimiento'    => ['bg' => 'bg-info',    'icon' => 'fa-tools'],
                                     'componente-extra' => ['bg' => 'bg-orange',  'icon' => 'fa-memory'],
+                                    'instalacion'  => ['bg' => 'bg-primary', 'icon' => 'fa-microchip'],
                                     'inactivacion'     => ['bg' => 'bg-danger',  'icon' => 'fa-power-off'],
                                     'activacion'       => ['bg' => 'bg-success', 'icon' => 'fa-bolt'], 
                                     'estado-componente'=> ['bg' => 'bg-purple',  'icon' => 'fa-microchip'],

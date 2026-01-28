@@ -18,26 +18,41 @@ class ProcesadorObserver
     ];
     public function created(Procesador $procesador): void
     {
-        // Obtenemos el equipo al que se le sumó el procesador
+        // Obtenemos el equipo al que se le sumo el procesador
         $equipo = $procesador->equipos; 
 
+        $esActivo = $procesador->is_active;
+        //Manda x o y dependiendo si es 0 o 1 
+        $tipoRegistro = $esActivo ? 'PROCESADOR' : 'INACTIVACION';
+        $mensaje = $esActivo 
+        ? " Nuevo componente instalado y operativo: " . $procesador->marca 
+        : " Componente instalado pero fuera de servicio: " . $procesador->marca;
+
         if ($equipo) {
-            Historial_log::create([
-                'activo_id'         => $equipo->id,
-                'usuario_accion_id' => Auth::id() ?? 1,
-                'tipo_registro'     => $this->tiposMapeados['PROCESADOR'], 
-                'detalles_json'     => [
-                    'mensaje'          => 'NUEVO COMPONENTE: Se sumó un procesador',
-                    'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
-                    'rol'              => $equipo->usuario->rol ?? 'N/A',
-                    'cambios' => [
-                        'Procesador Nuevo' => [
-                            'antes'   => 'Inexistente',
-                            'despues' => "Marca: {$procesador->marca} | Modelo: {$procesador->descripcion_tipo}"
-                        ]
-                    ]
+        Historial_log::create([
+        'activo_id'         => $procesador->equipo_id,
+        'usuario_accion_id' => auth()->id() ?? 1,
+        'tipo_registro'     => $tipoRegistro,
+        'detalles_json'     => [
+            'mensaje'          => $mensaje,
+            'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
+            'rol'              => $procesador->equipos->usuario->rol ?? 'N/A',
+            'cambios'          => [
+                'Estado Inicial' => [
+                    'antes'   => 'N/A (Nuevo)',
+                    'despues' => $esActivo ? ' Activo' : ' Inactivo'
+                ],
+                'Motivo' => [
+                    'antes'   => '-',
+                    'despues' => $procesador->motivo_inactivo ?? 'Instalación inicial'
+                ],
+                'Detalle' => [
+                    'antes'   => '-',
+                    'despues' => $procesador->marca . " " . $procesador->descripcion_tipo
                 ]
-            ]);
+            ]
+        ]
+    ]);
         }
     }
 

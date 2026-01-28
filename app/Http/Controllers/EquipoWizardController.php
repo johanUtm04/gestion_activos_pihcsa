@@ -7,6 +7,7 @@ use App\Models\Equipo;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use App\Models\Historial_log;   
 
 class EquipoWizardController extends Controller
 {
@@ -278,34 +279,112 @@ class EquipoWizardController extends Controller
         ]);
 
         // B. Crear relaciones mediante el m todo create() de Eloquent
-        // Solo se ejecutan si el usuario llen  los campos (evitamos registros vac os)
 
-        if (!empty($wizard['monitor'])) {
-            $equipo->monitores()->create($wizard['monitor']);
-        }
+        // if (!empty($wizard['monitor'])) {
+        //     $equipo->monitores()->create($wizard['monitor']);
+        // }
 
-        if (!empty($wizard['disco_duro'])) {
-            $equipo->discosDuros()->create($wizard['disco_duro']);
-        }
+        // if (!empty($wizard['disco_duro'])) {
+        //     $equipo->discosDuros()->create($wizard['disco_duro']);
+        // }
     
-        if (!empty($wizard['ram'])) {
-            $equipo->rams()->create($wizard['ram']);
-        }
+        // if (!empty($wizard['ram'])) {
+        //     $equipo->rams()->create($wizard['ram']);
+        // }
 
-        if (!empty($wizard['periferico'])) {
-            $equipo->perifericos()->create($wizard['periferico']);
-        }
+        // if (!empty($wizard['periferico'])) {
+        //     $equipo->perifericos()->create($wizard['periferico']);
+        // }
 
-        if (!empty($wizard['procesador'])) {
-            $equipo->procesadores()->create($wizard['procesador']);
-        }
+        // if (!empty($wizard['procesador'])) {
+        //     $equipo->procesadores()->create($wizard['procesador']);
+        // }
+
+
+        //Crear relaciones de manera silenciosa
+        Equipo::withoutEvents(function () use ($equipo, $wizard) {
+        if (!empty($wizard['monitor'])) $equipo->monitores()->create($wizard['monitor']);
+        if (!empty($wizard['disco_duro'])) $equipo->discosDuros()->create($wizard['disco_duro']);
+        if (!empty($wizard['ram'])) $equipo->rams()->create($wizard['ram']);
+        if (!empty($wizard['periferico'])) $equipo->perifericos()->create($wizard['periferico']);
+        if (!empty($wizard['procesador'])) $equipo->procesadores()->create($wizard['procesador']);
+        });
 
         // --- CIERRE DE PROCESO ---
 
         // 4. Limpiar la mochila de la sesi n
         session()->forget('wizard_equipo');
+        $equipo->refresh(); 
+        $equipo->load(['procesadores', 'rams', 'discosDuros', 'monitores', 'perifericos', 'marca', 'tipoActivo', 'usuario']);
+        $resumenHardware = [
+            'Procesador' => $equipo->procesadores->first() 
+                ? collect([
+                    $equipo->procesadores->first()->marca,
+                    $equipo->procesadores->first()->descripcion_tipo 
+                        ? '(' . $equipo->procesadores->first()->descripcion_tipo . ')' 
+                        : null,
+                ])->filter()->implode(' ') 
+                : 'No asignado',
 
-        // 5. C lculo inteligente de paginaci n para redirigir al usuario al nuevo registro
+            'RAM' => $equipo->rams->first() 
+                ? collect([
+                    $equipo->rams->first()->capacidad_gb ? $equipo->rams->first()->capacidad_gb . 'GB' : null,
+                    $equipo->rams->first()->tipo_ram ? '[' . $equipo->rams->first()->tipo_ram . ']' : null, 
+                    $equipo->rams->first()->clock_mhz ? $equipo->rams->first()->clock_mhz . 'MHz' : null,
+                ])->filter()->implode(' • ')
+                : 'No detectada',
+
+            'Disco Duro' => $equipo->discosDuros->first() 
+                ? collect([
+                    $equipo->discosDuros->first()->capacidad,
+                    $equipo->discosDuros->first()->tipo_hdd_ssd, 
+                    $equipo->discosDuros->first()->interface ? '[' . $equipo->discosDuros->first()->interface . ']' : null,
+                ])->filter()->implode(' • ') 
+                : 'No detectado',
+
+            'Monitor' => $equipo->monitores->first() 
+                ? collect([
+                    $equipo->monitores->first()->marca,
+                    $equipo->monitores->first()->escala_pulgadas ? $equipo->monitores->first()->escala_pulgadas . '"' : null,
+                    $equipo->monitores->first()->interface ? '[' . $equipo->monitores->first()->interface . ']' : null,
+                ])->filter()->implode(' • ') 
+                : 'No detectado',
+
+            'Periferico' => $equipo->perifericos->first() 
+                ? collect([
+                    $equipo->perifericos->first()->tipo,
+                    $equipo->perifericos->first()->marca ? '• ' . $equipo->perifericos->first()->marca : null,
+                    $equipo->perifericos->first()->interface ? '[' . $equipo->perifericos->first()->interface . ']' : null,
+                ])->filter()->implode(' ') 
+                : 'No detectado',
+        ];
+
+        // Paso final: Convertir a la cadena que entiende tu Blade con el separador '|'
+        $hardwareString = collect($resumenHardware)
+            ->map(fn($v, $k) => "$k: $v")
+            ->implode(' | ');
+
+        Historial_log::create([
+            'activo_id'         => $equipo->id,
+            'usuario_accion_id' => auth()->id() ?? 1,
+            'tipo_registro'     => 'Creacion',
+            'detalles_json'     => [
+                'mensaje' => 'Registro integral de nuevo activo y componentes.',
+                'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
+                'cambios' => [
+                    'Usuario Asignado'     => ['antes' => 'N/A', 'despues' => $equipo->usuario->name ?? 'No encontrado'],
+                    'Marca del Equipo'     => ['antes' => 'N/A', 'despues' => $equipo->marca->nombre ?? 'No generado'],
+                    'Tipo de Activo'       => ['antes' => 'N/A', 'despues' => $equipo->tipoActivo?->nombre ?? 'No disponible'],
+                    'Serial'               => ['antes' => 'N/A', 'despues' => $equipo->serial ?? 'No registrado'],
+                    'Hardware Inicial'     => ['antes' => 'N/A', 'despues' => $hardwareString],
+                    'Sistema Operativo'    => ['antes' => 'N/A', 'despues' => str_replace('|', ' ', $equipo->sistema_operativo)],
+                    'Valor Inicial'        => ['antes' => 'N/A', 'despues' => '$' . number_format($equipo->valor_inicial, 2)],
+                    'Fecha de Adquisicion' => ['antes' => 'N/A', 'despues' => $equipo->fecha_adquisicion ?? 'No disponible'],
+                    'Vida Util estimada'   => ['antes' => 'N/A', 'despues' => ($equipo->vida_util_estimada ?? 0) . ' años'],
+                ]
+            ]
+        ]);
+
         $perPage = 11;
         $position = Equipo::where('id', '<=', $equipo->id)->count();
         $page = ceil($position / $perPage);
