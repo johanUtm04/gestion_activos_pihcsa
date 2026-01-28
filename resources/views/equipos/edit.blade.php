@@ -464,5 +464,29 @@
             checkVidaUtilStatus();
             $('#vida_util_unidad').on('change', checkVidaUtilStatus);
         });
+
+
+        // Logica para los Switches de Estado de Componentes
+        $(document).on('change', '.switch-estado-componente', function() {
+            const isChecked = $(this).is(':checked');
+            const container = $(this).closest('.item-componente');
+            const divMotivo = container.find('.div-motivo');
+            const inputMotivo = container.find('.input-motivo');
+            const label = $(this).siblings('.custom-control-label');
+
+            if (isChecked) {
+                // ACTIVAR
+                divMotivo.fadeOut(200);
+                inputMotivo.prop('required', false).val('');
+                label.text('Activo').removeClass('text-danger').addClass('text-success');
+                container.removeClass('bg-gray-light border-danger').addClass('border-success');
+            } else {
+                // INACTIVAR
+                divMotivo.fadeIn(200);
+                inputMotivo.prop('required', true).focus();
+                label.text('Inactivo').removeClass('text-success').addClass('text-danger');
+                container.removeClass('border-success').addClass('bg-gray-light border-danger');
+            }
+        });
     </script>
 @stop

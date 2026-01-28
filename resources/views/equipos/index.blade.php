@@ -343,7 +343,43 @@
             </div>
         </div>
     </div>
-@stop
+
+    <!-- Ventana Historial -->
+    @if(request('show_toast'))
+        <div id="floating-update-alert" class="position-fixed bottom-0 end-0 m-4" style="z-index: 1050; display: none;">
+            <div class="card shadow-lg border-warning" style="width: 280px;">
+                <div class="card-body p-3 text-center">
+                    <div class="mb-2">
+                        <i class="fas fa-check-circle text-warning fa-2x"></i>
+                    </div>
+                    <h6 class="fw-bold">¡Cambios Guardados!</h6>
+                    <p class="small text-muted">¿Deseas verificar el historial de este equipo?</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ route('historial.index', ['buscar' => request('actualizado_id')]) }}" class="btn btn-warning btn-sm fw-bold">
+                            <i class="fas fa-history me-1"></i> Ver Historial
+                        </a>
+                        <button type="button" class="btn btn-link btn-sm text-decoration-none text-muted" onclick="document.getElementById('floating-update-alert').remove()">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Mostrar con un pequeño delay
+                setTimeout(() => {
+                    const toast = document.getElementById('floating-update-alert');
+                    toast.style.display = 'block';
+                    toast.classList.add('animate__animated', 'animate__fadeInUp');
+                }, 500);
+            });
+        </script>
+    @endif
+
+
+    @stop
 
 @section('js')
 <script>
@@ -430,7 +466,7 @@ $(document).ready(function() {
     });
 
     // LÓGICA DE MENSAJES Y SCROLL PARA EL USUARIO
-    const scrollId = "{{ session('new_id') ?? session('actualizado_id') }}";
+    const scrollId = "{{ session('new_id') ?? session('actualizado_id') }}";    
     if (scrollId) {
         const targetRow = document.getElementById('equipo-' + scrollId);
         if (targetRow) {

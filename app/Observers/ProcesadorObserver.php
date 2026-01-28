@@ -44,41 +44,57 @@ class ProcesadorObserver
     /**
      * Handle the Procesador "updated" event.
      */
-    public function updated(Procesador $procesador): void
-    {
-        //
+public function updated(Procesador $procesador): void
+{
+    if ($procesador->isDirty()) {
+        $cambios = [];
+        $tipoFinal = $this->tiposMapeados['UPDATED']; // Por defecto 'Actualizacion'
+        $mensajeFinal = 'Se actualizó información del procesador';
 
-        // 1. Verificamos si hubo cambios reales ignorando la fecha de actualización
-        if ($procesador->isDirty()) {
-            $cambios = [];
+        foreach ($procesador->getDirty() as $atributo => $nuevoValor) {
+            if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue;
 
-            foreach ($procesador->getDirty() as $atributo => $nuevoValor) {
-                    if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue;
+            $valorAnterior = $procesador->getOriginal($atributo);
+            $campoLegible = "Procesador -> " . Str::headline($atributo);
 
-                    // 2. Creamos una etiqueta clara para el historial
-                    $campoLegible = "Procesador -> " . Str::headline($atributo);
-
-                    $cambios[$campoLegible] = [
-                        'antes'   => $procesador->getOriginal($atributo),
-                        'despues' => $nuevoValor
-                    ];
+            // --- LÓGICA DE DETECCIÓN DE ESTADO ---
+            if ($atributo === 'is_active') {
+                if ($valorAnterior == 1 && $nuevoValor == 0) {
+                    $tipoFinal = 'ESTADO_COMPONENTE'; // O "INACTIVACION" según prefieras en tu BD
+                    $mensajeFinal = 'COMPONENTE INACTIVADO: El procesador ha sido puesto fuera de servicio.';
+                } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
+                    $tipoFinal = 'ESTADO_COMPONENTE';
+                    $mensajeFinal = 'COMPONENTE REACTIVADO: El procesador vuelve a estar operativo.';
                 }
+                
+                $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
+                $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
+            } else {
+                $antesTexto = $valorAnterior ?? 'N/A';
+                $despuesTexto = $nuevoValor ?? 'N/A';
+            }
 
-                // 3. Solo creamos el log si el array de cambios no quedó vacío
-                if (!empty($cambios)) {
-                    Historial_log::create([
-                        'activo_id'         => $procesador->equipo_id, // Vinculamos al equipo padre
-                        'usuario_accion_id' => Auth::id() ?? 1,
-                        'tipo_registro'     => $this->tiposMapeados['UPDATED'],
-                        'detalles_json'     => [
-                            'mensaje'          => 'Se actualizó información del procesador',
-                            'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
-                            'rol'              => $procesador->equipos->usuario->rol ?? 'N/A',
-                            'cambios'          => $cambios
-                        ]
-                    ]);
-                }}
+            $cambios[$campoLegible] = [
+                'antes'   => $antesTexto,
+                'despues' => $despuesTexto
+            ];
         }
+
+        if (!empty($cambios)) {
+            Historial_log::create([
+                'activo_id'         => $procesador->equipo_id,
+                'usuario_accion_id' => Auth::id() ?? 1,
+                'tipo_registro'     => $tipoFinal,
+                'detalles_json'     => [
+                    'mensaje'          => $mensajeFinal,
+                    'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
+                    'rol'              => $procesador->equipos->usuario->rol ?? 'N/A',
+                    'cambios'          => $cambios
+                ]
+            ]);
+        }
+    }
+}
 
     /**
      * Handle the Procesador "deleted" event.

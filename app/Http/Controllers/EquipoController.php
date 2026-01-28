@@ -172,7 +172,7 @@ public function update(Request $request, Equipo $equipo)
     // 3. Actualizar el equipo
     $equipo->update($data);
 
-    // 4. Sincronizar relaciones din�micas (Tu l�gica actual est� perfecta)
+    // 4. Sincronizar relaciones din�micas
     $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
     $this->syncRelation($equipo->rams(),         $request->input('ram', []));
     $this->syncRelation($equipo->procesadores(), $request->input('procesador', []));
@@ -184,9 +184,12 @@ public function update(Request $request, Equipo $equipo)
     $position = Equipo::where('id', '<=', $equipo->id)->count();
     $page = ceil($position / $perPage);
 
-    return redirect()->route('equipos.index', ['page' => $page])
-        ->with('warning', 'Equipo actualizado correctamente')
-        ->with('actualizado_id', $equipo->id);
+    return redirect()->route('equipos.index', ['page' => $page,
+    'actualizado_id' => $equipo->id,
+    'show_toast' => 1
+    ])
+    ->with('warning', 'Equipo actualizado correctamente')
+    ->with('actualizado_id', $equipo->id);
 }
 
     /**
@@ -227,25 +230,67 @@ public function update(Request $request, Equipo $equipo)
     protected function syncRelation($relation, array $items)
     {
         foreach ($items as $item) {
-            // 1. Verificar si el usuario marc� para eliminar
+            // 1. Verificar si el usuario marco para eliminar
             if (!empty($item['_delete'])) {
                 if (!empty($item['id'])) {
-                    // Si tiene ID, lo borramos f�sicamente de la BD
+                    // Si tiene ID, lo borramos fisicamente de la BD
                     $model = $relation->getRelated()->find($item['id']);
                     if ($model) {
                     $model->delete(); 
                 }
                 }
-                // Si era un �tem nuevo que se marc� para eliminar antes de guardar, 
                 // simplemente lo ignoramos y pasamos al siguiente.
                 continue;
             }
 
             // 2. Preparar los datos (quitamos _delete para que no choque con la BD)
             $id = $item['id'] ?? null;
+
+            //Logica Para historial
+        //     if ($id) {
+        //     $modelAnterior = $relation->getRelated()->find($id);
+            
+        //     if ($modelAnterior) {
+        //         $nuevoEstado = isset($item['is_active']) ? 1 : 0;
+                
+        //         // Si el componente estaba activo y ahora se marca como inactivo
+        //         if ($modelAnterior->is_active == 1 && $nuevoEstado == 0) {
+        //             $nombreComponente = class_basename($relation->getRelated()); // Ej: Procesador, Ram...
+                    
+        //             Historial_log::create([
+        //                 'activo_id'         => $modelAnterior->equipo_id,
+        //                 'usuario_accion_id' => auth()->id(),
+        //                 'tipo_registro'     => 'ESTADO_COMPONENTE',
+        //                 'detalles_json'     => [
+        //                     'mensaje' => "Componente Inactivado: $nombreComponente",
+        //                     'cambios' => [
+        //                         'Estado' => [
+        //                             'antes'   => 'Activo',
+        //                             'despues' => 'Inactivo'
+        //                         ],
+        //                         'Motivo' => [
+        //                             'antes'   => 'N/A',
+        //                             'despues' => $item['motivo_inactivo'] ?? 'No especificado'
+        //                         ],
+        //                         'Detalle' => [
+        //                             'antes' => '-',
+        //                             'despues' => ($item['marca'] ?? '') . " " . ($item['descripcion_tipo'] ?? $item['capacidad_gb'] ?? '')
+        //                         ]
+        //                     ]
+        //                 ]
+        //             ]);
+        //         }
+        //     }
+        // }
+
+
             $data = collect($item)->forget(['id', '_delete'])->toArray();
+            // $data['is_active'] = isset($item['is_active']) ? 1 : 0;
+            // $data['motivo_inactivo'] = $item['motivo_inactivo'] ?? null;
             // 3. Actualizar o Crear
             // Laravel buscar� por ID, si lo halla actualiza, si es null crea.
+
+            $data['is_active'] = isset($item['is_active']) ? 1 : 0;
             $relation->updateOrCreate(['id' => $id], $data);
         }
     }
