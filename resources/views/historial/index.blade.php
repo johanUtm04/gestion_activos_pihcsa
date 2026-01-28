@@ -104,6 +104,9 @@
                                     'eliminacion'      => ['bg' => 'bg-danger',  'icon' => 'fa-trash-alt'],
                                     'mantenimiento'    => ['bg' => 'bg-info',    'icon' => 'fa-tools'],
                                     'componente-extra' => ['bg' => 'bg-orange',  'icon' => 'fa-memory'],
+                                    'inactivacion'     => ['bg' => 'bg-danger',  'icon' => 'fa-power-off'],
+                                    'activacion'       => ['bg' => 'bg-success', 'icon' => 'fa-bolt'], 
+                                    'estado-componente'=> ['bg' => 'bg-purple',  'icon' => 'fa-microchip'],
                                 ][$tipoSlug] ?? ['bg' => 'bg-secondary', 'icon' => 'fa-dot-circle'];
                             @endphp
 

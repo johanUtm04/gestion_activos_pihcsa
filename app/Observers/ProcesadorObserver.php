@@ -48,7 +48,7 @@ public function updated(Procesador $procesador): void
 {
     if ($procesador->isDirty()) {
         $cambios = [];
-        $tipoFinal = $this->tiposMapeados['UPDATED']; // Por defecto 'Actualizacion'
+        $esEstado = false;
         $mensajeFinal = 'Se actualizó información del procesador';
 
         foreach ($procesador->getDirty() as $atributo => $nuevoValor) {
@@ -57,14 +57,16 @@ public function updated(Procesador $procesador): void
             $valorAnterior = $procesador->getOriginal($atributo);
             $campoLegible = "Procesador -> " . Str::headline($atributo);
 
-            // --- LÓGICA DE DETECCIÓN DE ESTADO ---
+            $colorFinal = 'info';
             if ($atributo === 'is_active') {
+                $esEstado = true;
+                // --- DISEÑO DE MENSAJE INTUITIVO ---
                 if ($valorAnterior == 1 && $nuevoValor == 0) {
-                    $tipoFinal = 'ESTADO_COMPONENTE'; // O "INACTIVACION" según prefieras en tu BD
+                    $tipoFinal = 'INACTIVACION';
                     $mensajeFinal = 'COMPONENTE INACTIVADO: El procesador ha sido puesto fuera de servicio.';
                 } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
-                    $tipoFinal = 'ESTADO_COMPONENTE';
-                    $mensajeFinal = 'COMPONENTE REACTIVADO: El procesador vuelve a estar operativo.';
+                    $tipoFinal = 'ACTIVACION';
+                    $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El procesador vuelve a estar operativo!';
                 }
                 
                 $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
@@ -83,10 +85,11 @@ public function updated(Procesador $procesador): void
         if (!empty($cambios)) {
             Historial_log::create([
                 'activo_id'         => $procesador->equipo_id,
-                'usuario_accion_id' => Auth::id() ?? 1,
-                'tipo_registro'     => $tipoFinal,
+                'usuario_accion_id' => auth()->id() ?? 1,
+                'tipo_registro' => $tipoFinal ?? 'Actualizacion',
                 'detalles_json'     => [
                     'mensaje'          => $mensajeFinal,
+                    'color'   => $colorFinal,
                     'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
                     'rol'              => $procesador->equipos->usuario->rol ?? 'N/A',
                     'cambios'          => $cambios
