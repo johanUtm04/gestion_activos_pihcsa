@@ -14,7 +14,7 @@ class ProcesadorObserver
         'CREATED' => 'Creacion',
         'UPDATED' => 'Actualizacion',
         'DELETED' => 'Eliminacion',
-        'PROCESADOR' => 'Componente Extra',
+        'PROCESADOR' => 'componente-extra',
     ];
     public function created(Procesador $procesador): void
     {
@@ -23,7 +23,7 @@ class ProcesadorObserver
 
         $esActivo = $procesador->is_active;
         //Manda x o y dependiendo si es 0 o 1 
-    $tipoRegistro = $esActivo ? 'componente-extra' : 'INACTIVACION';
+        $tipoRegistro = $esActivo ? 'componente-extra Procesador' : 'INACTIVACION';
 
     $mensaje = $esActivo 
         ? "⚡ SE AGREGÓ COMPONENTE EXTRA: " . $procesador->marca 
@@ -33,7 +33,7 @@ class ProcesadorObserver
         Historial_log::create([
         'activo_id'         => $procesador->equipo_id,
         'usuario_accion_id' => auth()->id() ?? 1,
-        'tipo_registro'     => $tipoRegistro . ' Procesador',
+        'tipo_registro'     => $tipoRegistro,
         'detalles_json'     => [
             'mensaje'          => $mensaje,
             'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
