@@ -1,5 +1,5 @@
-<div class="periferico-item p-3 mb-5 border rounded bg-light shadow-sm">
-    <div class="d-flex justify-content-between align-items-center mb-2">
+<div class="periferico-item p-3 mb-5 border rounded bg-light shadow-sm item-componente">
+        <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="text-secondary mb-0">
             <i class="fas fa-desktop"></i> Periferico #
             <span class="numero-index badge badge-secondary">
@@ -185,7 +185,38 @@
             @endforeach
         </select>
     </div>
-
     </div>
+
+    <div class="row align-items-center mt-2 border-top pt-2">
+        <div class="col-md-4">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" 
+                       class="custom-control-input switch-estado-componente" 
+                       id="switch-perif-{{ $index }}" 
+                       name="periferico[{{ $index }}][is_active]" 
+                       value="1" 
+                       {{ !isset($periferico) || $periferico->is_active ? 'checked' : '' }}>
+                <label class="custom-control-label small font-weight-bold {{ !isset($periferico) || $periferico->is_active ? 'text-success' : 'text-danger' }}" 
+                       for="switch-perif-{{ $index }}">
+                    {{ !isset($periferico) || $periferico->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
+                </label>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="div-motivo" style="{{ !isset($periferico) || $periferico->is_active ? 'display: none;' : '' }}">
+                <input type="text" 
+                       name="periferico[{{ $index }}][motivo_inactivo]" 
+                       class="form-control form-control-sm border-danger input-motivo" 
+                       placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
+                       value="{{ $periferico->motivo_inactivo ?? '' }}"
+                       {{ isset($periferico) && !$periferico->is_active ? 'required' : '' }}>
+            </div>
+        </div>
+    </div>
+
     <small class="text-muted">ID Sistema: {{ $periferico->id ?? 'Pendiente' }}</small>
+        @if(isset($periferico) && $periferico->is_active == false)
+           <span class="badge badge-danger">Dado de baja</span>
+        @endif
 </div>

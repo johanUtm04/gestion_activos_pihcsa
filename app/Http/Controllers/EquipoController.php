@@ -101,7 +101,7 @@ public function store(Request $request)
         'marca_id'          => $request->marca_id,       
         'tipo_activo_id'    => $request->tipo_activo_id,
     ];
-    
+
     $uuid = Str::uuid()->toString();
 
     session()->put('wizard_equipo.uuid', $uuid);
@@ -244,51 +244,7 @@ public function update(Request $request, Equipo $equipo)
 
             // 2. Preparar los datos (quitamos _delete para que no choque con la BD)
             $id = $item['id'] ?? null;
-
-            //Logica Para historial
-        //     if ($id) {
-        //     $modelAnterior = $relation->getRelated()->find($id);
-            
-        //     if ($modelAnterior) {
-        //         $nuevoEstado = isset($item['is_active']) ? 1 : 0;
-                
-        //         // Si el componente estaba activo y ahora se marca como inactivo
-        //         if ($modelAnterior->is_active == 1 && $nuevoEstado == 0) {
-        //             $nombreComponente = class_basename($relation->getRelated()); // Ej: Procesador, Ram...
-                    
-        //             Historial_log::create([
-        //                 'activo_id'         => $modelAnterior->equipo_id,
-        //                 'usuario_accion_id' => auth()->id(),
-        //                 'tipo_registro'     => 'ESTADO_COMPONENTE',
-        //                 'detalles_json'     => [
-        //                     'mensaje' => "Componente Inactivado: $nombreComponente",
-        //                     'cambios' => [
-        //                         'Estado' => [
-        //                             'antes'   => 'Activo',
-        //                             'despues' => 'Inactivo'
-        //                         ],
-        //                         'Motivo' => [
-        //                             'antes'   => 'N/A',
-        //                             'despues' => $item['motivo_inactivo'] ?? 'No especificado'
-        //                         ],
-        //                         'Detalle' => [
-        //                             'antes' => '-',
-        //                             'despues' => ($item['marca'] ?? '') . " " . ($item['descripcion_tipo'] ?? $item['capacidad_gb'] ?? '')
-        //                         ]
-        //                     ]
-        //                 ]
-        //             ]);
-        //         }
-        //     }
-        // }
-
-
             $data = collect($item)->forget(['id', '_delete'])->toArray();
-            // $data['is_active'] = isset($item['is_active']) ? 1 : 0;
-            // $data['motivo_inactivo'] = $item['motivo_inactivo'] ?? null;
-            // 3. Actualizar o Crear
-            // Laravel buscar� por ID, si lo halla actualiza, si es null crea.
-
             $data['is_active'] = isset($item['is_active']) ? 1 : 0; 
             $relation->updateOrCreate(['id' => $id], $data);
         }

@@ -1,4 +1,4 @@
-<div class="procesador-item p-3 mb-5 border rounded bg-light shadow-sm item-componente"> {{-- Añadí 'item-componente' para el JS --}}
+<div class="procesador-item p-3 mb-5 border rounded bg-light shadow-sm item-componente">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="text-secondary mb-0">
             <i class="fas fa-microchip"></i> Procesadores # 
@@ -65,10 +65,9 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between mt-2">
         <small class="text-muted">ID Sistema: {{ $procesador->id ?? 'Pendiente' }}</small>
         @if(isset($procesador) && $procesador->is_active == false)
             <span class="badge badge-danger">Dado de baja</span>
         @endif
-    </div>
+
 </div>
