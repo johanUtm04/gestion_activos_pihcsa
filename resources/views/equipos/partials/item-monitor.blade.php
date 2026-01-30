@@ -1,4 +1,4 @@
-<div class="monitor-item p-3 mb-5 border rounded bg-light shadow-sm">
+<div class="monitor-item p-3 mb-5 border rounded bg-light shadow-sm item-componente">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="text-secondary mb-0">
             <i class="fas fa-desktop"></i> Monitores #
@@ -95,5 +95,36 @@
             </select>
         </div>
     </div>
-    <small class="text-muted">ID Sistema: {{ $monitor->id ?? 'Pendiente' }}</small>
+    <div class="row align-items-center mt-2 border-top pt-2">
+        <div class="col-md-4">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" 
+                       class="custom-control-input switch-estado-componente" 
+                       id="switch-mon-{{ $index }}" 
+                       name="monitor[{{ $index }}][is_active]" 
+                       value="1" 
+                       {{ !isset($monitor) || $monitor->is_active ? 'checked' : '' }}>
+                <label class="custom-control-label small font-weight-bold {{ !isset($monitor) || $monitor->is_active ? 'text-success' : 'text-danger' }}" 
+                       for="switch-mon-{{ $index }}">
+                    {{ !isset($monitor) || $monitor->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
+                </label>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="div-motivo" style="{{ !isset($monitor) || $monitor->is_active ? 'display: none;' : '' }}">
+                <input type="text" 
+                       name="monitor[{{ $index }}][motivo_inactivo]" 
+                       class="form-control form-control-sm border-danger input-motivo" 
+                       placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
+                       value="{{ $monitor->motivo_inactivo ?? '' }}"
+                       {{ isset($monitor) && !$monitor->is_active ? 'required' : '' }}>
+            </div>
+        </div>
+    </div>
+
+        <small class="text-muted">ID Sistema: {{ $monitor->id ?? 'Pendiente' }}</small>
+        @if(isset($monitor) && $monitor->is_active == false)
+            <span class="badge badge-danger">Dado de baja</span>
+        @endif
 </div>

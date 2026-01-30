@@ -15,127 +15,118 @@ class MonitorObserver
         'CREATED' => 'Creacion',
         'UPDATED' => 'Actualizacion',
         'DELETED' => 'Eliminacion',
-        'MONITOR'     => 'Componente Extra',
+        'MONITOR' => 'componente-extra',
     ];
-public function created(Monitor $monitor): void
-{
-    // Obtenemos el equipo al que se le sumó el monitor
-    $equipo = $monitor->equipos; 
 
-    if ($equipo) {
-        Historial_log::create([
-            'activo_id'         => $equipo->id,
-            'usuario_accion_id' => Auth::id() ?? 1,
-            'tipo_registro'     => $this->tiposMapeados['MONITOR'], 
-            'detalles_json'     => [
-                'mensaje'          => 'NUEVO COMPONENTE: Se sumó un monitor',
-                'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
-                'rol'              => $equipo->usuario->rol ?? 'N/A',
-                'cambios' => [
-                    'Monitor Adicional' => [
-                        'antes'   => 'Inexistente',
-                        'despues' => "Marca: {$monitor->marca} | S/N: {$monitor->serial} | Escala: {$monitor->escala_pulgadas}\" | Interface: {$monitor->interface}"
-                    ]
-                ] 
-            ]
-        ]);
+    public function created(Monitor $monitor): void
+    {
+        $equipo = $monitor->equipos; 
+        $esActivo = $monitor->is_active;
+
+        // Estandarización para la vista
+        $tipoRegistro = $esActivo ? 'componente-extra Monitor' : 'inactivacion Monitor';
+
+        if ($equipo) {
+            Historial_log::create([
+                'activo_id'         => $equipo->id,
+                'usuario_accion_id' => Auth::id() ?? 1,
+                'tipo_registro'     => $tipoRegistro, 
+                'detalles_json'     => [
+                    'mensaje'          => "⚡ SE AGREGÓ MONITOR: {$monitor->marca} {$monitor->escala_pulgadas}\"",
+                    'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
+                    'rol'              => $equipo->usuario->rol ?? 'N/A',
+                    'cambios' => [
+                        'Estado Inicial' => [
+                            'antes'   => 'N/A (Nuevo)',
+                            'despues' => $esActivo ? 'Activo' : 'Inactivo'
+                        ],
+                        'Especificaciones' => [
+                            'antes'   => 'Inexistente',
+                            'despues' => "Marca: {$monitor->marca} | S/N: {$monitor->serial} | Escala: {$monitor->escala_pulgadas}\" | Interface: {$monitor->interface}"
+                        ]
+                    ] 
+                ]
+            ]);
+        }
     }
-}
 
-    /**
-     * Handle the Monitor "updated" event.
-     */
     public function updated(Monitor $monitor): void
     {
-        //
-
-        // 1. Verificamos si hubo cambios reales ignorando la fecha de actualización
         if ($monitor->isDirty()) {
             $cambios = [];
+            $tipoFinal = 'Actualizacion';
+            $mensajeFinal = 'Se actualizó información del monitor';
 
             foreach ($monitor->getDirty() as $atributo => $nuevoValor) {
-                    if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue;
+                if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue;
 
-                    // 2. Creamos una etiqueta clara para el historial
-                    $campoLegible = "Monitor -> " . Str::headline($atributo);
+                $valorAnterior = $monitor->getOriginal($atributo);
+                $campoLegible = "Monitor -> " . Str::headline($atributo);
 
-                    $cambios[$campoLegible] = [
-                        'antes'   => $monitor->getOriginal($atributo),
-                        'despues' => $nuevoValor
-                    ];
+                // Lógica de activación/inactivación
+                if ($atributo === 'is_active') {
+                    if ($valorAnterior == 1 && $nuevoValor == 0) {
+                        $tipoFinal = 'inactivacion Monitor';
+                        $mensajeFinal = '⚠️ COMPONENTE INACTIVADO: El monitor ha sido puesto fuera de servicio.';
+                    } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
+                        $tipoFinal = 'activacion Monitor';
+                        $mensajeFinal = '✅ COMPONENTE REACTIVADO: ¡El monitor vuelve a estar operativo!';
+                    }
+                    $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
+                    $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
+                } else {
+                    $antesTexto = $valorAnterior ?? 'N/A';
+                    $despuesTexto = $nuevoValor ?? 'N/A';
                 }
 
-                // 3. Solo creamos el log si el array de cambios no quedó vacío
-                if (!empty($cambios)) {
-                    Historial_log::create([
-                        'activo_id'         => $monitor->equipo_id, // Vinculamos al equipo padre
-                        'usuario_accion_id' => Auth::id() ?? 1,
-                        'tipo_registro'     => $this->tiposMapeados['UPDATED'],
-                        'detalles_json'     => [
-                            'mensaje'          => 'Se actualizó información del monitor',
-                            'usuario_asignado' => $monitor->equipos->usuario->name ?? 'N/A',
-                            'rol'              => $monitor->equipos->usuario->rol ?? 'N/A',
-                            'cambios'          => $cambios
-                        ]
-                    ]);
-                }}
-        }
+                $cambios[$campoLegible] = [
+                    'antes'   => $antesTexto,
+                    'despues' => $despuesTexto
+                ];
+            }
 
-    /**
-     * Handle the Monitor "deleted" event.
-     */
-    public function deleted(Monitor $monitor): void
-    {
-        //
+            if (!empty($cambios)) {
+                Historial_log::create([
+                    'activo_id'         => $monitor->equipo_id,
+                    'usuario_accion_id' => Auth::id() ?? 1,
+                    'tipo_registro'     => $tipoFinal,
+                    'detalles_json'     => [
+                        'mensaje'          => $mensajeFinal,
+                        'color'            => 'info',
+                        'usuario_asignado' => $monitor->equipos->usuario->name ?? 'N/A',
+                        'rol'              => $monitor->equipos->usuario->rol ?? 'N/A',
+                        'cambios'          => $cambios
+                    ]
+                ]);
+            }
+        }
     }
 
     public function deleting(Monitor $monitor): void
     {
-        // 1.- Obtenemos el ID directamente de la columna, no de la relación es decir, $168 por ejemplo
         $equipoId = $monitor->equipo_id; 
-
-        // 2. Buscamos el equipo de forma manual para asegurar que exista
-        //es decir buscamos ese registro en la tabla
         $equipoPadre = \App\Models\Equipo::find($equipoId);
 
-        //3.- Si la Tomamos de Buena Manera crearemos un registro en Historial_Log
         if ($equipoPadre) {
             Historial_log::create([
-                'activo_id'         => $equipoPadre->id, // Vinculamos al ID del equipo
-                'usuario_accion_id' => \Illuminate\Support\Facades\Auth::id() ?? 1,
-                'tipo_registro'     => $this->tiposMapeados['DELETED'],
+                'activo_id'         => $equipoPadre->id,
+                'usuario_accion_id' => Auth::id() ?? 1,
+                'tipo_registro'     => 'Eliminacion',
                 'detalles_json'     => [
-                    'mensaje'          => "COMPONENTE ELIMINADO: Se retiró un monitor del equipo",
+                    'mensaje'          => "🗑️ COMPONENTE ELIMINADO: Se retiró un monitor del equipo",
                     'usuario_asignado' => $equipoPadre->usuario->name ?? 'N/A',
                     'rol'              => $equipoPadre->usuario->rol ?? 'N/A',
                     'cambios'          => [
                         'Monitor Retirado' => [
-                            'antes'   => "Marca: {$monitor->marca} | Serial: {$monitor->serial},
-                            | Escala en Pulgadas: {$monitor->escala_pulgadas} | Interface: {$monitor->interface}",
+                            'antes'   => "{$monitor->marca} | Serial: {$monitor->serial} | {$monitor->escala_pulgadas}\"",
                             'despues' => 'ELIMINADO'
                         ]
                     ],
                     'respaldo' => $monitor->toArray() 
                 ]
             ]);
-        } else {    //4.-En caso de Error
-            Log::warning("No se pudo crear log de eliminación: El monitor {$monitor->id} no tiene un equipo asociado.");
+        } else {
+            Log::warning("No se pudo crear log de eliminación: Monitor {$monitor->id} sin equipo asociado.");
         }
-    }
-
-    /**
-     * Handle the Monitor "restored" event.
-     */
-    public function restored(Monitor $monitor): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Monitor "force deleted" event.
-     */
-    public function forceDeleted(Monitor $monitor): void
-    {
-        //
     }
 }
