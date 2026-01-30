@@ -191,9 +191,6 @@ public function update(Request $request, Equipo $equipo)
     ->with('actualizado_id', $equipo->id);
 }
 
-    /**
-     * Muestra el detalle completo de un activo.
-     */
     public function show($id)
     {
         $equipo = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores'])
@@ -202,14 +199,6 @@ public function update(Request $request, Equipo $equipo)
         return view('equipos.detalles', compact('equipo'));
     }
 
-    /**
-     * Registro de mantenimiento en el historial (Log).
-     */
-
-
-    /**
-     * Elimina el equipo y calcula la redirecci�n de p�gina.
-     */
     public function destroy(Equipo $equipo)
     {
         $position = Equipo::where('id', '<=', $equipo->id)->count();
@@ -220,12 +209,7 @@ public function update(Request $request, Equipo $equipo)
         return redirect()->route('equipos.index', ['page' => $page])
                          ->with('danger', 'Equipo eliminado correctamente');
     }
-
-    // --- M�TODOS PRIVADOS DE L�GICA (HELPER FUNCTIONS) ---
-
-    /**
-     * Sincroniza una relaci�n HasMany: crea nuevos, actualiza existentes o elimina.
-     */
+    
     protected function syncRelation($relation, array $items)
     {
         foreach ($items as $item) {

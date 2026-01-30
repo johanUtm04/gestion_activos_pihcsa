@@ -14,27 +14,40 @@ class PerifericoObserver
         'CREATED' => 'Creacion',
         'UPDATED' => 'Actualizacion',
         'DELETED' => 'Eliminacion',
-        'PERIFERICO'     => 'Componente Extra',
+        'PERIFERICO'     => 'Componente Extra -Vengo de El observer',
     ];
     public function created(Periferico $periferico): void
     {
-        // Obtenemos el equipo al que se le sumó el monitor
         $equipo = $periferico->equipos; 
+        $esActivo = $periferico->is_active;
+
+        $tipoRegistro = $esActivo ? 'PERIFERICO' : 'INACTIVACION';
+        $mensaje = $esActivo 
+        ? " Nuevo componente instalado y operativo: " . $periferico->marca 
+        : " Componente instalado pero fuera de servicio: " . $periferico->marca;
 
         if ($equipo) {
             Historial_log::create([
-                'activo_id'         => $equipo->id,
-                'usuario_accion_id' => Auth::id() ?? 1,
-                'tipo_registro'     => $this->tiposMapeados['PERIFERICO'], 
+                'activo_id'         => $periferico->equipo_id,
+                'usuario_accion_id' => auth()->id() ?? 1,
+                'tipo_registro'     => $tipoRegistro,
                 'detalles_json'     => [
-                    'mensaje'          => 'NUEVO COMPONENTE: Se sumó un Periferico',
-                    'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
-                    'rol'              => $equipo->usuario->rol ?? 'N/A',
-                    // Forzamos la estructura de cambios para que el Blade la pinte bonito
-                    'cambios' => [
-                        'Periferico Adicional' => [
-                            'antes'   => 'Inexistente',
-                            'despues' => "Tipo: {$periferico->tipo} | Marca: {$periferico->marca} | Serial: {$periferico->serial} | Interface: {$periferico->interface}"
+                    'mensaje'          => $mensaje,
+                    'usuario_asignado' => $periferico->equipos->usuario->name ?? 'N/A',
+                    'rol'              => $periferico->equipos->usuario->rol ?? 'N/A',
+
+                    'cambios'          => [
+                        'Estado Inicial' => [
+                            'antes'   => 'N/A (Nuevo)',
+                            'despues' => $esActivo ? ' Activo' : ' Inactivo'
+                        ],
+                        'Motivo' => [
+                            'antes'   => '-',
+                            'despues' => $periferico->motivo_inactivo ?? 'Instalación inicial'
+                        ],
+                        'Detalle' => [
+                            'antes'   => '-',
+                            'despues' => $periferico->marca . " " . $periferico->interface
                         ]
                     ]
                 ]
@@ -42,42 +55,58 @@ class PerifericoObserver
         }
     }
 
-    /**
-     * Handle the Periferico "updated" event.
-     */
+
     public function updated(Periferico $periferico): void
     {
         //
         if ($periferico->isDirty()) {
-            # code...
-            $cambios = [];
+        $cambios = [];
+        $esEstado = false;
+        $mensajeFinal = 'Se actualizó información del periferico';
             
-            foreach($periferico->getDirty() as $atributo => $nuevovalor){
+            foreach($periferico->getDirty() as $atributo => $nuevoValor){
                 if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue; 
 
+                $valorAnterior = $periferico->getOriginal($atributo);
                 $campoLegible = "Periferico -> " . Str::headline($atributo);
+                $colorFinal = 'info';
 
+                if ($atributo === 'is_active') {
+                    $esEstado = true;
+                    if ($valorAnterior == 1 && $nuevoValor == 0) {
+                        $tipoFinal = 'INACTIVACION PERIFERICO';
+                        $mensajeFinal = 'COMPONENTE INACTIVADO: El periferico ha sido puesto fuera de servicio.';
+                    } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
+                        $tipoFinal = 'ACTIVACION PERIFERICO';
+                        $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El periferico vuelve a estar operativo!';
+                    }
+                    
+                    $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
+                    $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
+                } else {
+                    $antesTexto = $valorAnterior ?? 'N/A';
+                    $despuesTexto = $nuevoValor ?? 'N/A';
+                }
                 $cambios[$campoLegible] = [
-                    'antes' => $periferico->getOriginal($atributo),
-                    'despues' => $nuevovalor
+                    'antes'   => $antesTexto,
+                    'despues' => $despuesTexto
                 ];
             }
 
-            // 3. Solo creamos el log si el array de cambios no quedó vacío
-            if (!empty($cambios)) {
-                Historial_log::create([
-                    'activo_id'         => $periferico->equipo_id, // Vinculamos al equipo padre
-                    'usuario_accion_id' => Auth::id() ?? 1,
-                    'tipo_registro'     => $this->tiposMapeados['UPDATED'],
-                    'detalles_json'     => [
-                        'mensaje'          => 'Se actualizó información del periiferico',
-                        'usuario_asignado' => $periferico->equipos->usuario->name ?? 'N/A',
-                        'rol'              => $periferico->equipos->usuario->rol ?? 'N/A',
-                        'cambios'          => $cambios
-                    ]
-                ]);
-            }
-
+        if (!empty($cambios)) {
+            Historial_log::create([
+                'activo_id'         => $periferico->equipo_id,
+                'usuario_accion_id' => auth()->id() ?? 1,
+                'tipo_registro' => $tipoFinal ?? 'Actualizacion',
+                'detalles_json'     => [
+                    'mensaje'          => $mensajeFinal,
+                    'color'   => $colorFinal,
+                    'usuario_asignado' => $periferico->equipos->usuario->name ?? 'N/A',
+                    'rol'              => $periferico->equipos->usuario->rol ?? 'N/A',
+                    'cambios'          => $cambios
+                ]
+            ]);
+        }
         }
     }
 
@@ -120,7 +149,7 @@ class PerifericoObserver
                 ]
             ]);
         } else {    //4.-En caso de Error
-            Log::warning("No se pudo crear log de eliminación: El procesador {$periferico->id} no tiene un equipo asociado.");
+            Log::warning("No se pudo crear log de eliminación: El periferico {$periferico->id} no tiene un equipo asociado.");
         }
     }
 

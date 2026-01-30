@@ -75,12 +75,11 @@ public function updated(Procesador $procesador): void
             $colorFinal = 'info';
             if ($atributo === 'is_active') {
                 $esEstado = true;
-                // --- DISEÑO DE MENSAJE INTUITIVO ---
                 if ($valorAnterior == 1 && $nuevoValor == 0) {
-                    $tipoFinal = 'INACTIVACION';
+                    $tipoFinal = 'INACTIVACION PROCESADOR';
                     $mensajeFinal = 'COMPONENTE INACTIVADO: El procesador ha sido puesto fuera de servicio.';
                 } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
-                    $tipoFinal = 'ACTIVACION';
+                    $tipoFinal = 'ACTIVACION PROCESADOR';
                     $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El procesador vuelve a estar operativo!';
                 }
                 

@@ -278,29 +278,6 @@ class EquipoWizardController extends Controller
             'tipo_activo_id'        => $wizard['equipo']['tipo_activo_id'],
         ]);
 
-        // B. Crear relaciones mediante el m todo create() de Eloquent
-
-        // if (!empty($wizard['monitor'])) {
-        //     $equipo->monitores()->create($wizard['monitor']);
-        // }
-
-        // if (!empty($wizard['disco_duro'])) {
-        //     $equipo->discosDuros()->create($wizard['disco_duro']);
-        // }
-    
-        // if (!empty($wizard['ram'])) {
-        //     $equipo->rams()->create($wizard['ram']);
-        // }
-
-        // if (!empty($wizard['periferico'])) {
-        //     $equipo->perifericos()->create($wizard['periferico']);
-        // }
-
-        // if (!empty($wizard['procesador'])) {
-        //     $equipo->procesadores()->create($wizard['procesador']);
-        // }
-
-
         //Crear relaciones de manera silenciosa
         Equipo::withoutEvents(function () use ($equipo, $wizard) {
         if (!empty($wizard['monitor'])) $equipo->monitores()->create($wizard['monitor']);
