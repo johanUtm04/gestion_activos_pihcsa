@@ -170,7 +170,7 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="text-muted small font-weight-bold">PROCESADORES</label>
-                            @forelse($equipo->procesadores as $cpu)
+                            @forelse($equipo->procesadores->where('is_active', 1) as $cpu)
                                 <div class="component-item">
                                     <div class="font-weight-bold">{{ $cpu->marca }}</div>
                                     <div class="text-sm">{{ $cpu->descripcion_tipo }}</div>
@@ -181,7 +181,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="text-muted small font-weight-bold">MEMORIA RAM</label>
-                            @forelse($equipo->rams as $ram)
+                            @forelse($equipo->rams->where('is_active', 1) as $ram)
                                 <div class="component-item" style="border-left-color: #007bff;">
                                     <div class="font-weight-bold">{{ $ram->capacidad_gb }} GB</div>
                                     <div class="text-sm">{{ $ram->tipo_chz }} @ {{ $ram->clock_mhz }} MHz</div>
@@ -203,7 +203,7 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                @forelse($equipo->discosDuros as $disco)
+                                @forelse($equipo->discosDuros->where('is_active', 1) as $disco)
                                     <tr>
                                         <td class="font-weight-bold">{{ $disco->capacidad }}</td>
                                         <td><span class="badge badge-secondary">{{ $disco->tipo_hdd_ssd }}</span></td>
@@ -224,7 +224,7 @@
             <div class="card info-card">
                 <div class="card-body">
                     <h5 class="section-title"><i class="fas fa-desktop"></i> Pantallas Asociadas</h5>
-                    @forelse($equipo->monitores as $monitor)
+                    @forelse($equipo->monitores->where('is_active', 1) as $monitor)
                         <div class="p-3 mb-3 border rounded shadow-sm bg-light">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
@@ -246,7 +246,7 @@
                     <div class="table-responsive">
                         <table class="table table-sm table-striped">
                             <tbody class="text-sm">
-                                @forelse($equipo->perifericos as $peri)
+                                @forelse($equipo->perifericos->where('is_active', 1) as $peri)
                                     <tr>
                                         <td class="font-weight-bold">{{ $peri->tipo }}</td>
                                         <td>{{ $peri->marca }}</td>
