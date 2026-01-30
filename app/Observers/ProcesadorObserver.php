@@ -14,7 +14,7 @@ class ProcesadorObserver
         'CREATED' => 'Creacion',
         'UPDATED' => 'Actualizacion',
         'DELETED' => 'Eliminacion',
-        'PROCESADOR'     => 'Componente Extra',
+        'PROCESADOR'     => 'Componente Extra -Vengo de El observer',
     ];
     public function created(Procesador $procesador): void
     {

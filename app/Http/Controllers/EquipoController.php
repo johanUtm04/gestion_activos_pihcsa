@@ -101,8 +101,7 @@ public function store(Request $request)
         'marca_id'          => $request->marca_id,       
         'tipo_activo_id'    => $request->tipo_activo_id,
     ];
-
-// dd($data);
+    
     $uuid = Str::uuid()->toString();
 
     session()->put('wizard_equipo.uuid', $uuid);

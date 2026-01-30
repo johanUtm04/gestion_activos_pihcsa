@@ -54,7 +54,6 @@
         </div>
         
         <div class="col-md-8">
-            {{-- Este div se oculta/muestra con el JS --}}
             <div class="div-motivo" style="{{ !isset($procesador) || $procesador->is_active ? 'display: none;' : '' }}">
                 <input type="text" 
                        name="procesador[{{ $index }}][motivo_inactivo]" 

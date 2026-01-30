@@ -98,7 +98,9 @@
     <div class="form-group col-md-3">
         <label class="small font-weight-bold">Interfaz / Conexión</label>
         <select name="periferico[{{ $index }}][interface]" class="form-control form-control-sm">
-            <option value="">Seleccione...</option>
+            <option value="{{ $periferico->interface ?? '' }}" selected>
+             {{ $periferico->interface ?? 'Seleccione...' }}
+            </option>
                 @foreach([
                     'USB',
                     'USB-A',
