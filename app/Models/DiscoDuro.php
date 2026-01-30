@@ -16,7 +16,9 @@ class DiscoDuro extends Model
         'tipo_hdd_ssd',
         'interface',
         'modelo',
-        'serial'
+        'serial',
+        'is_active', 
+        'motivo_inactivo'
     ];
     protected $guarded = ['id'];
     

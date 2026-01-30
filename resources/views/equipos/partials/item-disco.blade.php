@@ -1,4 +1,4 @@
-<div class="discoDuro-item p-3 mb-5 border rounded bg-light shadow-sm">
+<div class="discoDuro-item p-3 mb-5 border rounded bg-light shadow-sm item-componente">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="text-secondary mb-0">
             <i class="fas fa-hdd"></i> Disco Duro #
@@ -98,6 +98,37 @@
     @endforeach
 </select>
         </div>
-         <small class="text-muted">ID Sistema: {{ $periferico->id ?? 'Pendiente' }}</small>
+        <div class="row align-items-center mt-2 border-top pt-2">
+            <div class="col-md-4">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" 
+                        class="custom-control-input switch-estado-componente" 
+                        id="switch-disc-{{ $index }}" 
+                        name="discoDuro[{{ $index }}][is_active]" 
+                        value="1" 
+                        {{ !isset($discoDuro) || $discoDuro->is_active ? 'checked' : '' }}>
+                    <label class="custom-control-label small font-weight-bold {{ !isset($discoDuro) || $discoDuro->is_active ? 'text-success' : 'text-danger' }}" 
+                        for="switch-disc-{{ $index }}">
+                        {{ !isset($discoDuro) || $discoDuro->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
+                    </label>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="div-motivo" style="{{ !isset($discoDuro) || $discoDuro->is_active ? 'display: none;' : '' }}">
+                    <input type="text" 
+                        name="discoDuro[{{ $index }}][motivo_inactivo]" 
+                        class="form-control form-control-sm border-danger input-motivo" 
+                        placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
+                        value="{{ $discoDuro->motivo_inactivo ?? '' }}"
+                        {{ isset($discoDuro) && !$discoDuro->is_active ? 'required' : '' }}>
+                </div>
+            </div>
+        </div>
+
+        <small class="text-muted">ID Sistema: {{ $discoDuro->id ?? 'Pendiente' }}</small>
+        @if(isset($discoDuro) && $discoDuro->is_active == false)
+            <span class="badge badge-danger">Dado de baja</span>
+        @endif
     </div>
 </div>
