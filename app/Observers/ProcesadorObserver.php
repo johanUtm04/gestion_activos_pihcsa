@@ -14,7 +14,7 @@ class ProcesadorObserver
         'CREATED' => 'Creacion',
         'UPDATED' => 'Actualizacion',
         'DELETED' => 'Eliminacion',
-        'PROCESADOR'     => 'Componente Extra -Vengo de El observer',
+        'PROCESADOR' => 'Componente Extra',
     ];
     public function created(Procesador $procesador): void
     {
@@ -23,16 +23,17 @@ class ProcesadorObserver
 
         $esActivo = $procesador->is_active;
         //Manda x o y dependiendo si es 0 o 1 
-        $tipoRegistro = $esActivo ? 'PROCESADOR' : 'INACTIVACION';
-        $mensaje = $esActivo 
-        ? " Nuevo componente instalado y operativo: " . $procesador->marca 
-        : " Componente instalado pero fuera de servicio: " . $procesador->marca;
+    $tipoRegistro = $esActivo ? 'componente-extra' : 'INACTIVACION';
+
+    $mensaje = $esActivo 
+        ? "⚡ SE AGREGÓ COMPONENTE EXTRA: " . $procesador->marca 
+        : "⚠️ COMPONENTE INSTALADO INACTIVO: " . $procesador->marca;
 
         if ($equipo) {
         Historial_log::create([
         'activo_id'         => $procesador->equipo_id,
         'usuario_accion_id' => auth()->id() ?? 1,
-        'tipo_registro'     => $tipoRegistro,
+        'tipo_registro'     => $tipoRegistro . ' Procesador',
         'detalles_json'     => [
             'mensaje'          => $mensaje,
             'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
@@ -44,7 +45,7 @@ class ProcesadorObserver
                 ],
                 'Motivo' => [
                     'antes'   => '-',
-                    'despues' => $procesador->motivo_inactivo ?? 'Instalación inicial'
+                    'despues' => $procesador->motivo_inactivo ?? 'Instalacion inicial'
                 ],
                 'Detalle' => [
                     'antes'   => '-',
@@ -75,11 +76,11 @@ public function updated(Procesador $procesador): void
             $colorFinal = 'info';
             if ($atributo === 'is_active') {
                 $esEstado = true;
-                if ($valorAnterior == 1 && $nuevoValor == 0) {
-                    $tipoFinal = 'INACTIVACION PROCESADOR';
-                    $mensajeFinal = 'COMPONENTE INACTIVADO: El procesador ha sido puesto fuera de servicio.';
-                } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
-                    $tipoFinal = 'ACTIVACION PROCESADOR';
+            if ($valorAnterior == 1 && $nuevoValor == 0) {
+                $tipoFinal = 'inactivacion Procesador'; 
+                $mensajeFinal = 'COMPONENTE INACTIVADO: El procesador ha sido puesto fuera de servicio.';
+            } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
+                    $tipoFinal = 'activacion Procesador';
                     $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El procesador vuelve a estar operativo!';
                 }
                 

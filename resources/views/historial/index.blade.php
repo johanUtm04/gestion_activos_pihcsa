@@ -109,31 +109,45 @@
                         @forelse($logs as $log)
                             @php 
                                 $detalles = $log->detalles_json;
-                                $tipoSlug = \Illuminate\Support\Str::slug($log->tipo_registro);
-                                
+                                $registroOriginal = strtolower($log->tipo_registro);
+
+                                if (str_contains($registroOriginal, 'componente-extra')) {
+                                    $llaveFinal = 'componente-extra';
+                                } elseif (str_contains($registroOriginal, 'inactivacion')) {
+                                    $llaveFinal = 'inactivacion';
+                                } elseif (str_contains($registroOriginal, 'activacion')) {
+                                    $llaveFinal = 'activacion';
+                                } else {
+                                    $llaveFinal = $registroOriginal;
+                                }
+
+                                // 2. Definimos los colores (El diccionario)
                                 $config = [
-                                    'creacion'         => ['bg' => 'bg-success', 'icon' => 'fa-plus-circle'],
-                                    'actualizacion'    => ['bg' => 'bg-warning', 'icon' => 'fa-sync-alt'],
-                                    'eliminacion'      => ['bg' => 'bg-danger',  'icon' => 'fa-trash-alt'],
-                                    'mantenimiento'    => ['bg' => 'bg-info',    'icon' => 'fa-tools'],
-                                    'componente-extra' => ['bg' => 'bg-orange',  'icon' => 'fa-memory'],
-                                    'instalacion'  => ['bg' => 'bg-primary', 'icon' => 'fa-microchip'],
-                                    'inactivacion'     => ['bg' => 'bg-danger',  'icon' => 'fa-power-off'],
-                                    'activacion'       => ['bg' => 'bg-success', 'icon' => 'fa-bolt'], 
-                                    'estado-componente'=> ['bg' => 'bg-purple',  'icon' => 'fa-microchip'],
-                                ][$tipoSlug] ?? ['bg' => 'bg-secondary', 'icon' => 'fa-dot-circle'];
+                                    'creacion'          => ['bg' => 'bg-success', 'icon' => 'fa-plus-circle'],
+                                    'actualizacion'     => ['bg' => 'bg-warning', 'icon' => 'fa-sync-alt'],
+                                    'eliminacion'       => ['bg' => 'bg-danger',  'icon' => 'fa-trash-alt'],
+                                    'mantenimiento'     => ['bg' => 'bg-info',    'icon' => 'fa-tools'],
+                                    'componente-extra'  => ['bg' => 'bg-orange',  'icon' => 'fa-memory'],
+                                    'instalacion'       => ['bg' => 'bg-primary', 'icon' => 'fa-microchip'],
+                                    'inactivacion'      => ['bg' => 'bg-danger',  'icon' => 'fa-power-off'],
+                                    'activacion'        => ['bg' => 'bg-success', 'icon' => 'fa-bolt'], 
+                                    'estado-componente' => ['bg' => 'bg-purple',  'icon' => 'fa-microchip'],
+                                ];
+
+                                // 3. Seleccionamos el estilo final
+                                $estiloActual = $config[$llaveFinal] ?? ['bg' => 'bg-secondary', 'icon' => 'fa-dot-circle'];
                             @endphp
 
-                            <div class="log-card mb-4 bg-white shadow-xs">
-                                <div class="log-header p-3 d-flex justify-content-between align-items-center border-bottom">
-                                    <div class="d-flex align-items-center">
-                                        <div class="{{ $config['bg'] }} text-white rounded-circle mr-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 28px; height: 28px;">
-                                            <i class="fas {{ $config['icon'] }} style="font-size: 12px;"></i>
-                                        </div>
-                                        <span class="font-weight-bold text-dark mr-2">{{ $log->tipo_registro }}</span>
-                                        <small class="text-muted border-left pl-2">{{ $log->created_at->format('d M, Y • H:i') }}</small>
+                        <div class="log-card mb-4 bg-white shadow-xs">
+                            <div class="log-header p-3 d-flex justify-content-between align-items-center border-bottom">
+                                <div class="d-flex align-items-center">
+                                    <div class="{{ $estiloActual['bg'] }} text-white rounded-circle mr-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 28px; height: 28px;">
+                                        <i class="fas {{ $estiloActual['icon'] }}" style="font-size: 12px;"></i>
                                     </div>
-                                    <small class="badge badge-light text-muted font-weight-normal">{{ $log->created_at->diffForHumans() }}</small>
+                                    <span class="font-weight-bold text-dark mr-2">{{ $log->tipo_registro }}</span>
+                                    <small class="text-muted border-left pl-2">{{ $log->created_at->format('d M, Y • H:i') }}</small>
+                                </div>
+                                <small class="badge badge-light text-muted font-weight-normal">{{ $log->created_at->diffForHumans() }}</small>
                                 </div>
 
                                 <div class="p-3">
@@ -146,7 +160,7 @@
                                                     </td>
                                                     <td class="pt-1">
                                                         <div class="d-flex align-items-center flex-wrap">
-                                                            @if($tipoSlug !== 'creacion' && ($valor['antes'] ?? 'N/A') !== 'N/A')
+                                                            @if($registroOriginal !== 'creacion' && ($valor['antes'] ?? 'N/A') !== 'N/A')
                                                                 <span class="badge border text-danger bg-light text-decoration-line-through mr-2 px-2 py-1">
                                                                     {{ $valor['antes'] }}
                                                                 </span>
@@ -167,7 +181,7 @@
                                                                     </table>
                                                                 </div>
                                                             @else
-                                                                <span class="badge {{ $tipoSlug == 'componente-extra' ? 'badge-orange-soft' : 'badge-success-soft' }} text-dark font-weight-bold px-3 py-1">
+                                                                <span class="badge {{ $registroOriginal == 'componente-extra' ? 'badge-orange-soft' : 'badge-success-soft' }} text-dark font-weight-bold px-3 py-1">
                                                                     {!! $valor['despues'] ?? 'N/A' !!}
                                                                 </span>
                                                             @endif
