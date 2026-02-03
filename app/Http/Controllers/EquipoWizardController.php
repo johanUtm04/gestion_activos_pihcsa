@@ -9,10 +9,17 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use App\Models\Historial_log;   
 
+/*
+|--------------------------------------------------------------------------
+| Controlador principal para Formulario de Alta de un equipo
+|--------------------------------------------------------------------------
+*/
+
 class EquipoWizardController extends Controller
 {
     /**
-     * PASO 1: Formulario Base e Inicializaci n.
+     * Metodo para cargar vista de creacion de equipo Base
+     * PASO 1: Formulario Base e Inicializacion.
      * Carga los usuarios y prepara la sesi n para el flujo.
      */
     public function create()
@@ -20,11 +27,11 @@ class EquipoWizardController extends Controller
         $wizard = session('wizard_equipo');
         $usuarios = User::select('id', 'name')->get();
         $equipo = data_get($wizard, 'equipo', []);
-        
         return view('equipos.create', compact('equipo', 'usuarios'));
     }
 
     /**
+     * Metodo para cargar en la sesion los datos dados por el usuario
      * PROCESO PASO 1: Validaci n y creaci n del UUID.
      * Aqu  nace la "Persistencia Temporal" en la sesi n.
      */
@@ -43,24 +50,23 @@ class EquipoWizardController extends Controller
 
         $data = $validated;
 
-        // L gica de campos de respaldo (Valores por defecto)
+        // Logica de campos de respaldo (Valores por defecto, en caso de que el usuario no los ingrese)
         $data['serial'] = $data['serial'] ?? 'INT-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
         $data['valor_inicial'] = $data['valor_inicial'] ?? 0;
 
-        // Generaci n del identificador  nico para el recorrido de la URL
+        // Generacion del identificador unico para el recorrido de la URL
         $uuid = Str::uuid()->toString();
         
-        // Guardamos en sesi n el UUID y los datos base del equipo
+        // Guardamos en sesion el UUID y los datos base del equipo
         session()->put('wizard_equipo.uuid', $uuid);
         session()->put('wizard_equipo.equipo', $data);
-
-
         return redirect()->route('equipos.wizard-ubicacion', $uuid);
     }
 
     /**
-     * PASO 2: Ubicaci n.
-     * Valida que el UUID de la URL coincida con la sesi n activa.
+     * Metodo para cargar en la sesion los datos dados por el usuario
+     * PASO 2: Ubicacion.
+     * Valida que el UUID de la URL coincida con la sesion activa.
      */
     public function ubicacionForm($uuid)
     {
@@ -86,7 +92,7 @@ class EquipoWizardController extends Controller
 
         $wizard = session('wizard_equipo');
         
-        // Agregamos el array de ubicaci n a la sesi n vol til
+        // Agregamos el array de ubicacion a la sesion
         session()->put('wizard_equipo.ubicacion', [
             'ubicacion_id' => $request->ubicacion_id,
         ]);
@@ -116,7 +122,7 @@ class EquipoWizardController extends Controller
             'interface' => 'nullable|string'
         ]);
 
-        // Quitamos campos nulos para no ensuciar la sesi n
+        // Quitamos campos nulos para no ensuciar la sesion
         $datos = array_filter($request->only(['marca', 'serial', 'escala_pulgadas', 'interface']));
 
         if (empty($datos)) {
@@ -191,7 +197,7 @@ class EquipoWizardController extends Controller
     }
 
     /**
-     * PASO 6: Perif ricos.
+     * PASO 6: Perifiricos.
      */
     public function perifericoForm($uuid)
     {
@@ -223,8 +229,9 @@ class EquipoWizardController extends Controller
     }
 
     /**
+     * Metodo para cargar formulario de creacion
      * PASO 7: Formulario de Procesador.
-     *  ltima etapa de recolecci n de datos antes del guardado definitivo.
+     * Ultima etapa de recoleccion de datos antes del guardado definitivo.
      */
     public function ProcesadorForm($uuid)
     {
@@ -236,7 +243,8 @@ class EquipoWizardController extends Controller
     }
 
     /**
-     * PROCESO FINAL: Consolidaci n de datos en Base de Datos.
+     * Metodo para crear registro en Base de datos
+     * PROCESO FINAL: Consolidacion de datos en Base de Datos.
      * Este m todo vac a la "Memoria Temporal" y crea los registros reales.
      */
     public function saveProcesador(Request $request, $uuid)
@@ -260,8 +268,7 @@ class EquipoWizardController extends Controller
             abort(403, 'Sesi n inv lida al intentar finalizar el registro.');
         }
 
-        // --- INICIO DE PERSISTENCIA EN BASE DE DATOS ---
-
+        // --- INICIO DE PERSISTENCIA EN BASE DE DATOS ---------------------------
         // A. Crear el Equipo Base
         // Usamos el operador spread (...) para traer los datos del equipo y sobreescribimos/a adimos la ubicacion
         // A. Crear el Equipo Base mapeando manualmente cada campo
@@ -286,12 +293,12 @@ class EquipoWizardController extends Controller
         if (!empty($wizard['periferico'])) $equipo->perifericos()->create($wizard['periferico']);
         if (!empty($wizard['procesador'])) $equipo->procesadores()->create($wizard['procesador']);
         });
+        // --- CIERRE DE PROCESO ---------------------------------------------------
 
-        // --- CIERRE DE PROCESO ---
-
-        // 4. Limpiar la mochila de la sesi n
         session()->forget('wizard_equipo');
+
         $equipo->refresh(); 
+
         $equipo->load(['procesadores', 'rams', 'discosDuros', 'monitores', 'perifericos', 'marca', 'tipoActivo', 'usuario']);
         $resumenHardware = [
             'Procesador' => $equipo->procesadores->first() 
@@ -336,7 +343,6 @@ class EquipoWizardController extends Controller
                 : 'No detectado',
         ];
 
-        // Paso final: Convertir a la cadena que entiende tu Blade con el separador '|'
         $hardwareString = collect($resumenHardware)
             ->map(fn($v, $k) => "$k: $v")
             ->implode(' | ');

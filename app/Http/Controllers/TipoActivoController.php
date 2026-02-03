@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 use App\Models\TipoActivo;
 use Illuminate\Http\Request;
+/*
+|--------------------------------------------------------------------------
+| Controlador destinado para manejar CRUD(CREATE, READ, UPDATE, DELETE) de  Catalogo de Tipos de Activo
+|--------------------------------------------------------------------------
+*/
 
 class TipoActivoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //Metodo para mostrar vista
     public function index()
     {
 	$tipo_activo= TipoActivo::paginate(10);
@@ -16,56 +19,40 @@ class TipoActivoController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    //Metodo para cargar formulario de creacion
     public function create()
     {
-        //
         return view('tipo_activos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //Metodo para crear registro en Base de datos
     public function store(Request $request)
     {
-        //
         $request->validate(['nombre' => 'required|unique:marcas|max:255']);
         TipoActivo::create($request->all());
         return redirect()->route('tipo_activos.index')->with('success', 'Tipo de activo agregado al catalogo correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //Metodo para cargar formulario de edicion
     public function edit(TipoActivo $tipo_activo)
     {
-        //
         return view('tipo_activos.edit', compact('tipo_activo'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //Metodo para editar registro en Base de datos
     public function update(Request $request, TipoActivo $tipo_activo)
     {
-    $request->validate(['nombre' => 'required|max:255|unique:marcas,nombre,' . $tipo_activo->id]);
-    $tipo_activo->update($request->all());
-    return redirect()->route('tipo_activos.index')->with('success', 'Tipo de activo actualizado en el catalogo correctamente');
+        $request->validate(['nombre' => 'required|max:255|unique:marcas,nombre,' . $tipo_activo->id]);
+        $tipo_activo->update($request->all());
+        return redirect()->route('tipo_activos.index')->with('success', 'Tipo de activo actualizado en el catalogo correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    //Metodo para eliminar registro de base de datos
     public function destroy(TipoActivo $tipo_activo)
     {
         if($tipo_activo->equipos()->count() > 0) {

@@ -5,23 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Ubicacion;
 use Illuminate\Http\Request;
 
+/*
+|--------------------------------------------------------------------------
+| Controlador destinado para manejar CRUD(CREATE, READ, UPDATE, DELETE) de Catalogo de Ubicaiones
+|--------------------------------------------------------------------------
+*/
+
 class GestionUbicacionesController extends Controller
 {
-    // Centralizamos el paginado. 
-    // Si mañana quieres mostrar 10, solo cambias este número.
     const PER_PAGE = 3;
 
+    //Metodo para mostrar vista
     public function index()
     {
         $ubicaciones = Ubicacion::paginate(self::PER_PAGE);
         return view('ubicaciones.index', compact('ubicaciones'));
     }
 
+    //Metodo para cargar formulario de creacion
     public function create()
     {
         return view('ubicaciones.create');
     }
 
+    //Metodo para crear registro en Base de datos
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -36,11 +43,13 @@ class GestionUbicacionesController extends Controller
             ->with('new_id', $ubicacion->id);
     }
 
+    //Metodo para cargar formulario de edicion
     public function edit(Ubicacion $ubicacion)
     {
         return view('ubicaciones.edit', compact('ubicacion'));
     }
 
+    //Metodo para editar registro en Base de datos
     public function update(Request $request, Ubicacion $ubicacion)
     {
         $data = $request->validate([
@@ -55,6 +64,7 @@ class GestionUbicacionesController extends Controller
             ->with('actualizado_id', $ubicacion->id);
     }
 
+    //Metodo para eliminar registro de base de datos
     public function destroy(Ubicacion $ubicacion)
     {
         // 1. Calculamos la página ANTES de eliminarlo de la base de datos
@@ -66,9 +76,7 @@ class GestionUbicacionesController extends Controller
             ->with('danger', 'Ubicación eliminada correctamente');
     }
 
-    /**
-     * LÓGICA REUTILIZABLE: Calcula la página destino basada en el ID
-     */
+    //METODO HELPER: Calcula la página en la que se encuentra un registro
     private function getReturnPage($id)
     {
         $position = Ubicacion::where('id', '<=', $id)->count();

@@ -5,24 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+/*
+|--------------------------------------------------------------------------
+| Controlador destinado para manejar CRUD(CREATE, READ, UPDATE, DELETE) de Catalogo de Usuarios
+|--------------------------------------------------------------------------
+*/
 class GestionUsuariosController extends Controller
 {
-    // Constante para centralizar el paginado
     const PER_PAGE = 10;
 
+    //Metodo para mostrar vista
     public function index()
     {
         $users = User::paginate(self::PER_PAGE);
         return view('users.index', compact('users'));
     }
 
+    //Metodo para cargar formulario de creacion
     public function create()
     {
-        // En un create de usuario, normalmente no necesitas pasar todos los usuarios
         return view('users.create');
     }
 
+    //Metodo para crear registro en Base de datos
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,21 +39,22 @@ class GestionUsuariosController extends Controller
             'estatus'      => 'required|string|max:35',
         ]);
 
-        // Encriptar contraseña antes de guardar
         $data['password'] = Hash::make($data['password']);
         
         $user = User::create($data);
 
         return redirect()->route('users.index', ['page' => $this->getReturnPage($user->id)])
-            ->with('new_id', $user->id)
-            ->with('success', 'Usuario agregado correctamente');
+        ->with('new_id', $user->id)
+        ->with('success', 'Usuario agregado correctamente');
     }
 
+    //Metodo para cargar formulario de edicion
     public function edit(User $user)
     {
         return view('users.edit', compact('user'));
     }
 
+    //Metodo para editar registro en Base de datos
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
@@ -66,9 +72,9 @@ class GestionUsuariosController extends Controller
         ->with('warning', 'Usuario editado correctamente');
     }
 
+    //Metodo para eliminar registro de base de datos
     public function destroy(User $user)
     {
-        // Calculamos la página ANTES de borrarlo
         $page = $this->getReturnPage($user->id);
         
         $user->delete();
@@ -77,9 +83,7 @@ class GestionUsuariosController extends Controller
             ->with('danger', 'Usuario eliminado correctamente');
     }
 
-    /**
-     * MÉTODO HELPER: Calcula la página en la que se encuentra un registro
-     */
+    //METODO HELPER: Calcula la página en la que se encuentra un registro
     private function getReturnPage($userId)
     {
         $position = User::where('id', '<=', $userId)->count();

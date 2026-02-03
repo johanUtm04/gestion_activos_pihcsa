@@ -7,8 +7,15 @@ use App\Models\Historial_log;
 use App\Models\Equipo;
 use App\Models\User;
 
+/*
+|--------------------------------------------------------------------------
+| Controlador destinado para ver registros del historial
+|--------------------------------------------------------------------------
+*/
+
 class HistorialController extends Controller
 {
+    //Metodo para mostrar vista
     public function index(Request $request)
     {
         $usuarios = User::orderBy('name')->get();
