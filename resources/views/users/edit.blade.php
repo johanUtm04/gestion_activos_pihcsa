@@ -102,6 +102,13 @@
                             <span class="float-right">{{ $user->estatus }}</span>
                         </div>
 
+                        <div class="data-item">
+                            <span class="data-label">
+                            <i class="fas fa-user-shield"></i> Rol del Sistema:
+                            </span> 
+                            <span class="float-right badge badge-primary">{{ $user->rol ?? 'SIN ROL' }}</span>
+                        </div>
+
                     </div> {{-- /card-body --}}
                 </div> {{-- /card --}}
             </div> {{-- /col-md-5 --}}
@@ -151,6 +158,27 @@
                                     @enderror
                                 </div>
 
+                                <div class="form-group col-md-6">
+                                    <label for="rol"><i class="fas fa-user-tag"></i> Asignar Rol:</label>
+                                    <select name="rol" id="rol" class="form-control @error('rol') is-invalid @enderror">
+                                    <option value="admin" {{ old('rol', $user->rol) == 'admin' ? 'selected' : '' }}>
+                                    admin
+                                    </option>
+                                    <option value="sistemas" {{ old('rol', $user->rol) == 'sistemas' ? 'selected' : '' }}>
+                                    sistemas
+                                    </option>
+                                    <option value="invitado" {{ old('rol', $user->rol) == 'invitado' ? 'selected' : '' }}>
+                                    invitado
+                                    </option>
+                                    </select>
+
+                                    @error('rol')
+                                    <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
                                 </div>
 
                                 <div class="row">
@@ -163,127 +191,37 @@
                                 <div class="form-group col-md-6">
                                     <label for="departamento"><i class="fas fa-building"></i> Departamento: </label>
                                     <select name="departamento" id="departamento" class="form-control @error('departamento') is-invalid @enderror">
-                                        <option value="" disabled {{ old('departamento') == '' ? 'selected' : '' }}>-- Seleccione --</option>
-                                    <option value="ALMACEN" {{ old('departamento') == 'ALMACEN' ? 'selected' : '' }}>
-                                        ALMACEN
-                                    </option>
-
-                                    <option value="ASIST_PAGOS" {{ old('departamento') == 'ASIST_PAGOS' ? 'selected' : '' }}>
-                                        ASIST. PAGOS
-                                    </option>
-                                    
-                                    <option value="COBRANZA" {{ old('departamento') == 'COBRANZA' ? 'selected' : '' }}>
-                                        COBRANZA
-                                    </option>
-
-                                    <option value="AUDITORIA" {{ old('departamento') == 'AUDITORIA' ? 'selected' : '' }}>
-                                        AUDITORIA
-                                    </option>
-
-                                    <option value="AUXILIAR_ADMINISTRATIVO" {{ old('departamento') == 'AUXILIAR_ADMINISTRATIVO' ? 'selected' : '' }}>
-                                        AUXILIAR ADMINSTRATIVO
-                                    </option>
-
-                                    <option value="AUXILIAR_LOGISTICA" {{ old('departamento') == 'AUXILIAR_LOGISTICA' ? 'selected' : '' }}>
-                                        AUXILIAR LOGISTICA
-                                    </option>
-
-                                    <option value="CALIDAD" {{ old('departamento') == 'CALIDAD' ? 'selected' : '' }}>
-                                        CALIDAD
-                                    </option>
-
-                                    <option value="COBRANZA_GOB" {{ old('departamento') == 'COBRANZA_GOB' ? 'selected' : '' }}>
-                                        COBRANZA GOB
-                                    </option>
-
-                                    <option value="COMPRAS" {{ old('departamento') == 'COMPRAS' ? 'selected' : '' }}>
-                                        COMPRAS
-                                    </option>
-
-                                    <option value="CONTABILIDAD" {{ old('departamento') == 'CONTABILIDAD' ? 'selected' : '' }}>
-                                        CONTABILIDAD
-                                    </option>
-
-                                    <option value="COPIADORA" {{ old('departamento') == 'COPIADORA' ? 'selected' : '' }}>
-                                        COPIADORA
-                                    </option>
-
-                                    <option value="COSTOS" {{ old('departamento') == 'COSTOS' ? 'selected' : '' }}>
-                                        COSTOS
-                                    </option>
-
-                                    <option value="CREDITO" {{ old('departamento') == 'CREDITO' ? 'selected' : '' }}>
-                                        CREDITO
-                                    </option>
-
-                                    <option value="CULTURA_TALENTO" {{ old('departamento') == 'CULTURA_TALENTO' ? 'selected' : '' }}>
-                                        CULTURA Y TALENTO
-                                    </option>
-
-                                    <option value="EMBARQUES" {{ old('departamento') == 'EMBARQUES' ? 'selected' : '' }}>
-                                        EMBARQUES
-                                    </option>
-
-                                    <option value="ETIQUETAS" {{ old('departamento') == 'ETIQUETAS' ? 'selected' : '' }}>
-                                        ETIQUETAS
-                                    </option>
-
-                                    <option value="FACTURACION" {{ old('departamento') == 'FACTURACION' ? 'selected' : '' }}>
-                                        FACTURACION
-                                    </option>
-
-                                    <option value="JURIDICO" {{ old('departamento') == 'JURIDICO' ? 'selected' : '' }}>
-                                        JURIDICO
-                                    </option>
-
-                                    <option value="LOGISTICA" {{ old('departamento') == 'LOGISTICA' ? 'selected' : '' }}>
-                                        LOGISTICA
-                                    </option>
-
-                                    <option value="NOMINAS" {{ old('departamento') == 'NOMINAS' ? 'selected' : '' }}>
-                                        NOMINAS
-                                    </option>
-
-                                    <option value="OPERACIONES" {{ old('departamento') == 'OPERACIONES' ? 'selected' : '' }}>
-                                        OPERACIONES
-                                    </option>
-                                    
-                                    <option value="RECEPCION" {{ old('departamento') == 'RECEPCION' ? 'selected' : '' }}>
-                                        RECEPCION
-                                    </option>
-
-                                    <option value="RECEPCION_COMPRAS" {{ old('departamento') == 'RECEPCION_COMPRAS' ? 'selected' : '' }}>
-                                        RECEPCION DE COMPRAS
-                                    </option> 
-
-                                    <option value="RECEPCION_MATERIAL" {{ old('departamento') == 'RECEPCION_MATERIAL' ? 'selected' : '' }}>
-                                        RECEPCION DE MATERIAL
-                                    </option> 
-
-                                    <option value="RESPONSABLE_SANITARIO" {{ old('departamento') == 'RESPONSABLE_SANITARIO' ? 'selected' : '' }}>
-                                        RESPONSABLE SANITARIO
-                                    </option> 
-
-                                    <option value="SISTEMAS" {{ old('departamento') == 'SISTEMAS' ? 'selected' : '' }}>
-                                        SISTEMAS
-                                    </option>
-
-                                    <option value="SITE" {{ old('departamento') == 'SITE' ? 'selected' : '' }}>
-                                        SITE
-                                    </option> 
-
-                                    <option value="VENTAS_GOB" {{ old('departamento') == 'VENTAS_GOB' ? 'selected' : '' }}>
-                                        VENTAS GOB
-                                    </option> 
-
-                                    <option value="VENTAS_PRIV" {{ old('departamento') == 'VENTAS_PRIV' ? 'selected' : '' }}>
-                                        VENTAS PRIV
-                                    </option> 
-
-                                    <option value="VIGILANCIA" {{ old('departamento') == 'VIGILANCIA' ? 'selected' : '' }}>
-                                        VIGILANCIA
-                                    </option> 
-
+                                        <option value="" disabled {{ old('departamento', $user->departamento) == '' ? 'selected' : '' }}>-- Seleccione --</option>
+                                        <option value="ALMACEN" {{ old('departamento', $user->departamento) == 'ALMACEN' ? 'selected' : '' }}>ALMACEN</option>
+                                        <option value="ASIST_PAGOS" {{ old('departamento', $user->departamento) == 'ASIST_PAGOS' ? 'selected' : '' }}>ASIST. PAGOS</option>
+                                        <option value="COBRANZA" {{ old('departamento', $user->departamento) == 'COBRANZA' ? 'selected' : '' }}>COBRANZA</option>
+                                        <option value="AUDITORIA" {{ old('departamento', $user->departamento) == 'AUDITORIA' ? 'selected' : '' }}>AUDITORIA</option>
+                                        <option value="AUXILIAR_ADMINISTRATIVO" {{ old('departamento', $user->departamento) == 'AUXILIAR_ADMINISTRATIVO' ? 'selected' : '' }}>AUXILIAR ADMINSTRATIVO</option>
+                                        <option value="AUXILIAR_LOGISTICA" {{ old('departamento', $user->departamento) == 'AUXILIAR_LOGISTICA' ? 'selected' : '' }}>AUXILIAR LOGISTICA</option>
+                                        <option value="CALIDAD" {{ old('departamento', $user->departamento) == 'CALIDAD' ? 'selected' : '' }}>CALIDAD</option>
+                                        <option value="COBRANZA_GOB" {{ old('departamento', $user->departamento) == 'COBRANZA_GOB' ? 'selected' : '' }}>COBRANZA GOB</option>
+                                        <option value="COMPRAS" {{ old('departamento', $user->departamento) == 'COMPRAS' ? 'selected' : '' }}>COMPRAS</option>
+                                        <option value="CONTABILIDAD" {{ old('departamento', $user->departamento) == 'CONTABILIDAD' ? 'selected' : '' }}>CONTABILIDAD</option>
+                                        <option value="COPIADORA" {{ old('departamento', $user->departamento) == 'COPIADORA' ? 'selected' : '' }}>COPIADORA</option>
+                                        <option value="COSTOS" {{ old('departamento', $user->departamento) == 'COSTOS' ? 'selected' : '' }}>COSTOS</option>
+                                        <option value="CREDITO" {{ old('departamento', $user->departamento) == 'CREDITO' ? 'selected' : '' }}>CREDITO</option>
+                                        <option value="CULTURA_TALENTO" {{ old('departamento', $user->departamento) == 'CULTURA_TALENTO' ? 'selected' : '' }}>CULTURA Y TALENTO</option>
+                                        <option value="EMBARQUES" {{ old('departamento', $user->departamento) == 'EMBARQUES' ? 'selected' : '' }}>EMBARQUES</option>
+                                        <option value="ETIQUETAS" {{ old('departamento', $user->departamento) == 'ETIQUETAS' ? 'selected' : '' }}>ETIQUETAS</option>
+                                        <option value="FACTURACION" {{ old('departamento', $user->departamento) == 'FACTURACION' ? 'selected' : '' }}>FACTURACION</option>
+                                        <option value="JURIDICO" {{ old('departamento', $user->departamento) == 'JURIDICO' ? 'selected' : '' }}>JURIDICO</option>
+                                        <option value="LOGISTICA" {{ old('departamento', $user->departamento) == 'LOGISTICA' ? 'selected' : '' }}>LOGISTICA</option>
+                                        <option value="NOMINAS" {{ old('departamento', $user->departamento) == 'NOMINAS' ? 'selected' : '' }}>NOMINAS</option>
+                                        <option value="OPERACIONES" {{ old('departamento', $user->departamento) == 'OPERACIONES' ? 'selected' : '' }}>OPERACIONES</option>
+                                        <option value="RECEPCION" {{ old('departamento', $user->departamento) == 'RECEPCION' ? 'selected' : '' }}>RECEPCION</option>
+                                        <option value="RECEPCION_COMPRAS" {{ old('departamento', $user->departamento) == 'RECEPCION_COMPRAS' ? 'selected' : '' }}>RECEPCION DE COMPRAS</option> 
+                                        <option value="RECEPCION_MATERIAL" {{ old('departamento', $user->departamento) == 'RECEPCION_MATERIAL' ? 'selected' : '' }}>RECEPCION DE MATERIAL</option> 
+                                        <option value="RESPONSABLE_SANITARIO" {{ old('departamento', $user->departamento) == 'RESPONSABLE_SANITARIO' ? 'selected' : '' }}>RESPONSABLE SANITARIO</option> 
+                                        <option value="SISTEMAS" {{ old('departamento', $user->departamento) == 'SISTEMAS' ? 'selected' : '' }}>SISTEMAS</option>
+                                        <option value="SITE" {{ old('departamento', $user->departamento) == 'SITE' ? 'selected' : '' }}>SITE</option> 
+                                        <option value="VENTAS_GOB" {{ old('departamento', $user->departamento) == 'VENTAS_GOB' ? 'selected' : '' }}>VENTAS GOB</option> 
+                                        <option value="VENTAS_PRIV" {{ old('departamento', $user->departamento) == 'VENTAS_PRIV' ? 'selected' : '' }}>VENTAS PRIV</option> 
+                                        <option value="VIGILANCIA" {{ old('departamento', $user->departamento) == 'VIGILANCIA' ? 'selected' : '' }}>VIGILANCIA</option> 
                                     </select>
 
                                     @error('departamento')

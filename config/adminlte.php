@@ -330,7 +330,9 @@ return [
             'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
             'active' => ['depreciacion*'],
         ],
-        ['header' => 'CATALOGOS'],
+        ['header' => 'CATALOGOS',
+        'can'    => 'ver-admin',
+        ],
         //Gestion de Usuarios
         [
             'text' => 'gestion_usuarios',
@@ -338,25 +340,28 @@ return [
             'icon' => 'fas fa-users-cog',
             'can' => 'access-admin',
             'active' => ['gestionUsuarios*'],
+            'can'  => ['access-admin'],
         ],
         //Gestion de Ubicaciones
         [
             'text' => 'gestion_ubicaciones',
             'url' => '/gestionUbicaciones',
             'icon' => 'fas fa-map-marker-alt',
-            'can' => 'access-admin',
+            'can'  => ['access-admin'],
             'active' => ['gestionUbicaciones*'],
         ],
         [
             'text' => 'Gestión de Marcas',
             'url'  => 'gestionMarcas', 
             'icon' => 'fas fa-fw fa-tags',
+            'can'  => ['access-admin'],
             'active' => ['gestionMarcas*'],
         ],
         [
             'text' => 'Tipos de Activo',
-            'url'  => 'gestionTipoActivos', // Coincide con tu ruta en web.php
+            'url'  => 'gestionTipoActivos', 
             'icon' => 'fas fa-fw fa-laptop-house',
+            'can'  => ['access-admin'],
             'active' => ['gestionTipoActivos*'],
         ],
         ['header' => 'Historial'],

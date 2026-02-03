@@ -54,7 +54,7 @@ class AuthServiceProvider extends ServiceProvider
 
     // Editar equipo (admin + sistemas)
     Gate::define('editar-equipo', function ($user) {
-        return in_array(strtolower($user->rol), ['admin', 'sistemas']);
+        return in_array(strtolower($user->rol), ['admin', '']);
     });
 
     // Eliminar equipo (solo admin)
@@ -64,7 +64,11 @@ class AuthServiceProvider extends ServiceProvider
 
     // Agregar mantenimiento a un equipo (solo admin)
     Gate::define('mantenimiento-equipo', function ($user) {
-        return in_array(strtolower($user->rol), ['admin', 'sistemas']);
+        return in_array(strtolower($user->rol), ['admin', '']);
+    });
+
+    Gate::define('ver-admin', function ($user) {
+    return $user->rol === 'ADMINISTRADOR' || $user->rol === 'SISTEMAS';
     });
     }
 }
