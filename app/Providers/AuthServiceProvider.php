@@ -68,7 +68,7 @@ class AuthServiceProvider extends ServiceProvider
     });
 
     Gate::define('ver-admin', function ($user) {
-    return $user->rol === 'ADMINISTRADOR' || $user->rol === 'SISTEMAS';
+    return $user->rol === 'ADMIN' || $user->rol === 'admin';
     });
     }
 }
