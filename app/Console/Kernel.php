@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+	$schedule->command('db:respaldo-semanal')->weeklyOn(6, '00:00');
     }
 
     /**
