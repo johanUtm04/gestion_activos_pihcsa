@@ -6,12 +6,6 @@
                 {{ is_numeric($index) ? $index + 1 : 'Nuevo' }} 
             </span>
         </h6>
-        
-        <button type="button" 
-                onclick="eliminarComponente(this, 'ram-item')" 
-                class="btn btn-sm btn-outline-danger">
-            <i class="fas fa-trash"></i>
-        </button>
     </div>
 
     <input type="hidden" name="ram[{{ $index }}][id]" value="{{ $ram->id ?? '' }}">
