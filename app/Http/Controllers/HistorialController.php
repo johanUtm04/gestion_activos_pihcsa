@@ -18,9 +18,20 @@ class HistorialController extends Controller
     //Metodo para mostrar vista
     public function index(Request $request)
     {
+        $listaParaFiltro = \App\Models\Equipo::select('id')->orderBy('id', 'asc')->get();
         $usuarios = User::orderBy('name')->get();
-
         $query = Historial_log::with(['equipo', 'usuario']);
+        $ubicaciones = \App\Models\Ubicacion::all();
+        $equipos = \App\Models\Equipo::with(['historials.usuario', 'usuario', 'tipoActivo'])
+        ->when($request->usuario_id, function ($query) use ($request) {
+            $query->where('usuario_id', $request->usuario_id);
+        })
+        ->when($request->equipo_id, function ($query) use ($request) {
+            $query->where('id', $request->equipo_id);
+        })
+        ->latest()
+        ->paginate(10);
+
 
         if ($request->filled('tipo_registro')) {
         $query->where('tipo_registro', $request->tipo_registro);
@@ -32,14 +43,8 @@ class HistorialController extends Controller
                 });
             }
 
-        $ubicaciones = \App\Models\Ubicacion::all();
-        $equipos = \App\Models\Equipo::with(['historials.usuario', 'usuario', 'tipoActivo'])
-        ->when($request->usuario_id, function ($query) use ($request) {
-            $query->where('usuario_id', $request->usuario_id);
-        })
-        ->latest()
-        ->paginate(10);
 
-        return view('historial.index', compact('ubicaciones', 'equipos', 'usuarios'));
+
+        return view('historial.index', compact('ubicaciones', 'equipos', 'usuarios', 'listaParaFiltro'));
     }
 }

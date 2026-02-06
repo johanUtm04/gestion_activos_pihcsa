@@ -209,8 +209,19 @@
                        name="periferico[{{ $index }}][motivo_inactivo]" 
                        class="form-control form-control-sm border-danger input-motivo" 
                        placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
-                       value="{{ $periferico->motivo_inactivo ?? '' }}"
+                       value="{{ isset($periferico->motivo_inactivo) ? trim(explode('|', $periferico->motivo_inactivo)[0]) : '' }}"
                        {{ isset($periferico) && !$periferico->is_active ? 'required' : '' }}>
+
+                    <div class="ml-2">
+                        @if(isset($periferico->motivo_inactivo) && strpos($periferico->motivo_inactivo, '|') !== false)
+                        <span class="badge badge-secondary p-2">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ trim(explode('|', $periferico->motivo_inactivo)[1]) }}
+                        </span>
+                        @endif
+                        <span class="badge badge-danger badge-fecha" style="display: none;">
+                        </span>
+                    </div>
             </div>
         </div>
     </div>

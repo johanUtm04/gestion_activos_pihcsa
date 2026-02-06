@@ -26,7 +26,8 @@
         <i class="fas fa-desktop text-primary"></i> 
         Edición de Activo: {{ strtoupper($equipo->marca_equipo) }}
     </h1>
-    <a href="{{ route('equipos.index') }}" class="btn btn-secondary btn-sm">
+    <a href="{{ url()->previous() == url()->current() ? route('equipos.index') : url()->previous() }}" 
+    class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver al inventario
     </a>
 @stop
@@ -465,7 +466,6 @@
             $('#vida_util_unidad').on('change', checkVidaUtilStatus);
         });
 
-
         // Logica para los Switches de Estado de Componentes
         $(document).on('change', '.switch-estado-componente', function() {
             const isChecked = $(this).is(':checked');
@@ -483,6 +483,12 @@
             } else {
                 // INACTIVAR
                 divMotivo.fadeIn(200);
+                
+                //Mostrar Badge
+                const hoy = new Date();
+                const fechaLegible = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+                container.find('.badge-fecha').text(fechaLegible).show(); //Buscamos el badge y le adjuntamos el hora
+
                 inputMotivo.prop('required', true).focus();
                 label.text('Inactivo').removeClass('text-success').addClass('text-danger');
                 container.removeClass('border-success').addClass('bg-gray-light border-danger');

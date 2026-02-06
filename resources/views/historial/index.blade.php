@@ -19,7 +19,7 @@
     </div>
 
 {{-- SECCIÓN DE FILTROS AVANZADOS --}}
-    <div class="card card-outline card-info shadow-sm mb-4 collapsed-card">
+    <div class="card card-outline card-info shadow-sm mb-4">
         <div class="card-header">
             <h3 class="card-title text-info font-weight-bold">
                 <i class="fas fa-filter mr-1"></i> Panel de Búsqueda
@@ -44,6 +44,23 @@
                                 @foreach($usuarios as $u)
                                     <option value="{{ $u->id }}" {{ request('usuario_id') == $u->id ? 'selected' : '' }}>
                                         {{ $u->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- Filtro por ID del equipo --}}
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <label class="small font-weight-bold text-muted text-uppercase">
+                                <i class="fas fa-user-tie mr-1"></i> Filtrar por Dueño del Activo
+                            </label>
+                            <select name="equipo_id" class="form-control form-control-sm select2">
+                                <option value="">-- Todos los IDs --</option>
+                                @foreach($listaParaFiltro as $item)
+                                    <option value="{{ $item->id }}" {{ request('equipo_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->id }}
                                     </option>
                                 @endforeach
                             </select>

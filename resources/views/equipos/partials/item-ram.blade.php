@@ -78,16 +78,27 @@
                 </div>
             </div>
             
-            <div class="col-md-8">
-                <div class="div-motivo" style="{{ !isset($ram) || $ram->is_active ? 'display: none;' : '' }}">
-                    <input type="text" 
-                        name="ram[{{ $index }}][motivo_inactivo]" 
-                        class="form-control form-control-sm border-danger input-motivo" 
-                        placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
-                        value="{{ $ram->motivo_inactivo ?? '' }}"
-                        {{ isset($ram) && !$ram->is_active ? 'required' : '' }}>
-                </div>
+        <div class="col-md-8">
+            <div class="div-motivo" style="{{ !isset($ram) || $ram->is_active ? 'display: none;' : '' }}">
+                <input type="text" 
+                       name="ram[{{ $index }}][motivo_inactivo]" 
+                       class="form-control form-control-sm border-danger input-motivo" 
+                       placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
+                       value="{{ isset($ram->motivo_inactivo) ? trim(explode('|', $ram->motivo_inactivo)[0]) : '' }}"
+                       {{ isset($ram) && !$ram->is_active ? 'required' : '' }}>
+
+                    <div class="ml-2">
+                        @if(isset($ram->motivo_inactivo) && strpos($ram->motivo_inactivo, '|') !== false)
+                        <span class="badge badge-secondary p-2">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ trim(explode('|', $ram->motivo_inactivo)[1]) }}
+                        </span>
+                        @endif
+                        <span class="badge badge-danger badge-fecha" style="display: none;">
+                        </span>
+                    </div>
             </div>
+        </div>
         </div>
             <small class="text-muted">ID Sistema: {{ $ram->id ?? 'Pendiente' }}</small>
         @if(isset($ram) && $ram->is_active == false)

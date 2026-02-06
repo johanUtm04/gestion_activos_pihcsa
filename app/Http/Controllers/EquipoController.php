@@ -207,8 +207,22 @@ class EquipoController extends Controller
                 continue;
             }
             $id = $item['id'] ?? null;
+            //Esta linea prepara los datos y deja de lado los que no se podran modificar creando un arreglo
             $data = collect($item)->forget(['id', '_delete'])->toArray();
+            //Si esta activo es 1 si no es 0
             $data['is_active'] = isset($item['is_active']) ? 1 : 0; 
+
+            //Tomamos su valor si lo da el usuario si no le damos uno
+            $motivoActual = $item['motivo_inactivo'] ?? 'Sin motivo';
+
+            //Si es 0(inactivo) y no tiene sello '|'
+            if (!$data['is_active'] && strpos($motivoActual, '|') === false) {
+                    //Le damos su sello
+                $data['motivo_inactivo'] = $motivoActual . ' | ' . date('d/m/Y');
+            } else {
+                    //Si no se cumple algunas, si es 1 null queda el motivo caso contrario es 0, se deja tal cual
+                $data['motivo_inactivo'] = $data['is_active'] ? null : $motivoActual;
+                   }
             $relation->updateOrCreate(['id' => $id], $data);
         }
     }

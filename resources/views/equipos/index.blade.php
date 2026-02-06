@@ -144,7 +144,7 @@
     @endforeach
 
     {{-- SECCIÓN DE FILTROS AVANZADOS --}}
-    <div class="card card-outline card-info shadow-sm mb-4 collapsed-card">
+    <div class="card card-outline card-info shadow-sm mb-4">
         <div class="card-header">
             <h3 class="card-title text-info font-weight-bold">
                 <i class="fas fa-filter mr-1"></i> Panel de Búsqueda
