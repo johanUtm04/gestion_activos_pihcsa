@@ -78,19 +78,18 @@
                                    value="{{ old('capacidad', session('wizard_equipo.disco_duro.capacidad')) }}">
                             </div>
 
-                    <div class="form-group">
-                        <label>Usuario que realizo la Accion</label>
-                        <select name="usuario_id" class="form-control select2" required>
-                            <option value="">Seleccione un usuario</option>
-                            @foreach($usuarios as $usuario)
-                                <option value="{{ $usuario->id }}"
-                                    {{ old('usuario_id') == $usuario->id ? 'selected' : '' }}>
-                                    {{ $usuario->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
+                            <div class="form-group">
+                                <label>Usuario que realiza la acción</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user-check"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{ auth()->user()->name }}" disabled>
+                                    
+                                    <input type="hidden" name="usuario_id" value="{{ auth()->user()->id }}">
+                                </div>
+                                <small class="text-muted">El registro quedará vinculado a tu sesión actual.</small>
+                            </div>
 
                             <div class="form-group">
                                 <label>Fecha del evento </label>

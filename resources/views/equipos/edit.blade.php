@@ -98,59 +98,68 @@
                         </div>
 
                         <hr class="mt-4">
+                        <h5 class="section-title">
+                            <i class="fas fa-puzzle-piece"></i> Componentes Instalados 
+                            {{-- Sumamos solo los que tienen estado 1 (Activos) --}}
+                            @php
+                                $soloActivos = $equipo->perifericos->where('is_active', 1)->count() + 
+                                               $equipo->rams->where('is_active', 1)->count() + 
+                                               $equipo->procesadores->where('is_active', 1)->count() + 
+                                               $equipo->monitores->where('is_active', 1)->count() + 
+                                               $equipo->discosDuros->where('is_active', 1)->count();
+                            @endphp
+                            ({{ $soloActivos }})
+                        </h5>
 
-                        <h5 class="section-title"><i class="fas fa-puzzle-piece"></i> Componentes Asociados ({{ $equipo->perifericos->count() + $equipo->rams->count() + $equipo->procesadores->count() + $equipo->monitores->count() + $equipo->discosDuros->count() }})</h5>
-
-                        {{-- Detalle Perifericos --}}
-                        <h6><i class="fas fa-keyboard text-warning"></i> **Perifericos ({{ $equipo->perifericos->count() }})**</h6>
+                        {{-- Perifericos Activos --}}
+                        <h6><i class="fas fa-keyboard text-warning"></i> **Perifericos**</h6>
                         <ul class="list-unstyled mb-3 ml-3">
-                            @forelse($equipo->perifericos as $p)
-                                <li>- {{ $p->tipo }} (Serial: {{ $p->serial }})</li>
+                            @forelse($equipo->perifericos->where('is_active', 1) as $p)
+                                <li>- {{ $p->tipo }} | Serial: {{ $p->serial }} | {{$p->marca}}</li>
                             @empty
-                                <li class="text-muted">Ninguno.</li>
+                                <li class="text-muted">Ninguno activo.</li>
                             @endforelse
                         </ul>
 
-                        {{-- Detalle RAMs --}}
-                        <h6><i class="fas fa-memory text-warning"></i> **RAM ({{ $equipo->rams->count() }})**</h6>
+                        {{-- RAM Activas --}}
+                        <h6><i class="fas fa-memory text-warning"></i> **RAM**</h6>
                         <ul class="list-unstyled mb-3 ml-3">
-                            @forelse($equipo->rams as $r)
+                            @forelse($equipo->rams->where('is_active', 1) as $r)
                                 <li>- {{ $r->capacidad_gb }}GB | {{ $r->tipo_chz }}</li>
                             @empty
-                                <li class="text-muted">Ninguna.</li>
+                                <li class="text-muted">Ninguna activa.</li>
                             @endforelse
                         </ul>
-                        
-                        {{-- Detalle Procesadores --}}
-                        <h6><i class="fas fa-microchip text-warning"></i> **Procesador ({{ $equipo->procesadores->count() }})**</h6>
+
+                        {{-- Procesadores Activos --}}
+                        <h6><i class="fas fa-microchip text-warning"></i> **Procesador**</h6>
                         <ul class="list-unstyled mb-3 ml-3">
-                            @forelse($equipo->procesadores as $proc)
+                            @forelse($equipo->procesadores->where('is_active', 1) as $proc)
                                 <li>- {{ $proc->marca }} | {{ $proc->descripcion_tipo }}</li>
                             @empty
-                                <li class="text-muted">Ninguno.</li>
+                                <li class="text-muted">Ninguno activo.</li>
                             @endforelse
                         </ul>
 
-                        {{-- Detalle Monitores --}}
-                        <h6><i class="fas fa-tv text-warning"></i> **Monitores ({{ $equipo->monitores->count() }})**</h6>
+                        {{-- Monitores Activos --}}
+                        <h6><i class="fas fa-tv text-warning"></i> **Monitores**</h6>
                         <ul class="list-unstyled mb-3 ml-3">
-                            @forelse($equipo->monitores as $mon)
-                                <li>- {{ $mon->marca }} ({{ $mon->escala_pulgadas }}")</li>
+                            @forelse($equipo->monitores->where('is_active', 1) as $mon)
+                                <li>- {{ $mon->marca }} | Serial: {{ $mon->serial }} | {{ $mon->escala_pulgadas }}" | {{ $mon->interface }} </li>
                             @empty
-                                <li class="text-muted">Ninguno.</li>
+                                <li class="text-muted">Ninguno activo.</li>
                             @endforelse
                         </ul>
 
-                        {{-- Detalle Discos Duros --}}
-                        <h6><i class="fas fa-hdd text-warning"></i> **Discos ({{ $equipo->discosDuros->count()}})**</h6>
+                        {{-- Discos Activos --}}
+                        <h6><i class="fas fa-hdd text-warning"></i> **Discos**</h6>
                         <ul class="list-unstyled mb-3 ml-3">
-                            @forelse($equipo->discosDuros as $dd)
-                                <li>- {{ $dd->capacidad }} {{ $dd->tipo_hdd_ssd }}</li>
+                            @forelse($equipo->discosDuros->where('is_active', 1) as $dd)
+                                <li>- {{ $dd->capacidad }} | {{ $dd->tipo_hdd_ssd }} | {{ $dd->interface }}</li>
                             @empty
-                                <li class="text-muted">Ninguno.</li>
+                                <li class="text-muted">Ninguno activo.</li>
                             @endforelse
                         </ul>
-
                     </div> {{-- /card-body --}}
                 </div> {{-- /card --}}
             </div> {{-- /col-md-5 --}}
