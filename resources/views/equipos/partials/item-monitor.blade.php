@@ -117,8 +117,19 @@
                        name="monitor[{{ $index }}][motivo_inactivo]" 
                        class="form-control form-control-sm border-danger input-motivo" 
                        placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
-                       value="{{ $monitor->motivo_inactivo ?? '' }}"
+                       value="{{ isset($monitor->motivo_inactivo) ? trim(explode('|', $monitor->motivo_inactivo)[0]) : '' }}"
                        {{ isset($monitor) && !$monitor->is_active ? 'required' : '' }}>
+
+                    <div class="ml-2">
+                        @if(isset($monitor->motivo_inactivo) && strpos($monitor->motivo_inactivo, '|') !== false)
+                        <span class="badge badge-secondary p-2">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ trim(explode('|', $monitor->motivo_inactivo)[1]) }}
+                        </span>
+                        @endif
+                        <span class="badge badge-danger badge-fecha" style="display: none;">
+                        </span>
+                    </div>
             </div>
         </div>
     </div>

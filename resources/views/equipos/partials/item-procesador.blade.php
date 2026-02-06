@@ -59,8 +59,19 @@
                        name="procesador[{{ $index }}][motivo_inactivo]" 
                        class="form-control form-control-sm border-danger input-motivo" 
                        placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
-                       value="{{ $procesador->motivo_inactivo ?? '' }}"
+                       value="{{ isset($procesador->motivo_inactivo) ? trim(explode('|', $procesador->motivo_inactivo)[0]) : '' }}"
                        {{ isset($procesador) && !$procesador->is_active ? 'required' : '' }}>
+
+                    <div class="ml-2">
+                        @if(isset($procesador->motivo_inactivo) && strpos($procesador->motivo_inactivo, '|') !== false)
+                        <span class="badge badge-secondary p-2">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ trim(explode('|', $procesador->motivo_inactivo)[1]) }}
+                        </span>
+                        @endif
+                        <span class="badge badge-danger badge-fecha" style="display: none;">
+                        </span>
+                    </div>
             </div>
         </div>
     </div>

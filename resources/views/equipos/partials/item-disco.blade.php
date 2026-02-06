@@ -114,16 +114,27 @@
                 </div>
             </div>
             
-            <div class="col-md-8">
-                <div class="div-motivo" style="{{ !isset($discoDuro) || $discoDuro->is_active ? 'display: none;' : '' }}">
-                    <input type="text" 
-                        name="discoDuro[{{ $index }}][motivo_inactivo]" 
-                        class="form-control form-control-sm border-danger input-motivo" 
-                        placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
-                        value="{{ $discoDuro->motivo_inactivo ?? '' }}"
-                        {{ isset($discoDuro) && !$discoDuro->is_active ? 'required' : '' }}>
-                </div>
+        <div class="col-md-8">
+            <div class="div-motivo" style="{{ !isset($discoDuro) || $discoDuro->is_active ? 'display: none;' : '' }}">
+                <input type="text" 
+                       name="discoDuro[{{ $index }}][motivo_inactivo]" 
+                       class="form-control form-control-sm border-danger input-motivo" 
+                       placeholder="¿Por qué se marca como inactivo? (Ej: Quemado, reemplazo...)"
+                       value="{{ isset($discoDuro->motivo_inactivo) ? trim(explode('|', $discoDuro->motivo_inactivo)[0]) : '' }}"
+                       {{ isset($discoDuro) && !$discoDuro->is_active ? 'required' : '' }}>
+
+                    <div class="ml-2">
+                        @if(isset($discoDuro->motivo_inactivo) && strpos($discoDuro->motivo_inactivo, '|') !== false)
+                        <span class="badge badge-secondary p-2">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ trim(explode('|', $discoDuro->motivo_inactivo)[1]) }}
+                        </span>
+                        @endif
+                        <span class="badge badge-danger badge-fecha" style="display: none;">
+                        </span>
+                    </div>
             </div>
+        </div>
         </div>
 
         <small class="text-muted">ID Sistema: {{ $discoDuro->id ?? 'Pendiente' }}</small>
