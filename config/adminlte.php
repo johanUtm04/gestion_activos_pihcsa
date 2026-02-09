@@ -353,7 +353,7 @@ return [
         [
             'text' => 'Gestión de Marcas',
             'url'  => 'gestionMarcas', 
-            'icon' => 'fas fa-fw fa-tags',
+            'icon' => 'fas fa-tags',
             'can'  => ['access-admin'],
             'active' => ['gestionMarcas*'],
         ],

@@ -1,4 +1,4 @@
-.profile-icon-anim {
+.fa-user-cog {
     display: inline-block; 
     animation: floatProfile 2s ease-in-out infinite;
 }
