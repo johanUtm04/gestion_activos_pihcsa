@@ -74,7 +74,6 @@
 }
 
 .btn-info, .btn-warning, .btn-danger, .btn-success, .btn-primary {
-    border-radius: 20px !important;
     font-weight: 700;
     letter-spacing: 0.3px;
     transition: all 0.3s ease;

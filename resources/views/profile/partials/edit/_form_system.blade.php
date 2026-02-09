@@ -1,5 +1,5 @@
-<fieldset class="fieldset-group mb-4 bg-light p-3 rounded">
-    <legend><i class="fas fa-info-circle text-secondary mr-2"></i>Información del sistema</legend>
+<fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2 text-primary"><i class="fas fa-info-circle"></i>Información del sistema</legend>
 
     <div class="row">
         <div class="col-md-4">

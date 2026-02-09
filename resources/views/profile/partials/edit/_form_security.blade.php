@@ -1,5 +1,5 @@
-<fieldset class="fieldset-group mb-4">
-    <legend><i class="fas fa-lock text-info mr-2"></i>Seguridad</legend>
+<fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2 text-primary"><i class="fas fa-lock"></i>Seguridad</legend>
 
     @if ($errors->any())
         <div class="alert alert-danger shadow-sm">

@@ -1,5 +1,5 @@
-<fieldset class="fieldset-group mb-4">
-    <legend><i class="fas fa-id-card text-info mr-2"></i>Información personal</legend>
+<fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2 text-primary"><i class="fas fa-id-card"></i>Especificaciones Generales</legend>
 
     <div class="form-group">
         <label>Nombre</label>
