@@ -4,6 +4,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/perfil/edit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/marcas/index.css') }}">
 @stop
 
 @section('content_header')
@@ -33,6 +34,10 @@
     </div>
 </div>
 
+@stop
+
+@section('footer')
+    @include('ubicaciones.partials._footer')
 @stop
 
 @section('js')

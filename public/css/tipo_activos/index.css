@@ -1,0 +1,52 @@
+.table-tipos { border-radius: 12px; overflow: hidden; }
+.table-tipos thead th {
+    background-color: #fdecea;
+    color: #dc3545;
+    font-weight: 800;
+    border-bottom: 3px solid #dc3545;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 15px;
+}
+.table-tipos tbody td { vertical-align: middle; padding: 15px; }
+.table-tipos tbody tr:hover { background-color: rgba(220, 53, 69, 0.02) !important; }
+.secondary-data { color: #888; font-size: 0.85em; display: block; }
+.badge-status { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+
+.fa-laptop-house{
+    animation: float 2s ease-in-out infinite;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+    .footer-left, .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 8px; 
+    }
+
+    .app-name {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    .footer-right {
+        color: #868e96;
+    }
+
+    .footer-left strong {
+        color: #343a40;
+    }
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}

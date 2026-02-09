@@ -11,7 +11,6 @@
 @stop
 
 @section('content')
-    {{-- Reutilizamos el partial de alertas que creamos para usuarios --}}
     @include('users.partials._alerts')
 
     <div class="row">
