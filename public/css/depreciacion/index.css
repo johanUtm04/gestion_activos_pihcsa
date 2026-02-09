@@ -1,0 +1,81 @@
+
+    .table-depreciacion {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .table-depreciacion thead th {
+        background-color: #f8f9fa; 
+        color: #495057;
+        font-weight: 800;
+        border-top: 3px solid #6c757d;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        padding: 15px;
+    }
+
+    .table-depreciacion tbody td {
+        vertical-align: middle; 
+        padding: 15px;
+        font-size: 15px;
+        color: #495057;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .secondary-data {
+        color: #888; 
+        font-size: 0.85em;
+        display: block; 
+        margin-top: 2px;
+    }
+
+    .valor-inicial-label {
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    .vida-util-badge {
+        background-color: #e9ecef;
+        color: #495057;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .footer-assets {
+    width: 100%;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #6c757d; 
+    font-size: 14px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-left, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.app-name {
+    font-weight: bold;
+    color: #495057;
+}
+
+.footer-right {
+    color: #868e96;
+}
+
+.footer-left strong {
+    color: #343a40;
+}
