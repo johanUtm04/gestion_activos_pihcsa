@@ -19,6 +19,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Equipo extends Model
 {
     use HasFactory; 
+    
+    protected $casts = [
+    'fecha_adquisicion' => 'date',
+    // o 'datetime' si tiene horas
+    ];
 
     //Campos asignables, es decir, los campos que se pueden llamar de manera masiva
     protected $fillable = [

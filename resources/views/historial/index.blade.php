@@ -88,7 +88,10 @@
         
         {{-- HEADER DEL EQUIPO --}}
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3" 
-             style="cursor: pointer; border-left: 6px solid {{ $equipo->tipo_equipo == 'Laptop' ? '#007bff' : '#6f42c1' }};" 
+            @style([
+                'cursor: pointer',
+                'border-left: 6px solid ' . ($equipo->tipo_equipo == 'Laptop' ? '#007bff' : '#6f42c1')
+            ])
              data-toggle="collapse" 
              data-target="#collapseEquipo{{ $equipo->id }}">
             

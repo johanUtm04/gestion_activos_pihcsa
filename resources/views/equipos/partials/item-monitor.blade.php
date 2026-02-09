@@ -67,21 +67,20 @@
             <label class="small font-weight-bold">Interface</label>
             <select name="monitor[{{$index}}][interface]" class="form-control form-control-sm">
                 <option value="">Seleccione...</option>
-               @foreach([
-                'HDMI',
-                'HDMI 1.4',
-                'HDMI 2.0',
-                'HDMI 2.1',
-                'VGA',
-                'DisplayPort (DP)',
-                'Mini DisplayPort',
-                'DVI',
-                'DVI-D',
-                'DVI-I',
-                'USB-C (Display)',
-                'Thunderbolt'
-            ] as $inter)
-
+                @foreach([
+                    'HDMI',
+                    'HDMI 1.4',
+                    'HDMI 2.0',
+                    'HDMI 2.1',
+                    'VGA',
+                    'DisplayPort (DP)',
+                    'Mini DisplayPort',
+                    'DVI',
+                    'DVI-D',
+                    'DVI-I',
+                    'USB-C (Display)',
+                    'Thunderbolt'
+                ] as $inter)
                     <option value="{{ $inter }}" {{ ($monitor->interface ?? '') == $inter ? 'selected' : '' }}>
                         {{ $inter }}
                     </option>
@@ -89,6 +88,7 @@
             </select>
         </div>
     </div>
+    
     <div class="row align-items-center mt-2 border-top pt-2">
         <div class="col-md-4">
             <div class="custom-control custom-switch">
@@ -98,7 +98,7 @@
                        name="monitor[{{ $index }}][is_active]" 
                        value="1" 
                        {{ !isset($monitor) || $monitor->is_active ? 'checked' : '' }}>
-                <label class="custom-control-label small font-weight-bold {{ !isset($monitor) || $monitor->is_active ? 'text-success' : 'text-danger' }}" 
+                    <label class="custom-control-label small font-weight-bold {{ !isset($monitor) || $monitor->is_active ? 'text-success' : 'text-danger' }}" 
                        for="switch-mon-{{ $index }}">
                     {{ !isset($monitor) || $monitor->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
                 </label>
@@ -106,7 +106,7 @@
         </div>
         
         <div class="col-md-8">
-            <div class="div-motivo" style="{{ !isset($monitor) || $monitor->is_active ? 'display: none;' : '' }}">
+            <div class="div-motivo" @if(!isset($monitor) || $monitor->is_active) style="display: none;" @endif>
                 <input type="text" 
                        name="monitor[{{ $index }}][motivo_inactivo]" 
                        class="form-control form-control-sm border-danger input-motivo" 

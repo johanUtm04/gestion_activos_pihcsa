@@ -204,7 +204,7 @@
         </div>
         
         <div class="col-md-8">
-            <div class="div-motivo" style="{{ !isset($periferico) || $periferico->is_active ? 'display: none;' : '' }}">
+            <div class="div-motivo" @if(!isset($periferico) || $periferico->is_active) style="display: none;" @endif>
                 <input type="text" 
                        name="periferico[{{ $index }}][motivo_inactivo]" 
                        class="form-control form-control-sm border-danger input-motivo" 

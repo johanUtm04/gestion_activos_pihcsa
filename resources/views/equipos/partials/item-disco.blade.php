@@ -34,7 +34,7 @@
                 '10TB',
                 '12TB',
                 '16TB'
-            ] as $cap)
+                ] as $cap)
                     <option value="{{ $cap }}" {{ ($discoDuro->capacidad ?? '') == $cap ? 'selected' : '' }}>
                         {{ $cap }}
                     </option>
@@ -58,7 +58,6 @@
                     'External SSD',
                     'Otro'
                 ] as $tipo)
-
                     <option value="{{ $tipo }}" {{ ($discoDuro->tipo_hdd_ssd ?? '') == $tipo ? 'selected' : '' }}>
                         {{ $tipo }}
                     </option>
@@ -68,33 +67,33 @@
 
         <div class="form-group col-md-4">
             <label class="small font-weight-bold">Interface</label>
-<select name="discoDuro[{{$index}}][interface]" class="form-control form-control-sm">
-    <option value="">Seleccione...</option>
-        @foreach([
-            'SATA',
-            'SATA III',
-            'NVMe',
-            'PCIe NVMe',
-            'M.2 NVMe',
-            'USB',
-            'USB 3.0',
-            'USB-C',
-            'Thunderbolt',
-            'SAS',
-            'eSATA',
-            'Otro'
-        ] as $tipo)
-
-        <option value="{{ $tipo }}" 
-            {{ trim(strtoupper($discoDuro->interface ?? '')) === strtoupper($tipo) ? 'selected' : '' }}>
-            {{ $tipo }}
-        </option>
-    @endforeach
-</select>
+            <select name="discoDuro[{{$index}}][interface]" class="form-control form-control-sm">
+                <option value="">Seleccione...</option>
+                    @foreach([
+                        'SATA',
+                        'SATA III',
+                        'NVMe',
+                        'PCIe NVMe',
+                        'M.2 NVMe',
+                        'USB',
+                        'USB 3.0',
+                        'USB-C',
+                        'Thunderbolt',
+                        'SAS',
+                        'eSATA',
+                        'Otro'
+                    ] as $tipo)
+                    <option value="{{ $tipo }}" 
+                        {{ trim(strtoupper($discoDuro->interface ?? '')) === strtoupper($tipo) ? 'selected' : '' }}>
+                        {{ $tipo }}
+                    </option>
+                @endforeach
+            </select>
         </div>
+    </div>
         <div class="row align-items-center mt-2 border-top pt-2">
-            <div class="col-md-4">
-                <div class="custom-control custom-switch">
+        <div class="col-md-4">
+            <div class="custom-control custom-switch">
                     <input type="checkbox" 
                         class="custom-control-input switch-estado-componente" 
                         id="switch-disc-{{ $index }}" 
@@ -107,9 +106,9 @@
                     </label>
                 </div>
             </div>
-            
+
         <div class="col-md-8">
-            <div class="div-motivo" style="{{ !isset($discoDuro) || $discoDuro->is_active ? 'display: none;' : '' }}">
+            <div class="div-motivo" @if(!isset($discoDuro) || $discoDuro->is_active) style="display: none;" @endif>
                 <input type="text" 
                        name="discoDuro[{{ $index }}][motivo_inactivo]" 
                        class="form-control form-control-sm border-danger input-motivo" 
@@ -127,13 +126,13 @@
                         <span class="badge badge-danger badge-fecha" style="display: none;">
                         </span>
                     </div>
+                </div>
             </div>
-        </div>
         </div>
 
         <small class="text-muted">ID Sistema: {{ $discoDuro->id ?? 'Pendiente' }}</small>
         @if(isset($discoDuro) && $discoDuro->is_active == false)
             <span class="badge badge-danger">Dado de baja</span>
         @endif
-    </div>
+    
 </div>

@@ -1,0 +1,216 @@
+    .table-assets thead th {
+        background-color: #f4f6f9; 
+        color: #17a2b8; 
+        font-weight: 800;
+        border-bottom: 3px solid #17a2b8;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .table-assets tbody td {
+        vertical-align: middle; 
+        font-size: 15px;
+        transition: all 0.2s;
+    }
+
+    .equipo-row { cursor: pointer; }
+    .equipo-row:hover { background-color: rgba(23, 162, 184, 0.05) !important; }
+
+    .secondary-data {
+        color: #6c757d; 
+        font-size: 0.85em;
+        display: block; 
+    }
+
+    .sticky-details {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 20px;
+    }
+
+    .detail-card {
+        border: none;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .detail-header-premium {
+        background: linear-gradient(45deg, #17a2b8, #117a8b);
+        color: white;
+        padding: 20px;
+    }
+
+    .info-box-custom {
+        padding: 12px 15px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .info-box-custom:last-child { border-bottom: none; }
+
+    .info-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #333;
+        text-align: right;
+    }
+
+    .section-divider {
+        background: #f8f9fa;
+        padding: 6px 15px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #17a2b8;
+        border-top: 1px solid #eee;
+    }
+
+    .empty-state-container {
+        padding: 60px 20px;
+        text-align: center;
+        color: #ccc;
+    }
+
+    @keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-details { animation: fadeInRight 0.4s ease-out; }
+
+    .custom-input {
+    display: none;
+    margin-top: 10px;
+    }
+
+    .footer-assets {
+    width: 100%;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #6c757d; 
+    font-size: 14px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-left, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.app-name {
+    font-weight: bold;
+    color: #495057;
+}
+
+.footer-right {
+    color: #868e96;
+}
+
+.footer-left strong {
+    color: #343a40;
+}
+
+
+.search-panel-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-header {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+    background: transparent;
+}
+
+.search-header:hover {
+    background: transparent;
+}
+
+.icon-pulse {
+    color: #17a2b8;
+    margin-right: 8px;
+    animation: gentle-bounce 3s infinite ease-in-out;
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); } 
+}
+
+.search-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+.search-body.is-open {
+    max-height: 500px; 
+    opacity: 1;
+    padding: 20px;
+}
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+.toggle-icon.rotate {
+    transform: rotate(180deg);
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+.icon-pulse {
+    display: inline-block;
+    animation: gentle-bounce 2s infinite ease-in-out;
+}
+
+.table-assets tbody tr.clickable-row:hover {
+    background-color: rgba(23, 162, 184, 0.08) !important;
+    transition: all 0.2s ease;
+}
+
+.secondary-data {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.table-assets td {
+    vertical-align: middle !important;
+}
+
+.fa-boxes {
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}

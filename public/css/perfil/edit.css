@@ -1,0 +1,10 @@
+.profile-icon-anim {
+    display: inline-block; 
+    animation: floatProfile 2s ease-in-out infinite;
+}
+
+@keyframes floatProfile {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); } 
+    100% { transform: translateY(0px); }
+}
