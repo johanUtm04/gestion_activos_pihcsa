@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
         <h1 class="text-dark font-weight-bold">
-            <i class="fas fa-users text-success mr-2 fa-boxes"></i>Gestión de Usuarios
+            <i class="fas fa-users-cog text-success mr-2 fa-boxes"></i>Gestión de Usuarios
         </h1>
         <p class="text-muted mb-0">Control, estado y administración de cuentas de acceso</p>
     </div>

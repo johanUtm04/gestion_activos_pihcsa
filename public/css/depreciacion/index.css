@@ -1,49 +1,49 @@
 
-    .table-depreciacion {
-        border-radius: 12px;
-        overflow: hidden;
-    }
+.table-depreciacion {
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-    .table-depreciacion thead th {
-        background-color: #f8f9fa; 
-        color: #495057;
-        font-weight: 800;
-        border-top: 3px solid #6c757d;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        padding: 15px;
-    }
+.table-depreciacion thead th {
+    background-color: #f8f9fa; 
+    color: #495057;
+    font-weight: 800;
+    border-top: 3px solid #6c757d;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 15px;
+}
 
-    .table-depreciacion tbody td {
-        vertical-align: middle; 
-        padding: 15px;
-        font-size: 15px;
-        color: #495057;
-        border-bottom: 1px solid #f1f1f1;
-    }
+.table-depreciacion tbody td {
+    vertical-align: middle; 
+    padding: 15px;
+    font-size: 15px;
+    color: #495057;
+    border-bottom: 1px solid #f1f1f1;
+}
 
-    .secondary-data {
-        color: #888; 
-        font-size: 0.85em;
-        display: block; 
-        margin-top: 2px;
-    }
+.secondary-data {
+    color: #888; 
+    font-size: 0.85em;
+    display: block; 
+    margin-top: 2px;
+}
 
-    .valor-inicial-label {
-        font-weight: 700;
-        color: #2c3e50;
-    }
+.valor-inicial-label {
+    font-weight: 700;
+    color: #2c3e50;
+}
 
-    .vida-util-badge {
-        background-color: #e9ecef;
-        color: #495057;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
+.vida-util-badge {
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
 
-    .footer-assets {
+.footer-assets {
     width: 100%;
     padding: 15px 0;
     border-top: 1px solid #e0e0e0; 
@@ -81,6 +81,11 @@
 }
 
 .fa-chart-line {
+    animation: float 2s ease-in-out infinite;
+}
+
+
+.fa-dollar-sign{
     animation: float 2s ease-in-out infinite;
 }
 

@@ -310,7 +310,7 @@ return [
         [
             'text' => 'Inicio',
             'url' => '/equipos',
-            'icon' => 'fas fa-fw fa-home',
+            'icon' => 'fas fa-boxes',
             'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
             'active' => ['equipos*'],
         ],
@@ -318,7 +318,7 @@ return [
         [
             'text' => 'profile',
             'url' => '/profile',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-user-cog',
             'can'  => ['access-admin', 'access-sistemas'],
             'active' => ['profile*'],
         ],

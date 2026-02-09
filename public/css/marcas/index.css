@@ -12,6 +12,7 @@
 .table-marcas tbody tr:hover { background-color: rgba(220, 53, 69, 0.02) !important; }
 .secondary-data { color: #888; font-size: 0.85em; display: block; }
 .badge-status { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+
 .fa-tags{
     animation: float 2s ease-in-out infinite;
 }
