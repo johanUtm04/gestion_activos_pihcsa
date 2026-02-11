@@ -18,7 +18,8 @@ class DiscoDuro extends Model
         'modelo',
         'serial',
         'is_active', 
-        'motivo_inactivo'
+        'motivo_inactivo',
+        'serial'
     ];
     protected $guarded = ['id'];
     

@@ -13,7 +13,7 @@
     <input type="hidden" name="discoDuro[{{ $index }}][_delete]" value="">
 
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label class="small font-weight-bold">Capacidad</label>
             <select name="discoDuro[{{$index}}][capacidad]" class="form-control form-control-sm">
                 <option value="">Seleccione...</option>
@@ -42,7 +42,7 @@
             </select>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label class="small font-weight-bold">Tipo</label>
             <select name="discoDuro[{{$index}}][tipo_hdd_ssd]" class="form-control">
                 <option value="">Seleccione...</option>
@@ -65,7 +65,7 @@
             </select>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label class="small font-weight-bold">Interface</label>
             <select name="discoDuro[{{$index}}][interface]" class="form-control form-control-sm">
                 <option value="">Seleccione...</option>
@@ -90,6 +90,17 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="col-md-3">
+            <label><i class="fas fa-barcode"></i> Serial</label>
+            <input type="text" 
+                name="discoDuro[{{ $index }}][serial]" 
+                class="form-control" 
+                placeholder="S/N" 
+                value="{{ $discoDuro->serial ?? '' }}">
+        </div>
+
+
     </div>
         <div class="row align-items-center mt-2 border-top pt-2">
         <div class="col-md-4">

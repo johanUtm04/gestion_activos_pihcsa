@@ -152,9 +152,10 @@ class EquipoWizardController extends Controller
             'capacidad' => 'nullable|string',
             'tipo_hdd_ssd' => 'nullable|string',
             'interface' => 'nullable|string',
+            'serial' => 'nullable|string'
         ]);
 
-        $datos = array_filter($request->only(['capacidad', 'tipo_hdd_ssd', 'interface']));
+        $datos = array_filter($request->only(['capacidad', 'tipo_hdd_ssd', 'interface','serial']));
 
         if (empty($datos)) {
             session()->forget('wizard_equipo.disco_duro');

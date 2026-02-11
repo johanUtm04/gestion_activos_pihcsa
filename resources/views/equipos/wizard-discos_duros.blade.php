@@ -193,6 +193,17 @@
                             @error('interface') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
+                        <div class="form-group">
+                            <label for="serial"><i class="fas fa-barcode"></i> Número de Serial (S/N)</label>
+                            <input type="text" name="serial" id="serial" 
+                                class="form-control" 
+                                placeholder="Ingrese el serial del fabricante..."
+                                value="{{ old('serial', session('wizard_equipo.disco_duro.serial')) }}">
+                            <small class="text-muted">Opcional: Deje en blanco si no esta disponible</small>
+                            @error('serial') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+
+
                     </div>
                 </div>
 
