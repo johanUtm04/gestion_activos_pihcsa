@@ -57,7 +57,7 @@
                         <tbody>
                             @forelse($equipos as $equipo)
                             <tr id="equipo-{{ $equipo->id }}" 
-                                class="equipo-row clickable-row" 
+                                class="equipo-row clickable-row {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
                                 data-url="{{ route('equipos.show', $equipo->id) }}"
                                 data-id="{{ $equipo->id }}"
                                 data-marca="{{ $equipo->marca?->nombre ?? 'Genérica' }}"
@@ -90,6 +90,13 @@
                                     @if(session('new_mantenimiento') == $equipo->id)
                                         <span class="badge badge-secondary">Mantenimiento Registrado</span>
                                     @endif
+
+                                    @if($equipo->trashed())
+                                        <span class="badge badge-dark mb-1">
+                                        <i class="fas fa-archive mr-1"></i> ARCHIVADO
+                                        </span>
+                                    @endif
+                                    
                                     <div class="font-weight-bold text-dark">
                                     {{ $equipo->tipoActivo?->nombre ?? 'Sin Tipo' }} 
                                     {{ $equipo->marca?->nombre ?? 'Sin Marca' }}
@@ -112,6 +119,16 @@
 
                                 <td class="text-center" style="vertical-align: middle;">
                                     <div class="btn-group shadow-sm">
+                                        @if($equipo->trashed())
+                                            <form action="{{ route('equipos.index') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <!-- @method('PATCH') -->
+                                                <button type="submit" class="btn btn-sm btn-success shadow-sm" title="Restaurar Equipo">
+                                                    <i class="fas fa-undo mr-1"></i> Restaurar
+                                                </button>
+                                            </form>
+                                        @else
+
                                         @can('editar-equipo')
                                             <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-default text-warning" title="Editar">
                                                 <i class="fas fa-pen"></i>
@@ -127,22 +144,23 @@
                                         <a href="{{ route('equipos.show', ['uuid' => $equipo->id]) }}" class="btn btn-sm btn-default text-info" title="Ver Ficha">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                    @can('eliminar-equipo')
-                                    <div class="d-inline"> {{-- Cambia el div por d-inline para que no rompa la fila --}}
-                                        <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="motivo" id="motivo_hidden_{{ $equipo->id }}">
-                                            <button type="button" 
-                                                    class="btn btn-sm btn-default text-secondary btn-inactivar" 
-                                                    data-nombre="{{ $equipo->tipoActivo?->nombre }} - {{ $equipo->serial }}"
-                                                    data-motivo-input="#motivo_hidden_{{ $equipo->id }}"
-                                                    onclick="ejecutarInactivacion(this)">
-                                                <i class="fas fa-ban"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    @endcan
+                                        @can('eliminar-equipo')
+                                        <div class="d-inline"> {{-- Cambia el div por d-inline para que no rompa la fila --}}
+                                            <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="motivo" id="motivo_hidden_{{ $equipo->id }}">
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-default text-secondary btn-inactivar" 
+                                                        data-nombre="{{ $equipo->tipoActivo?->nombre }} - {{ $equipo->serial }}"
+                                                        data-motivo-input="#motivo_hidden_{{ $equipo->id }}"
+                                                        onclick="ejecutarInactivacion(this)">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        @endcan
+                                    @endif
                                     </div>
                                 </td>
                             </tr>

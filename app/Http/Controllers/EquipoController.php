@@ -241,7 +241,7 @@ class EquipoController extends Controller
 
         return redirect()->route('equipos.index', ['page' => $page])
         ->with('danger', 'Equipo enviado a la papelera (Inactivado)
-        <a href="#" class="btn-papelera-alert">
+        <a href="' . route('equipos.index', ['filter' => 'inactivos']) . '" class="btn-papelera-alert">
         <i class="fas fa-trash-restore mr-1"></i> Ver Papelera
         </a>');
     }
