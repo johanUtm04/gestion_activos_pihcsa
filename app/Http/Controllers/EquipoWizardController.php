@@ -183,10 +183,11 @@ class EquipoWizardController extends Controller
         $request->validate([
             'capacidad_gb' => 'nullable|string',
             'clock_mhz' => 'nullable|string',
-            'tipo_chz' => 'nullable|string'
+            'tipo_chz' => 'nullable|string',
+            'serial' => 'nullable|string',
         ]);
 
-        $datos = array_filter($request->only(['capacidad_gb', 'clock_mhz', 'tipo_chz']));
+        $datos = array_filter($request->only(['capacidad_gb', 'clock_mhz', 'tipo_chz', 'serial']));
 
         if (empty($datos)) {
             session()->forget('wizard_equipo.ram');

@@ -38,7 +38,6 @@
         opacity: 0.25;
     }
 
-    /* Estilo para los campos de "Otro" que inician ocultos */
     .custom-input { display: none; margin-top: 10px; }
 </style>
 @stop
@@ -204,6 +203,15 @@
                                    placeholder="Ej. SDRAM, DDR2"
                                    value="{{ old('tipo_chz', session('wizard_equipo.ram.tipo_chz')) }}">
                             @error('tipo_chz') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="serial"><i class="fas fa-barcode"></i> Número de Serial (S/N)</label>
+                            <input type="text" name="serial" id="serial" 
+                                class="form-control" 
+                                placeholder="Serial de la memoria..."
+                                value="{{ old('serial', session('wizard_equipo.ram.serial')) }}">
+                            <small class="text-muted">Opcional</small>
                         </div>
 
                     </div>

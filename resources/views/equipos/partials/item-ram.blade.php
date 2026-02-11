@@ -12,7 +12,7 @@
     <input type="hidden" name="ram[{{ $index }}][_delete]" value="">
 
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label>Capacidad (GB)</label>
             <select name="ram[{{ $index }}][capacidad_gb]" class="form-control form-control-sm">
                 <option value="">Seleccione...</option>
@@ -22,7 +22,7 @@
             </select>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label>Clock (MHz)</label>
             <select name="ram[{{ $index }}][clock_mhz]" class="form-control form-control-sm">
                 <option value="">Seleccione...</option>
@@ -32,7 +32,7 @@
             </select>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <label>Tipo (DDR)</label>
             <select name="ram[{{ $index }}][tipo_chz]" class="form-control form-control-sm">
                 <option value="">Seleccione...</option>
@@ -54,6 +54,16 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="col-md-3"> 
+            <label class="small font-weight-bold"><i class="fas fa-barcode"></i> Serial</label>
+            <input type="text" 
+            name="ram[{{ $index }}][serial]" 
+            class="form-control form-control-sm" 
+            placeholder="S/N" 
+            value="{{ $ram->serial ?? '' }}">
+        </div>
+
         </div>
 
             <div class="row align-items-center mt-2 border-top pt-2">
