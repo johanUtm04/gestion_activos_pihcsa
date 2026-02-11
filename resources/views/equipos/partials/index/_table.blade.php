@@ -52,7 +52,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($equipos as $equipo)
+                            @forelse($equipos as $equipo)
                             <tr id="equipo-{{ $equipo->id }}" 
                                 class="equipo-row clickable-row" 
                                 data-url="{{ route('equipos.show', $equipo->id) }}"
@@ -133,7 +133,16 @@
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="fas fa-folder-open fa-3x mb-3"></i>
+                                            <p class="h5">No se encontraron equipos inactivos</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
