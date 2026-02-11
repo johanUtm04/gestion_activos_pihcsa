@@ -26,5 +26,19 @@
         </a>
     </div>
     @endcan
+
+    {{-- Botón para mostrar Inactivos / Todos --}}
+<div class="btn-group shadow-sm">
+    @if(request('filter') == 'inactivos')
+        <a href="{{ route('equipos.index') }}" class="btn btn-outline-secondary font-weight-bold">
+            <i class="fas fa-eye mr-1"></i> Ver Activos
+        </a>
+    @else
+        <a href="{{ route('equipos.index', ['filter' => 'inactivos']) }}" class="btn btn-outline-danger font-weight-bold">
+            <i class="fas fa-trash-restore mr-1"></i> Ver Inactivos
+        </a>
+    @endif
+</div>
+
 </div>
 @stop

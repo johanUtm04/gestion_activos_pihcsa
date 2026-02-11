@@ -41,6 +41,9 @@ class EquipoObserver
 
     public function updated(Equipo $equipo)
     {
+        $antes   = null;
+        $despues = null;
+
         if (self::$registrado) return;
 
         if ($equipo->isDirty()) {

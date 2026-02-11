@@ -24,6 +24,11 @@ class EquipoController extends Controller
     //Metodo para mostrar vista principal
     public function index(Request $request)
     {
+        //Ver Inactivos
+        $query = Equipo::query(); 
+        // dd(Equipo::onlyTrashed()->get());
+
+
         session()->forget('wizard_equipo');
 
         $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores']);
@@ -56,7 +61,14 @@ class EquipoController extends Controller
             $query->where('tipo_activo_id', $request->tipo_activo_id );
         }
 
-        $equipos = $query->paginate(11)->appends($request->all());
+        if ($request->filter == 'inactivos') {
+            $query->onlyTrashed(); 
+        } 
+
+        $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
+        ->orderBy('id', 'desc')
+        ->paginate(10);
+
         $ubicaciones = Ubicacion::all();
         $usuarios = User::all();
         $marcas = Marca::all();
