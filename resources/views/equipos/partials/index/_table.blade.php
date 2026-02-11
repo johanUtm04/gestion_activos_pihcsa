@@ -119,12 +119,9 @@
                                         </td>
                                     @endif
 
+                                @if(request('filter') !== 'inactivos')
                                 <td class="text-center" style="vertical-align: middle;">
                                     <div class="btn-group shadow-sm">
-                                        @if($equipo->trashed())
-                                                
-                                        @else
-
                                         @can('editar-equipo')
                                             <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-default text-warning" title="Editar">
                                                 <i class="fas fa-pen"></i>
@@ -156,9 +153,9 @@
                                             </form>
                                         </div>
                                         @endcan
-                                    @endif
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                             @empty
                                 <tr>

@@ -16,20 +16,23 @@
     @include('equipos.partials.index._filters')
 
     <div class="row">
-        {{-- TABLA (LADO IZQUIERDO) --}}
-        <div class="col-xl-8">
+
+        <div class="{{ request('filter') == 'inactivos' ? 'col-xl-12' : 'col-xl-8' }}">
             @include('equipos.partials.index._table')
         </div>
 
-        {{-- PANEL DE DETALLE (LADO DERECHO) --}}
-        <div class="col-xl-4 d-none d-xl-block">
-            @include('equipos.partials.index._preview_panel')
-        </div>
+
+        @if(request('filter') !== 'inactivos')
+            <div class="col-xl-4 d-none d-xl-block">
+                @include('equipos.partials.index._preview_panel')
+            </div>
+        @endif
     </div>
+
     @include('equipos.partials.index._footer')
     @include('equipos.partials.index._modal')
-@stop
 
+@stop
 @section('js')
     <script src="{{ asset('js/equipos/index.js') }}"></script>
 @stop
