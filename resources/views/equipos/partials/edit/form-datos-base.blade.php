@@ -23,7 +23,9 @@
     {{-- TIPO EQUIPO --}}
     <div class="form-group col-md-4">
         <label for="tipo_activo_id"><i class="fas fa-tag"></i> Tipo del equipo</label>
-        <select name="tipo_activo_id" id="tipo_activo_id" class="form-control" data-label="el tipo de equipo" data-current="{{ $equipo->tipo_activo_id }}">
+        <select name="tipo_activo_id" id="tipo_activo_id" class="form-control" data-label="el tipo de equipo" data-current="{{ $equipo->tipo_activo_id }}"
+        data-motivo-input="#motivo_cambio_tipo"
+        >
             <option value="">Seleccione un tipo de Activo</option>
             @foreach($tiposActivo as $item)
                     <option value="{{ $item->id }}" {{ $equipo->tipo_activo_id == $item->id ? 'selected' : '' }}>
@@ -31,7 +33,7 @@
                     </option>
             @endforeach
         </select>
-        <input type="hidden" name="motivo_cambio_tipo" id="motivo_cambio_tipo">
+        <input type="hidden" name="motivos[tipo_activo_id]" id="motivo_cambio_tipo">
     </div>  
 
 

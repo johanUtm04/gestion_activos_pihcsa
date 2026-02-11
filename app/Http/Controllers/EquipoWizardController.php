@@ -373,8 +373,11 @@ class EquipoWizardController extends Controller
         $page = ceil($position / $perPage);
 
         return redirect()->route('equipos.index', ['page' => $page])
-            ->with('success', ' Equipo y todos sus componentes registrados con exito!')
-            ->with('new_id', $equipo->id);
+        ->with('success', 'Equipo Creado Correctamente
+        <a href="#" class="btn-success-alert">
+        <i class="fas fa-eye mr-1"></i> Ver Registro
+        </a>')
+        ->with('new_id', $equipo->id);
     }
    
     

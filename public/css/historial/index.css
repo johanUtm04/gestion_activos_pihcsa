@@ -1,0 +1,27 @@
+/* Colores Soft PIHCSA */
+.bg-primary-soft { background-color: #e8f2ff !important; }
+.bg-purple-soft { background-color: #f3e8ff !important; }
+.bg-orange { background-color: #fd7e14 !important; }
+.bg-gray-50 { background-color: #f9fafb !important; }
+.text-purple { color: #6f42c1 !important; }
+
+.badge-success-soft { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.badge-orange-soft { background-color: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
+.badge-primary-soft { background-color: #e0e7ff; color: #4338ca; }
+
+
+.timeline-v2 { position: relative; padding-left: 25px; border-left: 3px solid #e5e7eb; }
+.log-card { position: relative; border-radius: 10px; border: 1px solid #edf2f7; transition: 0.2s; }
+.log-card:hover { transform: translateX(5px); border-color: #cbd5e0; }
+.log-card::before {
+    content: ''; position: absolute; left: -32px; top: 15px;
+    width: 12px; height: 12px; background: #fff; border-radius: 50%; 
+    border: 3px solid #007bff; z-index: 10;
+}
+
+.scroll-custom::-webkit-scrollbar { width: 5px; }
+.scroll-custom::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+.transition-icon { transition: 0.3s; }
+.collapsed .transition-icon { transform: rotate(-90deg); }
+.text-decoration-line-through { text-decoration: line-through; opacity: 0.6; }
+.extra-small { font-size: 0.78rem; }

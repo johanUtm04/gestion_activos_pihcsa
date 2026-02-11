@@ -132,6 +132,9 @@ class EquipoController extends Controller
             'sistema_operativo' => 'nullable|string',
         ]);
 
+        $viejosDatos = $equipo->toArray();
+        $motivos = $request->input('motivos', []);
+
         $data = $request->only([
             'serial', 'usuario_id', 
             'ubicacion_id', 'valor_inicial', 'fecha_adquisicion',
@@ -152,7 +155,31 @@ class EquipoController extends Controller
             $data['vida_util_estimada'] = $request->vida_util_estimada . ' ' . $request->vida_util_unidad;
         }
 
+        $cambiosDetectados = [];
+        foreach ($data as $campo => $nuevoValor) {
+        $valorAnterior = $viejosDatos[$campo] ?? null;
+
+        if ($nuevoValor != $valorAnterior) {
+            $cambiosDetectados[$campo] = [
+                'antes'   => $valorAnterior,
+                'despues' => $nuevoValor,
+                'motivo'  => $motivos[$campo] ?? 'Sin motivo especificado' 
+            ];
+        }
+    }
+
         $equipo->update($data);
+
+        if (!empty($cambiosDetectados)) {
+                Historial_log::create([
+                    'activo_id'     => $equipo->id,
+                    'usuario_accion_id' =>$equipo->usuario_id,
+                    'tipo_registro' => 'Actualización',
+                    'detalles_json' => ['cambios' => $cambiosDetectados],
+                    'user_id'       => auth()->id(),
+                    'created_at'    => now()
+                ]);
+            }
 
         $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
         $this->syncRelation($equipo->rams(),         $request->input('ram', []));
@@ -166,9 +193,11 @@ class EquipoController extends Controller
 
         return redirect()->route('equipos.index', ['page' => $page,
         'actualizado_id' => $equipo->id,
-        'show_toast' => 1
         ])
-        ->with('warning', 'Equipo actualizado correctamente')
+        ->with('warning', 'Equipo actualizado
+        <a href="#" class="btn-historial-alert">
+        <i class="fas fa-history mr-1"></i> Ver en el Historial
+        </a>')
         ->with('actualizado_id', $equipo->id);
     }
 
@@ -182,15 +211,27 @@ class EquipoController extends Controller
     }
 
     //Metodo para eliminar registro de base de datos
-    public function destroy(Equipo $equipo)
+    public function destroy(Request $request,Equipo $equipo)
     {
+
         $position = Equipo::where('id', '<=', $equipo->id)->count();
         $page     = ceil($position / 11);
         
+        if (!$request->motivo || trim($request->motivo) === '') {
+            return back()->with('error', 'El motivo de inactivación es obligatorio.');
+        }
+
+        $equipo->update([
+        'motivo_inactivacion' => $request->motivo
+        ]);
+
         $equipo->delete();
 
         return redirect()->route('equipos.index', ['page' => $page])
-        ->with('danger', 'Equipo eliminado correctamente');
+        ->with('danger', 'Equipo enviado a la papelera (Inactivado)
+        <a href="#" class="btn-papelera-alert">
+        <i class="fas fa-trash-restore mr-1"></i> Ver Papelera
+        </a>');
     }
     
     //Metodo Auxiliar para componentes extra

@@ -18,7 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Equipo extends Model
 {
-    use HasFactory; 
+    use HasFactory, SoftDeletes;
+    protected $dates = ['deleted_at'];
     
     protected $casts = [
     'fecha_adquisicion' => 'date',
@@ -36,6 +37,7 @@ class Equipo extends Model
         'valor_inicial' ,
         'fecha_adquisicion',
         'vida_util_estimada',
+        'motivo_inactivacion'
     ];
 
     // ----------------------------------------------------

@@ -7,7 +7,7 @@
     <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <h3 class="text-dark font-weight-bold mb-0">
-                <i class="fas fa-history text-primary mr-2"></i> Auditoría de Activos
+                <i class="fas z text-primary mr-2"></i> Auditoría de Activos
             </h3>
             <p class="text-muted small mb-0">Trazabilidad completa de hardware y movimientos</p>
         </div>

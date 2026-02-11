@@ -214,3 +214,88 @@
     50% { transform: translateY(-8px); }
     100% { transform: translateY(0px); }
 }
+
+.btn-historial-alert {
+    display: inline-flex;
+    align-items: center;
+    background-color: #343a40; 
+    color: #ffffff !important;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 15px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    transition: all 0.3s ease;
+}
+
+.btn-historial-alert:hover {
+    background-color: #23272b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.btn-historial-alert u {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.btn-historial-alert:hover i {
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.btn-papelera-alert {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff; 
+    color: #dc3545 !important; 
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 15px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.btn-papelera-alert:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #a71d2a !important;
+}
+
+.btn-papelera-alert:hover i {
+    transform: rotate(-10deg);
+}
+
+
+.btn-success-alert {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff;
+    color: #28a745 !important; 
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 15px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-success-alert:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-success-alert:hover i {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+}

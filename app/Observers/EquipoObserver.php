@@ -51,6 +51,29 @@ class EquipoObserver
 
                 $valorAnterior = $equipo->getOriginal($atributo);
                 $label = \Illuminate\Support\Str::headline($atributo);
+                $tipoCampo = 'general';
+
+                $mapeoHardware = [
+                    'procesador' => ['label' => 'Procesador', 'color' => 'blue', 'icon' => 'fa-microchip'],
+                    'ram'        => ['label' => 'RAM', 'color' => 'purple', 'icon' => 'fa-memory'],
+                    'disco_duro' => ['label' => 'Disco Duro', 'color' => 'cyan', 'icon' => 'fa-hdd'],
+                    'monitor'    => ['label' => 'Monitor', 'color' => 'indigo', 'icon' => 'fa-desktop'],
+                    'periferico' => ['label' => 'Periférico', 'color' => 'teal', 'icon' => 'fa-keyboard'],
+                ];
+
+                if (array_key_exists($atributo, $mapeoHardware)) {
+                    $label = $mapeoHardware[$atributo]['label'];
+                    $tipoCampo = 'hardware';
+                    $meta = $mapeoHardware[$atributo];
+                }
+
+                $cambios[$label] = [
+                    'antes'   => $antes,
+                    'despues' => $despues,
+                    'tipo'    => $tipoCampo,
+                    'color'   => $meta['color'] ?? 'orange',
+                    'icon'    => $meta['icon'] ?? 'fa-edit'
+                ];
 
                 // --- Lógica de Mapeo de IDs a Nombres Reales ---
                 if ($atributo === 'marca_id') {

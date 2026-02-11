@@ -104,13 +104,13 @@ $(document).ready(function() {
         });
     }
 
-    // Activar motivos
+    // Activar
     solicitarMotivoCambio('#marca_id');
     solicitarMotivoCambio('#tipo_activo_id');
     solicitarMotivoCambio('#valor_inicial');
     solicitarMotivoCambio('#fecha_adquisicion');
     solicitarMotivoCambio('#serial');
-    solicitarMotivoCambio('#usuario_id');
+    solicitarMotivoCambio('#motivo_cambio_usuario');
     solicitarMotivoCambio('#ubicacion_id');
 
     // Select2

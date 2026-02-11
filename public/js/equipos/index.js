@@ -147,30 +147,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Función genérica para solicitar motivo
+let formularioActual = null;
+let inputHiddenActual = null;
+
 function ejecutarInactivacion(elemento) {
     const btn = $(elemento);
-    const nombreCampo = btn.data('label');
-    const targetInput = btn.data('motivo-input');
-    const form = btn.closest('form');
+    formularioActual = btn.closest('form');
+    inputHiddenActual = btn.data('motivo-input');
+    const nombre = btn.data('nombre');
 
-    Swal.fire({
-        title: `Justificar ${nombreCampo}`,
-        text: `Por favor, indica el motivo:`,
-        input: 'text',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar',
-        inputValidator: (value) => {
-            if (!value) return '¡El motivo es obligatorio!';
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Llenamos el hidden input y enviamos el form
-            $(targetInput).val(result.value);
-            form.submit();
-        }
-    });
+    // Seteamos los datos en el modal
+    $('#nombreEquipoModal').text(nombre);
+    $('#motivo_texto').val(''); // Limpiar previo
+    $('#errorMotivo').addClass('d-none');
+    
+    // Abrimos el modal de Bootstrap
+    $('#modalInactivar').modal('show');
 }
-    // Activar motivos
-    solicitarMotivoCambio('#motivo_inactivacion');
+
+// Evento para el botón del modal
+$('#btnConfirmarInactivacion').on('click', function() {
+    const motivo = $('#motivo_texto').val().trim();
+
+    if (motivo.length < 10) {
+        $('#errorMotivo').removeClass('d-none');
+        return;
+    }
+
+    // 1. Asignar motivo al input hidden del formulario original
+    $(inputHiddenActual).val(motivo);
+
+    // 2. Cerrar modal y enviar
+    $('#modalInactivar').modal('hide');
+    
+    // Loader visual opcional
+    $(this).html('<i class="fas fa-spinner fa-spin"></i> Procesando...').prop('disabled', true);
+    
+    formularioActual[0].submit();
+});
+solicitarMotivoCambio('#motivo_inactivacion');
