@@ -17,6 +17,18 @@
 
     @can('crear-equipo')
     <div class="d-flex" style="gap: 10px;">
+        <div class="btn-group shadow-sm">
+            @if(request('filter') == 'inactivos')
+                <a href="{{ route('equipos.index') }}" class="btn btn-outline-secondary font-weight-bold">
+                    <i class="fas fa-eye mr-1"></i> Ver Activos
+                </a>
+            @else
+                <a href="{{ route('equipos.index', ['filter' => 'inactivos']) }}" class="btn btn-outline-danger font-weight-bold">
+                    <i class="fas fa-trash-restore mr-1"></i> Ver Inactivos
+                </a>
+            @endif
+        </div>
+
         <a href="{{ route('equipos.reporte') }}" class="btn btn-outline-success shadow-sm d-flex align-items-center">
             <i class="fas fa-file-excel mr-2"></i> Reporte General
         </a>
@@ -26,19 +38,5 @@
         </a>
     </div>
     @endcan
-
-    {{-- Botón para mostrar Inactivos / Todos --}}
-<div class="btn-group shadow-sm">
-    @if(request('filter') == 'inactivos')
-        <a href="{{ route('equipos.index') }}" class="btn btn-outline-secondary font-weight-bold">
-            <i class="fas fa-eye mr-1"></i> Ver Activos
-        </a>
-    @else
-        <a href="{{ route('equipos.index', ['filter' => 'inactivos']) }}" class="btn btn-outline-danger font-weight-bold">
-            <i class="fas fa-trash-restore mr-1"></i> Ver Inactivos
-        </a>
-    @endif
-</div>
-
 </div>
 @stop
