@@ -51,7 +51,9 @@
                                 @if(request('filter') == 'inactivos')
                                     <th>Motivo de Inactivación</th>
                                 @endif
-                                <th class="text-center">Acciones</th>
+                                @if(request('filter') !== 'inactivos')
+                                    <th class="text-center">Acciones</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -96,7 +98,7 @@
                                         <i class="fas fa-archive mr-1"></i> ARCHIVADO
                                         </span>
                                     @endif
-                                    
+
                                     <div class="font-weight-bold text-dark">
                                     {{ $equipo->tipoActivo?->nombre ?? 'Sin Tipo' }} 
                                     {{ $equipo->marca?->nombre ?? 'Sin Marca' }}
@@ -120,13 +122,7 @@
                                 <td class="text-center" style="vertical-align: middle;">
                                     <div class="btn-group shadow-sm">
                                         @if($equipo->trashed())
-                                            <form action="{{ route('equipos.index') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <!-- @method('PATCH') -->
-                                                <button type="submit" class="btn btn-sm btn-success shadow-sm" title="Restaurar Equipo">
-                                                    <i class="fas fa-undo mr-1"></i> Restaurar
-                                                </button>
-                                            </form>
+                                                
                                         @else
 
                                         @can('editar-equipo')
