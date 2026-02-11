@@ -48,6 +48,9 @@
                                 <th style="width: 50px">ID</th>
                                 <th>Activo / Serial</th>
                                 <th>Asignado a</th>
+                                @if(request('filter') == 'inactivos')
+                                    <th>Motivo de Inactivación</th>
+                                @endif
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -97,6 +100,16 @@
                                     <div class="font-weight-bold">{{ $equipo->usuario->name ?? 'Sin asignar' }}</div>
                                     <span class="secondary-data"><i class="fas fa-envelope mr-1"></i>{{ $equipo->usuario->email ?? '-' }}</span>
                                 </td>
+
+                                @if(request('filter') == 'inactivos')
+                                        <td style="vertical-align: middle;">
+                                            <span class="text-danger font-italic">
+                                                <i class="fas fa-comment-dots mr-1"></i>
+                                                {{ $equipo->motivo_inactivacion ?? 'No especificado' }}
+                                            </span>
+                                        </td>
+                                    @endif
+
                                 <td class="text-center" style="vertical-align: middle;">
                                     <div class="btn-group shadow-sm">
                                         @can('editar-equipo')
