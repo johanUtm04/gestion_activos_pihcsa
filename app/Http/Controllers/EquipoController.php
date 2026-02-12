@@ -63,7 +63,7 @@ class EquipoController extends Controller
         } 
 
         $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
-        ->orderBy('updated_at', 'desc') 
+        ->orderBy('created_at', 'asc') 
         ->paginate(10);
 
         $ubicaciones = Ubicacion::all();
