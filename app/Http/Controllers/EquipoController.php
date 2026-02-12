@@ -24,11 +24,8 @@ class EquipoController extends Controller
     //Metodo para mostrar vista principal
     public function index(Request $request)
     {
-        //Ver Inactivos
+
         $query = Equipo::query(); 
-        // dd(Equipo::onlyTrashed()->get());
-
-
         session()->forget('wizard_equipo');
 
         $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores']);
@@ -66,7 +63,7 @@ class EquipoController extends Controller
         } 
 
         $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
-        ->orderBy('id', 'desc')
+        ->orderBy('updated_at', 'desc') 
         ->paginate(10);
 
         $ubicaciones = Ubicacion::all();
@@ -180,18 +177,18 @@ class EquipoController extends Controller
         }
     }
 
-        $equipo->update($data);
+    $equipo->update($data);
 
-        if (!empty($cambiosDetectados)) {
-                Historial_log::create([
-                    'activo_id'     => $equipo->id,
-                    'usuario_accion_id' =>$equipo->usuario_id,
-                    'tipo_registro' => 'Actualización',
-                    'detalles_json' => ['cambios' => $cambiosDetectados],
-                    'user_id'       => auth()->id(),
-                    'created_at'    => now()
-                ]);
-            }
+    if (!empty($cambiosDetectados)) {
+            Historial_log::create([
+                'activo_id'     => $equipo->id,
+                'usuario_accion_id' =>$equipo->usuario_id,
+                'tipo_registro' => 'Actualización',
+                'detalles_json' => ['cambios' => $cambiosDetectados],
+                'user_id'       => auth()->id(),
+                'created_at'    => now()
+            ]);
+        }
 
         $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
         $this->syncRelation($equipo->rams(),         $request->input('ram', []));
@@ -199,18 +196,17 @@ class EquipoController extends Controller
         $this->syncRelation($equipo->monitores(),    $request->input('monitor', []));
         $this->syncRelation($equipo->discosDuros(),  $request->input('discoDuro', []));
 
-        $perPage = 11;
+        $perPage = 10;
         $position = Equipo::where('id', '<=', $equipo->id)->count();
         $page = ceil($position / $perPage);
 
-        return redirect()->route('equipos.index', ['page' => $page,
-        'actualizado_id' => $equipo->id,
-        ])
+        return redirect()->route('equipos.index', ['page' => $page])
         ->with('warning', 'Equipo actualizado
         <a href="#" class="btn-historial-alert">
         <i class="fas fa-history mr-1"></i> Ver en el Historial
         </a>')
-        ->with('actualizado_id', $equipo->id);
+        ->with('actualizado_id', $equipo->id)   
+        ;
     }
 
     //Metodo paara ver un registro en especifico
@@ -234,7 +230,7 @@ class EquipoController extends Controller
         }
 
         $equipo->update([
-        'motivo_inactivacion' => $request->motivo
+            'motivo_inactivacion' => $request->motivo
         ]);
 
         $equipo->delete();

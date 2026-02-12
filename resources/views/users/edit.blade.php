@@ -15,7 +15,6 @@
     .data-item {
         margin-bottom: 10px;
         padding-bottom: 5px;
-        border-bottom: 1px dashed #ced4da;
     }
 
     .data-item:last-child {
@@ -60,11 +59,9 @@
                         </h3>
                     </div>
                     <!-- Comienzo a escribir la informacion (Lado Derecho) -->
-                    <div class="card-body">
+                <fieldset class="border p-3 mb-4">
 
-                        <h5 class="section-title">
-                            <i class="fas fa-cogs"></i> Especificaciones Generales
-                        </h5>
+                    <legend class="w-auto px-2 text-primary"><i class="fas fa-info-circle"></i> Especificaciones Generales</legend>
 
                         {{-- Datos Principales --}}
                         <div class="data-item">
@@ -110,7 +107,7 @@
                         </div>
 
                     </div> {{-- /card-body --}}
-                </div> {{-- /card --}}
+                </fieldset>
             </div> {{-- /col-md-5 --}}
 
 

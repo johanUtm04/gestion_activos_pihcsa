@@ -15,11 +15,8 @@
     .data-item {
         margin-bottom: 10px;
         padding-bottom: 6px;
-        border-bottom: 1px dashed #f1b0b7;
-    }
-
-    .data-item:last-child {
-        border-bottom: none;
+        /* Línea punteada eliminada */
+        border-bottom: none; 
     }
 
     .data-label {
@@ -30,9 +27,16 @@
     .card-outline.card-danger {
         border-top: 3px solid #dc3545;
     }
+    
+    /* Ajuste opcional para que el fieldset se vea bien en modo lectura */
+    fieldset.border {
+        border: 1px solid #dee2e6 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        border-radius: 8px;
+    }
 </style>
 @stop
-
 
 @section('content_header')
     <h1 class="font-weight-bold text-center">
@@ -41,18 +45,16 @@
     </h1>
 
     <a href="{{ route('ubicaciones.index') }}" class="btn btn-secondary btn-sm">
-        <i class="fas fa-arrow-left"></i> Volver a gestion de ubicaciones
+        <i class="fas fa-arrow-left"></i> Volver a gestión de ubicaciones
     </a>
 @stop
-
 
 @section('content')
 <div class="container-fluid">
     <div class="row">
 
-        <!-- COLUMNA IZQUIERDA -->
         <div class="col-md-5">
-            <div class="card card-outline card-danger">
+            <div class="card card-outline card-danger shadow-sm">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-clipboard-list"></i> Detalle Actual
@@ -60,40 +62,39 @@
                 </div>
 
                 <div class="card-body">
+                    {{-- Cambiamos el h5 por un fieldset para mantener consistencia visual --}}
+                    <fieldset class="border p-3 mb-4">
+                        <legend class="w-auto px-2 text-danger">
+                            <i class="fas fa-map"></i> Información de Ubicación
+                        </legend>
 
-                    <h5 class="section-title">
-                        <i class="fas fa-map"></i> Información de Ubicación
-                    </h5>
+                        <div class="data-item">
+                            <span class="data-label">
+                                <i class="fas fa-id-badge"></i> ID:
+                            </span>
+                            <span class="float-right text-muted">{{ $ubicacion->id }}</span>
+                        </div>
 
-                    <div class="data-item">
-                        <span class="data-label">
-                            <i class="fas fa-id-badge"></i> ID:
-                        </span>
-                        <span class="float-right">{{ $ubicacion->id }}</span>
-                    </div>
+                        <div class="data-item">
+                            <span class="data-label">
+                                <i class="fas fa-map-marker-alt"></i> Nombre:
+                            </span>
+                            <span class="float-right">{{ $ubicacion->nombre }}</span>
+                        </div>
 
-                    <div class="data-item">
-                        <span class="data-label">
-                            <i class="fas fa-map-marker-alt"></i> Nombre:
-                        </span>
-                        <span class="float-right">{{ $ubicacion->nombre }}</span>
-                    </div>
-
-                    <div class="data-item">
-                        <span class="data-label">
-                            <i class="fas fa-barcode"></i> Código:
-                        </span>
-                        <span class="float-right">{{ $ubicacion->codigo }}</span>
-                    </div>
-
+                        <div class="data-item">
+                            <span class="data-label">
+                                <i class="fas fa-barcode"></i> Código:
+                            </span>
+                            <span class="float-right font-weight-bold">{{ $ubicacion->codigo }}</span>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         </div>
 
-
-        <!-- COLUMNA DERECHA -->
         <div class="col-md-7">
-            <div class="card card-outline card-danger">
+            <div class="card card-outline card-danger shadow-sm">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-pen-square"></i> Modificación de Datos
@@ -115,10 +116,7 @@
                                     <label for="nombre">
                                         <i class="fas fa-map-marker-alt"></i> Nombre
                                     </label>
-                                    <input type="text"
-                                           name="nombre"
-                                           id="nombre"
-                                           class="form-control"
+                                    <input type="text" name="nombre" id="nombre" class="form-control"
                                            value="{{ old('nombre', $ubicacion->nombre) }}">
                                 </div>
 
@@ -126,23 +124,17 @@
                                     <label for="codigo">
                                         <i class="fas fa-barcode"></i> Código
                                     </label>
-                                    <input type="text"
-                                           name="codigo"
-                                           id="codigo"
-                                           class="form-control"
+                                    <input type="text" name="codigo" id="codigo" class="form-control"
                                            value="{{ old('codigo', $ubicacion->codigo) }}">
                                 </div>
                             </div>
-
                         </fieldset>
 
                         <div class="mt-4">
-                            <button type="submit"
-                                    class="btn btn-danger btn-lg btn-block">
+                            <button type="submit" class="btn btn-danger btn-lg btn-block shadow">
                                 <i class="fas fa-save"></i> Guardar Cambios
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>

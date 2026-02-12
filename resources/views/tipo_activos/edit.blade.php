@@ -15,7 +15,8 @@
     .data-item {
         margin-bottom: 10px;
         padding-bottom: 5px;
-        border-bottom: 1px dashed #ced4da;
+        /* Adiós línea punteada */
+        border-bottom: none;
     }
 
     .data-item:last-child {
@@ -26,13 +27,20 @@
         font-weight: 600;
         color: #495057;
     }
+
+    /* Estándar para los contenedores fieldset */
+    fieldset.border {
+        border: 1px solid #dee2e6 !important;
+        border-radius: 8px;
+        background-color: #fdfdfd;
+    }
 </style>
 @stop
 
 @section('content_header')
     <h1 class="font-weight-bold text-center">
         <i class="fas fa-microchip text-danger"></i> 
-        Edici�n de Categor�a: {{ strtoupper($tipo_activo->nombre) }}
+        Edición de Categoría: {{ strtoupper($tipo_activo->nombre) }}
     </h1>
     <a href="{{ route('tipo_activos.index') }}" class="btn btn-secondary btn-sm shadow-sm">
         <i class="fas fa-arrow-left"></i> Volver al listado
@@ -51,41 +59,43 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <h5 class="section-title">
-                            <i class="fas fa-info-circle"></i> Detalles del Cat�logo
-                        </h5>
+                        <fieldset class="border p-3 mb-4">
+                            <legend class="w-auto px-2 text-danger font-weight-bold">
+                                <i class="fas fa-info-circle"></i> Detalles del Catálogo
+                            </legend>
 
-                        <div class="data-item">
-                            <span class="data-label">
-                                <i class="fas fa-fingerprint"></i> ID de Registro:
-                            </span> 
-                            <span class="float-right font-weight-bold">{{ $tipo_activo->id }}</span>
-                        </div>
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-fingerprint"></i> ID de Registro:
+                                </span> 
+                                <span class="float-right font-weight-bold text-muted">{{ $tipo_activo->id }}</span>
+                            </div>
 
-                        <div class="data-item">
-                            <span class="data-label">
-                                <i class="fas fa-laptop"></i> Nombre Actual:
-                            </span> 
-                            <span class="float-right text-uppercase">{{ $tipo_activo->nombre }}</span>
-                        </div>
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-laptop"></i> Nombre Actual:
+                                </span> 
+                                <span class="float-right text-uppercase font-weight-bold">{{ $tipo_activo->nombre }}</span>
+                            </div>
 
-                        <div class="data-item">
-                            <span class="data-label">
-                                <i class="fas fa-boxes"></i> Equipos bajo este tipo:
-                            </span> 
-                            <span class="float-right badge badge-danger">
-                                {{ $tipo_activo->equipos->count() }} Activos
-                            </span>
-                        </div>
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-boxes"></i> Equipos vinculados:
+                                </span> 
+                                <span class="float-right badge badge-danger">
+                                    {{ $tipo_activo->equipos->count() }} Activos
+                                </span>
+                            </div>
 
-                        <div class="data-item">
-                            <span class="data-label">
-                                <i class="fas fa-clock"></i> �ltima actualizaci�n:
-                            </span> 
-                            <span class="float-right text-muted">
-                                {{ $tipo_activo->updated_at->diffForHumans() }}
-                            </span>
-                        </div>
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-clock"></i> Última actualización:
+                                </span> 
+                                <span class="float-right text-muted">
+                                    {{ $tipo_activo->updated_at->diffForHumans() }}
+                                </span>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
@@ -94,7 +104,7 @@
                 <div class="card card-outline card-primary shadow-sm">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <i class="fas fa-edit"></i> Modificar Categor�a
+                            <i class="fas fa-edit"></i> Modificar Categoría
                         </h3>
                     </div>
 
@@ -103,13 +113,13 @@
                             @csrf
                             @method('PUT')
 
-                            <fieldset class="border p-4 mb-4" style="border-radius: 8px; background-color: #fdfdfd;">
+                            <fieldset class="border p-4 mb-4">
                                 <legend class="w-auto px-3 text-primary font-weight-bold">
-                                    <i class="fas fa-cog"></i> Configuraci�n del Activo
+                                    <i class="fas fa-cog"></i> Configuración del Activo
                                 </legend>
 
                                 <div class="form-group">
-                                    <label for="nombre"><i class="fas fa-pen-nib"></i> Nombre de la Categor�a: </label>
+                                    <label for="nombre"><i class="fas fa-pen-nib"></i> Nombre de la Categoría: </label>
                                     <input type="text" name="nombre" id="nombre" 
                                            class="form-control form-control-lg @error('nombre') is-invalid @enderror"
                                            value="{{ old('nombre', $tipo_activo->nombre) }}"
@@ -121,7 +131,6 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                    
                                 </div>
                             </fieldset>
 
@@ -141,6 +150,6 @@
 
 @section('footer')
     <div class="text-center text-muted">
-        <small>M�dulo de Gesti�n de Cat�logos TI &copy; {{ date('Y') }}</small>
+        <small>Módulo de Gestión de Catálogos TI &copy; {{ date('Y') }}</small>
     </div>
 @stop

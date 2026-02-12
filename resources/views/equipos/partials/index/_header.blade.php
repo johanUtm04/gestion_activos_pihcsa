@@ -29,13 +29,17 @@
             @endif
         </div>
 
+        @if(request('filter') !== 'inactivos')
         <a href="{{ route('equipos.reporte') }}" class="btn btn-outline-success shadow-sm d-flex align-items-center">
             <i class="fas fa-file-excel mr-2"></i> Reporte General
         </a>
+        @endif
 
+         @if(request('filter') !== 'inactivos')
         <a href="{{ route('equipos.wizard.create') }}" class="btn btn-info shadow-sm d-flex align-items-center">
             <i class="fas fa-plus-circle mr-2"></i> Nuevo Activo
         </a>
+        @endif
     </div>
     @endcan
 </div>

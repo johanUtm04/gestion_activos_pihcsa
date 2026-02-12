@@ -59,7 +59,7 @@
                         <tbody>
                             @forelse($equipos as $equipo)
                             <tr id="equipo-{{ $equipo->id }}" 
-                                class="equipo-row clickable-row {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
+                                class="equipo-row {{ request('filter') !== 'inactivos' ? 'clickable-row' : '' }} {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
                                 data-url="{{ route('equipos.show', $equipo->id) }}"
                                 data-id="{{ $equipo->id }}"
                                 data-marca="{{ $equipo->marca?->nombre ?? 'Genérica' }}"

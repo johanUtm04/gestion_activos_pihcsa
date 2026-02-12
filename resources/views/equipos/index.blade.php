@@ -7,13 +7,18 @@
 @stop
 
 @section('content_header')
+    @if(request('filter') !== 'inactivos')
+        @include('equipos.partials.index._filters')
+    @endif
     @include('equipos.partials.index._header')
 @stop
 
 @section('content')
 
     {{-- Filtros --}}
-    @include('equipos.partials.index._filters')
+    @if(request('filter') !== 'inactivos')
+        @include('equipos.partials.index._filters')
+    @endif
 
     <div class="row">
 
