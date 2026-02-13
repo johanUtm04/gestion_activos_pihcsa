@@ -71,47 +71,71 @@ function eliminarComponente(btn, clasePadre) {
  * 2. LÓGICA DE INICIALIZACIÓN
  */
 $(document).ready(function() {
-
     // Función genérica para solicitar motivo
-    function solicitarMotivoCambio(selector) {
-        $(selector).on('change', function() {
-            const select = $(this);
-            const nuevoValor = select.val();
-            const valorOriginal = select.data('current');
-            const targetInput = select.data('motivo-input');
-            const nombreCampo = select.data('label'); 
+function solicitarMotivoCambio(selector) {
+    $(selector).on('change', function() {
+        const select = $(this);
+        const nuevoValor = select.val();
+        const valorOriginal = String(select.attr('data-current'));
+        const targetInput = select.attr('data-motivo-input');
+        const nombreCampo = select.attr('data-label');
 
-            if (nuevoValor != valorOriginal && nuevoValor !== "") {
-                Swal.fire({
-                    title: `Justificar cambio en ${nombreCampo}`,
-                    text: `Por favor, indica el motivo:`,
-                    input: 'text',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Confirmar',
-                    inputValidator: (value) => {
-                        if (!value) return '¡Es obligatorio!';
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $(targetInput).val(result.value);
-                        select.data('current', nuevoValor);
-                    } else {
-                        select.val(valorOriginal);
-                    }
-                });
-            }
-        });
-    }
+        console.log(`Cambiando ${nombreCampo}: Anterior: ${valorOriginal}, Nuevo: ${nuevoValor}`);
 
-    // Activar
+        if (nuevoValor != valorOriginal && nuevoValor !== "") {
+            Swal.fire({
+                title: `Justificar cambio en ${nombreCampo}`,
+                input: 'text',
+                // Cambiamos 'icon' por 'type' por si tu versión es antigua
+                type: 'warning', 
+                showCancelButton: true,
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value) return '¡Es obligatorio!';
+                }
+            }).then((result) => {
+                // En versiones muy viejas, se usa result.value directamente. 
+                // En las nuevas es result.isConfirmed. Probemos con esta lógica:
+                if (result && (result.value || result.isConfirmed)) {
+                    const motivo = result.value;
+                    console.log("Confirmado. Motivo:", motivo);
+                    
+                    // 1. Guardamos motivo
+                    $(targetInput).val(motivo);
+                    
+                    // 2. Actualizamos 'data-current' para que ya no pregunte por este mismo valor
+                    select.attr('data-current', nuevoValor);
+                    
+                    // 3. Forzamos que el select mantenga el valor nuevo
+                    select.val(nuevoValor);
+                    
+                    // Si usas Select2
+                    if (select.hasClass('select2-hidden-accessible')) {
+                        select.trigger('change.select2');
+                    }
+                } else {
+                    // Si el usuario cancela o cierra el modal
+                    console.log("Cancelado o cerrado. Revirtiendo a:", valorOriginal);
+                    select.val(valorOriginal);
+                    if (select.hasClass('select2-hidden-accessible')) {
+                        select.trigger('change.select2');
+                    }
+                }
+            });
+        }
+    });
+}
+
+    // Activar -- (id)
     solicitarMotivoCambio('#marca_id');
     solicitarMotivoCambio('#tipo_activo_id');
+    solicitarMotivoCambio('#usuario_id');
+    solicitarMotivoCambio('#ubicacion_id');
     solicitarMotivoCambio('#valor_inicial');
     solicitarMotivoCambio('#fecha_adquisicion');
+    solicitarMotivoCambio('#vida_util_input');
     solicitarMotivoCambio('#serial');
-    solicitarMotivoCambio('#motivo_cambio_usuario');
-    solicitarMotivoCambio('#ubicacion_id');
 
     // Select2
     if (typeof $.fn.select2 !== 'undefined') {

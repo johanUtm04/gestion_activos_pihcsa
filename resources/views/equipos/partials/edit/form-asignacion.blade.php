@@ -6,8 +6,9 @@
             <label for="usuario_id"><i class="fas fa-user-tag"></i> Usuario Responsable</label>
             <select name="usuario_id" id="usuario_id" class="form-control select2" 
                 data-current="{{ $equipo->usuario_id }}"
-                data-label="el usuario responsable"
-                data-placeholder="Seleccione un usuario">
+                    data-label="el usuario responsable"
+                        data-placeholder="Seleccione un usuario"
+                             data-motivo-input="#motivo_cambio_usuario">
                 <option value="">Seleccione...</option>
                 @foreach($usuarios as $usuario) 
                 <option value="{{ $usuario->id }}"
@@ -16,15 +17,16 @@
                 </option>
                 @endforeach
             </select>
-            <input type="hidden" name="motivo_cambio_usuario" id="motivo_cambio_usuario">
+            <input type="hidden" name="" id="motivo_cambio_usuario">
         </div>
 
         <div class="form-group col-md-6">
             <label for="ubicacion_id"><i class="fas fa-map-marker-alt"></i> Ubicacion</label>
             <select name="ubicacion_id" id="ubicacion_id" class="form-control select2" 
-            data-current="{{ $equipo->ubicacion_id }}"
-            data-label="la ubicacion del activo"
-            data-placeholder="Seleccione la ubicacion">
+                data-current="{{ $equipo->ubicacion_id }}"
+                    data-label="la ubicacion actual"
+                        data-placeholder="Seleccione una ubicacion"
+                             data-motivo-input="#motivo_cambio_ubicacion">
                 <option value="">Seleccione...</option>
                 @foreach($ubicaciones as $ubicacion)
                 <option value="{{ $ubicacion->id }}"
@@ -34,7 +36,7 @@
                 @endforeach
             </select>
         </div>
-        <input type="hidden" name="motivo_cambio_ubicacion" id="motivo_cambio_ubicacion">
+        <input type="hidden" name="" id="motivo_cambio_ubicacion">
     </div>
 
     <div class="row">
@@ -43,9 +45,11 @@
             <input type="number" name="valor_inicial" id="valor_inicial" class="form-control"
                 step="0.01"
                 data-current="{{ $equipo->valor_inicial }}"
-                data-label="la Fecha de Adquisición"
-                value="{{ old('valor_inicial', $equipo->valor_inicial) }}">
-            <input type="hidden" name="motivo_cambio_valor" id="motivo_cambio_valor">
+                    data-label="la valor inicial"
+                        data-placeholder="Seleccione un valor"
+                             data-motivo-input="#motivo_cambio_valor"
+                                value="{{ old('valor_inicial', $equipo->valor_inicial) }}">
+            <input type="hidden" name="" id="motivo_cambio_valor">
         </div>
 
         <div class="form-group col-md-4">
@@ -55,10 +59,11 @@
                 id="fecha_adquisicion" 
                 class="form-control"
                 value="{{ old('fecha_adquisicion', $equipo->fecha_adquisicion ? $equipo->fecha_adquisicion->format('Y-m-d') : '') }}"
-                data-current="{{ $equipo->fecha_adquisicion ? $equipo->fecha_adquisicion->format('Y-m-d') : '' }}" 
-                data-motivo-input="#motivo_cambio_fecha" 
-                data-label="la Fecha de Adquisición">
-                <input type="hidden" name="motivo_cambio_fecha" id="motivo_cambio_fecha">
+                data-current="{{ $equipo->fecha_adquisicion }}"
+                    data-label="la fecha de adquisicion actual"
+                        data-placeholder="Seleccione la fecha de adquisicion"
+                             data-motivo-input="#motivo_cambio_fecha">
+                <input type="hidden" name="" id="motivo_cambio_fecha">
         </div>
 
         <div class="form-group col-md-6">
@@ -84,7 +89,12 @@
                     min="1"
                     value="{{ old('vida_util_estimada', $equipo->vida_util_estimada) }}" 
                     {{ $unidadActual ? '' : 'disabled' }}
-                    >
+                    data-current="{{ $equipo->vida_util_estimada }}"
+                        data-label="la vida util estimada"
+                            data-placeholder="Seleccione la fecha"
+                                data-motivo-input="#motivo_cambio_vidaEstimada">
+                    <input type="hidden" name="" id="motivo_cambio_vidaEstimada">
+
             </div>
         </div>
     </div>

@@ -9,7 +9,10 @@
     {{-- MARCA EQUIPO --}}
     <div class="form-group col-md-4">
         <label for="marca_id"><i class="fas fa-tag"></i> Marca del Equipo</label>
-        <select name="marca_id" id="marca_id" class="form-control" data-label="la marca del equipo" data-current="{{ $equipo->marca_id }}">
+        <select name="marca_id" id="marca_id" class="form-control"
+         data-label=" la marca del equipo"
+            data-current="{{ $equipo->marca_id }}"
+                data-motivo-input="#motivo_cambio_marca">
             <option value="">Seleccione una marca</option>
             @foreach($marcas as $item)
                     <option value="{{ $item->id }}" {{ $equipo->marca_id == $item->id ? 'selected' : '' }}>
@@ -17,15 +20,17 @@
                     </option>
             @endforeach
         </select>
-        <input type="hidden" name="motivo_cambio_marca" id="motivo_cambio_marca">
+        <input type="hidden" name="" id="motivo_cambio_marca">
     </div>  
 
     {{-- TIPO EQUIPO --}}
     <div class="form-group col-md-4">
         <label for="tipo_activo_id"><i class="fas fa-tag"></i> Tipo del equipo</label>
-        <select name="tipo_activo_id" id="tipo_activo_id" class="form-control" data-label="el tipo de equipo" data-current="{{ $equipo->tipo_activo_id }}"
-        data-motivo-input="#motivo_cambio_tipo"
-        >
+        <select name="tipo_activo_id" id="tipo_activo_id" class="form-control"
+         data-label=" el tipo de activo"
+            data-current="{{ $equipo->tipo_activo_id }}"
+                data-motivo-input="#motivo_cambio_tipo">
+
             <option value="">Seleccione un tipo de Activo</option>
             @foreach($tiposActivo as $item)
                     <option value="{{ $item->id }}" {{ $equipo->tipo_activo_id == $item->id ? 'selected' : '' }}>
@@ -33,7 +38,7 @@
                     </option>
             @endforeach
         </select>
-        <input type="hidden" name="motivos[tipo_activo_id]" id="motivo_cambio_tipo">
+        <input type="hidden" name="" id="motivo_cambio_tipo">
     </div>  
 
 
@@ -46,18 +51,20 @@
             id="serial" 
             class="form-control @error('serial') is-invalid @enderror" 
             placeholder="Ingrese el serial"
-            data-current="{{ $equipo->serial }}"
-            data-label="el numero serial"
-            value="{{ old('serial', $equipo->serial) }}" 
+                data-current="{{ $equipo->serial }}"
+                    data-label="el numero serial"
+                        value="{{ old('serial', $equipo->serial) }}" 
+                            data-motivo-input="#motivo_cambio_serial"
             required
             style="text-transform: uppercase;"
             onkeyup="this.value = this.value.toUpperCase();">
         
-        @error('serial')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
+            @error('serial')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            <input type="hidden" name="motivos[serial]" id="motivo_cambio_serial">
     </div>
 
 </div>

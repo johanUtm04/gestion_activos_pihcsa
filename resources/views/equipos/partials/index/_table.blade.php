@@ -95,7 +95,7 @@
 
                                     @if($equipo->trashed())
                                         <span class="badge badge-dark mb-1">
-                                        <i class="fas fa-archive mr-1"></i> ARCHIVADO
+                                        <i class="fas fa-archive mr-1"></i> INACTIVADO
                                         </span>
                                     @endif
 
