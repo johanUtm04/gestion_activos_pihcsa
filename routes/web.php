@@ -8,6 +8,7 @@ use App\Http\Controllers\DepreciacionController;  //🤙
 use App\Http\Controllers\GestionUsuariosController;  //🤙    
 use App\Http\Controllers\GestionUbicacionesController;  //🤙    
 use App\Http\Controllers\HistorialController;  //🤙    
+use App\Http\Controllers\SoporteController;  //🤙 
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\TipoActivoController;
 
@@ -116,6 +117,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('reporte-general-equipos', [EquipoController::class, 'exportarGeneral'])->name('equipos.reporte');
+
+    /* --- SOPORTE --- */
+    Route::prefix('soporte')->group(function () {
+        Route::get('/manual', [App\Http\Controllers\SoporteController::class, 'manual'])->name('soporte.manual');
+        Route::get('/contacto', [App\Http\Controllers\SoporteController::class, 'contacto'])->name('soporte.contacto');
+    });
 });
 
 /*

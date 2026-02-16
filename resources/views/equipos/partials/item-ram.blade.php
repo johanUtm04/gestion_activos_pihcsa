@@ -49,7 +49,7 @@
                 <label class="small font-weight-bold">Clock (MHz)</label>
                 <select name="ram[{{ $index }}][clock_mhz]" class="form-control form-control-sm">
                     <option value="">Seleccione...</option>
-                    @foreach([1600, 2133, 2400, 2666, 3000, 3200, 3600, 4800, 5200, 5600, 6000] as $freq)
+                    @foreach([1066, 1333, 1600, 2133, 2400, 2666, 3000, 3200, 3600, 4800, 5200, 5600, 6000] as $freq)
                         <option value="{{ $freq }}" {{ ($ram->clock_mhz ?? '') == $freq ? 'selected' : '' }}>{{ $freq }} MHz</option>
                     @endforeach
                 </select>

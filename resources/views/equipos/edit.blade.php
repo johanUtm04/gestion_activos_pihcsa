@@ -27,7 +27,7 @@
 
             {{-- COLUMNA DERECHA: Formulario --}}
             <div class="col-md-7">
-                <form action="{{ route('equipos.update', $equipo) }}" method="POST">
+                <form action="{{ route('equipos.update', $equipo) }}" method="POST" id="formEditarEquipo">
                     @csrf
                     @method('PUT')
                     
@@ -36,8 +36,8 @@
                     @include('equipos.partials.edit.form-componentes')
 
                     <div class="card-footer text-center bg-transparent">
-                        <button type="submit" class="btn btn-primary btn-block font-weight-bold shadow-sm">
-                            <i class="fas fa-save mr-2"></i>Actualizar Equipo
+                        <button type="submit" id="btnPrevisualizar" class="btn btn-success">
+                            <i class="fas fa-save mr-1"></i> Guardar Cambios
                         </button>
                     </div>
                 </form>
@@ -47,5 +47,8 @@
 @stop
 
 @section('js')
+
+    <!-- // console.log("Prueba rápida: El JS en el Blade sí funciona"); -->
     <script src="{{ asset('js/equipos/edit.js') }}"></script>
+
 @stop

@@ -248,6 +248,7 @@ class EquipoWizardController extends Controller
      * Metodo para crear registro en Base de datos
      * PROCESO FINAL: Consolidacion de datos en Base de Datos.
      * Este m todo vac a la "Memoria Temporal" y crea los registros reales.
+     * Ademas, 
      */
     public function saveProcesador(Request $request, $uuid)
     {
@@ -270,11 +271,7 @@ class EquipoWizardController extends Controller
             abort(403, 'Sesi n inv lida al intentar finalizar el registro.');
         }
 
-        // --- INICIO DE PERSISTENCIA EN BASE DE DATOS ---------------------------
-        // A. Crear el Equipo Base
-        // Usamos el operador spread (...) para traer los datos del equipo y sobreescribimos/a adimos la ubicacion
-        // A. Crear el Equipo Base mapeando manualmente cada campo
-        //Captura del Observer
+        // Se dispara el observer por que se hace un resgitro en la base de datos 
         $equipo = Equipo::create([
             'serial'             => $wizard['equipo']['serial'],
             'usuario_id'         => $wizard['equipo']['usuario_id'],
@@ -283,17 +280,17 @@ class EquipoWizardController extends Controller
             'vida_util_estimada' => $wizard['equipo']['vida_util_estimada'],
             'sistema_operativo'  => $wizard['equipo']['sistema_operativo'],
             'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
-            'marca_id'       => $wizard['equipo']['marca_id'], 
+            'marca_id'              => $wizard['equipo']['marca_id'], 
             'tipo_activo_id'        => $wizard['equipo']['tipo_activo_id'],
-        ]);
+        ]); //De aqui nos vamos derechito al Equipo observer pq se activo el metodo created 
 
         //Crear relaciones de manera silenciosa
         Equipo::withoutEvents(function () use ($equipo, $wizard) {
-        if (!empty($wizard['monitor'])) $equipo->monitores()->create($wizard['monitor']);
-        if (!empty($wizard['disco_duro'])) $equipo->discosDuros()->create($wizard['disco_duro']);
-        if (!empty($wizard['ram'])) $equipo->rams()->create($wizard['ram']);
-        if (!empty($wizard['periferico'])) $equipo->perifericos()->create($wizard['periferico']);
-        if (!empty($wizard['procesador'])) $equipo->procesadores()->create($wizard['procesador']);
+            if (!empty($wizard['monitor'])) $equipo->monitores()->create($wizard['monitor']);
+            if (!empty($wizard['disco_duro'])) $equipo->discosDuros()->create($wizard['disco_duro']);
+            if (!empty($wizard['ram'])) $equipo->rams()->create($wizard['ram']);
+            if (!empty($wizard['periferico'])) $equipo->perifericos()->create($wizard['periferico']);
+            if (!empty($wizard['procesador'])) $equipo->procesadores()->create($wizard['procesador']);
         });
         // --- CIERRE DE PROCESO ---------------------------------------------------
 

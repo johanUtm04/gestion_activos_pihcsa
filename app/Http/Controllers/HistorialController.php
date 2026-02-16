@@ -43,8 +43,6 @@ class HistorialController extends Controller
                 });
             }
 
-
-
         return view('historial.index', compact('ubicaciones', 'equipos', 'usuarios', 'listaParaFiltro'));
     }
 }

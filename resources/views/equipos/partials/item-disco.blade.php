@@ -24,11 +24,6 @@
                     aria-expanded="{{ $estaInactivo ? 'false' : 'true' }}">
                 <i class="fas fa-eye"></i> {{ $estaInactivo ? 'Ver detalles' : 'Contraer' }}
             </button>
-            <button type="button" 
-                    onclick="eliminarComponente(this, 'discoDuro-item')" 
-                    class="btn btn-sm btn-outline-danger">
-                <i class="fas fa-trash"></i>
-            </button>
         </div>
     </div>
 

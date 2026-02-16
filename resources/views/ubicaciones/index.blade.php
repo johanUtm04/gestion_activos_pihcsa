@@ -11,8 +11,7 @@
 @stop
 
 @section('content')
-    @include('users.partials._alerts')
-
+    @include('ubicaciones.partials._filters')
     <div class="row">
         <div class="col-12">
             @include('ubicaciones.partials._table')

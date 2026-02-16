@@ -15,8 +15,7 @@ class TipoActivoController extends Controller
     public function index()
     {
 	$tipo_activo= TipoActivo::paginate(10);
-	return view('tipo_activos.index', compact('tipo_activo'));
-        //
+        return view('tipo_activos.index', compact('tipo_activo'));
     }
 
     //Metodo para cargar formulario de creacion

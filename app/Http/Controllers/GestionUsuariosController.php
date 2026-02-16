@@ -15,11 +15,25 @@ class GestionUsuariosController extends Controller
     const PER_PAGE = 10;
 
     //Metodo para mostrar vista
-    public function index()
-    {
-        $users = User::paginate(self::PER_PAGE);
-        return view('users.index', compact('users'));
+public function index(Request $request)
+{
+    // 1. Iniciamos la consulta
+    $query = User::query(); 
+
+    // 2. Filtro de búsqueda general (Nombre o Email)
+    if ($request->filled('usuario_id')) {
+        $query->where('id', $request->usuario_id);
     }
+
+    // 3. Orden y Paginación (Usando tu constante o un número fijo)
+    $users = $query->orderBy('name', 'asc') 
+    ->paginate(10)
+    ->withQueryString(); 
+
+    $todosLosUsuarios = User::orderBy('name', 'asc')->get();
+
+    return view('users.index', compact('users', 'todosLosUsuarios'));
+}
 
     //Metodo para cargar formulario de creacion
     public function create()

@@ -25,11 +25,11 @@
         body.iframe-mode .preloader {
             display: none !important;
         }
+        /* Cambia el color del botón activo en el sidebar */
         .nav-pills .nav-link.active, 
-        .nav-item.menu-open > .nav-link {
-            background-color: #17a2b8 !important;
-            color: #ffffff !important; 
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); 
+        .nav-pills .show > .nav-link {
+        background-color: #d4d5d7 !important; /* Aquí pon tu color (ej. el cian de antes) */
+        color: #000000 !important;
         }
     </style>
 

@@ -16,10 +16,19 @@ class GestionUbicacionesController extends Controller
     const PER_PAGE = 3;
 
     //Metodo para mostrar vista
-    public function index()
+    public function index(Request $request)
     {
-        $ubicaciones = Ubicacion::paginate(self::PER_PAGE);
-        return view('ubicaciones.index', compact('ubicaciones'));
+    $query = Ubicacion::query(); 
+
+    if ($request->filled('ubicacion_id')) {
+        $query->where('id', $request->ubicacion_id);
+    }
+
+    $ubicaciones = $query->orderBy('nombre', 'asc') 
+    ->paginate(10)
+    ->withQueryString(); 
+
+    return view('ubicaciones.index', compact('ubicaciones'));
     }
 
     //Metodo para cargar formulario de creacion

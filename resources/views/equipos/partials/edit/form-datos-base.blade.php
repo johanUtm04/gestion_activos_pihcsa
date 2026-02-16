@@ -9,7 +9,7 @@
     {{-- MARCA EQUIPO --}}
     <div class="form-group col-md-4">
         <label for="marca_id"><i class="fas fa-tag"></i> Marca del Equipo</label>
-        <select name="marca_id" id="marca_id" class="form-control"
+        <select name="marca_id" id="marca_id" class="form-control "
          data-label=" la marca del equipo"
             data-current="{{ $equipo->marca_id }}"
                 data-motivo-input="#motivo_cambio_marca">
@@ -26,7 +26,7 @@
     {{-- TIPO EQUIPO --}}
     <div class="form-group col-md-4">
         <label for="tipo_activo_id"><i class="fas fa-tag"></i> Tipo del equipo</label>
-        <select name="tipo_activo_id" id="tipo_activo_id" class="form-control"
+        <select name="tipo_activo_id" id="tipo_activo_id" class="form-control "
          data-label=" el tipo de activo"
             data-current="{{ $equipo->tipo_activo_id }}"
                 data-motivo-input="#motivo_cambio_tipo">
@@ -49,10 +49,10 @@
             type="text" 
             name="serial" 
             id="serial" 
-            class="form-control @error('serial') is-invalid @enderror" 
+            class="form-control @error('serial') is-invalid @enderror " 
             placeholder="Ingrese el serial"
                 data-current="{{ $equipo->serial }}"
-                    data-label="el numero serial"
+                    data-label=" el numero serial"
                         value="{{ old('serial', $equipo->serial) }}" 
                             data-motivo-input="#motivo_cambio_serial"
             required

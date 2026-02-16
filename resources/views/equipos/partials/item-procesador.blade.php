@@ -25,12 +25,6 @@
                     aria-expanded="{{ $estaInactivo ? 'false' : 'true' }}">
                 <i class="fas fa-eye"></i> {{ $estaInactivo ? 'Ver detalles' : 'Contraer' }}
             </button>
-            {{-- Botón de eliminar (si lo usas aquí) --}}
-            <button type="button" 
-                    onclick="eliminarComponente(this, 'procesador-item')" 
-                    class="btn btn-sm btn-outline-danger">
-                <i class="fas fa-trash"></i>
-            </button>
         </div>
     </div>
 

@@ -8,43 +8,39 @@ use Illuminate\Support\Facades\Auth;
 
 class EquipoObserver
 {
-    protected $tiposMapeados = [
-        'CREATED' => 'Creacion',
-        'UPDATED' => 'Actualizacion',
-        'DELETED' => 'Eliminacion',
-    ];
+//Arreglo que traduce los tipos de eventos en texto legible
+protected $tiposMapeados = [
+    'CREATED' => 'Creacion',
+    'UPDATED' => 'Actualizacion',
+    'DELETED' => 'Eliminacion',
+];
 
-    protected static $registrado = false;
+//Bandera para evitar que el observer registre el mismo evento varias veces
+protected static $registrado = false;
 
+    //👻Metodo que se ejecuta cuando se crea un equipo
     public function created(Equipo $equipo): void
     {
-        $resumenHardware = [
-            'Procesador'     => $equipo->procesadores->first()->marca ?? 'N/D',
-            'RAM'            => ($equipo->rams->first()->capacidad ?? 'N/D') . ' ' . ($equipo->rams->first()->tipo_memoria ?? ''),
-            'Almacenamiento' => ($equipo->discosDuros->first()->capacidad ?? 'N/D') . ' ' . ($equipo->discosDuros->first()->tipo_disco ?? ''),
-            'Monitor'        => $equipo->monitores->first()->marca ?? 'N/D',
-            'Periferico'     => $equipo->perifericos->first()->tipo ?? 'N/D',
-        ];
-
-        // dd($resumenHardware);
-
-        $hardwareString = collect($resumenHardware)
-        ->map(fn($v, $k) => "$k: $v")
-        ->implode(' | ');
-
+        //Si ya se regirto algo antes salir
         if (self::$registrado) return;
-
+        //refrescar el modelo
         $equipo->refresh();
+        //Cargar Relaciones
         $equipo->load(['marca', 'tipoActivo', 'usuario']);
+        //Marca como ejecutado
         self::$registrado = true;
     }
 
     public function updated(Equipo $equipo)
     {
+        //inicializamos variables
         $antes   = null;
         $despues = null;
 
+        //Si cambia algo del modelo 
         if (self::$registrado) return;
+
+        $motivoPrincipal = request()->input('motivo_cambio', 'Actualización de especificaciones');
 
         if ($equipo->isDirty()) {
             $cambios = [];
@@ -124,7 +120,7 @@ class EquipoObserver
                     'usuario_accion_id' => Auth::id() ?? 1,
                     'tipo_registro'     => $this->tiposMapeados['UPDATED'],
                     'detalles_json'     => [
-                        'mensaje' => 'Actualización de especificaciones',
+                        'mensaje' => $motivoPrincipal,
                         'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
                         'cambios' => $cambios
                     ]

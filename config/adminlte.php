@@ -304,15 +304,16 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => false,
         ],
-        ['header' => 'account_settings'],
-
+        ['header' => 'Acciones Principales'],
         //Inicio
         [
             'text' => 'Inicio',
             'url' => '/equipos',
             'icon' => 'fas fa-boxes',
+            'icon_color' => 'primary',
             'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
             'active' => ['equipos*'],
+
         ],
         //Mi Perfil
         [
@@ -327,6 +328,7 @@ return [
             'text' => 'Calcular_depreciacion',
             'url' => '/depreciacion',
             'icon' => 'fas fa-dollar-sign',
+            'icon_color' => 'success',
             'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
             'active' => ['depreciacion*'],
         ],
@@ -372,6 +374,20 @@ return [
             'icon' => 'fas fa-history',
             'can'  => ['access-admin', 'access-sistemas'],
             'active' => ['historial*'],
+        ],
+
+        ['header' => 'SOPORTE Y AYUDA'],
+        [
+            'text' => 'Guía / Manual',
+            'icon' => 'fas fa-question-circle',
+            'icon_color' => 'info',
+            'route'  => 'soporte.manual',
+        ],
+        [
+            'text' => 'Contacto / Ayuda',
+            'icon' => 'fas fa-headset',
+            'icon_color' => 'success',
+            'route'  => 'soporte.contacto',
         ],
 
     ],

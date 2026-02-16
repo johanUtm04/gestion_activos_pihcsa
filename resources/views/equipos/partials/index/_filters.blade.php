@@ -8,7 +8,7 @@
     
     <div class="card-tools">
         <button type="button" class="btn btn-tool text-info">
-            <i class="fas fa-minus" id="toggle-icon"></i>
+            <i class="fas fa-plus" id="toggle-icon"></i>
         </button>
     </div>
 </div>

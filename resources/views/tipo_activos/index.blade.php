@@ -11,8 +11,7 @@
 @stop
 
 @section('content')
-    {{-- Sistema global de alertas --}}
-    @include('users.partials._alerts')
+    @include('tipo_activos.partials._filters')
 
     <div class="row">
         <div class="col-12">
@@ -26,5 +25,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('js/tipo_activos/index.js') }}"></script>
+    <script src="{{ asset('js/tipo-activos/index.js') }}"></script>
 @stop
