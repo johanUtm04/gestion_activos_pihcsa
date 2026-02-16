@@ -58,26 +58,34 @@
                         </thead>
                         <tbody>
                             @forelse($equipos as $equipo)
-                            <tr id="equipo-{{ $equipo->id }}" 
-                                class="equipo-row {{ request('filter') !== 'inactivos' ? 'clickable-row' : '' }} {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
-                                data-url="{{ route('equipos.show', $equipo->id) }}"
-                                data-id="{{ $equipo->id }}"
-                                data-marca="{{ $equipo->marca?->nombre ?? 'Genérica' }}"
-                                data-tipo="{{ $equipo->tipoActivo?->nombre ?? 'Generico' }}"
-                                data-serial="{{ $equipo->serial }}"
-                                data-so="{{ $equipo->sistema_operativo }}"
-                                data-usuario="{{ $equipo->usuario->name ?? 'Sin asignar' }}"
-                                data-email="{{ $equipo->usuario->email ?? '-' }}"
-                                data-ubicacion="{{ $equipo->ubicacion->nombre ?? 'Sin ubicación' }}"
-                                data-valor="{{ number_format($equipo->valor_inicial, 2) }}"
-                                data-fecha="{{ $equipo->fecha_adquisicion ?? 'Sin registro' }}"
-                                data-vida="{{ $equipo->vida_util_estimada ?? 'N/A' }}"
-                                data-monitores="{{ $equipo->monitores->count() }}"
-                                data-discos="{{ $equipo->discosDuros->count() }}"
-                                data-ram="{{ $equipo->rams->pluck('capacidad_gb')->implode('GB, ') }}GB"
-                                data-perifericos="{{ $equipo->perifericos->pluck('tipo')->implode(', ') }}"
-                                data-procesadores="{{ $equipo->procesadores->count() }}"
-                                style="cursor: pointer;">
+                        <tr id="equipo-{{ $equipo->id }}" 
+                            class="equipo-row {{ request('filter') !== 'inactivos' ? 'clickable-row' : '' }} {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
+                            data-url="{{ route('equipos.show', $equipo->id) }}"
+                            data-id="{{ $equipo->id }}"
+                            data-marca="{{ $equipo->marca?->nombre ?? 'Genérica' }}"
+                            data-tipo="{{ $equipo->tipoActivo?->nombre ?? 'Generico' }}"
+                            data-serial="{{ $equipo->serial }}"
+                            data-so="{{ $equipo->sistema_operativo }}"
+                            data-usuario="{{ $equipo->usuario->name ?? 'Sin asignar' }}"
+                            data-email="{{ $equipo->usuario->email ?? '-' }}"
+                            data-ubicacion="{{ $equipo->ubicacion->nombre ?? 'Sin ubicación' }}"
+                            data-valor="{{ number_format($equipo->valor_inicial, 2) }}"
+                            data-fecha="{{ $equipo->fecha_adquisicion ?? 'Sin registro' }}"
+                            data-vida="{{ $equipo->vida_util_estimada ?? 'N/A' }}"
+
+                            data-discos="{{ $equipo->discosDuros->where('is_active', 1)->count() }}"
+                            data-procesadores="{{ $equipo->procesadores->where('is_active', 1)->count() }}"
+                            data-monitores="{{ $equipo->monitores->where('is_active', 1)->count() }}"
+
+                            data-discos_inactivos="{{ $equipo->discosDuros->where('is_active', 0)->count() }}"
+                            data-procesadores_inactivos="{{ $equipo->procesadores->where('is_active', 0)->count() }}"
+                            data-monitores_inactivos="{{ $equipo->monitores->where('is_active', 0)->count() }}"
+                            data-perifericos_inactivos="{{ $equipo->perifericos->where('is_active', 0)->pluck('tipo')->implode(', ') }}"
+
+                            data-ram="{{ $equipo->rams->where('is_active', 1)->pluck('capacidad_gb')->implode('GB, ') }}GB"
+                            data-perifericos="{{ $equipo->perifericos->where('is_active', 1)->pluck('tipo')->implode(', ') }}"
+                            
+                            style="cursor: pointer;">
                                 
                                 <td class="text-center font-weight-bold text-muted">{{ $equipo->id }}</td>
                                 <td>

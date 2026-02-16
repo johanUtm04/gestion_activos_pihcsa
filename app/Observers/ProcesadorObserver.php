@@ -25,7 +25,7 @@ class ProcesadorObserver
         //Manda x o y dependiendo si es 0 o 1 
         $tipoRegistro = $esActivo ? 'componente-extra Procesador' : 'INACTIVACION';
 
-    $mensaje = $esActivo 
+        $mensaje = $esActivo 
         ? "⚡ SE AGREGÓ COMPONENTE EXTRA: " . $procesador->marca 
         : "⚠️ COMPONENTE INSTALADO INACTIVO: " . $procesador->marca;
 
@@ -43,7 +43,7 @@ class ProcesadorObserver
                     'antes'   => 'N/A (Nuevo)',
                     'despues' => $esActivo ? ' Activo' : ' Inactivo'
                 ],
-                'Motivo' => [
+                'Especificaciones ' => [
                     'antes'   => '-',
                     'despues' => $procesador->motivo_inactivo ?? 'Instalacion inicial'
                 ],
