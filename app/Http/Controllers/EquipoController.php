@@ -179,16 +179,18 @@ class EquipoController extends Controller
 
     $equipo->update($data);
 
-    if (!empty($cambiosDetectados)) {
-            Historial_log::create([
-                'activo_id'     => $equipo->id,
-                'usuario_accion_id' =>$equipo->usuario_id,
-                'tipo_registro' => 'Actualización',
-                'detalles_json' => ['cambios' => $cambiosDetectados],
-                'user_id'       => auth()->id(),
-                'created_at'    => now()
-            ]);
-        }
+    // dd("El equipo ya se actualizó. Revisa la base de datos. ¿Ya existe un log gris?");
+
+    // if (!empty($cambiosDetectados)) {
+    //         Historial_log::create([
+    //             'activo_id'     => $equipo->id,
+    //             'usuario_accion_id' =>$equipo->usuario_id,
+    //             'tipo_registro' => 'Actualización',
+    //             'detalles_json' => ['cambios' => $cambiosDetectados],
+    //             'user_id'       => auth()->id(),
+    //             'created_at'    => now()
+    //         ]);
+    //     }
 
         $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
         $this->syncRelation($equipo->rams(),         $request->input('ram', []));

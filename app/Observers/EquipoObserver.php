@@ -40,7 +40,7 @@ protected static $registrado = false;
         //Si cambia algo del modelo 
         if (self::$registrado) return;
 
-        $motivoPrincipal = request()->input('motivo_cambio', 'Actualización de especificaciones');
+        $motivoPrincipal = ('Actualizacion de especificaciones');
 
         if ($equipo->isDirty()) {
             $cambios = [];
