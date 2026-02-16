@@ -168,6 +168,7 @@
                                 <option value="Linux">Linux</option>
                                 <option value="macOS">macOS</option>
                                 <option value="Android">Android</option>
+                                <option value="N/A">N/A</option>
                             </select>
                         </div>
 
