@@ -128,14 +128,7 @@ function solicitarMotivoCambio(selector) {
 }
 
     // Activar -- (id)
-    solicitarMotivoCambio('#marca_id');
-    solicitarMotivoCambio('#tipo_activo_id');
-    solicitarMotivoCambio('#usuario_id');
-    solicitarMotivoCambio('#ubicacion_id');
-    solicitarMotivoCambio('#valor_inicial');
-    solicitarMotivoCambio('#fecha_adquisicion');
-    solicitarMotivoCambio('#vida_util_input');
-    solicitarMotivoCambio('#serial');
+
 
     // Select2
     if (typeof $.fn.select2 !== 'undefined') {

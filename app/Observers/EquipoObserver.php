@@ -37,16 +37,19 @@ protected static $registrado = false;
         $antes   = null;
         $despues = null;
 
+        
         //Si cambia algo del modelo 
         if (self::$registrado) return;
 
         $motivoPrincipal = ('Actualizacion de especificaciones');
 
+        $camposIgnorar = ['updated_at', 'created_at'];
+
         if ($equipo->isDirty()) {
             $cambios = [];
             
             foreach ($equipo->getDirty() as $atributo => $nuevoValor) {
-                if ($atributo === 'updated_at') continue;
+                if (in_array($atributo, $camposIgnorar)) continue;
 
                 $valorAnterior = $equipo->getOriginal($atributo);
                 $label = \Illuminate\Support\Str::headline($atributo);
@@ -65,14 +68,6 @@ protected static $registrado = false;
                     $tipoCampo = 'hardware';
                     $meta = $mapeoHardware[$atributo];
                 }
-
-                $cambios[$label] = [
-                    'antes'   => $antes,
-                    'despues' => $despues,
-                    'tipo'    => $tipoCampo,
-                    'color'   => $meta['color'] ?? 'orange',
-                    'icon'    => $meta['icon'] ?? 'fa-edit'
-                ];
 
                 // --- Lógica de Mapeo de IDs a Nombres Reales ---
                 if ($atributo === 'marca_id') {

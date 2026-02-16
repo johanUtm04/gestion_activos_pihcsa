@@ -164,33 +164,7 @@ class EquipoController extends Controller
             $data['vida_util_estimada'] = $request->vida_util_estimada . ' ' . $request->vida_util_unidad;
         }
 
-        $cambiosDetectados = [];
-        foreach ($data as $campo => $nuevoValor) {
-        $valorAnterior = $viejosDatos[$campo] ?? null;
-
-        if ($nuevoValor != $valorAnterior) {
-            $cambiosDetectados[$campo] = [
-                'antes'   => $valorAnterior,
-                'despues' => $nuevoValor,
-                'motivo'  => $motivos[$campo] ?? 'Sin motivo especificado' 
-            ];
-        }
-    }
-
-    $equipo->update($data);
-
-    // dd("El equipo ya se actualizó. Revisa la base de datos. ¿Ya existe un log gris?");
-
-    // if (!empty($cambiosDetectados)) {
-    //         Historial_log::create([
-    //             'activo_id'     => $equipo->id,
-    //             'usuario_accion_id' =>$equipo->usuario_id,
-    //             'tipo_registro' => 'Actualización',
-    //             'detalles_json' => ['cambios' => $cambiosDetectados],
-    //             'user_id'       => auth()->id(),
-    //             'created_at'    => now()
-    //         ]);
-    //     }
+       $equipo->update($data); //Salimos al observador
 
         $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
         $this->syncRelation($equipo->rams(),         $request->input('ram', []));

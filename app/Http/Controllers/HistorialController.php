@@ -23,15 +23,14 @@ class HistorialController extends Controller
         $query = Historial_log::with(['equipo', 'usuario']);
         $ubicaciones = \App\Models\Ubicacion::all();
         $equipos = \App\Models\Equipo::with(['historials.usuario', 'usuario', 'tipoActivo'])
-        ->when($request->usuario_id, function ($query) use ($request) {
-            $query->where('usuario_id', $request->usuario_id);
-        })
-        ->when($request->equipo_id, function ($query) use ($request) {
-            $query->where('id', $request->equipo_id);
-        })
-        ->latest()
-        ->paginate(10);
-
+            ->when($request->usuario_id, function ($query) use ($request) {
+                $query->where('usuario_id', $request->usuario_id);
+            })
+            ->when($request->equipo_id, function ($query) use ($request) {
+                $query->where('id', $request->equipo_id);
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(10);
 
         if ($request->filled('tipo_registro')) {
         $query->where('tipo_registro', $request->tipo_registro);
