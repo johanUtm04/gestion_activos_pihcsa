@@ -7,7 +7,7 @@
     <h1 class="font-weight-bold mb-1">
         <i class="fas fa-pen-square text-warning"></i> Editar Activo
     </h1>
-    <a href="{{ route('equipos.index') }}" class="btn btn-secondary btn-sm">
+    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver al inventario
     </a>
 </div>

@@ -195,47 +195,16 @@ class EquipoWizardController extends Controller
             session()->put('wizard_equipo.ram', $datos);
         }
 
-        return redirect()->route('equipos.wizard-periferico', $uuid);
+        return redirect()->route('equipos.wizard-procesador', $uuid);
     }
 
     /**
      * PASO 6: Perifiricos.
      */
-    public function perifericoForm($uuid)
-    {
-        $wizard = session('wizard_equipo');
-        if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
-
-        $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-periferico', compact('equipo', 'uuid'));
-    }
-
-    public function savePeriferico(Request $request, $uuid)
-    {
-        $request->validate([
-            'tipo' => 'nullable|string',
-            'marca' => 'nullable|string',
-            'serial' => 'nullable|string',
-            'interface' => 'nullable|string',
-        ]);
-
-        $datos = array_filter($request->only(['tipo', 'marca', 'serial', 'interface']));
-
-        if (empty($datos)) {
-            session()->forget('wizard_equipo.periferico');
-        } else {
-            session()->put('wizard_equipo.periferico', $datos);
-        }
-
-        return redirect()->route('equipos.wizard-procesador', $uuid);
-    }
-
-    /**
-     * Metodo para cargar formulario de creacion
-     * PASO 7: Formulario de Procesador.
-     * Ultima etapa de recoleccion de datos antes del guardado definitivo.
+ /**
+     * PASO: Formulario de Procesador (Ahora es el penúltimo)
      */
-    public function ProcesadorForm($uuid)
+    public function procesadorForm($uuid)
     {
         $wizard = session('wizard_equipo');
         if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
@@ -245,10 +214,7 @@ class EquipoWizardController extends Controller
     }
 
     /**
-     * Metodo para crear registro en Base de datos
-     * PROCESO FINAL: Consolidacion de datos en Base de Datos.
-     * Este m todo vac a la "Memoria Temporal" y crea los registros reales.
-     * Ademas, 
+     * Guarda Procesador y salta a Periférico
      */
     public function saveProcesador(Request $request, $uuid)
     {
@@ -266,12 +232,49 @@ class EquipoWizardController extends Controller
             session()->put('wizard_equipo.procesador', $datos);
         }
 
+        // REDIRIGE AL ÚLTIMO PASO: Periférico
+        return redirect()->route('equipos.wizard-periferico', $uuid);
+    }
+
+    /**
+     * PASO FINAL: Formulario de Periférico
+     */
+    public function perifericoForm($uuid)
+    {
         $wizard = session('wizard_equipo');
-        if (!$wizard || $wizard['uuid'] !== $uuid) {
-            abort(403, 'Sesi n inv lida al intentar finalizar el registro.');
+        if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
+
+        $equipo = data_get($wizard, 'equipo');
+        return view('equipos.wizard-periferico', compact('equipo', 'uuid'));
+    }
+
+    /**
+     * PROCESO FINAL: Guarda Periférico y consolida todo en la Base de Datos
+     */
+    public function savePeriferico(Request $request, $uuid)
+    {
+        $request->validate([
+            'tipo' => 'nullable|string',
+            'marca' => 'nullable|string',
+            'serial' => 'nullable|string',
+            'interface' => 'nullable|string',
+        ]);
+
+        $datos = array_filter($request->only(['tipo', 'marca', 'serial', 'interface']));
+
+        if (empty($datos)) {
+            session()->forget('wizard_equipo.periferico');
+        } else {
+            session()->put('wizard_equipo.periferico', $datos);
         }
 
-        // Se dispara el observer por que se hace un resgitro en la base de datos 
+        // Recuperar toda la sesión acumulada
+        $wizard = session('wizard_equipo');
+        if (!$wizard || $wizard['uuid'] !== $uuid) {
+            abort(403, 'Sesión inválida al intentar finalizar el registro.');
+        }
+
+        // 1. Crear el registro principal del Equipo
         $equipo = Equipo::create([
             'serial'             => $wizard['equipo']['serial'],
             'usuario_id'         => $wizard['equipo']['usuario_id'],
@@ -280,11 +283,11 @@ class EquipoWizardController extends Controller
             'vida_util_estimada' => $wizard['equipo']['vida_util_estimada'],
             'sistema_operativo'  => $wizard['equipo']['sistema_operativo'],
             'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
-            'marca_id'              => $wizard['equipo']['marca_id'], 
-            'tipo_activo_id'        => $wizard['equipo']['tipo_activo_id'],
-        ]); //De aqui nos vamos derechito al Equipo observer pq se activo el metodo created 
+            'marca_id'           => $wizard['equipo']['marca_id'], 
+            'tipo_activo_id'     => $wizard['equipo']['tipo_activo_id'],
+        ]);
 
-        //Crear relaciones de manera silenciosa
+        // 2. Crear relaciones (Monitor, RAM, Disco, etc.) de manera silenciosa
         Equipo::withoutEvents(function () use ($equipo, $wizard) {
             if (!empty($wizard['monitor'])) $equipo->monitores()->create($wizard['monitor']);
             if (!empty($wizard['disco_duro'])) $equipo->discosDuros()->create($wizard['disco_duro']);
@@ -292,60 +295,31 @@ class EquipoWizardController extends Controller
             if (!empty($wizard['periferico'])) $equipo->perifericos()->create($wizard['periferico']);
             if (!empty($wizard['procesador'])) $equipo->procesadores()->create($wizard['procesador']);
         });
-        // --- CIERRE DE PROCESO ---------------------------------------------------
 
-        session()->forget('wizard_equipo');
-
-        $equipo->refresh(); 
-
+        // 3. Generar el Resumen de Hardware para el LOG
         $equipo->load(['procesadores', 'rams', 'discosDuros', 'monitores', 'perifericos', 'marca', 'tipoActivo', 'usuario']);
+        
         $resumenHardware = [
             'Procesador' => $equipo->procesadores->first() 
-                ? collect([
-                    $equipo->procesadores->first()->marca,
-                    $equipo->procesadores->first()->descripcion_tipo 
-                        ? '(' . $equipo->procesadores->first()->descripcion_tipo . ')' 
-                        : null,
-                ])->filter()->implode(' ') 
+                ? collect([$equipo->procesadores->first()->marca, $equipo->procesadores->first()->descripcion_tipo ? '(' . $equipo->procesadores->first()->descripcion_tipo . ')' : null])->filter()->implode(' ') 
                 : 'No asignado',
-
             'RAM' => $equipo->rams->first() 
-                ? collect([
-                    $equipo->rams->first()->capacidad_gb ? $equipo->rams->first()->capacidad_gb . 'GB' : null,
-                    $equipo->rams->first()->tipo_ram ? '[' . $equipo->rams->first()->tipo_ram . ']' : null, 
-                    $equipo->rams->first()->clock_mhz ? $equipo->rams->first()->clock_mhz . 'MHz' : null,
-                ])->filter()->implode(' • ')
+                ? collect([$equipo->rams->first()->capacidad_gb . 'GB', '[' . $equipo->rams->first()->tipo_ram . ']', $equipo->rams->first()->clock_mhz . 'MHz'])->filter()->implode(' • ')
                 : 'No detectada',
-
             'Disco Duro' => $equipo->discosDuros->first() 
-                ? collect([
-                    $equipo->discosDuros->first()->capacidad,
-                    $equipo->discosDuros->first()->tipo_hdd_ssd, 
-                    $equipo->discosDuros->first()->interface ? '[' . $equipo->discosDuros->first()->interface . ']' : null,
-                ])->filter()->implode(' • ') 
+                ? collect([$equipo->discosDuros->first()->capacidad, $equipo->discosDuros->first()->tipo_hdd_ssd, '[' . $equipo->discosDuros->first()->interface . ']'])->filter()->implode(' • ') 
                 : 'No detectado',
-
             'Monitor' => $equipo->monitores->first() 
-                ? collect([
-                    $equipo->monitores->first()->marca,
-                    $equipo->monitores->first()->escala_pulgadas ? $equipo->monitores->first()->escala_pulgadas . '"' : null,
-                    $equipo->monitores->first()->interface ? '[' . $equipo->monitores->first()->interface . ']' : null,
-                ])->filter()->implode(' • ') 
+                ? collect([$equipo->monitores->first()->marca, $equipo->monitores->first()->escala_pulgadas . '"', '[' . $equipo->monitores->first()->interface . ']'])->filter()->implode(' • ') 
                 : 'No detectado',
-
             'Periferico' => $equipo->perifericos->first() 
-                ? collect([
-                    $equipo->perifericos->first()->tipo,
-                    $equipo->perifericos->first()->marca ? '• ' . $equipo->perifericos->first()->marca : null,
-                    $equipo->perifericos->first()->interface ? '[' . $equipo->perifericos->first()->interface . ']' : null,
-                ])->filter()->implode(' ') 
+                ? collect([$equipo->perifericos->first()->tipo, $equipo->perifericos->first()->marca ? '• ' . $equipo->perifericos->first()->marca : null, '[' . $equipo->perifericos->first()->interface . ']'])->filter()->implode(' ') 
                 : 'No detectado',
         ];
 
-        $hardwareString = collect($resumenHardware)
-            ->map(fn($v, $k) => "$k: $v")
-            ->implode(' | ');
+        $hardwareString = collect($resumenHardware)->map(fn($v, $k) => "$k: $v")->implode(' | ');
 
+        // 4. Crear el Historial Log
         Historial_log::create([
             'activo_id'         => $equipo->id,
             'usuario_accion_id' => auth()->id() ?? 1,
@@ -367,18 +341,18 @@ class EquipoWizardController extends Controller
             ]
         ]);
 
+        // Limpiar sesión
+        session()->forget('wizard_equipo');
+
+        // Calcular paginación para el redirect
         $perPage = 11;
         $position = Equipo::where('id', '<=', $equipo->id)->count();
         $page = ceil($position / $perPage);
 
         return redirect()->route('equipos.index', ['page' => $page])
-        ->with('success', 'Equipo Creado Correctamente
-        <a href="#" class="btn-success-alert">
-        <i class="fas fa-eye mr-1"></i> Ver Registro
-        </a>')
-        ->with('new_id', $equipo->id);
-    }
-   
+            ->with('success', 'Equipo Creado Correctamente')
+            ->with('new_id', $equipo->id);
+    }   
     
 
 }

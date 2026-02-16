@@ -33,7 +33,7 @@
 <div class="mb-3">
     <div class="d-flex justify-content-between align-items-center">
 
-    <a href="{{ route('equipos.index') }}" class="btn btn-secondary btn-sm">
+    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver al inventario
     </a>
     </div>

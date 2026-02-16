@@ -105,10 +105,10 @@
         </ol>
     </div>
     <div>
-        <!-- <button onclick="window.print();" class="btn btn-dark btn-lg shadow-sm">
+        <button onclick="window.print();" class="btn btn-dark btn-lg shadow-sm">
             <i class="fas fa-print mr-2"></i> Generar Documento
-        </button> -->
-    <a href="{{ route('equipos.index') }}" class="btn btn-secondary btn-sm">
+        </button>
+    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver al inventario
     </a>
     </div>

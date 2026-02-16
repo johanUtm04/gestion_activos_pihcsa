@@ -50,7 +50,7 @@
             </h1>
         </div>
 
-        <a href="{{ route('equipos.wizard-ram', $uuid) }}" class="btn btn-outline-secondary">
+        <a href="{{ route('equipos.wizard-procesador', $uuid) }}" class="btn btn-outline-secondary">
             <i class="fas fa-chevron-left"></i> Anterior
         </a>
     </div>
@@ -93,6 +93,13 @@
             <a href="{{ route('equipos.wizard-ram', $uuid) }}">
                <i class="fas fa-memory"></i>
                 <div>Ram</div>
+            </a>
+            </div>
+
+            <div class="wizard-step completed">
+            <a href="{{ route('equipos.wizard-procesador', $uuid) }}">
+               <i class="fas fa-microchip"></i>
+                <div>Procesador</div>
             </a>
             </div>
 
@@ -220,15 +227,10 @@
 
             {{-- FOOTER --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="{{ route('equipos.wizard-procesador', $uuid) }}" class="btn btn-outline-secondary btn-lg">
-                    <i class="fas fa-fast-forward"></i> Omitir Periféricos
-                </a>
-
-                <button type="submit" class="btn btn-info btn-lg px-5">
-                    <i class="fas fa-arrow-right"></i> Continuar
+                <button type="submit" class="btn btn-success btn-lg px-5 shadow">
+                    <i class="fas fa-check-double"></i> Finalizar y Guardar Activo
                 </button>
             </div>
-
         </form>
 
     </div>

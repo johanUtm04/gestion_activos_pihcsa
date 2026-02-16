@@ -51,7 +51,7 @@
             </h1>
         </div>
 
-        <a href="{{ route('equipos.wizard-periferico', $uuid) }}" class="btn btn-outline-secondary">
+        <a href="{{ route('equipos.wizard-ram', $uuid) }}" class="btn btn-outline-secondary">
             <i class="fas fa-chevron-left"></i> Anterior
         </a>
     </div>
@@ -94,13 +94,6 @@
             <a href="{{ route('equipos.wizard-ram', $uuid) }}">
                <i class="fas fa-memory"></i>
                 <div>Ram</div>
-            </a>
-            </div>
-
-            <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-periferico', $uuid) }}">
-              <i class="fas fa-mouse"></i> 
-                <div>Periferico</div>
             </a>
             </div>
 
@@ -216,12 +209,17 @@
             </fieldset>
 
             {{-- FOOTER FINAL --}}
+
+            {{-- FOOTER --}}
             <div class="d-flex justify-content-between mt-4">
-                <button type="submit" class="btn btn-success btn-lg px-5 shadow">
-                    <i class="fas fa-check-double"></i> Finalizar y Guardar Activo
+                <a href="{{ route('equipos.wizard-periferico', $uuid) }}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-fast-forward"></i> Omitir Procesador
+                </a>
+
+                <button type="submit" class="btn btn-warning btn-lg px-5">
+                    <i class="fas fa-arrow-right"></i> Continuar
                 </button>
             </div>
-
         </form>
 
     </div>
