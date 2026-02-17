@@ -345,7 +345,7 @@ class EquipoWizardController extends Controller
         session()->forget('wizard_equipo');
 
         // Calcular paginación para el redirect
-        $perPage = 11;
+        $perPage = 10;
         $position = Equipo::where('id', '<=', $equipo->id)->count();
         $page = ceil($position / $perPage);
 
