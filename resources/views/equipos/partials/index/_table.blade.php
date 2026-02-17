@@ -25,18 +25,20 @@
         @endif
 
         @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert" style="border: none; border-left: 5px solid #1e7e34;">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert" style="border: none; border-left: 5px solid #1e7e34; background-color: #d4edda; color: #155724;">
                 <i class="fas fa-check-circle fa-2x mr-3 opacity-8"></i>
                 <div class="flex-grow-1">
-                    <span class="h5 mb-0" style="vertical-align: middle;">
+                    <span class="mb-0" style="vertical-align: middle;">
+                        {{-- Solo usamos {!! !!} si confiamos plenamente en que el HTML viene del controlador controlado --}}
                         {!! session('success') !!}
                     </span>
                 </div>
-                <button type="button" class="close position-relative" data-dismiss="alert" aria-label="Close" style="padding: 0 1rem;">
-                    <span aria-hidden="true" class="text-white">&times;</span>
+                <button type="button" class="close position-relative" data-dismiss="alert" aria-label="Close" style="padding: 0 1rem; color: #155724;">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        @endif  <!--fin Flash Data -->
+        @endif
+         <!--fin Flash Data -->
         
 
         <div class="card card-outline card-info shadow-sm">
@@ -90,8 +92,14 @@
                                     @if(session('actualizado_id') == $equipo->id)
                                         <span class="badge badge-warning">Editado</span>
                                     @endif
+
                                     @if(session('new_id') == $equipo->id)
                                         <span class="badge badge-success">Nuevo Activo</span>
+                                    @endif
+
+                                        
+                                    @if(session('actualizado_factura') == $equipo->id)
+                                        <span class="badge badge-success">Factura</span>
                                     @endif
 
                                     @if(session('new_mantenimiento') == $equipo->id)

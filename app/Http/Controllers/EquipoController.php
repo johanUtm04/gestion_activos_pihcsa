@@ -432,8 +432,13 @@ class EquipoController extends Controller
         $equipo->numero_factura = $request->input('numero_factura');
         $equipo->save();    
 
-        return redirect()->route('equipos.index')
-            ->with('success', 'Factura actualizada y registrada en el historial.');
+        $perPage = 10;
+        $position = Equipo::where('id', '<=', $equipo->id)->count();
+        $page = ceil($position / $perPage);
+
+        return redirect()->route('equipos.index', ['page' => $page])
+        ->with('success', "<strong>Mantenimiento Registrado:</strong> Se agregó una nueva orden de trabajo para el activo {$equipo->serial}.")
+        ->with('actualizado_factura', $equipo->id);
     }
 
 }
