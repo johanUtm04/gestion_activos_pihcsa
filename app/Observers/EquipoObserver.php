@@ -33,6 +33,29 @@ protected static $registrado = false;
 
     public function updated(Equipo $equipo)
     {
+
+        // Verificamos si el campo numero_factura fue el que cambió
+        if ($equipo->wasChanged('numero_factura')) {
+            
+            $antes = $equipo->getOriginal('numero_factura') ?? 'N/A';
+            $despues = $equipo->numero_factura;
+
+            \App\Models\Historial_log::create([
+                'activo_id'         => $equipo->id,
+                'usuario_accion_id' => auth()->id() ?? 1,
+                'tipo_registro'     => 'Actualizacion Factura',
+                'detalles_json'     => [
+                    'mensaje' => 'Se vinculó o modificó el número de factura del activo.',
+                    'cambios' => [
+                        'Numero de Factura' => [
+                            'antes'   => $antes,
+                            'despues' => $despues
+                        ]
+                    ]
+                ]
+            ]);
+        };
+
         //inicializamos variables
         $antes   = null;
         $despues = null;
@@ -123,6 +146,9 @@ protected static $registrado = false;
                 self::$registrado = true;
             }
         }
+
+
+
     }
 
     public function deleting(Equipo $equipo)

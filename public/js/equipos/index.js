@@ -99,9 +99,15 @@ $('.equipo-row').on('mouseenter', function() {
                     </p>
                 ` : ''}
             </div>
-
             <div class="section-divider">Datos Económicos</div>
             <div class="p-3 bg-light">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="small font-weight-bold text-muted">Número Factura</span>
+                    <span class="small badge badge-secondary">
+                        <i class="fas fa-file-invoice-dollar mr-1"></i>
+                        ${d.numero_factura || 'No asignada'}
+                    </span>
+                </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span class="small font-weight-bold text-muted">Valor de Adquisición</span>
                     <span class="text-success font-weight-bold">$${d.valor}</span>

@@ -123,6 +123,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/manual', [App\Http\Controllers\SoporteController::class, 'manual'])->name('soporte.manual');
         Route::get('/contacto', [App\Http\Controllers\SoporteController::class, 'contacto'])->name('soporte.contacto');
     });
+
+    /* --- GESTIÓN DE FACTURACIÓN (FLUJO EXTRA) --- */
+    Route::get('/equipos/{equipo}/factura', [EquipoController::class, 'indexFactura'])->name('equipos.edit_factura');
+    Route::post('/equipos/{equipo}/factura', [EquipoController::class, 'saveFactura'])->name('equipos.update_factura');
 });
 
 /*

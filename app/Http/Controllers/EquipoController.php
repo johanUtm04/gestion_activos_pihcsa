@@ -416,4 +416,24 @@ class EquipoController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
+
+    public function indexFactura(Equipo $equipo)
+    {
+        return view('equipos.factura', compact('equipo'));
+    }
+
+
+    public function saveFactura(Request $request, Equipo $equipo)
+    {
+        $request->validate([
+            'numero_factura' => 'required|string|max:50|unique:equipos,numero_factura,' . $equipo->id,
+        ]);
+
+        $equipo->numero_factura = $request->input('numero_factura');
+        $equipo->save();    
+
+        return redirect()->route('equipos.index')
+            ->with('success', 'Factura actualizada y registrada en el historial.');
+    }
+
 }

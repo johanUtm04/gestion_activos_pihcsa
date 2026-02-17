@@ -31,6 +31,7 @@ class Equipo extends Model
         'marca_equipo','marca_id',
         'tipo_equipo','tipo_activo_id',
         'serial',
+        'numero_factura',
         'sistema_operativo',
         'usuario_id',
         'ubicacion_id',

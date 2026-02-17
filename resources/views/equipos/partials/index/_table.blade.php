@@ -72,19 +72,16 @@
                             data-valor="{{ number_format($equipo->valor_inicial, 2) }}"
                             data-fecha="{{ $equipo->fecha_adquisicion ?? 'Sin registro' }}"
                             data-vida="{{ $equipo->vida_util_estimada ?? 'N/A' }}"
-
                             data-discos="{{ $equipo->discosDuros->where('is_active', 1)->count() }}"
                             data-procesadores="{{ $equipo->procesadores->where('is_active', 1)->count() }}"
                             data-monitores="{{ $equipo->monitores->where('is_active', 1)->count() }}"
-
                             data-discos_inactivos="{{ $equipo->discosDuros->where('is_active', 0)->count() }}"
                             data-procesadores_inactivos="{{ $equipo->procesadores->where('is_active', 0)->count() }}"
                             data-monitores_inactivos="{{ $equipo->monitores->where('is_active', 0)->count() }}"
                             data-perifericos_inactivos="{{ $equipo->perifericos->where('is_active', 0)->pluck('tipo')->implode(', ') }}"
-
                             data-ram="{{ $equipo->rams->where('is_active', 1)->pluck('capacidad_gb')->implode('GB, ') }}GB"
                             data-perifericos="{{ $equipo->perifericos->where('is_active', 1)->pluck('tipo')->implode(', ') }}"
-                            
+                            data-numero_factura="{{ $equipo->numero_factura ?? 'No asignada' }}"
                             style="cursor: pointer;">
                                 
                                 <td class="text-center font-weight-bold text-muted">{{ $equipo->id }}</td>
@@ -142,17 +139,24 @@
                                             </a>
                                         @endcan
 
+                                        @can('mantenimiento-equipo')
+                                            <a href="{{ route('equipos.edit_factura', $equipo) }}" class="btn btn-sm btn-default text-success" title="Asignar Factura">
+                                                <i class="fas fa-file-invoice-dollar"></i>
+                                            </a>
+                                        @endcan
+
                                         <a href="{{ route('equipos.show', ['uuid' => $equipo->id]) }}" class="btn btn-sm btn-default text-info" title="Ver Ficha">
                                             <i class="fas fa-eye"></i>
                                         </a>
+
                                         @can('eliminar-equipo')
                                         <div class="d-inline"> {{-- Cambia el div por d-inline para que no rompa la fila --}}
-                                            <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" class="d-inline" title="Inactivar">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="motivo" id="motivo_hidden_{{ $equipo->id }}">
                                                 <button type="button" 
-                                                        class="btn btn-sm btn-default text-secondary btn-inactivar" 
+                                                        class="btn btn-sm btn-default text-danger btn-inactivar" 
                                                         data-nombre="{{ $equipo->tipoActivo?->nombre }} - {{ $equipo->serial }}"
                                                         data-motivo-input="#motivo_hidden_{{ $equipo->id }}"
                                                         onclick="ejecutarInactivacion(this)">
