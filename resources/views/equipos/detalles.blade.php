@@ -7,6 +7,7 @@
     :root {
         --primary-gradient: linear-gradient(135deg, #1e5799 0%, #2989d8 50%, #207cca 100%);
         --success-soft: #e8f5e9;
+        --info-soft: #e3f2fd;
         --border-radius-lg: 12px;
     }
 
@@ -18,9 +19,7 @@
         background: #fff;
     }
 
-    .info-card:hover {
-        transform: translateY(-2px);
-    }
+    .info-card:hover { transform: translateY(-2px); }
 
     .label-header {
         color: #8392a5;
@@ -56,13 +55,6 @@
         border-radius: 8px;
     }
 
-    .status-badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.85rem;
-    }
-
     .component-item {
         background: #f8f9fa;
         border-radius: 8px;
@@ -71,24 +63,24 @@
         border-left: 4px solid #28a745;
     }
 
+    .factura-badge {
+        background-color: var(--info-soft);
+        color: #007bff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid #b3e5fc;
+        font-weight: bold;
+    }
+
     @media print {
         .no-print { display: none !important; }
         .main-sidebar, .main-header, .main-footer { display: none !important; }
         .content-wrapper { margin-left: 0 !important; padding: 0 !important; background: white !important; }
-        
-        .info-card {
-            box-shadow: none !important;
-            border: 1px solid #eee !important;
-        }
-        
+        .info-card { box-shadow: none !important; border: 1px solid #eee !important; }
         body { background: white !important; font-size: 12pt; }
         .section-title { border-bottom: 2px solid #333 !important; }
         .component-item { border: 1px solid #ddd !important; border-left: 5px solid #333 !important; }
-        
-        .print-signature {
-            display: block !important;
-            margin-top: 80px;
-        }
+        .print-signature { display: block !important; margin-top: 80px; }
     }
 
     .print-signature { display: none; }
@@ -100,7 +92,7 @@
     <div>
         <h1 class="m-0 text-dark font-weight-bold">Ficha Técnica Digital</h1>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Equipos</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('equipos.index') }}">Equipos</a></li>
             <li class="breadcrumb-item active">Ficha #{{ $equipo->serial }}</li>
         </ol>
     </div>
@@ -108,9 +100,9 @@
         <button onclick="window.print();" class="btn btn-dark btn-lg shadow-sm">
             <i class="fas fa-print mr-2"></i> Generar Documento
         </button>
-    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
-        <i class="fas fa-arrow-left"></i> Volver al inventario
-    </a>
+        <a href="{{ url()->previous() }}" class="btn btn-secondary btn-lg shadow-sm">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
     </div>
 </div>
 @stop
@@ -118,41 +110,52 @@
 @section('content')
 <div class="container-fluid">
     
-    {{-- BLOQUE 1: HEADER DE IDENTIFICACIÓN --}}
+    {{-- BLOQUE 1: IDENTIFICACIÓN Y DATOS ECONÓMICOS --}}
     <div class="card info-card mb-4 border-top border-success" style="border-top-width: 4px !important;">
         <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-md-auto text-center pr-md-5 border-right">
+            <div class="row">
+                <div class="col-md-3 text-center border-right">
                     <div class="label-header">Código de Activo</div>
-                    <div class="h3 font-weight-bold text-success mb-0">{{ $equipo->serial }}</div>
-                    
+                    <div class="h3 font-weight-bold text-success mb-2">{{ $equipo->serial }}</div>
+                    <div class="label-header">Factura Asociada</div>
+                    @if($equipo->numero_factura)
+                        <span class="factura-badge"><i class="fas fa-file-invoice-dollar mr-1"></i> {{ $equipo->numero_factura }}</span>
+                    @else
+                        <span class="badge badge-light text-muted border">Sin Factura</span>
+                    @endif
                 </div>
                 
-                <div class="col-md pl-md-5">
+                <div class="col-md-9 pl-md-4">
                     <div class="row">
                         <div class="col-sm-4 mb-3">
                             <div class="label-header">Tipo de Dispositivo</div>
-                            <div class="value-text"><i class="fas fa-laptop mr-1"></i> {{ $equipo->tipoActivo?->nombre ?? 'No disponible'}}</div>
+                            <div class="value-text"><i class="fas fa-laptop mr-1"></i> {{ $equipo->tipoActivo?->nombre ?? 'N/A'}}</div>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="label-header">Fabricante / Modelo</div>
-                            <div class="value-text">{{ $equipo->marca?->nombre ?? 'No disponible'}}</div>
+                            <div class="value-text">{{ $equipo->marca?->nombre ?? 'Genérico'}}</div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <div class="label-header">Fecha Asignación</div>
-                            <div class="value-text text-muted">{{ $equipo->fecha_adquisicion ?? 'Sin Fecha' }}</div>
+                            <div class="label-header">Fecha Adquisición</div>
+                            <div class="value-text text-muted">{{ $equipo->fecha_adquisicion ?? 'No registrada' }}</div>
                         </div>
                     </div>
                     <div class="row border-top pt-3">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="label-header">Usuario Responsable</div>
                             <div class="value-text text-primary">
-                                <i class="fas fa-user-circle mr-1"></i> {{ $equipo->usuario->name ?? 'Disponible en Inventario' }}
+                                <i class="fas fa-user-circle mr-1"></i> {{ $equipo->usuario->name ?? 'Disponible' }}
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="label-header">Departamento / Ubicación</div>
                             <div class="value-text"><i class="fas fa-map-marker-alt mr-1"></i> {{ $equipo->ubicacion->nombre ?? 'N/A' }}</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="label-header">Sistema Operativo</div>
+                            <div class="value-text text-info">
+                                <i class="fab fa-windows mr-1"></i> {{ $equipo->sistema_operativo ?? 'No especificado' }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,11 +164,11 @@
     </div>
 
     <div class="row">
-        {{-- BLOQUE 2: HARDWARE (CPU/RAM/DISCO) --}}
+        {{-- BLOQUE 2: HARDWARE --}}
         <div class="col-lg-7">
             <div class="card info-card">
                 <div class="card-body">
-                    <h5 class="section-title"><i class="fas fa-microchip"></i> Especificaciones de Hardware</h5>
+                    <h5 class="section-title"><i class="fas fa-microchip"></i> Arquitectura de Hardware</h5>
                     
                     <div class="row mb-4">
                         <div class="col-md-6">
@@ -176,7 +179,7 @@
                                     <div class="text-sm">{{ $cpu->descripcion_tipo }}</div>
                                 </div>
                             @empty
-                                <div class="text-muted italic">No hay CPUs registrados</div>
+                                <div class="text-muted p-2 italic">Sin CPUs registrados</div>
                             @endforelse
                         </div>
                         <div class="col-md-6">
@@ -187,16 +190,16 @@
                                     <div class="text-sm">{{ $ram->tipo_chz }} @ {{ $ram->clock_mhz }} MHz</div>
                                 </div>
                             @empty
-                                <div class="text-muted italic">Sin memoria RAM registrada</div>
+                                <div class="text-muted p-2 italic">Sin RAM registrada</div>
                             @endforelse
                         </div>
                     </div>
 
-                    <h5 class="section-title"><i class="fas fa-database"></i> Unidades de Almacenamiento</h5>
+                    <h5 class="section-title"><i class="fas fa-database"></i> Almacenamiento</h5>
                     <div class="table-responsive">
-                        <table class="table table-hover border">
-                            <thead class="bg-light text-center text-xs uppercase font-weight-bold">
-                                <tr>
+                        <table class="table table-sm table-hover border">
+                            <thead class="bg-light">
+                                <tr class="text-center text-xs uppercase font-weight-bold">
                                     <th>Capacidad</th>
                                     <th>Tecnología</th>
                                     <th>Interface</th>
@@ -210,7 +213,7 @@
                                         <td>{{ $disco->interface }}</td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="3" class="text-muted text-center">Sin discos registrados</td></tr>
+                                    <tr><td colspan="3" class="text-muted">Sin discos registrados</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -219,32 +222,27 @@
             </div>
         </div>
 
-        {{-- BLOQUE 3: MONITORES Y PERIFÉRICOS --}}
+        {{-- BLOQUE 3: PERIFÉRICOS --}}
         <div class="col-lg-5">
             <div class="card info-card">
                 <div class="card-body">
-                    <h5 class="section-title"><i class="fas fa-desktop"></i> Pantallas Asociadas</h5>
+                    <h5 class="section-title"><i class="fas fa-desktop"></i> Pantallas</h5>
                     @forelse($equipo->monitores->where('is_active', 1) as $monitor)
-                        <div class="p-3 mb-3 border rounded shadow-sm bg-light">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <span class="badge badge-dark mb-1">{{ $monitor->marca }}</span>
-                                    <div class="h5 mb-0 font-weight-bold">{{ $monitor->escala_pulgadas }}" Pulgadas</div>
-                                    <small class="text-muted">Serial: {{ $monitor->serial }}</small>
-                                </div>
-                                <i class="fas fa-tv fa-2x text-light"></i>
+                        <div class="p-2 mb-2 border rounded bg-light d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge badge-dark">{{ $monitor->marca }}</span>
+                                <span class="font-weight-bold ml-1">{{ $monitor->escala_pulgadas }}"</span>
+                                <div class="text-xs text-muted">S/N: {{ $monitor->serial }}</div>
                             </div>
-                            <div class="mt-2 text-xs text-uppercase font-weight-bold text-success">
-                                <i class="fas fa-plug mr-1"></i> {{ $monitor->interface }}
-                            </div>
+                            <i class="fas fa-tv text-secondary opacity-5"></i>
                         </div>
                     @empty
-                        <div class="alert alert-light text-center border">Sin monitores registrados</div>
+                        <div class="alert alert-light text-center border text-sm">Sin monitores</div>
                     @endforelse
 
                     <h5 class="section-title mt-4"><i class="fas fa-mouse"></i> Periféricos</h5>
                     <div class="table-responsive">
-                        <table class="table table-sm table-striped">
+                        <table class="table table-sm">
                             <tbody class="text-sm">
                                 @forelse($equipo->perifericos->where('is_active', 1) as $peri)
                                     <tr>
@@ -253,7 +251,7 @@
                                         <td class="text-right text-muted"><small>{{ $peri->serial }}</small></td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="3" class="text-center">No hay periféricos registrados</td></tr>
+                                    <tr><td colspan="3" class="text-center text-muted">Sin periféricos</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -263,32 +261,28 @@
         </div>
     </div>
 
-    {{-- FOOTER / NOTAS --}}
-    <div class="card info-card mt-3 mb-5">
-        <div class="card-body py-3 bg-light rounded shadow-inner">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <p class="text-muted small mb-0 italic">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        Este documento es una representación técnica oficial del activo <strong>#{{ $equipo->serial }}</strong>. 
-                        Cualquier modificación de hardware debe ser reportada al departamento de TI.
-                        Generado el {{ date('d/m/Y H:i') }}.
-                    </p>
-                </div>
+    {{-- FOOTER LEGAL --}}
+    <div class="row no-print">
+        <div class="col-12">
+            <div class="alert alert-info border-0 shadow-sm">
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>Trazabilidad:</strong> Este activo está vinculado a la factura <strong>{{ $equipo->numero_factura ?? 'PENDIENTE' }}</strong> y tiene un valor inicial de <strong>${{ number_format($equipo->valor_inicial, 2) }}</strong>.
             </div>
         </div>
     </div>
 
-    {{-- SECCIÓN DE FIRMAS (SOLO IMPRESIÓN) --}}
+    {{-- SECCIÓN DE FIRMAS --}}
     <div class="print-signature container-fluid">
         <div class="row mt-5 pt-5 text-center">
             <div class="col-6">
                 <div style="border-top: 2px solid #000; width: 80%; margin: 0 auto;"></div>
-                <p class="mt-2 font-weight-bold">Firma de Responsable TI</p>
+                <p class="mt-2 font-weight-bold">Responsable TI</p>
+                <small>{{ Auth::user()->name }}</small>
             </div>
             <div class="col-6">
                 <div style="border-top: 2px solid #000; width: 80%; margin: 0 auto;"></div>
-                <p class="mt-2 font-weight-bold">Firma de Recibido (Usuario)</p>
+                <p class="mt-2 font-weight-bold">Usuario Final</p>
+                <small>{{ $equipo->usuario->name ?? '_______________________' }}</small>
             </div>
         </div>
     </div>
