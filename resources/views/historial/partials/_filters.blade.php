@@ -28,7 +28,7 @@
                         </select>
                     </div>
                 </div>
-
+            
                 {{-- Filtro por ID del equipo --}}
                 <div class="col-md-4">
                     <div class="form-group mb-md-0">
@@ -45,7 +45,6 @@
                         </select>
                     </div>
                 </div>
-
                 {{-- Botones de Acción --}}
                 <div class="col-md-4">
                     <div class="d-flex">

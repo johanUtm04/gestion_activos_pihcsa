@@ -356,8 +356,8 @@ class EquipoWizardController extends Controller
             $page = ceil($position / $perPage);
 
             return redirect()->route('equipos.index', ['page' => $page])
-                ->with('success', 'Equipo Creado Correctamente')
-                ->with('new_id', $equipo->id);
+            ->with('success', 'Equipo Creado Correctamente :v')
+            ->with('new_id', $equipo->id);
     }   
     
 

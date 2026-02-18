@@ -24,19 +24,29 @@
             </div>
         @endif
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert" style="border: none; border-left: 5px solid #1e7e34; background-color: #d4edda; color: #155724;">
-                <i class="fas fa-check-circle fa-2x mr-3 opacity-8"></i>
-                <div class="flex-grow-1">
-                    <span class="mb-0" style="vertical-align: middle;">
-                        {{-- Solo usamos {!! !!} si confiamos plenamente en que el HTML viene del controlador controlado --}}
-                        {!! session('success') !!}
-                    </span>
+    @if(session('success') && session('new_id'))
+        <div class="callout callout-success shadow-sm mb-4" style="border-left-width: 5px;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="text-success font-weight-bold">
+                        <i class="fas fa-check-circle mr-2"></i> ¡Registro Completado!
+                    </h5>
+                    <p class="mb-0 text-muted">
+                        El equipo ha sido dado de alta correctamente. ¿Deseas verificar los detalles en el historial?
+                    </p>
                 </div>
-                <button type="button" class="close position-relative" data-dismiss="alert" aria-label="Close" style="padding: 0 1rem; color: #155724;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="ml-3">
+                    <a href="{{ route('historial.index', ['equipo_id' => session('new_id')]) }}" 
+                    class="btn btn-success btn-lg elevation-2 px-4 font-weight-bold"
+                    style="transition: all 0.3s ease; text-decoration: none;">
+                        <i class="fas fa-history mr-2"></i> Ver Historial #{{ session('new_id') }}
+                    </a>
+                </div>
             </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         @endif
          <!--fin Flash Data -->
         
