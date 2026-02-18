@@ -346,7 +346,6 @@ class EquipoWizardController extends Controller
                 ]
             ]);
 
-
             // Limpiar sesión
             session()->forget('wizard_equipo');
 
@@ -356,7 +355,7 @@ class EquipoWizardController extends Controller
             $page = ceil($position / $perPage);
 
             return redirect()->route('equipos.index', ['page' => $page])
-            ->with('success', 'Equipo Creado Correctamente :v')
+            ->with('success', 'Equipo Creado Correctamente')
             ->with('new_id', $equipo->id);
     }   
     

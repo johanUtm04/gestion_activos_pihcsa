@@ -311,16 +311,16 @@ class EquipoController extends Controller
         'usuario_asignado' => $historial->name ?? 'conexion mal hecha we',
         'rol' => $historial->rol ?? 'conexion mal hecha amor',
         'cambios'          => [
-        'Detalles del Servicio' => [
-        'antes'   => 'N/A',
-        'despues' => "<div class='text-left'>" . 
-        "Tipo de Evento: {$data['tipo_evento']}<br>" .
-        "Usuario que realizó: {$nombreUsuario}<br>" .
-        "Fecha de Evento: {$data['fecha_evento']}<br>" .
-        "Contexto del Evento: " . ($data['contexto'] ?? 'N/A') . "<br>" .
-        "Costo: $" . ($data['costo'] ?? '0.00') .
-        "</div>"
-        ]  
+            'Detalles del Servicio' => [
+                'antes'   => 'N/A',
+                'despues' => "<div class='text-left'>" . 
+                    "{$data['tipo_evento']}<br>" .
+                    "{$nombreUsuario}<br>" .
+                    "{$data['fecha_evento']}<br>" .
+                    ($data['contexto'] ?? 'N/A') . "<br>" .
+                    "$" . ($data['costo'] ?? '0.00') .
+                    "</div>"
+            ]
         ]
         ]
         ]);
@@ -329,7 +329,8 @@ class EquipoController extends Controller
         $position = Equipo::where('id', '<=', $equipo->id)->count();
         $page = ceil($position / $perPage);
 
-        return redirect()->route('equipos.index', ['page' => $page])->with('secondary', 'Mantenimiento registrado')
+        return redirect()->route('equipos.index', ['page' => $page])
+        ->with('secondary', 'Mantenimiento registrado')
         ->with('new_mantenimiento', $equipo->id);
     }
 

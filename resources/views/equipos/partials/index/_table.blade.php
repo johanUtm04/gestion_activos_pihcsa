@@ -26,6 +26,9 @@
 
     @if(session('success') && session('new_id'))
         <div class="callout callout-success shadow-sm mb-4" style="border-left-width: 5px;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+                <span aria-hidden="true">&times;</span>
+            </button>
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <h5 class="text-success font-weight-bold">
@@ -43,11 +46,34 @@
                     </a>
                 </div>
             </div>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
         @endif
+
+        @if(session('secondary') && session('new_mantenimiento'))
+            <div class="callout callout-info shadow-sm mb-4" style="border-left-width: 5px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="text-info font-weight-bold">
+                            <i class="fas fa-tools mr-2"></i> ¡Mantenimiento Registrado!
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            Se ha añadido una nueva bitácora de servicio al equipo. ¿Deseas revisarla ahora?
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        <a href="{{ route('historial.index', ['equipo_id' => session('new_mantenimiento')]) }}" 
+                        class="btn btn-info btn-lg elevation-2 px-4 font-weight-bold"
+                        style="transition: all 0.3s ease; text-decoration: none;">
+                            <i class="fas fa-eye mr-2"></i> Ver Historial #{{ session('new_mantenimiento') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
+
          <!--fin Flash Data -->
         
 
