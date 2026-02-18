@@ -261,8 +261,8 @@ class EquipoWizardController extends Controller
             'interface' => 'nullable|string',
         ]);
 
+        //Llenar sesion de perifericos
         $datos = array_filter($request->only(['tipo', 'marca', 'serial', 'interface']));
-
         if (empty($datos)) {
             session()->forget('wizard_equipo.periferico');
         } else {
@@ -275,8 +275,8 @@ class EquipoWizardController extends Controller
             abort(403, 'Sesión inválida al intentar finalizar el registro.');
         }
 
-        // 1. Crear el registro principal del Equipo
-        $equipo = Equipo::create([
+        // 4. Instanciar el Equipo (Sin guardarlo aún)
+        $equipo = new \App\Models\Equipo([
             'serial'             => $wizard['equipo']['serial'],
             'usuario_id'         => $wizard['equipo']['usuario_id'],
             'valor_inicial'      => $wizard['equipo']['valor_inicial'],
@@ -284,64 +284,16 @@ class EquipoWizardController extends Controller
             'vida_util_estimada' => $wizard['equipo']['vida_util_estimada'],
             'sistema_operativo'  => $wizard['equipo']['sistema_operativo'],
             'modelo'             => $wizard['equipo']['modelo'],
-            'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
             'marca_id'           => $wizard['equipo']['marca_id'], 
             'tipo_activo_id'     => $wizard['equipo']['tipo_activo_id'],
+            'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
         ]);
 
-        // 2. Crear relaciones (Monitor, RAM, Disco, etc.) de manera silenciosa
-        Equipo::withoutEvents(function () use ($equipo, $wizard) {
-            if (!empty($wizard['monitor'])) $equipo->monitores()->create($wizard['monitor']);
-            if (!empty($wizard['disco_duro'])) $equipo->discosDuros()->create($wizard['disco_duro']);
-            if (!empty($wizard['ram'])) $equipo->rams()->create($wizard['ram']);
-            if (!empty($wizard['periferico'])) $equipo->perifericos()->create($wizard['periferico']);
-            if (!empty($wizard['procesador'])) $equipo->procesadores()->create($wizard['procesador']);
-        });
+        //cargar la mochila, 
+        $equipo->datos_wizard = $wizard;
 
-        // 3. Generar el Resumen de Hardware para el LOG
-        $equipo->load(['procesadores', 'rams', 'discosDuros', 'monitores', 'perifericos', 'marca', 'tipoActivo', 'usuario']);
-        
-        $resumenHardware = [
-            'Procesador' => $equipo->procesadores->first() 
-                ? collect([$equipo->procesadores->first()->marca, $equipo->procesadores->first()->descripcion_tipo ? '(' . $equipo->procesadores->first()->descripcion_tipo . ')' : null])->filter()->implode(' ') 
-                : 'No asignado',
-            'RAM' => $equipo->rams->first() 
-                ? collect([$equipo->rams->first()->capacidad_gb . 'GB', '[' . $equipo->rams->first()->tipo_ram . ']', $equipo->rams->first()->clock_mhz . 'MHz'])->filter()->implode(' • ')
-                : 'No detectada',
-            'Disco Duro' => $equipo->discosDuros->first() 
-                ? collect([$equipo->discosDuros->first()->capacidad, $equipo->discosDuros->first()->tipo_hdd_ssd, '[' . $equipo->discosDuros->first()->interface . ']'])->filter()->implode(' • ') 
-                : 'No detectado',
-            'Monitor' => $equipo->monitores->first() 
-                ? collect([$equipo->monitores->first()->marca, $equipo->monitores->first()->escala_pulgadas . '"', '[' . $equipo->monitores->first()->interface . ']'])->filter()->implode(' • ') 
-                : 'No detectado',
-            'Periferico' => $equipo->perifericos->first() 
-                ? collect([$equipo->perifericos->first()->tipo, $equipo->perifericos->first()->marca ? '• ' . $equipo->perifericos->first()->marca : null, '[' . $equipo->perifericos->first()->interface . ']'])->filter()->implode(' ') 
-                : 'No detectado',
-        ];
-
-        $hardwareString = collect($resumenHardware)->map(fn($v, $k) => "$k: $v")->implode(' | ');
-
-        // 4. Crear el Historial Log
-        Historial_log::create([
-            'activo_id'         => $equipo->id,
-            'usuario_accion_id' => auth()->id() ?? 1,
-            'tipo_registro'     => 'Creacion',
-            'detalles_json'     => [
-                'mensaje' => 'Registro integral de nuevo activo y componentes.',
-                'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
-                'cambios' => [
-                    'Usuario Asignado'     => ['antes' => 'N/A', 'despues' => $equipo->usuario->name ?? 'No encontrado'],
-                    'Marca del Equipo'     => ['antes' => 'N/A', 'despues' => $equipo->marca->nombre ?? 'No generado'],
-                    'Tipo de Activo'       => ['antes' => 'N/A', 'despues' => $equipo->tipoActivo?->nombre ?? 'No disponible'],
-                    'Serial'               => ['antes' => 'N/A', 'despues' => $equipo->serial ?? 'No registrado'],
-                    'Hardware Inicial'     => ['antes' => 'N/A', 'despues' => $hardwareString],
-                    'Sistema Operativo'    => ['antes' => 'N/A', 'despues' => str_replace('|', ' ', $equipo->sistema_operativo)],
-                    'Valor Inicial'        => ['antes' => 'N/A', 'despues' => '$' . number_format($equipo->valor_inicial, 2)],
-                    'Fecha de Adquisicion' => ['antes' => 'N/A', 'despues' => $equipo->fecha_adquisicion ?? 'No disponible'],
-                    'Vida Util estimada'   => ['antes' => 'N/A', 'despues' => ($equipo->vida_util_estimada ?? 0) . ' años'],
-                ]
-            ]
-        ]);
+        //Disparar TODO
+        $equipo->save();
 
         // Limpiar sesión
         session()->forget('wizard_equipo');

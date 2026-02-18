@@ -133,7 +133,10 @@
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="label-header">Fabricante / Modelo</div>
-                            <div class="value-text">{{ $equipo->marca?->nombre ?? 'Genérico'}}</div>
+                            <div class="value-text">
+                                <span class="font-weight-bold text-dark">{{ $equipo->marca?->nombre ?? 'Genérico' }}</span>
+                                <span class="text-muted">| {{ $equipo->modelo ?? 'S/M' }}</span>
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="label-header">Fecha Adquisición</div>

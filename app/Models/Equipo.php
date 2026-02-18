@@ -20,6 +20,8 @@ class Equipo extends Model
 {
     use HasFactory, SoftDeletes;
     protected $dates = ['deleted_at'];
+
+    public $datos_wizard;
     
     protected $casts = [
     'fecha_adquisicion' => 'date',
