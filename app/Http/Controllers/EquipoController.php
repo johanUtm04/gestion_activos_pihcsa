@@ -64,7 +64,8 @@ class EquipoController extends Controller
 
         $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
         ->orderBy('created_at', 'asc') 
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString();
 
         $ubicaciones = Ubicacion::all();
         $usuarios = User::all();
