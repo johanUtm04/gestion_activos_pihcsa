@@ -146,15 +146,16 @@
 
                         <div class="form-group">
                             <label for="tipo_select"><i class="fas fa-mouse-pointer"></i> Tipo de Periférico</label>
+                            @php
+                            $tiposPeriferico = ['Mouse','Teclado','Combo','Webcam','Audífonos','Otro'];
+                            @endphp
                             <select id="tipo_select" class="form-control">
-                                <option value="" selected>Seleccione tipo</option>
-                                <option value="Teclado">Teclado</option>
-                                <option value="Mouse">Mouse</option>
-                                <option value="Combo (Teclado+Mouse)">Combo (Teclado+Mouse)</option>
-                                <option value="Webcam">Webcam</option>
-                                <option value="Diadema / Headset">Diadema / Headset</option>
-                                <option value="OTRO_VALOR">-- Otro (Escribir) --</option>
+                                <option value="">Seleccione tipo</option>
+                                @foreach($tiposPeriferico as $tipo)
+                                    <option value="{{ $tipo }}">{{ $tipo }}</option>
+                                @endforeach
                             </select>
+
                             
                             <input type="text" name="tipo" id="tipo_input" 
                                    class="form-control custom-input" 
@@ -166,16 +167,19 @@
                         <div class="form-group">
                             <label for="marca_select"><i class="fas fa-tag"></i> Marca</label>
                             <select id="marca_select" class="form-control">
-                                <option value="" selected>Seleccione marca</option>
+                                <option value="">Seleccione marca</option>
                                 <option value="Logitech">Logitech</option>
                                 <option value="HP">HP</option>
                                 <option value="Dell">Dell</option>
                                 <option value="Lenovo">Lenovo</option>
-                                <option value="Genius">Genius</option>
                                 <option value="Microsoft">Microsoft</option>
-                                <option value="OTRO_VALOR">-- Otra marca (Escribir) --</option>
+                                <option value="Genius">Genius</option>
+                                <option value="Razer">Razer</option>
+                                <option value="Corsair">Corsair</option>
+                                <option value="HyperX">HyperX</option>
+                                <option value="Redragon">Redragon</option>
+                                <option value="Otra">Otra</option>
                             </select>
-
                             <input type="text" name="marca" id="marca_input" 
                                    class="form-control custom-input" 
                                    placeholder="Escriba la marca..."
@@ -205,13 +209,16 @@
                             <label for="interface_select"><i class="fas fa-plug"></i> Interfaz</label>
                             <select id="interface_select" class="form-control">
                                 <option value="">Seleccione interfaz</option>
+
                                 <option value="USB">USB</option>
                                 <option value="Bluetooth">Bluetooth</option>
-                                <option value="Inalámbrico (Receptor USB)">Inalámbrico (Receptor USB)</option>
+                                <option value="Wireless USB Receiver">Wireless USB Receiver</option>
                                 <option value="Jack 3.5mm">Jack 3.5mm</option>
                                 <option value="PS/2">PS/2</option>
-                                <option value="OTRO_VALOR">-- Otra interfaz (Escribir) --</option>
+                                <option value="USB-C">USB-C</option>
+                                <option value="Otro">Otro</option>
                             </select>
+
 
                             <input type="text" name="interface" id="interface_input" 
                                    class="form-control custom-input" 

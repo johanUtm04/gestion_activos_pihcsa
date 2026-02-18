@@ -135,16 +135,22 @@
                             <label for="capacidad_select"><i class="fas fa-tachometer-alt"></i> Capacidad (GB)</label>
                             <select id="capacidad_select" class="form-control">
                                 <option value="" selected>Seleccione capacidad</option>
+
+                                <option value="1">1 GB</option>
+                                <option value="2">2 GB</option>
+                                <option value="3">3 GB</option>
                                 <option value="4">4 GB</option>
+                                <option value="6">6 GB</option>
                                 <option value="8">8 GB</option>
                                 <option value="12">12 GB</option>
                                 <option value="16">16 GB</option>
+                                <option value="24">24 GB</option>
                                 <option value="32">32 GB</option>
+                                <option value="48">48 GB</option>
                                 <option value="64">64 GB</option>
+                                <option value="96">96 GB</option>
                                 <option value="128">128 GB</option>
-                                <option value="OTRO_VALOR">-- Otra capacidad (Escribir) --</option>
                             </select>
-                            
                             <input type="text" name="capacidad_gb" id="capacidad_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. 2, 24, etc."
@@ -156,24 +162,29 @@
                             <label for="clock_select"><i class="fas fa-clock"></i> Velocidad (MHz)</label>
                             <select id="clock_select" class="form-control">
                                 <option value="">Seleccione velocidad</option>
+
                                 <optgroup label="DDR3">
+                                    <option value="1066">1066 MHz</option>
                                     <option value="1333">1333 MHz</option>
                                     <option value="1600">1600 MHz</option>
                                 </optgroup>
+
                                 <optgroup label="DDR4">
                                     <option value="2133">2133 MHz</option>
                                     <option value="2400">2400 MHz</option>
                                     <option value="2666">2666 MHz</option>
+                                    <option value="3000">3000 MHz</option>
                                     <option value="3200">3200 MHz</option>
+                                    <option value="3600">3600 MHz</option>
                                 </optgroup>
+
                                 <optgroup label="DDR5">
                                     <option value="4800">4800 MHz</option>
                                     <option value="5200">5200 MHz</option>
+                                    <option value="5600">5600 MHz</option>
                                     <option value="6000">6000 MHz</option>
                                 </optgroup>
-                                <option value="OTRO_VALOR">-- Otra velocidad (Escribir) --</option>
                             </select>
-
                             <input type="text" name="clock_mhz" id="clock_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. 1066, 3600"
@@ -190,14 +201,20 @@
                             <label for="tipo_select"><i class="fas fa-sitemap"></i> Tipo / Generación</label>
                             <select id="tipo_select" class="form-control">
                                 <option value="">Seleccione tipo</option>
+
+                                <option value="DDR2">DDR2</option>
                                 <option value="DDR3">DDR3</option>
                                 <option value="DDR3L">DDR3L (Low Voltage)</option>
                                 <option value="DDR4">DDR4</option>
+                                <option value="DDR4L">DDR4L (Low Voltage)</option>
                                 <option value="DDR5">DDR5</option>
-                                <option value="LPDDR4">LPDDR4 (Integrada)</option>
-                                <option value="OTRO_VALOR">-- Otro tipo (Escribir) --</option>
-                            </select>
 
+                                <option value="LPDDR3">LPDDR3 (Integrada)</option>
+                                <option value="LPDDR4">LPDDR4 (Integrada)</option>
+                                <option value="LPDDR4X">LPDDR4X (Integrada)</option>
+                                <option value="LPDDR5">LPDDR5 (Integrada)</option>
+                                <option value="LPDDR5X">LPDDR5X (Integrada)</option>
+                            </select>
                             <input type="text" name="tipo_chz" id="tipo_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. SDRAM, DDR2"

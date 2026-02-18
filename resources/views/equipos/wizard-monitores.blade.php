@@ -38,7 +38,6 @@
         opacity: 0.25;
     }
 
-    /* Estilo para los campos de "Otro" que inician ocultos */
     .custom-input { display: none; margin-top: 10px; }
 </style>
 @stop
@@ -121,22 +120,39 @@
                             <label for="marca_select"><i class="fas fa-tag"></i> Marca</label>
                             <select id="marca_select" class="form-control">
                                 <option value="" selected>Seleccione la marca</option>
+
                                 <optgroup label="Cómputo">
                                     <option value="Dell">Dell</option>
                                     <option value="HP">HP</option>
                                     <option value="Lenovo">Lenovo</option>
                                     <option value="Samsung">Samsung</option>
                                     <option value="LG">LG</option>
+                                    <option value="MSI">MSI</option>
+                                    <option value="Gigabyte">Gigabyte</option>
+                                    <option value="Huawei">Huawei</option>
+                                    <option value="Xiaomi">Xiaomi</option>
                                 </optgroup>
-                                <optgroup label="Especializadas">
-                                    <option value="Asus">Asus</option>
+
+                                <optgroup label="Especializadas / Monitores">
+                                    <option value="ASUS">ASUS</option>
                                     <option value="Acer">Acer</option>
                                     <option value="BenQ">BenQ</option>
                                     <option value="ViewSonic">ViewSonic</option>
+                                    <option value="Philips">Philips</option>
+                                    <option value="AOC">AOC</option>
+                                    <option value="Eizo">Eizo</option>
                                 </optgroup>
-                                <option value="OTRO_VALOR">-- Otra Marca (Escribir) --</option>
-                            </select>
-                            
+
+                                <optgroup label="Electrónica">
+                                    <option value="Sony">Sony</option>
+                                    <option value="Panasonic">Panasonic</option>
+                                    <option value="Manhattan">Manhattan</option>
+                                </optgroup>
+
+                                <optgroup label="Otros">
+                                    <option value="Otro">Otro</option>
+                                </optgroup>
+                            </select>                            
                             {{-- Input real para la marca --}}
                             <input type="text" name="marca" id="marca_input" 
                                    class="form-control custom-input" 
@@ -167,15 +183,29 @@
                             <label for="pulgadas_select"><i class="fas fa-ruler-combined"></i> Tamaño (pulgadas)</label>
                             <select id="pulgadas_select" class="form-control">
                                 <option value="">Seleccione tamaño</option>
-				<option value="14">14"</option>
-				<option value="15">15"</option>
+
+                                <option value="15">15"</option>
+                                <option value="17">17"</option>
+                                <option value="18.5">18.5"</option>
                                 <option value="19">19"</option>
                                 <option value="20">20"</option>
+                                <option value="21">21"</option>
                                 <option value="22">22"</option>
+                                <option value="23">23"</option>
                                 <option value="24">24"</option>
+                                <option value="25">25"</option>
                                 <option value="27">27"</option>
+                                <option value="28">28"</option>
+                                <option value="29">29"</option>
+                                <option value="31.5">31.5"</option>
+                                <option value="32">32"</option>
+                                <option value="34">34"</option>
+                                <option value="38">38"</option>
+                                <option value="40">40"</option>
+
                                 <option value="OTRO_VALOR">-- Otro tamaño (Escribir) --</option>
                             </select>
+
                             
                             {{-- Input real para pulgadas --}}
                             <input type="text" name="escala_pulgadas" id="pulgadas_input" 
@@ -191,12 +221,25 @@
                             </label>
                             <select name="interface" id="interface" class="form-control">
                                 <option value="">Seleccione interfaz</option>
-                                <option {{ old('interface', session('wizard_equipo.monitor.interface')) == 'HDMI' ? 'selected' : '' }}>HDMI</option>
-                                <option {{ old('interface', session('wizard_equipo.monitor.interface')) == 'DisplayPort' ? 'selected' : '' }}>DisplayPort</option>
-                                <option {{ old('interface', session('wizard_equipo.monitor.interface')) == 'VGA' ? 'selected' : '' }}>VGA</option>
-                                <option {{ old('interface', session('wizard_equipo.monitor.interface')) == 'DVI' ? 'selected' : '' }}>DVI</option>
-                                <option {{ old('interface', session('wizard_equipo.monitor.interface')) == 'USB-C' ? 'selected' : '' }}>USB-C</option>
-                                 <option {{ old('interface', session('wizard_equipo.monitor.interface')) == 'Integrado' ? 'selected' : '' }}>Integrado</option>
+
+                                @php
+                                    $interfaces = [
+                                        'HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1',
+                                        'VGA',
+                                        'DisplayPort (DP)',
+                                        'Mini DisplayPort',
+                                        'DVI','DVI-D','DVI-I',
+                                        'USB-C (Display)',
+                                        'Thunderbolt'
+                                    ];
+                                @endphp
+
+                                @foreach($interfaces as $inter)
+                                    <option value="{{ $inter }}"
+                                        {{ old('interface', session('wizard_equipo.monitor.interface')) == $inter ? 'selected' : '' }}>
+                                        {{ $inter }}
+                                    </option>
+                                @endforeach
                             </select>
                             @error('interface') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>

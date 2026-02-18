@@ -131,16 +131,36 @@
 
                 <div class="row">
                     {{-- Marca --}}
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="marca_select"><i class="fas fa-tag"></i> Marca CPU</label>
                             <select id="marca_select" class="form-control">
                                 <option value="">Seleccione marca</option>
+
                                 <option value="Intel">Intel</option>
                                 <option value="AMD">AMD</option>
-                                <option value="Apple">Apple (M1/M2/M3)</option>
-                                <option value="OTRO_VALOR">-- Otra marca (Escribir) --</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Qualcomm">Qualcomm</option>
+                                <option value="MediaTek">MediaTek</option>
+                                <option value="IBM">IBM</option>
+                                <option value="NVIDIA">NVIDIA</option>
+                                <option value="VIA">VIA</option>
+
+                                <option value="Dell">Dell</option>
+                                <option value="HP">HP</option>
+                                <option value="Lenovo">Lenovo</option>
+                                <option value="ASUS">ASUS</option>
+                                <option value="Acer">Acer</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="LG">LG</option>
+                                <option value="Microsoft">Microsoft</option>
+                                <option value="Huawei">Huawei</option>
+                                <option value="MSI">MSI</option>
+                                <option value="Gigabyte">Gigabyte</option>
+
+                                <option value="Otro">Otro</option>
                             </select>
+
                             <input type="text" name="marca" id="marca_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. Qualcom, IBM"
@@ -150,29 +170,45 @@
                     </div>
 
                     {{-- Modelo --}}
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="desc_select"><i class="fas fa-list-alt"></i> Modelo / Descripción</label>
                             <select id="desc_select" class="form-control">
                                 <option value="">Seleccione modelo</option>
+
                                 <optgroup label="Intel">
                                     <option value="Core i3">Core i3</option>
                                     <option value="Core i5">Core i5</option>
                                     <option value="Core i7">Core i7</option>
                                     <option value="Core i9">Core i9</option>
-                                    <option value="Celeron / Pentium">Celeron / Pentium</option>
-                                    <option value="Xeon">Xeon (Servidor)</option>
+                                    <option value="Celeron">Celeron</option>
+                                    <option value="Pentium">Pentium</option>
+                                    <option value="Xeon">Xeon</option>
                                 </optgroup>
+
                                 <optgroup label="AMD">
                                     <option value="Ryzen 3">Ryzen 3</option>
                                     <option value="Ryzen 5">Ryzen 5</option>
                                     <option value="Ryzen 7">Ryzen 7</option>
                                     <option value="Ryzen 9">Ryzen 9</option>
+                                    <option value="Threadripper">Threadripper</option>
                                     <option value="Athlon">Athlon</option>
                                     <option value="EPYC">EPYC</option>
                                 </optgroup>
-                                <option value="OTRO_VALOR">-- Otro (Escribir específico) --</option>
+
+                                <optgroup label="Apple">
+                                    <option value="M1">M1</option>
+                                    <option value="M2">M2</option>
+                                    <option value="M3">M3</option>
+                                </optgroup>
+
+                                <optgroup label="ARM / Otros">
+                                    <option value="Snapdragon">Snapdragon</option>
+                                    <option value="MediaTek">MediaTek</option>
+                                    <option value="Otro">Otro</option>
+                                </optgroup>
                             </select>
+
                             <input type="text" name="descripcion_tipo" id="desc_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. Core i7-11700K"

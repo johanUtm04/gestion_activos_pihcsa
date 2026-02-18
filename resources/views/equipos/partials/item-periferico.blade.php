@@ -46,7 +46,7 @@
                 <label class="small font-weight-bold">Tipo de periférico</label>
                 <select name="periferico[{{ $index }}][tipo]" class="form-control form-control-sm">
                     <option value="">Seleccione...</option>
-                    @foreach(['Mouse', 'Teclado', 'Monitor', 'Audífonos', 'Otro'] as $t) {{-- Resumido para el ejemplo --}}
+                    @foreach(['Mouse','Teclado','Combo','Webcam','Audífonos','Otro'] as $t) {{-- Resumido para el ejemplo --}}
                         <option value="{{ $t }}" {{ ($periferico->tipo ?? '') == $t ? 'selected' : '' }}>{{ $t }}</option>
                     @endforeach
                 </select>
@@ -57,7 +57,7 @@
                 <label class="small font-weight-bold">Marca</label>
                 <select name="periferico[{{ $index }}][marca]" class="form-control form-control-sm">
                     <option value="">Seleccione...</option>
-                    @foreach(['Logitech', 'HP', 'Dell', 'Otra'] as $marca)
+                    @foreach(['Logitech','HP','Dell','Lenovo','Microsoft','Genius','Razer','Corsair','HyperX','Redragon','Otra'] as $marca)
                         <option value="{{ $marca }}" {{ ($periferico->marca ?? '') == $marca ? 'selected' : '' }}>{{ $marca }}</option>
                     @endforeach
                 </select>
@@ -71,14 +71,25 @@
             </div>
 
             {{-- Columna Interfaz --}}
-            <div class="form-group col-md-3">
-                <label class="small font-weight-bold">Interfaz / Conexión</label>
-                <select name="periferico[{{ $index }}][interface]" class="form-control form-control-sm">
-                    <option value="{{ $periferico->interface ?? '' }}" selected>{{ $periferico->interface ?? 'Seleccione...' }}</option>
-                    <option value="USB">USB</option>
-                    <option value="Bluetooth">Bluetooth</option>
-                </select>
-            </div>
+        <div class="form-group col-md-3">
+            <label class="small font-weight-bold">Interfaz / Conexión</label>
+            <select name="periferico[{{ $index }}][interface]" class="form-control form-control-sm">
+                
+                <option value="">Seleccione...</option>
+                
+                <option value="USB" 
+                    {{ (isset($periferico) && $periferico->interface == 'USB') ? 'selected' : '' }}>
+                    USB
+                </option>
+
+                <option value="Bluetooth" 
+                    {{ (isset($periferico) && $periferico->interface == 'Bluetooth') ? 'selected' : '' }}>
+                    Bluetooth
+                </option>
+
+            </select>
+        </div>
+
         </div>
 
         {{-- Switch de Estado y Motivo --}}
@@ -91,10 +102,10 @@
                            name="periferico[{{ $index }}][is_active]" 
                            value="1" 
                            {{ !isset($periferico) || $periferico->is_active ? 'checked' : '' }}>
-                    <label class="custom-control-label small font-weight-bold {{ !isset($periferico) || $periferico->is_active ? 'text-success' : 'text-danger' }}" 
-                           for="switch-perif-{{ $index }}">
-                        {{ !isset($periferico) || $periferico->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
-                    </label>
+                            <label class="custom-control-label small font-weight-bold {{ !isset($periferico) || $periferico->is_active ? 'text-success' : 'text-danger' }}" 
+                            for="switch-perif-{{ $index }}">
+                            {{ !isset($periferico) || $periferico->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
+                            </label>
                 </div>
             </div>
             

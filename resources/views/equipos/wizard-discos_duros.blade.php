@@ -128,22 +128,30 @@
                             <label for="capacidad_select"><i class="fas fa-archive"></i> Capacidad</label>
                             <select id="capacidad_select" class="form-control">
                                 <option value="" selected>Seleccione capacidad</option>
+
                                 <optgroup label="Unidades GB">
                                     <option value="120GB">120GB</option>
+                                    <option value="128GB">128GB</option>
                                     <option value="240GB">240GB</option>
                                     <option value="256GB">256GB</option>
                                     <option value="480GB">480GB</option>
                                     <option value="500GB">500GB</option>
                                     <option value="512GB">512GB</option>
                                 </optgroup>
+
                                 <optgroup label="Unidades TB">
                                     <option value="1TB">1TB</option>
                                     <option value="2TB">2TB</option>
+                                    <option value="3TB">3TB</option>
                                     <option value="4TB">4TB</option>
+                                    <option value="6TB">6TB</option>
+                                    <option value="8TB">8TB</option>
+                                    <option value="10TB">10TB</option>
+                                    <option value="12TB">12TB</option>
+                                    <option value="16TB">16TB</option>
+                                    <option value="Otro">Otro</option>
                                 </optgroup>
-                                <option value="OTRO_VALOR">-- Otra capacidad (Escribir) --</option>
                             </select>
-                            
                             <input type="text" name="capacidad" id="capacidad_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. 128GB o 10TB"
@@ -155,13 +163,17 @@
                             <label for="tipo_select"><i class="fas fa-memory"></i> Tipo de Disco</label>
                             <select id="tipo_select" class="form-control">
                                 <option value="">Seleccione tipo</option>
-                                <option value="SSD">SSD (Sólido)</option>
                                 <option value="HDD">HDD (Mecánico)</option>
-                                <option value="M.2 NVMe">M.2 NVMe (Alto rendimiento)</option>
+                                <option value="SSD">SSD (Sólido)</option>
+                                <option value="SATA SSD">SATA SSD</option>
                                 <option value="M.2 SATA">M.2 SATA</option>
-                                <option value="OTRO_VALOR">-- Otro tipo (Escribir) --</option>
+                                <option value="M.2 NVMe">M.2 NVMe (Alto rendimiento)</option>
+                                <option value="PCIe NVMe">PCIe NVMe</option>
+                                <option value="Hybrid SSHD">Hybrid SSHD</option>
+                                <option value="External HDD">External HDD</option>
+                                <option value="External SSD">External SSD</option>
+                                <option value="Otro">Otro</option>
                             </select>
-                            
                             <input type="text" name="tipo_hdd_ssd" id="tipo_input" 
                                    class="form-control custom-input" 
                                    placeholder="Escriba el tipo de disco..."
@@ -178,13 +190,20 @@
                             <label for="interface_select"><i class="fas fa-plug"></i> Interfaz</label>
                             <select id="interface_select" class="form-control">
                                 <option value="">Seleccione interfaz</option>
+                                <option value="SATA">SATA</option>
                                 <option value="SATA III">SATA III</option>
-                                <option value="PCIe Gen 3">PCIe Gen 3</option>
-                                <option value="PCIe Gen 4">PCIe Gen 4</option>
-                                <option value="SAS">SAS (Servidor)</option>
-                                <option value="USB 3.0 / Externo">USB 3.0 / Externo</option>
-                                <option value="OTRO_VALOR">-- Otra interfaz (Escribir) --</option>
+                                <option value="NVMe">NVMe</option>
+                                <option value="PCIe NVMe">PCIe NVMe</option>
+                                <option value="M.2 NVMe">M.2 NVMe</option>
+                                <option value="USB">USB</option>
+                                <option value="USB 3.0">USB 3.0</option>
+                                <option value="USB-C">USB-C</option>
+                                <option value="Thunderbolt">Thunderbolt</option>
+                                <option value="SAS">SAS</option>
+                                <option value="eSATA">eSATA</option>
+                                <option value="Otro">Otro</option>
                             </select>
+
                             
                             <input type="text" name="interface" id="interface_input" 
                                    class="form-control custom-input" 
