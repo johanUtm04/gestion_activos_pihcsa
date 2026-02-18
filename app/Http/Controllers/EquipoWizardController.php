@@ -7,7 +7,8 @@ use App\Models\Equipo;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
-use App\Models\Historial_log;   
+use App\Models\Historial_log;
+use Psy\Readline\Hoa\Console;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +110,7 @@ class EquipoWizardController extends Controller
     {
         $wizard = session('wizard_equipo');
         if (!$wizard || $wizard['uuid'] !== $uuid) abort(403, 'Acceso no autorizado.');
+        // dd($wizard);
 
         $equipo = data_get($wizard, 'equipo');
         return view('equipos.wizard-monitores', compact('equipo', 'uuid'));
@@ -174,6 +176,7 @@ class EquipoWizardController extends Controller
     {
         $wizard = session('wizard_equipo');
         if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
+        // dd($wizard);
 
         $equipo = data_get($wizard, 'equipo');
         return view('equipos.wizard-rams', compact('equipo', 'uuid'));
@@ -254,6 +257,7 @@ class EquipoWizardController extends Controller
      */
     public function savePeriferico(Request $request, $uuid)
     {
+        //1.-Ocurre la validacion
         $request->validate([
             'tipo' => 'nullable|string',
             'marca' => 'nullable|string',
@@ -261,7 +265,7 @@ class EquipoWizardController extends Controller
             'interface' => 'nullable|string',
         ]);
 
-        //Llenar sesion de perifericos
+        //2.-Guardamos el último paso en la sesión
         $datos = array_filter($request->only(['tipo', 'marca', 'serial', 'interface']));
         if (empty($datos)) {
             session()->forget('wizard_equipo.periferico');
@@ -269,10 +273,10 @@ class EquipoWizardController extends Controller
             session()->put('wizard_equipo.periferico', $datos);
         }
 
-        // Recuperar toda la sesión acumulada
+        //3.- Tomamos la sesion en esa variable
         $wizard = session('wizard_equipo');
         if (!$wizard || $wizard['uuid'] !== $uuid) {
-            abort(403, 'Sesión inválida al intentar finalizar el registro.');
+            abort(403, 'Sesión expirada.');
         }
 
         // 4. Instanciar el Equipo (Sin guardarlo aún)
@@ -289,25 +293,125 @@ class EquipoWizardController extends Controller
             'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
         ]);
 
-        //cargar la mochila, 
+        
+        //Asiganr la mochila, 
         $equipo->datos_wizard = $wizard;
+        $equipo->save(); //Se dispara el ID y el observer
+        
+        //Recorre los componentes del wizard y crea uno o varios registros para el equipo, sin activar eventos de Laravel.
+        Equipo::withoutEvents(function () use ($equipo, $wizard) {
+                foreach (['monitor', 'disco_duro', 'ram', 'periferico', 'procesador'] as $key) {
+                    if (!empty($wizard[$key])) {
+                        // Si es un array de varios (como tus procesadores)
+                        if (isset($wizard[$key][0]) && is_array($wizard[$key][0])) {
+                            foreach ($wizard[$key] as $item) {
+                                $this->crearComponente($equipo, $key, $item);
+                            }
+                        } else {
+                            $this->crearComponente($equipo, $key, $wizard[$key]);
+                        }
+                    }
+                }
+            });
 
-        //Disparar TODO
-        $equipo->save();
+            // 3. Ahora sí podemos armar el resumen porque ya hay datos en la DB -Ve a la bodega y traeme estas cajas (5)-
+            $equipo->load(['procesadores', 'rams', 'discosDuros', 'monitores', 'perifericos']);
 
-        // Limpiar sesión
-        session()->forget('wizard_equipo');
+            //Pasar al observer el resumen del hardware
+            $hardwareString = $this->armarResumenHardware($equipo);
+            $equipo->resumen_temporal = $hardwareString;
+            
+            Historial_log::create([
+                'activo_id'         => $equipo->id,
+                'usuario_accion_id' => auth()->id() ?? 1,
+                'tipo_registro'     => 'Creacion',
+                'detalles_json'     => [
+                    'mensaje' => 'Registro integral de nuevo activo y componentes',
+                    'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
+                    'cambios' => [
+                        // --- DATOS BASE ---
+                        'Tipo de Equipo'    => ['antes' => 'N/A', 'despues' => $equipo->tipoActivo->nombre ?? 'SIN-TIPO'],
+                        'Usuario Asignado'  => ['antes' => 'N/A', 'despues' => $equipo->usuario->name ?? 'Sin Nombre'],
+                        'Serial Equipo'     => ['antes' => 'N/A', 'despues' => $equipo->serial],
+                        'Modelo'            => ['antes' => 'N/A', 'despues' => $equipo->modelo ?? 'N/A'],
+                        'Marca'             => ['antes' => 'N/A', 'despues' => $equipo->marca->nombre ?? 'N/A'],
+                        'Ubicación'         => ['antes' => 'N/A', 'despues' => $equipo->ubicacion->nombre ?? 'N/A'], 
+                        'Sistema Operativo' => ['antes' => 'N/A', 'despues' => str_replace('|', ', ', $equipo->sistema_operativo)],
+                        'Valor Inicial'     => ['antes' => 'N/A', 'despues' => '$' . number_format((float)$equipo->valor_inicial, 2)],
+                        'Fecha Adquisición' => ['antes' => 'N/A', 'despues' => $equipo->fecha_adquisicion ?? 'N/A'],
+                        'Vida Útil Estimada' => ['antes' => 'N/A', 'despues' => $equipo->vida_util_estimada . ' años'],
+                        // --- HARDWARE ADICIONAL ---
+                        'Hardware Inicial'  => ['antes' => 'N/A', 'despues' => $equipo->resumen_temporal ?? 'N/A'],
+                    ]
+                ]
+            ]);
 
-        // Calcular paginación para el redirect
-        $perPage = 10;
-        $position = Equipo::where('id', '<=', $equipo->id)->count();
-        $page = ceil($position / $perPage);
 
-        return redirect()->route('equipos.index', ['page' => $page])
-            ->with('success', 'Equipo Creado Correctamente')
-            ->with('new_id', $equipo->id);
+            // Limpiar sesión
+            session()->forget('wizard_equipo');
+
+            // Calcular paginación para el redirect
+            $perPage = 10;
+            $position = Equipo::where('id', '<=', $equipo->id)->count();
+            $page = ceil($position / $perPage);
+
+            return redirect()->route('equipos.index', ['page' => $page])
+                ->with('success', 'Equipo Creado Correctamente')
+                ->with('new_id', $equipo->id);
     }   
     
+
+
+private function crearComponente($equipo, $tipo, $data) {
+    $rel = ['monitor'=>'monitores','disco_duro'=>'discosDuros','ram'=>'rams','periferico'=>'perifericos','procesador'=>'procesadores'];
+    $equipo->{$rel[$tipo]}()->create($data);
+}
+
+    private function armarResumenHardware(Equipo $equipo): string
+    {
+        $resumen = [
+            'Procesador' => $equipo->procesadores->first() 
+                ? collect([
+                    $equipo->procesadores->first()->marca,
+                    $equipo->procesadores->first()->descripcion_tipo ? "({$equipo->procesadores->first()->descripcion_tipo})" : null
+                ])->filter()->implode(' ') 
+                : 'N/A',
+
+            'RAM' => $equipo->rams->first() 
+                ? collect([
+                    $equipo->rams->first()->capacidad_gb ? "{$equipo->rams->first()->capacidad_gb}GB" : null,
+                    $equipo->rams->first()->tipo_chz,
+                    $equipo->rams->first()->clock_mhz ? "{$equipo->rams->first()->clock_mhz}MHz" : null,
+                ])->filter()->implode(' • ') 
+                : 'N/A',
+
+            'Disco' => $equipo->discosDuros->first() 
+                ? collect([
+                    $equipo->discosDuros->first()->capacidad,
+                    $equipo->discosDuros->first()->tipo_hdd_ssd,
+                    $equipo->discosDuros->first()->interface,
+                ])->filter()->implode(' • ') 
+                : 'N/A',
+
+            'Monitor' => $equipo->monitores->first() 
+                ? collect([
+                    $equipo->monitores->first()->marca,
+                    $equipo->monitores->first()->escala_pulgadas ? "{$equipo->monitores->first()->escala_pulgadas}\"" : null,
+                    $equipo->monitores->first()->interface,
+                ])->filter()->implode(' • ') 
+                : 'N/A',
+
+            'Periférico' => $equipo->perifericos->first() 
+                ? collect([
+                    $equipo->perifericos->first()->tipo,
+                    $equipo->perifericos->first()->marca ? "({$equipo->perifericos->first()->marca})" : null,
+                    $equipo->perifericos->first()->interface,
+                ])->filter()->implode(' • ') 
+                : 'N/A',
+        ];
+
+        return collect($resumen)->map(fn($v, $k) => "**$k**: $v")->implode(' | ');
+    }
 
 }
 
