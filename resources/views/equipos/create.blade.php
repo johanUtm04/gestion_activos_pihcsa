@@ -127,7 +127,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-6">
                             <label for="marca_id"> Marca:</label>
                             <select name="marca_id" id="marca_id" class="form-control select2" required>
                                 <option value="">Seleccione marca (o agregue desde catalogo) </option>
@@ -139,7 +139,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-6">
                             <label>Modelo</label>
                             <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Ej. Latitude 3410 / ThinkPad X1">
                         </div>
@@ -168,7 +168,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-6">
                             <label>SO</label>
                             <select id="so_familia" class="form-control" onchange="combinarSO()">
                                 <option value="Windows">Windows</option>
@@ -179,7 +179,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-6">
                             <label>Versión</label>
                             <input type="text" id="so_version" class="form-control" placeholder="Ej: 11 Pro / Ubuntu 22.04" oninput="combinarSO()">
                         </div>
