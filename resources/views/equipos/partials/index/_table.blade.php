@@ -10,19 +10,30 @@
             </div>
         @endif
 
-        @if(session('warning'))
-            <div class="alert alert-warning alert-dismissible fade show shadow-sm border-0" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-exclamation-triangle mr-3 fa-lg"></i>
-                    <div>
-                        {!! session('warning') !!}
-                    </div>
+    @if(session('warning') && session('actualizado_id'))
+        <div class="callout callout-warning shadow-sm mb-4" style="border-left-width: 5px; background-color: #fffaf0;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="text-warning font-weight-bold">
+                        <i class="fas fa-edit mr-2"></i> Equipo Actualizado
+                    </h5>
+                    <p class="mb-0 text-muted">
+                        Los datos generales del activo han sido modificados. ¿Deseas auditar los cambios en el historial?
+                    </p>
                 </div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true" class="text-white">&times;</span>
-                </button>
+                <div class="ml-3">
+                    <a href="{{ route('historial.index', ['equipo_id' => session('actualizado_id')]) }}" 
+                    class="btn btn-warning btn-lg elevation-2 px-4 font-weight-bold"
+                    style="transition: all 0.3s ease; text-decoration: none; color: #333;">
+                        <i class="fas fa-history mr-2"></i> Ver Cambios #{{ session('actualizado_id') }}
+                    </a>
+                </div>
             </div>
-        @endif
+        </div>
+    @endif
 
     @if(session('success') && session('new_id'))
         <div class="callout callout-success shadow-sm mb-4" style="border-left-width: 5px;">

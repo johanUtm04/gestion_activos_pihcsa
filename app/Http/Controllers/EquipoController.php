@@ -149,9 +149,6 @@ class EquipoController extends Controller
             'sistema_operativo' => 'nullable|string',
         ]);
 
-        $viejosDatos = $equipo->toArray();
-        $motivos = $request->input('motivos', []);
-
         $data = $request->only([
             'serial', 'usuario_id', 'modelo',
             'ubicacion_id', 'valor_inicial', 'fecha_adquisicion',
@@ -186,12 +183,8 @@ class EquipoController extends Controller
         $page = ceil($position / $perPage);
 
         return redirect()->route('equipos.index', ['page' => $page])
-        ->with('warning', 'Equipo actualizado
-        <a href="#" class="btn-historial-alert">
-        <i class="fas fa-history mr-1"></i> Ver en el Historial
-        </a>')
-        ->with('actualizado_id', $equipo->id)   
-        ;
+        ->with('warning', 'Equipo actualizado')
+        ->with('actualizado_id', $equipo->id)   ;
     }
 
     //Metodo paara ver un registro en especifico
