@@ -3,7 +3,14 @@
 @section('title', 'Asignar Factura')
 
 @section('content_header')
-    <h1>Asignar Factura al Equipo</h1>
+<div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+
+    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left"></i> Volver al inventario
+    </a>
+    </div>
+</div>
 @stop
 
 @section('content')
@@ -47,9 +54,6 @@
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-save"></i> Guardar Factura
                             </button>
-                            <a href="{{ route('equipos.index') }}" class="btn btn-default">
-                                Cancelar
-                            </a>
                         </div>
                     </form>
                 </div>
