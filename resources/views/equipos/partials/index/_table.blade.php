@@ -73,6 +73,31 @@
                 </div>
             </div>
         @endif
+        
+        @if(session('actualizado_factura'))
+            <div class="callout callout-warning shadow-sm mb-4" style="border-left-width: 5px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="text-warning font-weight-bold">
+                            <i class="fas fa-file-invoice-dollar mr-2"></i> ¡Factura Actualizada!
+                        </h5>
+                        <p class="mb-0 text-muted">
+                            {!! session('success') !!} ¿Deseas ver el registro de este cambio en el historial?
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        <a href="{{ route('historial.index', ['equipo_id' => session('actualizado_factura')]) }}" 
+                        class="btn btn-warning btn-lg elevation-2 px-4 font-weight-bold"
+                        style="transition: all 0.3s ease; text-decoration: none; color: #333;">
+                            <i class="fas fa-search-dollar mr-2"></i> Ver Historial #{{ session('actualizado_factura') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
 
          <!--fin Flash Data -->
         
