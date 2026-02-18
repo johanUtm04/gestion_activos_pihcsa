@@ -334,96 +334,87 @@ class EquipoController extends Controller
     }
 
 
-    public function exportarGeneral()
-    {
-        $equipos = \App\Models\Equipo::with([
+public function exportarGeneral()
+{
+    // Optimización: Incluimos marca y tipoActivo para evitar consultas lentas
+    $equipos = \App\Models\Equipo::with([
         'usuario', 
         'ubicacion',
+        'marca',
+        'tipoActivo',
         'monitores', 
         'discosDuros', 
         'rams', 
         'perifericos', 
         'procesadores'
-        ])->get();
+    ])->get();
 
+    $fileName = 'Reporte_Inventario_PIHCSA_' . date('Y-m-d') . '.csv';
 
-        $fileName = 'Reporte_General_PIHCSA_' . date('Y-m-d') . '.csv';
-
-        $headers = [
+    $headers = [
         "Content-type"        => "text/csv; charset=UTF-8",
         "Content-Disposition" => "attachment; filename=$fileName",
         "Pragma"              => "no-cache",
         "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
         "Expires"             => "0"
-        ];
+    ];
 
-        $callback = function() use($equipos) {
+    $callback = function() use($equipos) {
         $file = fopen('php://output', 'w');
-
-        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
-
+        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF)); 
         fputs($file, "sep=,\n");
 
-        // Encabezados basados en tu tabla
         fputcsv($file, [
-        'ID',
-        'Usuario',
-        'Ubicacion',
-        'Marca', 
-        'Tipo', 
-        'Serial', 
-        'Procesador', 
-        'Memoria RAM', 
-        'Almacenamiento', 
-        'Monitores', 
-        'Perifericos'
+            'ID',
+            'Usuario Responsable',
+            'Ubicación / Depto',
+            'Tipo de Activo', 
+            'Marca', 
+            'Modelo', 
+            'Serial / Service Tag', 
+            'Factura',
+            'Sistema Operativo', 
+            'Procesador (Detalle)', 
+            'Memoria RAM (Total)', 
+            'Almacenamiento', 
+            'Monitores Asociados', 
+            'Perifericos'
         ]);
 
         foreach ($equipos as $equipo) {
-        // Procesadores: Marca | Modelo/Descripción
-        $procInfo = $equipo->procesadores->map(fn($p) => 
-        "Marca: " . $p->marca . " | Modelo: " . $p->descripcion_tipo
-        )->implode(' | ');
+            // Simplificación de mapeos para legibilidad del CSV
+            $procInfo = $equipo->procesadores->map(fn($p) => "{$p->marca} {$p->descripcion_tipo}")->implode(' | ');
+            
+            $ramInfo = $equipo->rams->map(fn($r) => "{$r->capacidad_gb}GB ({$r->tipo_chz} {$r->clock_mhz}MHz)")->implode(' | ');
 
-        // RAM: Capacidad | Velocidad | Tecnología
-        $ramInfo = $equipo->rams->map(fn($r) => 
-        "Capacidad: " . $r->capacidad_gb . " GB | Reloj: " . $r->clock_mhz . " MHz | Tipo: " . $r->tipo_chz
-        )->implode(' | ');
+            $discoInfo = $equipo->discosDuros->map(fn($d) => "{$d->capacidad}GB ({$d->tipo_hdd_ssd} - {$d->interface})")->implode(' | ');
 
-        // Almacenamiento: Capacidad | Tipo | Interfaz
-        $discoInfo = $equipo->discosDuros->map(fn($d) => 
-        "Capacidad: " . $d->capacidad . " GB | Tipo: " . $d->tipo_hdd_ssd . " | Interfaz: " . $d->interface
-        )->implode(' | ');
+            $monInfo = $equipo->monitores->map(fn($m) => "{$m->marca} {$m->escala_pulgadas}\" (S/N: " . ($m->serial ?? 'N/A') . ")")->implode(' | ');
 
-        // Monitores: Marca | S/N | Tamaño | Interfaz
-        $monInfo = $equipo->monitores->map(fn($m) => 
-        "Marca: " . $m->marca . " | Serial: " . ($m->serial ?? 'N/A') . " | Tamaño: " . $m->escala_pulgadas . "'' | Interfaz: " . $m->interface
-        )->implode(' | ');
+            $perifInfo = $equipo->perifericos->map(fn($p) => "{$p->tipo}: {$p->marca} (" . ($p->serial ?? 'N/A') . ")")->implode(' | ');
 
-        // Periféricos: Tipo | Marca | S/N | Interfaz
-        $perifInfo = $equipo->perifericos->map(fn($p) => 
-        "Tipo: " . $p->tipo . " | Marca: " . $p->marca . " | Serial: " . ($p->serial ?? 'N/A') . " | Interfaz: " . $p->interface
-        )->implode(' | ');
-
-        fputcsv($file, [
-        $equipo->id,
-        $equipo->usuario ? $equipo->usuario->name : 'Sin asignar',
-        $equipo->marca?->nombre,
-        $equipo->ubicacion ? $equipo->ubicacion->nombre : 'Sin asignar',
-        $equipo->tipoActivo?->nombre,
-        $equipo->serial,
-        $procInfo ?: 'N/A',
-        $ramInfo ?: 'N/A',
-        $discoInfo ?: 'N/A',
-        $monInfo ?: 'N/A',
-        $perifInfo ?: 'N/A',
-        ]);
+            fputcsv($file, [
+                $equipo->id,
+                $equipo->usuario ? $equipo->usuario->name : 'Disponible en Stock',
+                $equipo->ubicacion ? $equipo->ubicacion->nombre : 'N/A',
+                $equipo->tipoActivo?->nombre ?? 'N/A',
+                $equipo->marca?->nombre ?? 'N/A',
+                $equipo->modelo ?? 'N/A', 
+                $equipo->serial,
+                $equipo->numero_factura ?? 'No asignada', 
+                $equipo->sistema_operativo ?? 'N/A', 
+                $procInfo ?: 'N/A',
+                $ramInfo ?: 'N/A',
+                $discoInfo ?: 'N/A',
+                $monInfo ?: 'N/A',
+                $perifInfo ?: 'N/A',
+            ]);
         }
         fclose($file);
-        };
+    };
 
-        return response()->stream($callback, 200, $headers);
-    }
+    return response()->stream($callback, 200, $headers);
+}
 
 
     public function indexFactura(Equipo $equipo)
