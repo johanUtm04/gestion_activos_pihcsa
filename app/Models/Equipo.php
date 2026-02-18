@@ -28,7 +28,7 @@ class Equipo extends Model
 
     //Campos asignables, es decir, los campos que se pueden llamar de manera masiva
     protected $fillable = [
-        'marca_equipo','marca_id',
+        'marca_equipo','marca_id', 'modelo',
         'tipo_equipo','tipo_activo_id',
         'serial',
         'numero_factura',

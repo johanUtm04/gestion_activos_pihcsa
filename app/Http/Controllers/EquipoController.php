@@ -84,8 +84,9 @@ class EquipoController extends Controller
     {
         $request->validate([
             'marca_id'           => 'required|integer|exists:marcas,id',
+            'modelo'             => 'required|string|max:100',
             'tipo_activo_id'     => 'required|integer|exists:tipo_activos,id',
-            'sistema_operativo'  => 'required|string|max:35',
+            'sistema_operativo'  => 'required|string|max:50',
             'serial'             => 'nullable|string|max:255',
             'usuario_id'         => 'required|integer|exists:users,id',
             'ubicacion_id'       => 'nullable|integer|exists:ubicaciones,id',
@@ -93,17 +94,22 @@ class EquipoController extends Controller
             'fecha_adquisicion'  => 'required|date',
             'vida_util_estimada' => 'required|string|max:255',
         ]);
+        // Generación de serial más segura si es nulo
+        $serialFinal = $request->serial 
+            ? strtoupper($request->serial) 
+        : 'INT-' . date('Ymd') . '-' . strtoupper(Str::random(4));
 
-        // 2. Mapeamos los datos para la sesion
+        //Mapeo los datos para la sesión
         $data = [
-            'serial'             => $request->serial ?? 'INT-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT),
+            'serial'             => $serialFinal,
             'usuario_id'         => $request->usuario_id,
             'ubicacion_id'       => $request->ubicacion_id,
             'valor_inicial'      => $request->valor_inicial ?? 0,
             'fecha_adquisicion'  => $request->fecha_adquisicion,
             'vida_util_estimada' => $request->vida_util_estimada,
             'sistema_operativo'  => $request->sistema_operativo,
-            'marca_id'          => $request->marca_id,       
+            'marca_id'          => $request->marca_id,    
+            'modelo'         => $request->modelo,   
             'tipo_activo_id'    => $request->tipo_activo_id,
         ];
 
@@ -132,6 +138,7 @@ class EquipoController extends Controller
     {
         $request->validate([
             'marca_id'          => 'required|exists:marcas,id',
+            'modelo'            => 'required|string|max:100',
             'tipo_activo_id'    => 'required|exists:tipo_activos,id',
             'usuario_id'        => 'required|exists:users,id',
             'ubicacion_id'      => 'nullable|exists:ubicaciones,id',
@@ -145,7 +152,7 @@ class EquipoController extends Controller
         $motivos = $request->input('motivos', []);
 
         $data = $request->only([
-            'serial', 'usuario_id', 
+            'serial', 'usuario_id', 'modelo',
             'ubicacion_id', 'valor_inicial', 'fecha_adquisicion',
             'marca_id', 'tipo_activo_id',
         ]);
@@ -153,6 +160,7 @@ class EquipoController extends Controller
         $data = [
             'serial'            => $request->serial,
             'usuario_id'        => $request->usuario_id,
+            'modelo'            => $request->modelo,
             'ubicacion_id'      => $request->ubicacion_id,
             'valor_inicial'     => $request->valor_inicial,
             'fecha_adquisicion' => $request->fecha_adquisicion,
@@ -164,7 +172,7 @@ class EquipoController extends Controller
             $data['vida_util_estimada'] = $request->vida_util_estimada . ' ' . $request->vida_util_unidad;
         }
 
-       $equipo->update($data); //Salimos al observador
+       $equipo->update($data);
 
         $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
         $this->syncRelation($equipo->rams(),         $request->input('ram', []));

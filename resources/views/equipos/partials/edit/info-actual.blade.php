@@ -8,8 +8,12 @@
             
         {{-- Datos Principales --}}
         <div class="data-item">
-            <span class="data-label">Marca/Modelo:</span> 
+            <span class="data-label">Marca:</span> 
             <span class="float-right">{{ $equipo->marca?->nombre ?? 'Sin Marca' }}</span>
+        </div>
+        <div class="data-item">
+            <span class="data-label">Modelo:</span> 
+            <span class="float-right">{{ $equipo->modelo ?? 'Sin Modelo' }}</span>
         </div>
         <div class="data-item">
             <span class="data-label">Tipo de Equipo:</span> 

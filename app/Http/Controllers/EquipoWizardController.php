@@ -39,6 +39,7 @@ class EquipoWizardController extends Controller
     {
         $validated = $request->validate([
             'marca_id' => 'required|integer|exists:marcas,id',
+            'modelo'             => 'required|string|max:100',
             'tipo_activo_id' => 'required|integer|exists:tipo_activos,id',
             'serial' => 'nullable|string|max:255',
             'sistema_operativo' => 'required|string|max:35', 
@@ -282,6 +283,7 @@ class EquipoWizardController extends Controller
             'fecha_adquisicion'  => $wizard['equipo']['fecha_adquisicion'],
             'vida_util_estimada' => $wizard['equipo']['vida_util_estimada'],
             'sistema_operativo'  => $wizard['equipo']['sistema_operativo'],
+            'modelo'             => $wizard['equipo']['modelo'],
             'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
             'marca_id'           => $wizard['equipo']['marca_id'], 
             'tipo_activo_id'     => $wizard['equipo']['tipo_activo_id'],

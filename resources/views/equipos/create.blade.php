@@ -126,20 +126,27 @@
                         <div class="small mt-1">Informacion del equipo</div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="marca_id"> Marca:</label>
-                        <select name="marca_id" id="marca_id" class="form-control select2" required>
-                            <option value="">Seleccione marca (o agregue desde catalogo) </option>
-                            @foreach(\App\Models\Marca::all() as $marca)
-                            <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
-                            {{ strtoupper($marca->nombre) }}
-                            </option>
-                        @endforeach
-                        </select>
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <label for="marca_id"> Marca:</label>
+                            <select name="marca_id" id="marca_id" class="form-control select2" required>
+                                <option value="">Seleccione marca (o agregue desde catalogo) </option>
+                                @foreach(\App\Models\Marca::all() as $marca)
+                                <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
+                                {{ strtoupper($marca->nombre) }}
+                                </option>
+                            @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label>Modelo</label>
+                            <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Ej. Latitude 3410 / ThinkPad X1">
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="tipo_activo_id"> Tipo de Activo:</label>
+                        <label for="tipo_activo_id">Tipo de Activo:</label>
                         <select name="tipo_activo_id" id="tipo_activo_id" class="form-control select2" required>
                             <option value="">Seleccione el tipo de equipo (o agregue desde catalogo)</option>
                             @foreach(\App\Models\TipoActivo::all() as $tipo)
@@ -181,14 +188,14 @@
                     </div>
 
                 <script>
-function combinarSO() {
-    const familia = document.getElementById('so_familia').value;
-    const version = document.getElementById('so_version').value;
-    
-    // Une ambos valores con el pipe |
-    document.getElementById('so_final').value = familia + "|" + version;
-}
-</script>
+                function combinarSO() {
+                    const familia = document.getElementById('so_familia').value;
+                    const version = document.getElementById('so_version').value;
+                    
+                    // Une ambos valores con el pipe |
+                    document.getElementById('so_final').value = familia + "|" + version;
+                }
+                </script>
 
                 </fieldset>
             </div>
