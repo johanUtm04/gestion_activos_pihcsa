@@ -50,13 +50,13 @@
         @endif
 
         @if(session('secondary') && session('new_mantenimiento'))
-            <div class="callout callout-info shadow-sm mb-4" style="border-left-width: 5px;">
+            <div class="callout callout-secondary shadow-sm mb-4" style="border-left-width: 5px; background-color: #f8f9fa;">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="text-info font-weight-bold">
+                        <h5 class="text-secondary font-weight-bold">
                             <i class="fas fa-tools mr-2"></i> ¡Mantenimiento Registrado!
                         </h5>
                         <p class="mb-0 text-muted">
@@ -65,15 +65,15 @@
                     </div>
                     <div class="ml-3">
                         <a href="{{ route('historial.index', ['equipo_id' => session('new_mantenimiento')]) }}" 
-                        class="btn btn-info btn-lg elevation-2 px-4 font-weight-bold"
-                        style="transition: all 0.3s ease; text-decoration: none;">
+                        class="btn btn-secondary btn-lg elevation-2 px-4 font-weight-bold"
+                        style="transition: all 0.3s ease; text-decoration: none; background-color: #6c757d; border-color: #6c757d;">
                             <i class="fas fa-eye mr-2"></i> Ver Historial #{{ session('new_mantenimiento') }}
                         </a>
                     </div>
                 </div>
             </div>
         @endif
-        
+
         @if(session('actualizado_factura'))
             <div class="callout callout-warning shadow-sm mb-4" style="border-left-width: 5px;">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
@@ -160,7 +160,7 @@
 
                                         
                                     @if(session('actualizado_factura') == $equipo->id)
-                                        <span class="badge badge-success">Factura</span>
+                                        <span class="badge badge-warning">Factura</span>
                                     @endif
 
                                     @if(session('new_mantenimiento') == $equipo->id)
