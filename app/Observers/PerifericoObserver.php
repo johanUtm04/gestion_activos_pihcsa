@@ -22,12 +22,12 @@ class PerifericoObserver
         $periferico->is_active = true;
         $periferico->motivo_inactivo = null;
         $periferico->saveQuietly();
-        
+
         $equipo = $periferico->equipos; 
         $esActivo = true; 
 
         $tipoRegistro = 'componente-extra (Periferico)';
-        $mensaje = "⚡ SE AGREGÓ PERIFÉRICO: " . $periferico->tipo . " " . $periferico->marca;
+        $mensaje = "SE AGREGÓ PERIFÉRICO: " . $periferico->tipo . " " . $periferico->marca;
 
         if ($equipo) {
             Historial_log::create([
@@ -63,7 +63,7 @@ class PerifericoObserver
         if ($periferico->isDirty()) {
             $cambios = [];
             $mensajeFinal = 'Se actualizó información del periférico';
-            $tipoFinal = 'Actualizacion'; 
+            $tipoFinal = 'edicion-componente-extra (Periferico)'; 
 
             foreach($periferico->getDirty() as $atributo => $nuevoValor){
                 if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue; 
@@ -71,6 +71,7 @@ class PerifericoObserver
                 $valorAnterior = $periferico->getOriginal($atributo);
                 $campoLegible = "Periférico -> " . Str::headline($atributo);
 
+                //En casi de tocar checkbox de inactivacion o activacion
                 if ($atributo === 'is_active') {
                     if ($valorAnterior == 1 && $nuevoValor == 0) {
                         $tipoFinal = 'inactivacion Periferico';

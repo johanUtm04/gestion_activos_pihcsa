@@ -137,7 +137,8 @@
                                     $llaveFinal = 'inactivacion';
                                 } elseif (str_contains($registroOriginal, 'activacion')) {
                                     $llaveFinal = 'activacion';
-                                } else {
+                                } 
+                                else {
                                     $llaveFinal = $registroOriginal;
                                 }
 
