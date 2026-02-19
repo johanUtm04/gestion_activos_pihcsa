@@ -139,7 +139,7 @@ class EquipoController extends Controller
     {
         $request->validate([
             'marca_id'          => 'required|exists:marcas,id',
-            'modelo'            => 'required|string|max:100',
+            'modelo'            => 'nullable|string|max:100',
             'tipo_activo_id'    => 'required|exists:tipo_activos,id',
             'usuario_id'        => 'required|exists:users,id',
             'ubicacion_id'      => 'nullable|exists:ubicaciones,id',

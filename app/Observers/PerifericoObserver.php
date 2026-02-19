@@ -19,10 +19,14 @@ class PerifericoObserver
 
     public function created(Periferico $periferico): void
     {
+        $periferico->is_active = true;
+        $periferico->motivo_inactivo = null;
+        $periferico->saveQuietly();
+        
         $equipo = $periferico->equipos; 
         $esActivo = true; 
 
-        $tipoRegistro = 'componente-extra Periferico';
+        $tipoRegistro = 'componente-extra (Periferico)';
         $mensaje = "⚡ SE AGREGÓ PERIFÉRICO: " . $periferico->tipo . " " . $periferico->marca;
 
         if ($equipo) {
@@ -38,10 +42,6 @@ class PerifericoObserver
                         'Estado Inicial' => [
                             'antes'   => 'N/A (Nuevo)',
                             'despues' => $esActivo ? ' Activo' : ' Inactivo'
-                        ],
-                        'Motivo' => [
-                            'antes'   => '-',
-                            'despues' => $periferico->motivo_inactivo ?? 'Instalación inicial'
                         ],
                         'Detalle' => [
                             'antes'   => '-',

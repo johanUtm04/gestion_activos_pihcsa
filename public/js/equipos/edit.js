@@ -74,21 +74,21 @@ function eliminarComponente(btn, clasePadre) {
 /**
  * 2. LÓGICA DE INICIALIZACIÓN
  */
-// $(document).ready(function() {
-//     document.querySelectorAll('.periferico-item').forEach(item => {
-//         // 1. Aplicamos la regla del Caso 1 (No nacen muertos)
-//         bloquearSwitchNuevo(item);
+$(document).ready(function() {
+    document.querySelectorAll('.periferico-item').forEach(item => {
+        // 1. Aplicamos la regla del Caso 1 (No nacen muertos)
+        bloquearSwitchNuevo(item);
         
-//         // 2. Aplicamos la regla del Caso 2 (Lo inactivo se bloquea)
-//         gestionarBloqueoCampos(item);
+        // 2. Aplicamos la regla del Caso 2 (Lo inactivo se bloquea)
+        gestionarBloqueoCampos(item);
 
-//         // 3. Escuchamos el cambio del switch para este item
-//         const sw = item.querySelector('.switch-estado-componente');
-//         sw.addEventListener('change', function() {
-//             gestionarBloqueoCampos(item);
-//         });
-//     });
-// });
+        // 3. Escuchamos el cambio del switch para este item
+        const sw = item.querySelector('.switch-estado-componente');
+        sw.addEventListener('change', function() {
+            gestionarBloqueoCampos(item);
+        });
+    });
+});
 
 /**
  * 3. EVENTOS DINÁMICOS (Delegación de eventos)
