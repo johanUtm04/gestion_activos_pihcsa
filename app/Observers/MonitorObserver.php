@@ -63,7 +63,7 @@ class MonitorObserver
         }
         if ($monitor->isDirty()) {
             $cambios = [];
-            $tipoFinal = 'Actualizacion';
+            $tipoFinal = 'edicion-componente-extra (Monitor)';
             $mensajeFinal = 'Se actualizó información del monitor';
 
             foreach ($monitor->getDirty() as $atributo => $nuevoValor) {

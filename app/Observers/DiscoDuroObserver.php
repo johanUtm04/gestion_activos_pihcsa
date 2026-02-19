@@ -19,22 +19,33 @@ class DiscoDuroObserver
 
     public function created(DiscoDuro $discoDuro): void
     {
-        // IMPORTANTE: Usamos $discoDuro (nombre exacto del argumento)
+        $discoDuro->is_active = true;
+        $discoDuro->motivo_inactivo = null;
+        $discoDuro->saveQuietly();
+
         $equipo = $discoDuro->equipos; 
+        $esActivo = true;
+
+        $tipoRegistro = 'componente-extra (Disco-Duro)';
+        $mensaje = "SE AGREGÓ PERIFÉRICO: " . $discoDuro->capacidad . " " . $discoDuro->tipo_hdd_ssd;
 
         if ($equipo) {
             Historial_log::create([
                 'activo_id'         => $equipo->id,
                 'usuario_accion_id' => Auth::id() ?? 1,
-                'tipo_registro'     => "{$this->tiposMapeados['DISCODURO']} Almacenamiento",
+                'tipo_registro'     => $tipoRegistro,
                 'detalles_json'     => [
-                    'mensaje'          => 'NUEVO COMPONENTE: Se instaló una unidad de almacenamiento',
-                    'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
-                    'rol'              => $equipo->usuario->rol ?? 'N/A',
-                    'cambios' => [
-                        'Disco Duro / SSD' => [
-                            'antes'   => 'Inexistente',
-                            'despues' => "Capacidad: {$discoDuro->capacidad} | Tipo: {$discoDuro->tipo_hdd_ssd} | Interface: {$discoDuro->interface}"
+                    'mensaje'          => $mensaje,
+                    'usuario_asignado' => $discoDuro->equipos->usuario->name ?? 'N/A',
+                    'rol'              => $discoDuro->equipos->usuario->rol ?? 'N/A',
+                    'cambios'          => [
+                        'Estado Inicial' => [
+                            'antes'   => 'N/A (Nuevo)',
+                            'despues' => $esActivo ? ' Activo' : ' Inactivo'
+                        ],
+                        'Detalle' => [
+                            'antes'   => '-',
+                            'despues' => "Capacidad: {$discoDuro->capacidad} | Tipo: {$discoDuro->tipo_hdd_ssd} | Interfaz: {$discoDuro->interface}"
                         ]
                     ]
                 ]
@@ -44,33 +55,52 @@ class DiscoDuroObserver
 
     public function updated(DiscoDuro $discoDuro): void
     {
+
+        if ($discoDuro->created_at && $discoDuro->created_at->diffInSeconds(now()) < 2) {
+            return;
+        }
+
         if ($discoDuro->isDirty()) {
             $cambios = [];
-            $tipoRegistro = $this->tiposMapeados['UPDATED'];
+            $mensajeFinal = 'Se actualizó información de la ram';
+            $tipoFinal = 'edicion-componente-extra (Disco-Duro)'; 
 
             foreach ($discoDuro->getDirty() as $atributo => $nuevoValor) {
                 if (in_array($atributo, ['updated_at', 'equipo_id', 'created_at'])) continue;
 
+                $valorAnterior = $discoDuro->getOriginal($atributo);
                 $campoLegible = "Almacenamiento -> " . Str::headline($atributo);
                 
                 // Detectar si el cambio fue inactivación
-                if ($atributo === 'is_active' && $nuevoValor == 0) {
-                    $tipoRegistro = 'inactivacion Almacenamiento';
+                if ($atributo === 'is_active') {
+                    if ($valorAnterior == 1 && $nuevoValor == 0) {
+                        $tipoFinal = 'inactivacion Disco Duro';
+                        $mensajeFinal = 'COMPONENTE INACTIVADO: El Disco Duro ha sido puesto fuera de servicio.';
+                    } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
+                        $tipoFinal = 'activacion Disco Duro';
+                        $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El Disco Duro vuelve a estar operativo!';
+                    }
+                    
+                    $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
+                    $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
+                } else {
+                    $antesTexto = $valorAnterior ?? 'N/A';
+                    $despuesTexto = $nuevoValor ?? 'N/A';
                 }
 
                 $cambios[$campoLegible] = [
-                    'antes'   => $discoDuro->getOriginal($atributo) ?: 'N/A',
-                    'despues' => $nuevoValor
+                    'antes'   => $antesTexto,
+                    'despues' => $despuesTexto
                 ];
             }
 
             if (!empty($cambios)) {
-                Historial_log::create([
+               Historial_log::create([
                     'activo_id'         => $discoDuro->equipo_id,
-                    'usuario_accion_id' => Auth::id() ?? 1,
-                    'tipo_registro'     => $tipoRegistro,
+                    'usuario_accion_id' => auth()->id() ?? 1,
+                    'tipo_registro'     => $tipoFinal,
                     'detalles_json'     => [
-                        'mensaje'          => 'Se actualizó información técnica del disco',
+                        'mensaje'          => $mensajeFinal,
                         'usuario_asignado' => $discoDuro->equipos->usuario->name ?? 'N/A',
                         'rol'              => $discoDuro->equipos->usuario->rol ?? 'N/A',
                         'cambios'          => $cambios

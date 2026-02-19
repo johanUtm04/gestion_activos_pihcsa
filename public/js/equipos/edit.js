@@ -75,7 +75,7 @@ function eliminarComponente(btn, clasePadre) {
  * 2. LÓGICA DE INICIALIZACIÓN
  */
 $(document).ready(function() {
-    document.querySelectorAll('.periferico-item, .ram-item, .procesador-item, .monitor-item').forEach(item => {
+    document.querySelectorAll('.periferico-item, .ram-item, .procesador-item, .monitor-item, .discoDuro-item').forEach(item => {
         // 1. Aplicamos la regla del Caso 1 (No nacen muertos)
         bloquearSwitchNuevo(item);
         
