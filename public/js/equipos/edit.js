@@ -46,9 +46,13 @@ function agregarComponente(tipo) {
 
     const spanNumero = nuevoNodo.querySelector('.numero-index');
     if (spanNumero) spanNumero.textContent = currentIndex + 1;
+
+    nuevoNodo.setAttribute('data-nuevo', 'true');
     
     container.appendChild(nuevoNodo);
     container.dataset.count = currentIndex + 1;
+
+    bloquearSwitchNuevo(nuevoNodo);
 }
 
 
@@ -71,75 +75,9 @@ function eliminarComponente(btn, clasePadre) {
  * 2. LÓGICA DE INICIALIZACIÓN
  */
 $(document).ready(function() {
-    // Función genérica para solicitar motivo
-function solicitarMotivoCambio(selector) {
-    $(selector).on('change', function() {
-        const select = $(this);
-        const nuevoValor = select.val();
-        const valorOriginal = String(select.attr('data-current'));
-        const targetInput = select.attr('data-motivo-input');
-        const nombreCampo = select.attr('data-label');
-
-        console.log(`Cambiando ${nombreCampo}: Anterior: ${valorOriginal}, Nuevo: ${nuevoValor}`);
-
-        if (nuevoValor != valorOriginal && nuevoValor !== "") {
-            Swal.fire({
-                title: `Justificar cambio en ${nombreCampo}`,
-                input: 'text',
-                // Cambiamos 'icon' por 'type' por si tu versión es antigua
-                type: 'warning', 
-                showCancelButton: true,
-                confirmButtonText: 'Confirmar',
-                cancelButtonText: 'Cancelar',
-                inputValidator: (value) => {
-                    if (!value) return '¡Es obligatorio!';
-                }
-            }).then((result) => {
-                // En versiones muy viejas, se usa result.value directamente. 
-                // En las nuevas es result.isConfirmed. Probemos con esta lógica:
-                if (result && (result.value || result.isConfirmed)) {
-                    const motivo = result.value;
-                    console.log("Confirmado. Motivo:", motivo);
-                    
-                    // 1. Guardamos motivo
-                    $(targetInput).val(motivo);
-                    
-                    // 2. Actualizamos 'data-current' para que ya no pregunte por este mismo valor
-                    select.attr('data-current', nuevoValor);
-                    
-                    // 3. Forzamos que el select mantenga el valor nuevo
-                    select.val(nuevoValor);
-                    
-                    // Si usas Select2
-                    if (select.hasClass('select2-hidden-accessible')) {
-                        select.trigger('change.select2');
-                    }
-                } else {
-                    // Si el usuario cancela o cierra el modal
-                    console.log("Cancelado o cerrado. Revirtiendo a:", valorOriginal);
-                    select.val(valorOriginal);
-                    if (select.hasClass('select2-hidden-accessible')) {
-                        select.trigger('change.select2');
-                    }
-                }
-            });
-        }
+    document.querySelectorAll('.periferico-item').forEach(item => {
+        bloquearSwitchNuevo(item);
     });
-}
-
-    // Activar -- (id)
-
-
-    // Select2
-    if (typeof $.fn.select2 !== 'undefined') {
-        $('.select2').select2({ theme: 'bootstrap4', width: '100%' });
-    }
-
-    // Vida útil
-    $('#vida_util_unidad').on('change', function() {
-        $('#vida_util_input').prop('disabled', !$(this).val());
-    }).trigger('change');
-
 });
 
 /**
@@ -162,3 +100,27 @@ $(document).on('change', '.switch-estado-componente', function() {
         label.text('Inactivo').removeClass('text-success').addClass('text-danger');
     }
 });
+
+
+/**
+ * Protege los componentes nuevos para que no nazcan inactivos.
+ */
+function bloquearSwitchNuevo(contenedor) {
+    // 1. Verificamos si el atributo data-nuevo es "true"
+    const esNuevo = contenedor.getAttribute('data-nuevo') === 'true';
+    
+    // 2. Buscamos el switch dentro de este contenedor
+    const sw = contenedor.querySelector('.switch-estado-componente');
+
+    if (esNuevo && sw) {
+        // Forzamos que esté marcado (Activo)
+        sw.checked = true;
+        
+        // Lo deshabilitamos para que el usuario no pueda apagarlo
+        sw.disabled = true;
+
+        // Opcional: Cambiamos el cursor para indicar que no es clicable
+        sw.parentElement.style.cursor = 'not-allowed';
+        sw.parentElement.title = 'Un componente nuevo debe estar activo al registrarse';
+    }
+}
