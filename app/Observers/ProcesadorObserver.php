@@ -18,16 +18,19 @@ class ProcesadorObserver
     ];
     public function created(Procesador $procesador): void
     {
-        // Obtenemos el equipo al que se le sumo el procesador
+
+        $procesador->is_active = true;
+        $procesador->motivo_inactivo = null;
+        $procesador->saveQuietly();
+
+
         $equipo = $procesador->equipos; 
 
         $esActivo = $procesador->is_active;
-        //Manda x o y dependiendo si es 0 o 1 
-        $tipoRegistro = $esActivo ? 'componente-extra Procesador' : 'INACTIVACION';
 
-        $mensaje = $esActivo 
-        ? "⚡ SE AGREGÓ COMPONENTE EXTRA: " . $procesador->marca 
-        : "⚠️ COMPONENTE INSTALADO INACTIVO: " . $procesador->marca;
+        $tipoRegistro = 'componente-extra (Procesador)';
+
+        $mensaje = "SE AGREGÓ PROCESADOR: " . $procesador->marca . " " . $procesador->descripcion_tipo;
 
         if ($equipo) {
         Historial_log::create([
@@ -43,13 +46,9 @@ class ProcesadorObserver
                     'antes'   => 'N/A (Nuevo)',
                     'despues' => $esActivo ? ' Activo' : ' Inactivo'
                 ],
-                'Especificaciones ' => [
-                    'antes'   => '-',
-                    'despues' => $procesador->motivo_inactivo ?? 'Instalacion inicial'
-                ],
                 'Detalle' => [
                     'antes'   => '-',
-                    'despues' => $procesador->marca . " " . $procesador->descripcion_tipo
+                    'despues' => "Marca: {$procesador->marca}GB | Modelo: {$procesador->descripcion_tipo}"
                 ]
             ]
         ]
@@ -57,15 +56,19 @@ class ProcesadorObserver
         }
     }
 
-    /**
-     * Handle the Procesador "updated" event.
-     */
+/**
+ * Handle the Procesador "updated" event.
+ */
 public function updated(Procesador $procesador): void
 {
+    if ($procesador->created_at && $procesador->created_at->diffInSeconds(now()) < 2) {
+        return;
+    }
+
     if ($procesador->isDirty()) {
         $cambios = [];
-        $esEstado = false;
         $mensajeFinal = 'Se actualizó información del procesador';
+        $tipoFinal = 'edicion-componente-extra (PROCESADOR)'; 
 
         foreach ($procesador->getDirty() as $atributo => $nuevoValor) {
             if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue;
@@ -73,23 +76,20 @@ public function updated(Procesador $procesador): void
             $valorAnterior = $procesador->getOriginal($atributo);
             $campoLegible = "Procesador -> " . Str::headline($atributo);
 
-            $colorFinal = 'info';
-            if ($atributo === 'is_active') {
-                $esEstado = true;
-            if ($valorAnterior == 1 && $nuevoValor == 0) {
-                $tipoFinal = 'inactivacion Procesador'; 
-                $mensajeFinal = 'COMPONENTE INACTIVADO: El procesador ha sido puesto fuera de servicio.';
-            } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
-                    $tipoFinal = 'activacion Procesador';
-                    $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El procesador vuelve a estar operativo!';
+                if ($atributo === 'is_active') {
+                    if ($valorAnterior == 1 && $nuevoValor == 0) {
+                        $tipoFinal = 'inactivacion PROCESADOR';
+                        $mensajeFinal = 'COMPONENTE INACTIVADO: Una memoria PROCESADOR ha sido desactivada.';
+                    } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
+                        $tipoFinal = 'activacion PROCESADOR';
+                        $mensajeFinal = 'COMPONENTE REACTIVADO: ¡La memoria PROCESADOR vuelve a estar operativa!';
+                    }
+                    $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
+                    $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
+                } else {
+                    $antesTexto = $valorAnterior ?? 'N/A';
+                    $despuesTexto = $nuevoValor ?? 'N/A';
                 }
-                
-                $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
-                $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
-            } else {
-                $antesTexto = $valorAnterior ?? 'N/A';
-                $despuesTexto = $nuevoValor ?? 'N/A';
-            }
 
             $cambios[$campoLegible] = [
                 'antes'   => $antesTexto,
@@ -104,7 +104,6 @@ public function updated(Procesador $procesador): void
                 'tipo_registro' => $tipoFinal ?? 'Actualizacion',
                 'detalles_json'     => [
                     'mensaje'          => $mensajeFinal,
-                    'color'   => $colorFinal,
                     'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',
                     'rol'              => $procesador->equipos->usuario->rol ?? 'N/A',
                     'cambios'          => $cambios

@@ -28,7 +28,7 @@ class RamObserver
 
         $tipoRegistro = $esActivo ? 'componente-extra (RAM)' : 'inactivacion RAM';
 
-        $mensaje = "SE AGREGÓ PERIFÉRICO: " . $ram->capacidad_gb . " " . $ram->clock_mhz;
+        $mensaje = "SE AGREGÓ RAM: " . $ram->capacidad_gb . " " . $ram->clock_mhz;
 
         if ($equipo) {
             Historial_log::create([
