@@ -25,8 +25,7 @@ class ProcesadorObserver
 
 
         $equipo = $procesador->equipos; 
-
-        $esActivo = $procesador->is_active;
+        $esActivo = true; 
 
         $tipoRegistro = 'componente-extra (Procesador)';
 
@@ -101,7 +100,7 @@ public function updated(Procesador $procesador): void
             Historial_log::create([
                 'activo_id'         => $procesador->equipo_id,
                 'usuario_accion_id' => auth()->id() ?? 1,
-                'tipo_registro' => $tipoFinal ?? 'Actualizacion',
+                'tipo_registro' => $tipoFinal,
                 'detalles_json'     => [
                     'mensaje'          => $mensajeFinal,
                     'usuario_asignado' => $procesador->equipos->usuario->name ?? 'N/A',

@@ -20,11 +20,17 @@ class MonitorObserver
 
     public function created(Monitor $monitor): void
     {
+
+        $monitor->is_active = true;
+        $monitor->motivo_inactivo = null;
+        $monitor->saveQuietly();
+
         $equipo = $monitor->equipos; 
-        $esActivo = $monitor->is_active;
+        $esActivo = true; 
 
         // Estandarización para la vista
-        $tipoRegistro = $esActivo ? 'componente-extra Monitor' : 'inactivacion Monitor';
+        $tipoRegistro = 'componente-extra (Monitor)';
+        $mensaje = "SE AGREGÓ PERIFÉRICO: " . $monitor->marca . " " . $monitor->escala_pulgadas;
 
         if ($equipo) {
             Historial_log::create([
@@ -32,7 +38,7 @@ class MonitorObserver
                 'usuario_accion_id' => Auth::id() ?? 1,
                 'tipo_registro'     => $tipoRegistro, 
                 'detalles_json'     => [
-                    'mensaje'          => "⚡ SE AGREGÓ MONITOR: {$monitor->marca} {$monitor->escala_pulgadas}\"",
+                    'mensaje'          => $mensaje,
                     'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
                     'rol'              => $equipo->usuario->rol ?? 'N/A',
                     'cambios' => [
@@ -42,7 +48,7 @@ class MonitorObserver
                         ],
                         'Especificaciones' => [
                             'antes'   => 'Inexistente',
-                            'despues' => "Marca: {$monitor->marca} | S/N: {$monitor->serial} | Escala: {$monitor->escala_pulgadas}\" | Interface: {$monitor->interface}"
+                            'despues' => "Marca: {$monitor->marca} | Escala: {$monitor->escala_pulgadas}\" | Interface: {$monitor->interface}"
                         ]
                     ] 
                 ]
@@ -52,6 +58,9 @@ class MonitorObserver
 
     public function updated(Monitor $monitor): void
     {
+        if ($monitor->created_at && $monitor->created_at->diffInSeconds(now()) < 2) {
+            return;
+        }
         if ($monitor->isDirty()) {
             $cambios = [];
             $tipoFinal = 'Actualizacion';
@@ -63,15 +72,15 @@ class MonitorObserver
                 $valorAnterior = $monitor->getOriginal($atributo);
                 $campoLegible = "Monitor -> " . Str::headline($atributo);
 
-                // Lógica de activación/inactivación
                 if ($atributo === 'is_active') {
                     if ($valorAnterior == 1 && $nuevoValor == 0) {
-                        $tipoFinal = 'inactivacion Monitor';
-                        $mensajeFinal = '⚠️ COMPONENTE INACTIVADO: El monitor ha sido puesto fuera de servicio.';
+                        $tipoFinal = 'inactivacion Periferico';
+                        $mensajeFinal = 'COMPONENTE INACTIVADO: La Ram ha sido puesta fuera de servicio.';
                     } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
-                        $tipoFinal = 'activacion Monitor';
-                        $mensajeFinal = '✅ COMPONENTE REACTIVADO: ¡El monitor vuelve a estar operativo!';
+                        $tipoFinal = 'activacion Periferico';
+                        $mensajeFinal = 'COMPONENTE REACTIVADO: La Ram vuelve a estar operativa!';
                     }
+                    
                     $antesTexto = $valorAnterior ? 'Activo' : 'Inactivo';
                     $despuesTexto = $nuevoValor ? 'Activo' : 'Inactivo';
                 } else {
@@ -92,7 +101,6 @@ class MonitorObserver
                     'tipo_registro'     => $tipoFinal,
                     'detalles_json'     => [
                         'mensaje'          => $mensajeFinal,
-                        'color'            => 'info',
                         'usuario_asignado' => $monitor->equipos->usuario->name ?? 'N/A',
                         'rol'              => $monitor->equipos->usuario->rol ?? 'N/A',
                         'cambios'          => $cambios
