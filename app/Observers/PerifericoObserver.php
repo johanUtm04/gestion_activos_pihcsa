@@ -20,14 +20,10 @@ class PerifericoObserver
     public function created(Periferico $periferico): void
     {
         $equipo = $periferico->equipos; 
-        $esActivo = $periferico->is_active;
+        $esActivo = true; 
 
-        // Usamos el sufijo para identificar el componente en el log
-        $tipoRegistro = $esActivo ? 'componente-extra Periferico' : 'inactivacion Periferico';
-        
-        $mensaje = $esActivo 
-            ? "⚡ SE AGREGÓ PERIFÉRICO: " . $periferico->tipo . " " . $periferico->marca 
-            : "⚠️ PERIFÉRICO INSTALADO INACTIVO: " . $periferico->marca;
+        $tipoRegistro = 'componente-extra Periferico';
+        $mensaje = "⚡ SE AGREGÓ PERIFÉRICO: " . $periferico->tipo . " " . $periferico->marca;
 
         if ($equipo) {
             Historial_log::create([
@@ -59,10 +55,15 @@ class PerifericoObserver
 
     public function updated(Periferico $periferico): void
     {
+
+        if ($periferico->created_at && $periferico->created_at->diffInSeconds(now()) < 2) {
+            return;
+        }
+
         if ($periferico->isDirty()) {
             $cambios = [];
             $mensajeFinal = 'Se actualizó información del periférico';
-            $tipoFinal = 'Actualizacion'; // Default
+            $tipoFinal = 'Actualizacion'; 
 
             foreach($periferico->getDirty() as $atributo => $nuevoValor){
                 if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue; 

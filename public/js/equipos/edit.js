@@ -74,11 +74,21 @@ function eliminarComponente(btn, clasePadre) {
 /**
  * 2. LÓGICA DE INICIALIZACIÓN
  */
-$(document).ready(function() {
-    document.querySelectorAll('.periferico-item').forEach(item => {
-        bloquearSwitchNuevo(item);
-    });
-});
+// $(document).ready(function() {
+//     document.querySelectorAll('.periferico-item').forEach(item => {
+//         // 1. Aplicamos la regla del Caso 1 (No nacen muertos)
+//         bloquearSwitchNuevo(item);
+        
+//         // 2. Aplicamos la regla del Caso 2 (Lo inactivo se bloquea)
+//         gestionarBloqueoCampos(item);
+
+//         // 3. Escuchamos el cambio del switch para este item
+//         const sw = item.querySelector('.switch-estado-componente');
+//         sw.addEventListener('change', function() {
+//             gestionarBloqueoCampos(item);
+//         });
+//     });
+// });
 
 /**
  * 3. EVENTOS DINÁMICOS (Delegación de eventos)
@@ -106,21 +116,56 @@ $(document).on('change', '.switch-estado-componente', function() {
  * Protege los componentes nuevos para que no nazcan inactivos.
  */
 function bloquearSwitchNuevo(contenedor) {
-    // 1. Verificamos si el atributo data-nuevo es "true"
+
     const esNuevo = contenedor.getAttribute('data-nuevo') === 'true';
     
-    // 2. Buscamos el switch dentro de este contenedor
+
     const sw = contenedor.querySelector('.switch-estado-componente');
 
     if (esNuevo && sw) {
-        // Forzamos que esté marcado (Activo)
         sw.checked = true;
-        
-        // Lo deshabilitamos para que el usuario no pueda apagarlo
         sw.disabled = true;
-
-        // Opcional: Cambiamos el cursor para indicar que no es clicable
         sw.parentElement.style.cursor = 'not-allowed';
         sw.parentElement.title = 'Un componente nuevo debe estar activo al registrarse';
+    }
+}
+
+
+/**
+ * Bloquea o desbloquea los inputs de un periférico según su estado de actividad.
+ */
+function gestionarBloqueoCampos(contenedor) {
+    const sw = contenedor.querySelector('.switch-estado-componente');
+
+    const btnOjo = contenedor.querySelector('[data-toggle="collapse"]');
+    const targetCollapse = contenedor.querySelector('.collapse');
+
+    if (sw.checked) {
+
+        if(btnOjo) btnOjo.innerHTML = '<i class="fas fa-eye"></i> Contraer';
+    } else {
+
+        if(btnOjo) btnOjo.innerHTML = '<i class="fas fa-eye"></i> Ver detalles';
+    
+    }
+
+    const campos = contenedor.querySelectorAll('input:not(.switch-estado-componente):not(.input-motivo), select');
+    
+    if (!sw.checked) {
+        campos.forEach(input => {
+            input.readOnly = true; 
+            if (input.tagName === 'SELECT') {
+                input.style.pointerEvents = 'none';
+            }
+            input.classList.add('bg-light'); 
+        });
+    } else {
+        campos.forEach(input => {
+            input.readOnly = false;
+            if (input.tagName === 'SELECT') {
+                input.style.pointerEvents = 'auto';
+            }
+            input.classList.remove('bg-light');
+        });
     }
 }
