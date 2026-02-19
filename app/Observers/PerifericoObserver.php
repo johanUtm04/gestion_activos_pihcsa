@@ -101,7 +101,6 @@ class PerifericoObserver
                     'tipo_registro'     => $tipoFinal,
                     'detalles_json'     => [
                         'mensaje'          => $mensajeFinal,
-                        'color'            => 'info',
                         'usuario_asignado' => $periferico->equipos->usuario->name ?? 'N/A',
                         'rol'              => $periferico->equipos->usuario->rol ?? 'N/A',
                         'cambios'          => $cambios

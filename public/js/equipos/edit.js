@@ -75,7 +75,7 @@ function eliminarComponente(btn, clasePadre) {
  * 2. LÓGICA DE INICIALIZACIÓN
  */
 $(document).ready(function() {
-    document.querySelectorAll('.periferico-item').forEach(item => {
+    document.querySelectorAll('.periferico-item, .ram-item').forEach(item => {
         // 1. Aplicamos la regla del Caso 1 (No nacen muertos)
         bloquearSwitchNuevo(item);
         
@@ -138,10 +138,8 @@ function gestionarBloqueoCampos(contenedor) {
     const sw = contenedor.querySelector('.switch-estado-componente');
 
     const btnOjo = contenedor.querySelector('[data-toggle="collapse"]');
-    const targetCollapse = contenedor.querySelector('.collapse');
 
     if (sw.checked) {
-
         if(btnOjo) btnOjo.innerHTML = '<i class="fas fa-eye"></i> Contraer';
     } else {
 

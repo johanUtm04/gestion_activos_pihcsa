@@ -19,11 +19,16 @@ class RamObserver
 
     public function created(Ram $ram): void
     {
-        $equipo = $ram->equipos; 
-        $esActivo = $ram->is_active;
+        $ram->is_active = true;
+        $ram->motivo_inactivo = null;
+        $ram->saveQuietly();
 
-        // Estandarizamos para que la vista lo reconozca
-        $tipoRegistro = $esActivo ? 'componente-extra RAM' : 'inactivacion RAM';
+        $equipo = $ram->equipos; 
+        $esActivo = $esActivo = true; 
+
+        $tipoRegistro = $esActivo ? 'componente-extra (RAM)' : 'inactivacion RAM';
+
+        $mensaje = "SE AGREGÓ PERIFÉRICO: " . $ram->capacidad_gb . " " . $ram->clock_mhz;
 
         if ($equipo) {
             Historial_log::create([
@@ -31,7 +36,7 @@ class RamObserver
                 'usuario_accion_id' => Auth::id() ?? 1,
                 'tipo_registro'     => $tipoRegistro, 
                 'detalles_json'     => [
-                    'mensaje'          => "⚡ NUEVA RAM INSTALADA: {$ram->capacidad_gb}GB {$ram->tipo_chz}",
+                    'mensaje'          => $mensaje,
                     'usuario_asignado' => $equipo->usuario->name ?? 'N/A',
                     'rol'              => $equipo->usuario->rol ?? 'N/A',
                     'cambios' => [
@@ -40,8 +45,8 @@ class RamObserver
                             'despues' => $esActivo ? 'Activo' : 'Inactivo'
                         ],
                         'Especificaciones' => [
-                            'antes'   => 'Sin RAM asignada',
-                            'despues' => "{$ram->capacidad_gb}GB | {$ram->clock_mhz}Mhz | {$ram->tipo_chz}"
+                            'antes'   => '-',
+                            'despues' => "Capacidad: {$ram->capacidad_gb}GB | Clock: {$ram->clock_mhz}Mhz | Tipo: {$ram->tipo_chz}"
                         ]
                     ] 
                 ]
@@ -51,10 +56,15 @@ class RamObserver
 
     public function updated(Ram $ram): void
     {
+
+        if ($ram->created_at && $ram->created_at->diffInSeconds(now()) < 2) {
+            return;
+        }
+
         if ($ram->isDirty()) {
             $cambios = [];
-            $tipoFinal = 'Actualizacion';
             $mensajeFinal = 'Se actualizó información de la RAM';
+            $tipoFinal = 'edicion-componente-extra (RAM)'; 
 
             foreach ($ram->getDirty() as $atributo => $nuevoValor) {
                 if ($atributo === 'updated_at' || $atributo === 'equipo_id') continue;
@@ -90,7 +100,6 @@ class RamObserver
                     'tipo_registro'     => $tipoFinal,
                     'detalles_json'     => [
                         'mensaje'          => $mensajeFinal,
-                        'color'            => 'info',
                         'usuario_asignado' => $ram->equipos->usuario->name ?? 'N/A',
                         'rol'              => $ram->equipos->usuario->rol ?? 'N/A',
                         'cambios'          => $cambios
