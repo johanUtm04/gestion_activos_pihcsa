@@ -7,6 +7,9 @@ use App\Models\Ubicacion;
 use App\Models\Historial_log;
 use App\Models\User;
 use App\Models\Monitor;
+use App\Models\DiscoDuro;
+use App\Models\Ram;
+use App\Models\Procesador;
 use App\Models\Marca;
 use App\Models\TipoActivo;
 use Illuminate\Http\Request;
@@ -26,7 +29,7 @@ class EquipoController extends Controller
     public function index(Request $request)
     {
 
-        $query = Equipo::query(); 
+        $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores', 'marca', 'tipoActivo']);
         session()->forget('wizard_equipo');
 
         $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores']);
@@ -64,30 +67,77 @@ class EquipoController extends Controller
         } 
 
 
-        $query = Equipo::query();
+        // $query = Equipo::query();
 
-        //¿Hay filtros? Los aplicamos ANTES de traer los datos
+        //Filtro de Monitores
         if ($request->filled('monitor_marca')) {
-            // Esto modifica el SQL que se va a ejecutar
             $query->whereHas('monitores', function ($q) use ($request) {
                 $q->where('marca', $request->monitor_marca);
             });
         }
 
         if ($request->filled('escala_pulgadas')) {
-            // Esto modifica el SQL que se va a ejecutar
             $query->whereHas('monitores', function ($q) use ($request) {
                 $q->where('escala_pulgadas', $request->escala_pulgadas);
             });
         }
 
         if ($request->filled('monitor_interface')) {
-            // Esto modifica el SQL que se va a ejecutar
             $query->whereHas('monitores', function ($q) use ($request) {
                 $q->where('interface', $request->monitor_interface);
             });
         }
 
+        //Filtro de Discos Duros
+        if ($request->filled('disco_capacidad')) {
+            $query->whereHas('discosDuros', function ($q) use ($request) {
+                $q->where('capacidad', $request->disco_capacidad);
+            });
+        }
+
+        if ($request->filled('disco_tipo')) {
+            $query->whereHas('discosDuros', function ($q) use ($request) {
+                $q->where('tipo_hdd_ssd', $request->disco_tipo);
+            });
+        }
+
+        if ($request->filled('disco_interface')) {
+            $query->whereHas('discosDuros', function ($q) use ($request) {
+                $q->where('interface', $request->disco_interface);
+            });
+        }
+
+        //Filtro por Rams
+        if ($request->filled('ram_capacidad')) {
+            $query->whereHas('rams', function ($q) use ($request) {
+                $q->where('capacidad_gb', $request->ram_capacidad);
+            });
+        }
+
+        if ($request->filled('ram_clock')) {
+            $query->whereHas('rams', function ($q) use ($request) {
+                $q->where('clock_mhz', $request->ram_clock);
+            });
+        }
+
+        if ($request->filled('ram_tipo')) {
+            $query->whereHas('rams', function ($q) use ($request) {
+                $q->where('tipo_chz', $request->ram_tipo);
+            });
+        }
+                
+        // Filtro por Procesador
+        if ($request->filled('procesador_marca')) {
+            $query->whereHas('procesadores', function ($q) use ($request) {
+                $q->where('marca', $request->procesador_marca);
+            });
+        }
+
+        if ($request->filled('procesador_tipo')) {
+            $query->whereHas('procesadores', function ($q) use ($request) {
+                $q->where('descripcion_tipo', $request->procesador_tipo);
+            });
+        }
 
         $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
         ->orderBy('created_at', 'asc') 
@@ -104,6 +154,19 @@ class EquipoController extends Controller
         $escalas_pulgadas = Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas');
         $monitor_interface = Monitor::distinct()->orderBy('interface', 'asc')->pluck('interface');
 
+        //Discos
+        $discos_capacidades = DiscoDuro::distinct()->orderBy('capacidad', 'asc')->pluck('capacidad');
+        $discos_tipos = DiscoDuro::distinct()->pluck('tipo_hdd_ssd'); 
+        $discos_interfaces = DiscoDuro::distinct()->pluck('interface');
+
+        //Rams
+        $rams_capacidades = Ram::distinct()->orderBy('capacidad_gb', 'asc')->pluck('capacidad_gb');
+        $rams_clocks = Ram::distinct()->orderBy('clock_mhz', 'asc')->pluck('clock_mhz');
+        $rams_tipos = Ram::distinct()->orderBy('tipo_chz', 'asc')->pluck('tipo_chz');
+
+        //Procesadores
+        $procesador_marcas = Procesador::distinct()->orderBy('marca', 'asc')->pluck('marca');
+        $procesador_tipos = Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo');
 
         $categorias = [
             'Dispositivos de Usuario' => ['Laptop', 'Desktop', 'All-in-One', 'Tablet', 'Smartphone', 'Workstation'],
@@ -111,7 +174,11 @@ class EquipoController extends Controller
             'Perifericos' => ['Monitor', 'Impresora', 'Multifuncional', 'Escaner', 'Proyector', 'Camara'],
         ];
 
-        return view('equipos.index', compact('equipos', 'ubicaciones', 'categorias', 'usuarios', 'marcas', 'tipos', 'marcas_monitores', 'escalas_pulgadas', 'monitor_interface'));
+        return view('equipos.index', compact('equipos', 'ubicaciones', 'categorias', 'usuarios', 'marcas', 'tipos', 'marcas_monitores', 'escalas_pulgadas', 'monitor_interface',
+        'discos_capacidades', 'discos_tipos', 'discos_interfaces',
+        'rams_capacidades', 'rams_clocks', 'rams_tipos',
+        'procesador_marcas', 'procesador_tipos'
+        ));
     }
 
     //Metodo para crear registro en Base de datos
