@@ -2,7 +2,7 @@
 <fieldset class="border p-3 mb-4">
 
 
-<legend class="w-auto px-2 text-primary"><i class="fas fa-tools"></i> Compoenentes Extra</legend>
+<legend class="w-auto px-2 text-primary"><i class="fas fa-tools"></i> Componentes Extra</legend>
 
 
 <div id="componentes-editables">

@@ -47,7 +47,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h1 class="font-weight-bold mb-1">
-                <i class="fas fa-microchip text-success"></i> Procesador (CPU)
+                <i class="fas fa-microchip text-danger"></i> Procesador (CPU)
             </h1>
         </div>
 
@@ -111,7 +111,7 @@
 
 @section('content')
 
-<div class="card card-outline card-success">
+<div class="card card-outline card-danger">
     <div class="card-body">
 
         <form action="{{ route('equipos.wizard.saveProcesador', $uuid) }}" method="POST" id="procesadorForm">
@@ -216,30 +216,6 @@
                             @error('descripcion_tipo') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
-
-                    {{-- Frecuencia del Micro --}}
-                    <!-- <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="frec_select"><i class="fas fa-tachometer-alt"></i> Frecuencia</label>
-                            <select id="frec_select" class="form-control">
-                                <option value="">Seleccione frecuencia</option>
-                                <option value="1.10 GHz">1.10 GHz</option>
-                                <option value="2.00 GHz">2.00 GHz</option>
-                                <option value="2.40 GHz">2.40 GHz</option>
-                                <option value="2.60 GHz">2.60 GHz</option>
-                                <option value="3.00 GHz">3.00 GHz</option>
-                                <option value="3.20 GHz">3.20 GHz</option>
-                                <option value="3.60 GHz">3.60 GHz</option>
-                                <option value="4.20 GHz">4.20 GHz</option>
-                                <option value="OTRO_VALOR">-- Otra (Escribir) --</option>
-                            </select>
-                            <input type="text" name="frecuenciaMicro" id="frec_input" 
-                                   class="form-control custom-input" 
-                                   placeholder="Ej. 2.9 GHz"
-                                   value="{{ old('frecuenciaMicro', session('wizard_equipo.procesador.frecuenciaMicro')) }}">
-                            @error('frecuenciaMicro') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                    </div> -->
                 </div>
 
             </fieldset>
@@ -252,7 +228,7 @@
                     <i class="fas fa-fast-forward"></i> Omitir Procesador
                 </a>
 
-                <button type="submit" class="btn btn-warning btn-lg px-5">
+                <button type="submit" class="btn btn-danger btn-lg px-5">
                     <i class="fas fa-arrow-right"></i> Continuar
                 </button>
             </div>
@@ -278,7 +254,6 @@ $(document).ready(function() {
             }
         });
 
-        // Al cargar
         let initialVal = $input.val();
         if(initialVal && !$select.find(`option[value='${initialVal}']`).length && initialVal !== '') {
             $select.val('OTRO_VALOR');

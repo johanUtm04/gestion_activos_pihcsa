@@ -19,7 +19,7 @@
     }
 
     .wizard-step.active {
-        color: #ffc107;
+        color: #28a745;
         font-weight: 600;
     }
 
@@ -47,7 +47,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h1 class="font-weight-bold mb-1">
-                <i class="fas fa-tv text-warning"></i> Monitor
+                <i class="fas fa-tv text-success"></i> Monitor
             </h1>
         </div>
 
@@ -94,7 +94,7 @@
 @stop
 
 @section('content')
-<div class="card card-outline card-warning">
+<div class="card card-outline card-success">
     <div class="card-body">
 
         <form action="{{ route('equipos.wizard.saveMonitor', $uuid) }}" method="POST" id="monitorForm">
@@ -255,7 +255,7 @@
                     <i class="fas fa-fast-forward"></i> Omitir paso
                 </a>
 
-                <button type="submit" class="btn btn-warning btn-lg px-5">
+                <button type="submit" class="btn btn-success btn-lg px-5">
                     <i class="fas fa-arrow-right"></i> Continuar
                 </button>
             </div>

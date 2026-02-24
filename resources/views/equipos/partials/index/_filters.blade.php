@@ -58,8 +58,8 @@
                 <div class="row">
                     {{-- MONITORES --}}
                     <div class="col-md-6 mb-3">
-                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #007bff !important;">
-                            <h6 class="text-primary font-weight-bold small mb-3"><i class="fas fa-desktop mr-2"></i> MONITORES</h6>
+                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #28a745 !important;">
+                            <h6 class="text-success font-weight-bold small mb-3"><i class="fas fa-desktop mr-2"></i> MONITORES</h6>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="x-small font-weight-bold text-muted">MARCA</label>
@@ -94,8 +94,8 @@
 
                     {{-- ALMACENAMIENTO --}}
                     <div class="col-md-6 mb-3">
-                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #28a745 !important;">
-                            <h6 class="text-success font-weight-bold small mb-3"><i class="fas fa-hdd mr-2"></i> ALMACENAMIENTO</h6>
+                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #007bff !important;">
+                            <h6 class="text-primary font-weight-bold small mb-3"><i class="fas fa-hdd mr-2"></i> ALMACENAMIENTO</h6>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="x-small font-weight-bold text-muted">CAPACIDAD</label>
@@ -130,8 +130,8 @@
 
                     {{-- RAM --}}
                     <div class="col-md-6">
-                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #fd7e14 !important;">
-                            <h6 class="font-weight-bold small mb-3" style="color: #fd7e14;"><i class="fas fa-memory mr-2"></i> MEMORIA RAM</h6>
+                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #ffc30f !important;">
+                            <h6 class="text-warning font-weight-bold small mb-3"><i class="fas fa-memory mr-2"></i> MEMORIA RAM</h6>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="x-small font-weight-bold text-muted">CAPACIDAD</label>
@@ -166,8 +166,8 @@
 
                     {{-- PROCESADOR --}}
                     <div class="col-md-6">
-                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #343a40 !important;">
-                            <h6 class="text-dark font-weight-bold small mb-3"><i class="fas fa-microchip mr-2"></i> PROCESADOR</h6>
+                        <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #dc3545 !important;">
+                            <h6 class="text-danger font-weight-bold small mb-3"><i class="fas fa-microchip mr-2"></i> PROCESADOR</h6>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="x-small font-weight-bold text-muted">MARCA</label>
