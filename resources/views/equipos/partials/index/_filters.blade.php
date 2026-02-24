@@ -77,6 +77,64 @@
                         </div>
                     </div>
 
+                    {{-- Filtro por Monitor --}}
+                    <div class="row mb-4 p-3 bg-white" style="border-left: 4px solid #007bff !important;">
+                        <div class="col-12 mb-3">
+                            <h6 class="text-primary font-weight-bold mb-0 d-flex align-items-center">
+                                <i class="fas fa-desktop mr-2"></i> FILTRAR POR MONITORES
+                            </h6>
+                            <hr class="my-2">
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold text-muted text-uppercase">
+                                    <i class="fas fa-tag mr-1"></i> Marca
+                                </label>
+                                <select name="monitor_marca" class="form-control form-control-sm">
+                                    <option value="">-- Todas las Marcas --</option>
+                                    @foreach($marcas_monitores as $marca)
+                                        <option value="{{ $marca }}" {{ request('monitor_marca') == $marca ? 'selected' : '' }}>
+                                            {{ $marca }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold text-muted text-uppercase">
+                                    <i class="fas fa-expand mr-1"></i> Escala (Pulgadas)
+                                </label>
+                                <select name="escala_pulgadas" class="form-control form-control-sm">
+                                    <option value="">-- Todas las medidas --</option>
+                                    @foreach($escalas_pulgadas as $pulgada)
+                                        <option value="{{ $pulgada }}" {{ request('escala_pulgadas') == $pulgada ? 'selected' : '' }}>
+                                            {{ $pulgada }}"
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <label class="small font-weight-bold text-muted text-uppercase">
+                                    <i class="fas fa-tag mr-1"></i> Interface
+                                </label>
+                                <select name="monitor_interface" class="form-control form-control-sm">
+                                    <option value="">-- Todas las Interfaces --</option>
+                                    @foreach($monitor_interface as $interface)
+                                        <option value="{{ $interface }}" {{ request('monitor_interface') == $interface ? 'selected' : '' }}>
+                                            {{ $interface }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
                     {{-- 4. Botones --}}
                     <div class="col-md-2 d-flex align-items-end">
                         <div class="form-group w-100">

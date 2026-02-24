@@ -1,94 +1,92 @@
 $(document).ready(function() {
     
-    // El contador debe estar AFUERA para que incremente globalmente
-    let contadorVistas = 1; 
-
 $('.equipo-row').on('mouseenter', function() {
     const d = $(this).data();
 
-    // Función para marcar texto si algo está inactivo (Ubicación, Usuario, etc.)
     const formatInactivo = (valor, estaInactivo) => {
         return estaInactivo ? `${valor} <span class="text-danger small font-italic">(Inactivado)</span>` : valor;
     };
 
+
+const modelosCPU = d.procesador_modelo ? d.procesador_modelo.split(',') : [];
+const coresCPU = d.procesador_cores ? d.procesador_cores.split(',') : [];
+const ghzCPU = d.clock_mhz_cpu ? d.clock_mhz_cpu.split(',') : [];
+const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split(',') : [];
+
     // Estructura Profesional Dinámica
     const html = `
         <div class="animate-details">
-            <div class="detail-header-premium">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <span class="badge ${d.equipo_inactivo ? 'badge-danger' : 'badge-light text-info'} mb-2">
-                            ${d.tipo} ${d.equipo_inactivo ? '- INACTIVO' : ''}
-                        </span>
-                        <h3 class="font-weight-bold mb-0">${d.marca}</h3>
-                        <p class="mb-0 opacity-8 text-sm">
-                            <i class="fas fa-hashtag mr-1"></i>ID: ${d.id} | 
-                            <i class="fas fa-barcode mr-1"></i>${d.serial} |
-                            <i class="fas fa-layer-group mr-1"></i>Vista #${contadorVistas}
-                        </p>
-                    </div>
-                    <i class="fas fa-laptop-code fa-3x opacity-2"></i>
+        <div class="detail-header-premium p-2"> <div class="d-flex justify-content-between align-items-center"> <div>
+                    <span class="badge ${d.equipo_inactivo ? 'badge-danger' : 'badge-light text-info'} mb-1" style="font-size: 0.7rem;">
+                        ${d.tipo} ${d.equipo_inactivo ? '- INACTIVO' : ''}
+                    </span>
+                                        
+                    <p class="mb-0 opacity-8" style="font-size: 0.75rem;">
+                        <i class="fas fa-hashtag mr-1"></i>${d.id} | 
+                        <i class="fas fa-barcode mr-1"></i>${d.serial} |
+                        ${d.marca}  |
+                        <i class="fab fa-windows mr-1"></i>${d.so} |
+                        <i class="fas fa-map-marker-alt mr-1"></i>${formatInactivo(d.ubicacion, d.ubicacion_inactiva)}
+                    </p>
                 </div>
+                
+                <i class="fas fa-laptop-code fa-2x opacity-2"></i>
             </div>
-
-            <div class="section-divider">Especificaciones Base</div>
-            <div class="info-box-custom">
-                <span class="info-label">Sistema Operativo</span>
-                <span class="info-value text-info"><i class="fab fa-windows mr-1"></i>${d.so}</span>
-            </div>
-            <div class="info-box-custom">
-                <span class="info-label">Ubicación Actual</span>
-                <span class="info-value">${formatInactivo(d.ubicacion, d.ubicacion_inactiva)}</span>
-            </div>
+        </div>
 
             <div class="section-divider">Responsable del Activo</div>
-            <div class="p-3 d-flex align-items-center">
-                <div class="bg-light rounded-circle p-3 mr-3">
-                    <i class="fas fa-user-tie fa-2x text-secondary"></i>
+            <div class="p-1 d-flex align-items-center">
+                <div class="bg-light rounded-circle p-1 mr-1">
+                    <i class="fas fa-user-tie fa-1x text-secondary"></i>
                 </div>
                 <div>
-                    <div class="font-weight-bold text-dark">${formatInactivo(d.usuario, d.usuario_inactivo)}</div>
-                    <div class="small text-muted">${d.email}</div>
+                    <div class="font-weight-bold text-dark" style="font-size: 0.65rem; text-uppercase">${formatInactivo(d.usuario, d.usuario_inactivo)}</div>
+                    <div class="small text-muted" style="font-size: 0.65rem; text-uppercase">${d.email}</div>
                 </div>
             </div>
 
             <div class="section-divider">Arquitectura de Hardware</div>
             
             <div class="info-box-custom">
-                <span class="info-label"><i class="fas fa-microchip mr-1"></i> Procesadores</span>
-                <span class="info-value">
-                    ${d.procesadores} unidad(es) 
-                    ${d.procesadores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.procesadores_inactivos} inactivos)</span>` : ''}
+                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-hdd mr-1"></i> Procesamiento</span>
+                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
+                    ${d.procesadores} Procesador(es) Activo(s) 
+                    ${d.procesadores > 0 ? `<span class="text-danger small font-italic">(${d.procesadores} inactivos)</span>` : ''}
                 </span>
             </div>
 
             <div class="info-box-custom">
-                <span class="info-label"><i class="fas fa-memory mr-1"></i> Memoria RAM</span>
-                <span class="info-value">
-                    ${d.ram || 'Sin RAM activa'} 
-                    ${d.ram_inactiva ? `<br><small class="text-danger font-italic">Inactiva: ${d.ram_inactiva}GB</small>` : ''}
+                <span class="info-label" style="font-size: 0.65rem; text-uppercase">
+                    <i class="fas fa-memory mr-1"></i> Memoria RAM
+                </span>
+                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
+                    ${d.ram || '0'} GB Activa(s) 
+                    ${d.ram_inactiva && d.ram_inactiva != 0 ? `
+                        <span class="text-danger small font-italic">
+                            (${d.ram_inactiva} GB inactivas)
+                        </span>
+                    ` : ''}
                 </span>
             </div>
-
             <div class="info-box-custom">
-                <span class="info-label"><i class="fas fa-hdd mr-1"></i> Almacenamiento</span>
-                <span class="info-value">
+                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-hdd mr-1"></i> Almacenamiento</span>
+                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
                     ${d.discos} Disco(s) Activo(s) 
                     ${d.discos_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.discos_inactivos} inactivos)</span>` : ''}
                 </span>
             </div>
             
             <div class="info-box-custom">
-                <span class="info-label"><i class="fas fa-desktop mr-1"></i> Monitores</span>
-                <span class="info-value">
+                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-desktop mr-1"></i> Monitores</span>
+                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
                     ${d.monitores} Activo(s) 
                     ${d.monitores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.monitores_inactivos} inactivados)</span>` : ''}
                 </span>
             </div>
 
             <div class="p-3 border-bottom">
-                <span class="info-label d-block mb-2">Otros Periféricos</span>
-                <p class="small text-dark mb-1">
+                <span class="info-label d-block mb-2" style="font-size: 0.65rem; text-uppercase">Otros Periféricos</span>
+                <p class="small text-dark mb-1" style="font-size: 0.65rem; text-uppercase">
                     <i class="fas fa-keyboard mr-1 text-muted"></i>
                     ${d.perifericos || '<span class="text-muted">Ninguno activo</span>'}
                 </p>
@@ -101,7 +99,7 @@ $('.equipo-row').on('mouseenter', function() {
             </div>
             <div class="section-divider">Datos Económicos</div>
             <div class="p-3 bg-light">
-                <div class="d-flex justify-content-between mb-2">
+                <div class="d-flex justify-content-between mb-1">
                     <span class="small font-weight-bold text-muted">Número Factura</span>
                     <span class="small badge badge-secondary">
                         <i class="fas fa-file-invoice-dollar mr-1"></i>
@@ -123,8 +121,6 @@ $('.equipo-row').on('mouseenter', function() {
             </div>
         </div>
     `;
-    
-    contadorVistas++;
     $('#detail-content').html(html);
 });
 

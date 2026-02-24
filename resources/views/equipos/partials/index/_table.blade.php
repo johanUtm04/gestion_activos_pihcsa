@@ -1,14 +1,14 @@
         
-        <!-- Flash Data -->
-        @if(session('danger'))
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-                <i class="fas fa-ban mr-2"></i>
-                {!! session('danger') !!}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
+    <!-- Flash Data -->
+    @if(session('danger'))
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-ban mr-2"></i>
+            {!! session('danger') !!}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 
     @if(session('warning') && session('actualizado_id'))
         <div class="callout callout-warning shadow-sm mb-4" style="border-left-width: 5px; background-color: #fffaf0;">
@@ -136,7 +136,8 @@
                             class="equipo-row {{ request('filter') !== 'inactivos' ? 'clickable-row' : '' }} {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
                             data-url="{{ route('equipos.show', $equipo->id) }}"
                             data-id="{{ $equipo->id }}"
-                            data-marca="{{ $equipo->marca?->nombre ?? 'Genérica' }}"
+                            data-marca="Modelo: {{ $equipo->modelo ?? 'Sin Modelo' }}"
+                            data-modelo="{{ $equipo->marca?->nombre ?? 'Genérica' }}"
                             data-tipo="{{ $equipo->tipoActivo?->nombre ?? 'Generico' }}"
                             data-serial="{{ $equipo->serial }}"
                             data-so="{{ $equipo->sistema_operativo }}"
@@ -148,12 +149,18 @@
                             data-vida="{{ $equipo->vida_util_estimada ?? 'N/A' }}"
                             data-discos="{{ $equipo->discosDuros->where('is_active', 1)->count() }}"
                             data-procesadores="{{ $equipo->procesadores->where('is_active', 1)->count() }}"
+                                                        
                             data-monitores="{{ $equipo->monitores->where('is_active', 1)->count() }}"
                             data-discos_inactivos="{{ $equipo->discosDuros->where('is_active', 0)->count() }}"
                             data-procesadores_inactivos="{{ $equipo->procesadores->where('is_active', 0)->count() }}"
                             data-monitores_inactivos="{{ $equipo->monitores->where('is_active', 0)->count() }}"
                             data-perifericos_inactivos="{{ $equipo->perifericos->where('is_active', 0)->pluck('tipo')->implode(', ') }}"
                             data-ram="{{ $equipo->rams->where('is_active', 1)->pluck('capacidad_gb')->implode('GB, ') }}GB"
+                            data-ram_inactiva="{{ $equipo->rams->where('is_active', 0)->sum('capacidad_gb') }}"
+                            data-tipo_chz="{{ $equipo->rams->pluck('tipo')->implode(',') }}"
+                            data-descripcion_tipo_ram="{{ $equipo->rams->pluck('descripcion_tipo')->implode(',') }}"
+                            data-clock_mhz="{{ $equipo->rams->pluck('clock_mhz')->implode(',') }}"
+            
                             data-perifericos="{{ $equipo->perifericos->where('is_active', 1)->pluck('tipo')->implode(', ') }}"
                             data-numero_factura="{{ $equipo->numero_factura ?? 'No asignada' }}"
                             style="cursor: pointer;">

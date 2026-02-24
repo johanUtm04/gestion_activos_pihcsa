@@ -6,6 +6,7 @@ use App\Models\Equipo;
 use App\Models\Ubicacion;
 use App\Models\Historial_log;
 use App\Models\User;
+use App\Models\Monitor;
 use App\Models\Marca;
 use App\Models\TipoActivo;
 use Illuminate\Http\Request;
@@ -62,22 +63,55 @@ class EquipoController extends Controller
             $query->onlyTrashed(); 
         } 
 
+
+        $query = Equipo::query();
+
+        //¿Hay filtros? Los aplicamos ANTES de traer los datos
+        if ($request->filled('monitor_marca')) {
+            // Esto modifica el SQL que se va a ejecutar
+            $query->whereHas('monitores', function ($q) use ($request) {
+                $q->where('marca', $request->monitor_marca);
+            });
+        }
+
+        if ($request->filled('escala_pulgadas')) {
+            // Esto modifica el SQL que se va a ejecutar
+            $query->whereHas('monitores', function ($q) use ($request) {
+                $q->where('escala_pulgadas', $request->escala_pulgadas);
+            });
+        }
+
+        if ($request->filled('monitor_interface')) {
+            // Esto modifica el SQL que se va a ejecutar
+            $query->whereHas('monitores', function ($q) use ($request) {
+                $q->where('interface', $request->monitor_interface);
+            });
+        }
+
+
         $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
         ->orderBy('created_at', 'asc') 
         ->paginate(10)
         ->withQueryString();
 
+
         $ubicaciones = Ubicacion::all();
         $usuarios = User::all();
         $marcas = Marca::all();
         $tipos = TipoActivo::all();
+        //Monitores
+        $marcas_monitores = Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca');
+        $escalas_pulgadas = Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas');
+        $monitor_interface = Monitor::distinct()->orderBy('interface', 'asc')->pluck('interface');
+
+
         $categorias = [
             'Dispositivos de Usuario' => ['Laptop', 'Desktop', 'All-in-One', 'Tablet', 'Smartphone', 'Workstation'],
             'Infraestructura' => ['Servidor', 'Rack', 'Switch', 'Router', 'Access Point', 'Firewall', 'UPS'],
             'Perifericos' => ['Monitor', 'Impresora', 'Multifuncional', 'Escaner', 'Proyector', 'Camara'],
         ];
 
-        return view('equipos.index', compact('equipos', 'ubicaciones', 'categorias', 'usuarios', 'marcas', 'tipos'));
+        return view('equipos.index', compact('equipos', 'ubicaciones', 'categorias', 'usuarios', 'marcas', 'tipos', 'marcas_monitores', 'escalas_pulgadas', 'monitor_interface'));
     }
 
     //Metodo para crear registro en Base de datos
