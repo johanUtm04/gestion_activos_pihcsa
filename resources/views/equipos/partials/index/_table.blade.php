@@ -1,4 +1,3 @@
-        
     <!-- Flash Data -->
     @if(session('danger'))
         <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">

@@ -138,9 +138,13 @@
                                 <span class="text-muted">| {{ $equipo->modelo ?? 'S/M' }}</span>
                             </div>
                         </div>
-                        <div class="col-sm-4 mb-3">
+                        <div class="col-sm-2 mb-1">
                             <div class="label-header">Fecha Adquisición</div>
                             <div class="value-text text-muted">{{ $equipo->fecha_adquisicion ?? 'No registrada' }}</div>
+                        </div>
+                        <div class="col-sm-2 mb-1">
+                            <div class="label-header">Valor Inicial</div>
+                            <div class="value-text text-muted">$ {{ $equipo->valor_inicial ?? 'No registrado' }} mxn.</div>
                         </div>
                     </div>
                     <div class="row border-top pt-3">
@@ -190,7 +194,7 @@
                             @forelse($equipo->rams->where('is_active', 1) as $ram)
                                 <div class="component-item" style="border-left-color: #007bff;">
                                     <div class="font-weight-bold">{{ $ram->capacidad_gb }} GB</div>
-                                    <div class="text-sm">{{ $ram->tipo_chz }} @ {{ $ram->clock_mhz }} MHz</div>
+                                    <div class="text-sm">{{ $ram->tipo_chz }} @ {{ $ram->clock_mhz }} MHz <strong>Serial:</strong>{{ $ram->serial }} </div>
                                 </div>
                             @empty
                                 <div class="text-muted p-2 italic">Sin RAM registrada</div>
@@ -206,6 +210,7 @@
                                     <th>Capacidad</th>
                                     <th>Tecnología</th>
                                     <th>Interface</th>
+                                    <th>Serial</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">
@@ -214,6 +219,7 @@
                                         <td class="font-weight-bold">{{ $disco->capacidad }}</td>
                                         <td><span class="badge badge-secondary">{{ $disco->tipo_hdd_ssd }}</span></td>
                                         <td>{{ $disco->interface }}</td>
+                                        <td>{{ $disco->serial }}</td>
                                     </tr>
                                 @empty
                                     <tr><td colspan="3" class="text-muted">Sin discos registrados</td></tr>
@@ -235,7 +241,8 @@
                             <div>
                                 <span class="badge badge-dark">{{ $monitor->marca }}</span>
                                 <span class="font-weight-bold ml-1">{{ $monitor->escala_pulgadas }}"</span>
-                                <div class="text-xs text-muted">S/N: {{ $monitor->serial }}</div>
+                                <div class="text-xs text-muted"><strong>Serial:</strong> {{ $monitor->serial }}</div>
+                                <div class="text-xs text-muted"><strong>Interface:</strong> {{ $monitor->interface }}</div>
                             </div>
                             <i class="fas fa-tv text-secondary opacity-5"></i>
                         </div>
@@ -252,6 +259,7 @@
                                         <td class="font-weight-bold">{{ $peri->tipo }}</td>
                                         <td>{{ $peri->marca }}</td>
                                         <td class="text-right text-muted"><small>{{ $peri->serial }}</small></td>
+                                        <td class="text-right text-muted"><small>{{ $peri->interface }}</small></td>
                                     </tr>
                                 @empty
                                     <tr><td colspan="3" class="text-center text-muted">Sin periféricos</td></tr>
