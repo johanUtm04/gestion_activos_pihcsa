@@ -11,14 +11,20 @@
     @endif
 
     @if(session('warning') && session('actualizado_id'))
-        <div class="callout callout-warning shadow-sm mb-4" style="border-left-width: 5px; background-color: #fffaf0;">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+        <div class="callout callout-warning alert alert-dismissible shadow-sm mb-4" 
+            role="alert" 
+            style="border-left-width: 5px; background-color: #fffaf0; position: relative; padding-right: 4rem;">
+            
+            {{-- El botón ahora se posiciona correctamente arriba a la derecha --}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" 
+                    style="position: absolute; top: 10px; right: 15px; outline: none; opacity: 0.6;">
                 <span aria-hidden="true">&times;</span>
             </button>
+
             <div class="d-flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="text-warning font-weight-bold">
-                        <i class="fas fa-edit mr-2"></i> Equipo Actualizado
+                    <h5 class="text-warning font-weight-bold mb-1">
+                        <i class="fas fa-edit mr-2"></i> ¡Equipo Actualizado!
                     </h5>
                     <p class="mb-0 text-muted">
                         Los datos generales del activo han sido modificados. ¿Deseas auditar los cambios en el historial?
@@ -61,13 +67,20 @@
         @endif
 
         @if(session('secondary') && session('new_mantenimiento'))
-            <div class="callout callout-secondary shadow-sm mb-4" style="border-left-width: 5px; background-color: #f8f9fa;">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
+            {{-- Añadimos alert y alert-dismissible para habilitar el cierre vía JS --}}
+            <div class="callout callout-secondary alert alert-dismissible shadow-sm mb-4" 
+                role="alert" 
+                style="border-left-width: 5px; background-color: #f8f9fa; position: relative; padding-right: 4rem;">
+                
+                {{-- Botón de cerrar con posicionamiento absoluto --}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" 
+                        style="position: absolute; top: 10px; right: 15px; outline: none; opacity: 0.6;">
                     <span aria-hidden="true">&times;</span>
                 </button>
+
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="text-secondary font-weight-bold">
+                        <h5 class="text-secondary font-weight-bold mb-1">
                             <i class="fas fa-tools mr-2"></i> ¡Mantenimiento Registrado!
                         </h5>
                         <p class="mb-0 text-muted">
@@ -77,7 +90,7 @@
                     <div class="ml-3">
                         <a href="{{ route('historial.index', ['equipo_id' => session('new_mantenimiento')]) }}" 
                         class="btn btn-secondary btn-lg elevation-2 px-4 font-weight-bold"
-                        style="transition: all 0.3s ease; text-decoration: none; background-color: #6c757d; border-color: #6c757d;">
+                        style="transition: all 0.3s ease; text-decoration: none;">
                             <i class="fas fa-eye mr-2"></i> Ver Historial #{{ session('new_mantenimiento') }}
                         </a>
                     </div>
@@ -86,28 +99,34 @@
         @endif
 
         @if(session('actualizado_factura'))
-            <div class="callout callout-warning shadow-sm mb-4" style="border-left-width: 5px;">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="top: 10px; right: 10px;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <h5 class="text-warning font-weight-bold">
-                            <i class="fas fa-file-invoice-dollar mr-2"></i> ¡Factura Actualizada!
-                        </h5>
-                        <p class="mb-0 text-muted">
-                            {!! session('success') !!} ¿Deseas ver el registro de este cambio en el historial?
-                        </p>
-                    </div>
-                    <div class="ml-3">
-                        <a href="{{ route('historial.index', ['equipo_id' => session('actualizado_factura')]) }}" 
-                        class="btn btn-warning btn-lg elevation-2 px-4 font-weight-bold"
-                        style="transition: all 0.3s ease; text-decoration: none; color: #333;">
-                            <i class="fas fa-search-dollar mr-2"></i> Ver Historial #{{ session('actualizado_factura') }}
-                        </a>
-                    </div>
+        <div class="callout callout-warning alert alert-dismissible shadow-sm mb-4" 
+            role="alert" 
+            style="border-left-width: 5px; background-color: #fffaf0; position: relative; padding-right: 3rem; border-radius: .25rem;">
+            
+            {{-- Botón de cierre con posicionamiento absoluto para evitar saltos de línea --}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" 
+                    style="position: absolute; top: 10px; right: 15px; outline: none; opacity: 0.5; background: none; border: none; font-size: 1.5rem; line-height: 1;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="text-warning font-weight-bold mb-1">
+                        <i class="fas fa-file-invoice-dollar mr-2"></i> ¡Factura Actualizada!
+                    </h5>
+                    <p class="mb-0 text-muted">
+                        {!! session('success') !!} ¿Deseas ver el registro de este cambio en el historial?
+                    </p>
+                </div>
+                <div class="ml-3">
+                    <a href="{{ route('historial.index', ['equipo_id' => session('actualizado_factura')]) }}" 
+                    class="btn btn-warning btn-lg elevation-2 px-4 font-weight-bold"
+                    style="transition: all 0.3s ease; text-decoration: none; color: #333; background-color: #ffc107; border-color: #ffc107;">
+                        <i class="fas fa-search-dollar mr-2"></i> Ver Historial #{{ session('actualizado_factura') }}
+                    </a>
                 </div>
             </div>
+        </div>
         @endif
 
          <!--fin Flash Data -->
