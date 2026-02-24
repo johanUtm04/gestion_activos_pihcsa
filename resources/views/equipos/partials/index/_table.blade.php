@@ -115,7 +115,7 @@
 
         <div class="card card-outline card-info shadow-sm">
             <div class="card-body p-0">
-                <div class="table-responsive">
+                <div class="table-responsive" style="max-height: 600px; overflow-y: auto; scrollbar-width: thin;">
                     <table class="table table-hover table-assets mb-0">
                         <thead>
                             <tr>
