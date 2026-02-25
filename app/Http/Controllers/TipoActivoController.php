@@ -27,14 +27,12 @@ class TipoActivoController extends Controller
     //Metodo para crear registro en Base de datos
     public function store(Request $request)
     {
-        $request->validate(['nombre' => 'required|unique:marcas|max:255']);
+        $request->validate([
+            'nombre' => 'required|unique:marcas|max:255',
+            'frecuencia_meses' => 'nullable|integer|min:0|max:48'
+        ]);
         TipoActivo::create($request->all());
         return redirect()->route('tipo_activos.index')->with('success', 'Tipo de activo agregado al catalogo correctamente');
-    }
-
-    public function show(string $id)
-    {
-        //
     }
 
     //Metodo para cargar formulario de edicion
@@ -46,7 +44,11 @@ class TipoActivoController extends Controller
     //Metodo para editar registro en Base de datos
     public function update(Request $request, TipoActivo $tipo_activo)
     {
-        $request->validate(['nombre' => 'required|max:255|unique:marcas,nombre,' . $tipo_activo->id]);
+        $request->validate([
+            'nombre' => 'required|max:255|unique:marcas,nombre',
+            'frecuencia_meses' => 'nullable|integer|min:0|max:48'
+        . $tipo_activo->id]);
+
         $tipo_activo->update($request->all());
         return redirect()->route('tipo_activos.index')->with('success', 'Tipo de activo actualizado en el catalogo correctamente');
     }

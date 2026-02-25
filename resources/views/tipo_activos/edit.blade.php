@@ -46,17 +46,14 @@
         <i class="fas fa-arrow-left"></i> Volver al listado
     </a>
 @stop
-
 @section('content')
     <div class="container-fluid">
         <div class="row">
-
+            {{-- COLUMNA IZQUIERDA: VISTA PREVIA --}}
             <div class="col-md-5">
                 <div class="card card-outline card-danger shadow-sm">
                     <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-eye"></i> Vista Previa Actual
-                        </h3>
+                        <h3 class="card-title"><i class="fas fa-eye"></i> Vista Previa Actual</h3>
                     </div>
                     <div class="card-body">
                         <fieldset class="border p-3 mb-4">
@@ -65,32 +62,31 @@
                             </legend>
 
                             <div class="data-item">
-                                <span class="data-label">
-                                    <i class="fas fa-fingerprint"></i> ID de Registro:
-                                </span> 
+                                <span class="data-label"><i class="fas fa-fingerprint"></i> ID de Registro:</span> 
                                 <span class="float-right font-weight-bold text-muted">{{ $tipo_activo->id }}</span>
                             </div>
 
                             <div class="data-item">
-                                <span class="data-label">
-                                    <i class="fas fa-laptop"></i> Nombre Actual:
-                                </span> 
+                                <span class="data-label"><i class="fas fa-laptop"></i> Nombre Actual:</span> 
                                 <span class="float-right text-uppercase font-weight-bold">{{ $tipo_activo->nombre }}</span>
                             </div>
 
                             <div class="data-item">
-                                <span class="data-label">
-                                    <i class="fas fa-boxes"></i> Equipos vinculados:
-                                </span> 
+                                <span class="data-label"><i class="fas fa-clock"></i> Frecuencia Alerta:</span> 
+                                <span class="float-right font-weight-bold text-primary">
+                                    {{ $tipo_activo->frecuencia_meses ?? 0 }} Meses
+                                </span>
+                            </div>
+
+                            <div class="data-item">
+                                <span class="data-label"><i class="fas fa-boxes"></i> Equipos vinculados:</span> 
                                 <span class="float-right badge badge-danger">
                                     {{ $tipo_activo->equipos->count() }} Activos
                                 </span>
                             </div>
 
                             <div class="data-item">
-                                <span class="data-label">
-                                    <i class="fas fa-clock"></i> Última actualización:
-                                </span> 
+                                <span class="data-label"><i class="fas fa-history"></i> Última actualización:</span> 
                                 <span class="float-right text-muted">
                                     {{ $tipo_activo->updated_at->diffForHumans() }}
                                 </span>
@@ -100,12 +96,11 @@
                 </div>
             </div>
 
+            {{-- COLUMNA DERECHA: FORMULARIO --}}
             <div class="col-md-7">
                 <div class="card card-outline card-primary shadow-sm">
                     <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-edit"></i> Modificar Categoría
-                        </h3>
+                        <h3 class="card-title"><i class="fas fa-edit"></i> Modificar Categoría</h3>
                     </div>
 
                     <div class="card-body">
@@ -123,33 +118,36 @@
                                     <input type="text" name="nombre" id="nombre" 
                                            class="form-control form-control-lg @error('nombre') is-invalid @enderror"
                                            value="{{ old('nombre', $tipo_activo->nombre) }}"
-                                           placeholder="Ej: LAPTOP, PC ESCRITORIO, SERVIDOR..."
-                                           required>
-                                    
+                                           placeholder="Ej: LAPTOP, PC ESCRITORIO, SERVIDOR..." required>
                                     @error('nombre')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group mt-4">
+                                    <label for="frecuencia_meses">
+                                        <i class="fas fa-tools text-muted"></i> Alerta de Mantenimiento Preventivo (Meses):
+                                    </label>
+                                    <input type="number" name="frecuencia_meses" id="frecuencia_meses" min="0" max="48"
+                                           class="form-control form-control-lg @error('frecuencia_meses') is-invalid @enderror"
+                                           value="{{ old('frecuencia_meses', $tipo_activo->frecuencia_meses) }}"
+                                           placeholder="0 = Sin alerta">
+                                    <small class="text-muted">Establece cada cuántos meses el sistema marcará el equipo para revisión técnica.</small>
+                                    @error('frecuencia_meses')
+                                        <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </fieldset>
 
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block shadow">
-                                    <i class="fas fa-save"></i> Actualizar Tipo de Activo
+                                    <i class="fas fa-save"></i> Guardar Cambios
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
-@stop
-
-@section('footer')
-    <div class="text-center text-muted">
-        <small>Módulo de Gestión de Catálogos TI &copy; {{ date('Y') }}</small>
     </div>
 @stop

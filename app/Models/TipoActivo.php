@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoActivo extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre', 'frecuencia_meses'];
 
     public function equipos()
     {
