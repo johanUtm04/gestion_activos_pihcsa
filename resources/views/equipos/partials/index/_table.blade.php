@@ -146,6 +146,7 @@
                                 @if(request('filter') !== 'inactivos')
                                     <th class="text-center">Acciones</th>
                                 @endif
+                                <th class="text-center">ESTADO MANTENIMIENTO</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -272,6 +273,17 @@
                                         @endcan
                                     </div>
                                 </td>
+                                <td class="text-center">
+                                    @if($equipo->semaforo)
+                                        <span class="badge {{ $equipo->semaforo->clase }} p-2 shadow-sm" style="min-width: 80px;">
+                                            <i class="fas {{ $equipo->semaforo->icono }} mr-1"></i>
+                                            {{ $equipo->semaforo->texto }}
+                                        </span>
+                                    @else
+                                        <span class="badge badge-secondary">Sin Datos</span>
+                                    @endif
+                                </td>
+
                                 @endif
                             </tr>
                             @empty

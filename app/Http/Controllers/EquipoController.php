@@ -29,10 +29,14 @@ class EquipoController extends Controller
     public function index(Request $request)
     {
 
-        $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores', 'marca', 'tipoActivo']);
+        //Reiniciamos/borramos la sesion
         session()->forget('wizard_equipo');
 
-        $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores']);
+        //Iniciamos la consulta con todas las relaciones
+        $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 
+        'perifericos', 'procesadores', 'marca', 'tipoActivo']);
+
+        //Filtros de busqueda
         if ($request->filled('seccion')) {
             $busqueda = $request->seccion;
             $query->where(function($seccion) use ($busqueda) {
@@ -65,9 +69,6 @@ class EquipoController extends Controller
         if ($request->filter == 'inactivos') {
             $query->onlyTrashed(); 
         } 
-
-
-        // $query = Equipo::query();
 
         //Filtro de Monitores
         if ($request->filled('monitor_marca')) {
@@ -143,6 +144,12 @@ class EquipoController extends Controller
         ->orderBy('created_at', 'asc') 
         ->paginate(10)
         ->withQueryString();
+
+        //Logica de Semaforo
+        $equipos->getCollection()->transform(function ($equipo) {
+            $equipo->semaforo = $this->calcularSemaforo($equipo);
+        return $equipo;
+        });
 
 
         $ubicaciones = Ubicacion::all();
@@ -534,6 +541,51 @@ public function exportarGeneral()
         return redirect()->route('equipos.index', ['page' => $page])
         ->with('success', "<strong>Mantenimiento Registrado:</strong> Se agregó una nueva orden de trabajo para el activo {$equipo->serial}.")
         ->with('actualizado_factura', $equipo->id);
+    }
+
+    private function calcularSemaforo($equipo)
+    {
+        $tipo = $equipo->tipoActivo; 
+
+        if (!$tipo || $tipo->frecuencia_meses <= 0) {
+            return (object) ['clase' => 'badge-secondary', 'texto' => 'N/A', 'icono' => 'fa-ban'];
+        }
+
+        $fechaBase = $equipo->fecha_ultimo_mantenimiento 
+            ? \Carbon\Carbon::parse($equipo->fecha_ultimo_mantenimiento) 
+            : \Carbon\Carbon::parse($equipo->fecha_adquisicion ?? $equipo->created_at);
+
+        $proximo = $fechaBase->addMonths($tipo->frecuencia_meses);
+        $hoy = now();
+        
+        // Calculamos la diferencia en días
+        $diasRestantes = (int) $hoy->diffInDays($proximo, false); // El false permite números negativos si ya pasó
+
+        // 1. Caso: Vencido (La fecha ya pasó)
+        if ($hoy->gt($proximo)) {
+            $atraso = abs($diasRestantes);
+            return (object) [
+                'clase' => 'badge-danger', 
+                'texto' => "VENCIDO HACE ({$atraso} d)", 
+                'icono' => 'fa-exclamation-triangle'
+            ];
+        }
+
+        // 2. Caso: Próximo (Rango de 30 días para actuar con tiempo)
+        if ($diasRestantes <= 30) {
+            return (object) [
+                'clase' => 'badge-warning', 
+                'texto' => "NECESARIO EN {$diasRestantes} DÍAS", 
+                'icono' => 'fa-clock'
+            ];
+        }
+
+        // 3. Caso: Al día
+        return (object) [
+            'clase' => 'badge-success', 
+            'texto' => 'MANTENIMIENTO AL DÍA', 
+            'icono' => 'fa-check-circle'
+        ];
     }
 
 }

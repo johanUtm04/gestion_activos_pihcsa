@@ -24,13 +24,14 @@ class Equipo extends Model
     public $datos_wizard;
     
     protected $casts = [
+    'fecha_ultimo_mantenimiento' => 'date',
     'fecha_adquisicion' => 'date',
     // o 'datetime' si tiene horas
     ];
 
     //Campos asignables, es decir, los campos que se pueden llamar de manera masiva
     protected $fillable = [
-        'marca_equipo','marca_id', 'modelo',
+        'marca_equipo','marca_id', 'modelo', 'fecha_ultimo_mantenimiento',
         'tipo_equipo','tipo_activo_id',
         'serial',
         'numero_factura',
