@@ -14,14 +14,13 @@
         <div class="card-body border-top bg-light">
             <form action="{{ route('equipos.index') }}" method="GET">
                 
-                {{-- SECCIÓN 1: DATOS GENERALES --}}
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <label class="small font-weight-bold text-muted text-uppercase">Usuario</label>
                         <select name="usuario_id" class="form-control form-control-sm shadow-sm">
                             <option value="">-- Todos los usuarios --</option>
                             @foreach($usuarios as $u)
-                                <option value="{{ $u->id }}" {{ request('usuario_id') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+                                <option value="{{ $u->id }}" @selected(request('usuario_id') == $u->id)>{{ $u->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -30,7 +29,7 @@
                         <select name="ubicacion_id" class="form-control form-control-sm shadow-sm">
                             <option value="">-- Todas las sedes --</option>
                             @foreach($ubicaciones as $u)
-                                <option value="{{ $u->id }}" {{ request('ubicacion_id') == $u->id ? 'selected' : '' }}>{{ $u->nombre }}</option>
+                                <option value="{{ $u->id }}" @selected(request('ubicacion_id') == $u->id)>{{ $u->nombre }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -38,8 +37,8 @@
                         <label class="small font-weight-bold text-muted text-uppercase">Tipo Activo</label>
                         <select name="tipo_activo_id" class="form-control form-control-sm shadow-sm">
                             <option value="">-- Todos --</option>
-                            @foreach($tipos as $m)
-                                <option value="{{ $m->id }}" {{ request('tipo_activo_id') == $m->id ? 'selected' : '' }}>{{ $m->nombre }}</option>
+                            @foreach($tipos as $t)
+                                <option value="{{ $t->id }}" @selected(request('tipo_activo_id') == $t->id)>{{ $t->nombre }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -48,15 +47,13 @@
                         <select name="marca_id" class="form-control form-control-sm shadow-sm">
                             <option value="">-- Todas las marcas --</option>
                             @foreach($marcas as $m)
-                                <option value="{{ $m->id }}" {{ request('marca_id') == $m->id ? 'selected' : '' }}>{{ $m->nombre }}</option>
+                                <option value="{{ $m->id }}" @selected(request('marca_id') == $m->id)>{{ $m->nombre }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
-                {{-- FILTROS DE HARDWARE --}}
                 <div class="row">
-                    {{-- MONITORES --}}
                     <div class="col-md-6 mb-3">
                         <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #28a745 !important;">
                             <h6 class="text-success font-weight-bold small mb-3"><i class="fas fa-desktop mr-2"></i> MONITORES</h6>
@@ -66,7 +63,9 @@
                                     <select name="monitor_marca" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($marcas_monitores as $marca)
-                                            <option value="{{ $marca }}" {{ request('monitor_marca') == $marca ? 'selected' : '' }}>{{ $marca }}</option>
+                                            @if(!empty(trim($marca)))
+                                                <option value="{{ $marca }}" @selected(request('monitor_marca') == $marca)>{{ $marca }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -75,7 +74,9 @@
                                     <select name="escala_pulgadas" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($escalas_pulgadas as $p)
-                                            <option value="{{ $p }}" {{ request('escala_pulgadas') == $p ? 'selected' : '' }}>{{ $p }}"</option>
+                                            @if(!empty(trim($p)))
+                                                <option value="{{ $p }}" @selected(request('escala_pulgadas') == $p)>{{ $p }}"</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -84,7 +85,9 @@
                                     <select name="monitor_interface" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($monitor_interface as $i)
-                                            <option value="{{ $i }}" {{ request('monitor_interface') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                            @if(!empty(trim($i)))
+                                                <option value="{{ $i }}" @selected(request('monitor_interface') == $i)>{{ $i }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -92,7 +95,6 @@
                         </div>
                     </div>
 
-                    {{-- ALMACENAMIENTO --}}
                     <div class="col-md-6 mb-3">
                         <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #007bff !important;">
                             <h6 class="text-primary font-weight-bold small mb-3"><i class="fas fa-hdd mr-2"></i> ALMACENAMIENTO</h6>
@@ -102,7 +104,9 @@
                                     <select name="disco_capacidad" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($discos_capacidades as $c)
-                                            <option value="{{ $c }}" {{ request('disco_capacidad') == $c ? 'selected' : '' }}>{{ $c }}</option>
+                                            @if(!empty(trim($c)))
+                                                <option value="{{ $c }}" @selected(request('disco_capacidad') == $c)>{{ $c }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -111,7 +115,9 @@
                                     <select name="disco_tipo" class="form-control form-control-sm">
                                         <option value="">-- Todos --</option>
                                         @foreach($discos_tipos as $t)
-                                            <option value="{{ $t }}" {{ request('disco_tipo') == $t ? 'selected' : '' }}>{{ $t }}</option>
+                                            @if(!empty(trim($t)))
+                                                <option value="{{ $t }}" @selected(request('disco_tipo') == $t)>{{ $t }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -120,7 +126,9 @@
                                     <select name="disco_interface" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($discos_interfaces as $i)
-                                            <option value="{{ $i }}" {{ request('disco_interface') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                            @if(!empty(trim($i)))
+                                                <option value="{{ $i }}" @selected(request('disco_interface') == $i)>{{ $i }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -128,7 +136,6 @@
                         </div>
                     </div>
 
-                    {{-- RAM --}}
                     <div class="col-md-6">
                         <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #ffc30f !important;">
                             <h6 class="text-warning font-weight-bold small mb-3"><i class="fas fa-memory mr-2"></i> MEMORIA RAM</h6>
@@ -138,7 +145,9 @@
                                     <select name="ram_capacidad" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($rams_capacidades as $c)
-                                            <option value="{{ $c }}" {{ request('ram_capacidad') == $c ? 'selected' : '' }}>{{ $c }} GB</option>
+                                            @if(!empty(trim($c)))
+                                                <option value="{{ $c }}" @selected(request('ram_capacidad') == $c)>{{ $c }} GB</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -147,7 +156,9 @@
                                     <select name="ram_clock" class="form-control form-control-sm">
                                         <option value="">-- Todos --</option>
                                         @foreach($rams_clocks as $clock)
-                                            <option value="{{ $clock }}" {{ request('ram_clock') == $clock ? 'selected' : '' }}>{{ $clock }} MHz</option>
+                                            @if(!empty(trim($clock)))
+                                                <option value="{{ $clock }}" @selected(request('ram_clock') == $clock)>{{ $clock }} MHz</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -156,7 +167,9 @@
                                     <select name="ram_tipo" class="form-control form-control-sm">
                                         <option value="">-- Todos --</option>
                                         @foreach($rams_tipos as $t)
-                                            <option value="{{ $t }}" {{ request('ram_tipo') == $t ? 'selected' : '' }}>{{ $t }}</option>
+                                            @if(!empty(trim($t)))
+                                                <option value="{{ $t }}" @selected(request('ram_tipo') == $t)>{{ $t }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -164,7 +177,6 @@
                         </div>
                     </div>
 
-                    {{-- PROCESADOR --}}
                     <div class="col-md-6">
                         <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #dc3545 !important;">
                             <h6 class="text-danger font-weight-bold small mb-3"><i class="fas fa-microchip mr-2"></i> PROCESADOR</h6>
@@ -174,7 +186,9 @@
                                     <select name="procesador_marca" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
                                         @foreach($procesador_marcas as $marca)
-                                            <option value="{{ $marca }}" {{ request('procesador_marca') == $marca ? 'selected' : '' }}>{{ $marca }}</option>
+                                            @if(!empty(trim($marca)))
+                                                <option value="{{ $marca }}" @selected(request('procesador_marca') == $marca)>{{ $marca }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -183,7 +197,9 @@
                                     <select name="procesador_tipo" class="form-control form-control-sm">
                                         <option value="">-- Todos --</option>
                                         @foreach($procesador_tipos as $tipo)
-                                            <option value="{{ $tipo }}" {{ request('procesador_tipo') == $tipo ? 'selected' : '' }}>{{ $tipo }}</option>
+                                            @if(!empty(trim($tipo)))
+                                                <option value="{{ $tipo }}" @selected(request('procesador_tipo') == $tipo)>{{ $tipo }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -192,7 +208,6 @@
                     </div>
                 </div>
 
-                {{-- BOTONES DE ACCIÓN (EN SU PROPIA FILA AL FINAL) --}}
                 <div class="row mt-4">
                     <div class="col-12 d-flex justify-content-end">
                         <a href="{{ route('equipos.index') }}" class="btn btn-outline-danger shadow-sm mr-2">
