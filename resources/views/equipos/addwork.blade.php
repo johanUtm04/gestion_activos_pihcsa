@@ -52,7 +52,6 @@
                         Mantenimiento de {{ $equipo->tipo_equipo ?? '[Activo]' }} | Marca: {{ $equipo->marca_equipo ?? '[Activo]' }}
                     </h3>
                 </div>
-
                 <form method="POST" action="{{ route('equipos.addwork.store', $equipo) }}">
                     @csrf
 
@@ -65,13 +64,26 @@
 
                             <div class="form-group">
                                 <label>Tipo de evento </label>
-                                <select class="form-control" id="tipo_evento" name="tipo_evento" required>
-                                    <option value="">Seleccione una opción</option>
-                                    <option>Mantenimiento preventivo</option>
-                                    <option>Mantenimiento correctivo</option>
-                                    <option>Actualización</option>
-                                    <option value="OTRO_VALOR">-- Otra capacidad (Escribir) --</option>
-                                </select>
+                                    <select class="form-control" id="tipo_evento" name="tipo_evento" required>
+                                        <option value="">Seleccione una opción</option>
+                                        
+                                        <option value="Mantenimiento mensual" style="background-color:#fff3cd; font-weight: bold;">
+                                            Realizar mantenimiento mensual
+                                            @if($semaforo->dias > 4000) 
+                                                {{-- Si el número es absurdo, mejor no mostrar los días --}}
+                                                (Pendiente de programar)
+                                            @elseif($semaforo->dias <= 0)
+                                                (¡VENCIDO!)
+                                            @else
+                                                (Faltan {{ $semaforo->dias }} días)
+                                            @endif
+                                        </option>
+
+                                        <option value="Mantenimiento preventivo">Mantenimiento preventivo</option>
+                                        <option value="Mantenimiento correctivo">Mantenimiento correctivo</option>
+                                        <option value="Actualización">Actualización</option>
+                                        <option value="OTRO_VALOR">-- Otra capacidad (Escribir) --</option>
+                                    </select>
                                     <input type="text" name="tipo_evento_input" id="tipo_evento_input" 
                                    class="form-control custom-input" 
                                    placeholder="Ej. 128GB o 10TB"

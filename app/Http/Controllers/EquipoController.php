@@ -373,7 +373,11 @@ class EquipoController extends Controller
     //Metodo para cargar vista
     public function indexaddwork (Equipo $equipo){
         $usuarios    = User::all();
-        return view('equipos.addwork', compact('equipo', 'usuarios'));
+
+        //Nos llevamos los resultado de la funcion de dias
+        $semaforo = $this->calcularSemaforo($equipo);
+
+        return view('equipos.addwork', compact('equipo', 'usuarios', 'semaforo'));
     }
 
     public function saveWork (Equipo $equipo, Request $request)
@@ -386,6 +390,16 @@ class EquipoController extends Controller
         'contexto'     => 'nullable|string',
         'costo'        => 'nullable|numeric',
         ]);
+
+        $eventosQueResetan = [
+            'Mantenimiento mensual'
+        ];
+
+        if (in_array($request->tipo_evento, $eventosQueResetan)) {
+            $equipo->update([
+                'fecha_ultimo_mantenimiento' => $request->fecha_evento
+            ]);
+        }
 
         $data = $request->only([
         'tipo_evento',
@@ -545,45 +559,52 @@ public function exportarGeneral()
 
     private function calcularSemaforo($equipo)
     {
+        //Tomamos el id del tipo
         $tipo = $equipo->tipoActivo; 
 
+        //Si esta vacio o menor o igual a 0
         if (!$tipo || $tipo->frecuencia_meses <= 0) {
             return (object) ['clase' => 'badge-secondary', 'texto' => 'N/A', 'icono' => 'fa-ban'];
         }
 
+        //Condicion ternaria, para tomar la fecha, si no tomar una alternativa
         $fechaBase = $equipo->fecha_ultimo_mantenimiento 
             ? \Carbon\Carbon::parse($equipo->fecha_ultimo_mantenimiento) 
             : \Carbon\Carbon::parse($equipo->fecha_adquisicion ?? $equipo->created_at);
 
-        $proximo = $fechaBase->addMonths($tipo->frecuencia_meses);
-        $hoy = now();
+        //Creamos una copia, tomamos la fecha de hoy y remplazamos 
+        $proximo = $fechaBase->copy()->addMonths($tipo->frecuencia_meses);
+        $hoy = now()->startOfDay();
+        $proximo = $proximo->startOfDay();
         
-        // Calculamos la diferencia en días
-        $diasRestantes = (int) $hoy->diffInDays($proximo, false); // El false permite números negativos si ya pasó
+        $diasRestantes = (int) $hoy->diffInDays($proximo, false);
 
-        // 1. Caso: Vencido (La fecha ya pasó)
+        // 1. Caso: Vencido (mayor que)
         if ($hoy->gt($proximo)) {
             $atraso = abs($diasRestantes);
             return (object) [
                 'clase' => 'badge-danger', 
                 'texto' => "VENCIDO HACE ({$atraso} d)", 
+                'dias' => $diasRestantes,
                 'icono' => 'fa-exclamation-triangle'
             ];
         }
 
-        // 2. Caso: Próximo (Rango de 30 días para actuar con tiempo)
-        if ($diasRestantes <= 30) {
+        // 2. Caso: quedan pocos dias
+        if ($diasRestantes <= 30) { 
             return (object) [
-                'clase' => 'badge-warning', 
-                'texto' => "NECESARIO EN {$diasRestantes} DÍAS", 
-                'icono' => 'fa-clock'
+            'clase' => 'badge-warning', 
+            'texto' => "OBLIGATORIO ({$diasRestantes} d)", 
+            'dias'  => $diasRestantes,
+            'icono' => 'fa-clock'
             ];
         }
 
-        // 3. Caso: Al día
+        // 3. Caso: Al día 
         return (object) [
             'clase' => 'badge-success', 
-            'texto' => 'MANTENIMIENTO AL DÍA', 
+            'texto' => 'EQUIPO AL DÍA', 
+            'dias'  => $diasRestantes,
             'icono' => 'fa-check-circle'
         ];
     }
