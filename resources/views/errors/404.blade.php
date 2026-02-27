@@ -2,6 +2,10 @@
 
 @section('title', '¡Ups! Página no encontrada.')
 
+@section('content_header')
+    <h1></h1>
+@stop
+
 @section('content')
 <div class="container text-center" style="margin-top: 10%; margin-bottom: 10%;">
     <div class="error-content">
