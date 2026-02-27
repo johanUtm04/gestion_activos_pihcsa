@@ -15,7 +15,7 @@ use App\Models\{
     TipoActivo,
 };
 
-
+use App\Http\Requests\StoreEquipoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -52,43 +52,14 @@ class EquipoController extends Controller
 
 
     //Metodo para crear registro en Base de datos
-    public function store(Request $request)
-    {
-        $request->validate([
-            'marca_id'           => 'required|integer|exists:marcas,id',
-            'modelo'             => 'required|string|max:100',
-            'tipo_activo_id'     => 'required|integer|exists:tipo_activos,id',
-            'sistema_operativo'  => 'required|string|max:50',
-            'serial'             => 'nullable|string|max:255',
-            'usuario_id'         => 'required|integer|exists:users,id',
-            'ubicacion_id'       => 'nullable|integer|exists:ubicaciones,id',
-            'valor_inicial'      => 'nullable|numeric|min:0',
-            'fecha_adquisicion'  => 'required|date',
-            'vida_util_estimada' => 'required|string|max:255',
-        ]);
-        // Generación de serial más segura si es nulo
-        $serialFinal = $request->serial 
-            ? strtoupper($request->serial) 
-        : 'INT-' . date('Ymd') . '-' . strtoupper(Str::random(4));
-
-        //Mapeo los datos para la sesión
-        $data = [
-            'serial'             => $serialFinal,
-            'usuario_id'         => $request->usuario_id,
-            'ubicacion_id'       => $request->ubicacion_id,
-            'valor_inicial'      => $request->valor_inicial ?? 0,
-            'fecha_adquisicion'  => $request->fecha_adquisicion,
-            'vida_util_estimada' => $request->vida_util_estimada,
-            'sistema_operativo'  => $request->sistema_operativo,
-            'marca_id'          => $request->marca_id,    
-            'modelo'         => $request->modelo,   
-            'tipo_activo_id'    => $request->tipo_activo_id,
-        ];
-
+    public function store(StoreEquipoRequest $request)
+    {        
         $uuid = Str::uuid()->toString();
 
-        session()->put('wizard_equipo.uuid', $uuid);
-        session()->put('wizard_equipo.equipo', $data);
+        session()->put('wizard_equipo', [
+            'uuid'   => $uuid,
+            'equipo' => $request->validatedData()
+        ]);
 
         return redirect()->route('equipos.wizard.ubicacion', $uuid);
     }
