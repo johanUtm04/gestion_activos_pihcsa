@@ -104,7 +104,7 @@
             </div>
 
             <div class="wizard-step active">
-            <a href="{{ route('equipos.wizard-periferico', $uuid) }}">
+            <a href="{{ route('equipos.wizard.periferico', $uuid) }}">
               <i class="fas fa-mouse"></i> 
                 <div>Periferico</div>
             </a>

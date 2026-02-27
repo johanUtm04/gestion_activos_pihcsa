@@ -247,7 +247,7 @@ class EquipoWizardController extends Controller
         }
 
         // REDIRIGE AL ÚLTIMO PASO: Periférico
-        return redirect()->route('equipos.wizard-periferico', $uuid);
+        return redirect()->route('equipos.wizard.periferico', $uuid);
     }
 
     /**
@@ -259,7 +259,7 @@ class EquipoWizardController extends Controller
         if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
 
         $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-periferico', compact('equipo', 'uuid'));
+        return view('equipos.wizard.periferico', compact('equipo', 'uuid'));
     }
 
     /**

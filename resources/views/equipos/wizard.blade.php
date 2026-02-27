@@ -41,7 +41,7 @@
             Registrar una RAM
             </a>
 
-            <a href="{{ route('equipos.wizard-periferico', $equipo) }}" class="list-group-item">
+            <a href="{{ route('equipos.wizard.periferico', $equipo) }}" class="list-group-item">
             Registrar un periferico
             </a>
         
