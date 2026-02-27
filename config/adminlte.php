@@ -375,7 +375,7 @@ return [
             'can'  => ['access-admin', 'access-sistemas'],
             'active' => ['historial*'],
         ],
-        ['header' => 'SOPORTE Y AYUDA'],
+        ['header' => 'Contacto'],
         [
             'text' => 'Contacto / Ayuda',
             'icon' => 'fas fa-headset',
