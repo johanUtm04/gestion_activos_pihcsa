@@ -28,7 +28,7 @@ class EquipoWizardController extends Controller
         $wizard = session('wizard_equipo');
         $usuarios = User::select('id', 'name')->get();
         $equipo = data_get($wizard, 'equipo', []);
-        return view('equipos.create', compact('equipo', 'usuarios'));
+        return view('equipos.wizard.create', compact('equipo', 'usuarios'));
     }
 
     /**

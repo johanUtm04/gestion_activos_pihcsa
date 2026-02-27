@@ -39,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/equipos/{uuid}/detalles', [EquipoController::class, 'show'])->name('equipos.show');
 
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
-                                                //PENDIENTE//
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');
     
     // El UUID vincula los componentes al equipo en creación
