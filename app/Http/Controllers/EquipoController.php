@@ -33,48 +33,38 @@ class EquipoController extends Controller
     {
         //Limpiar sesion
         session()->forget('wizard_equipo');
-
         //Consulta principal
         $equipos = Equipo::with(['usuario', 'ubicacion', 'marca', 'tipoActivo', 'procesadores', 'rams', 'discosDuros'])
         ->filtrar($request->all())
         ->orderBy('created_at', 'asc') 
         ->paginate(10)
         ->withQueryString();
-
         //Datos para lso filtros
         $data = $this->getFilterData();
-
         //Regresar Vista
         return view('equipos.index', compact('equipos'))->with($data);
     }
-
-
-
 
     //Metodo para crear registro en Base de datos
     public function store(StoreEquipoRequest $request)
     {        
         $uuid = Str::uuid()->toString();
-
         session()->put('wizard_equipo', [
             'uuid'   => $uuid,
             'equipo' => $request->validatedData()
         ]);
-
         return redirect()->route('equipos.wizard.ubicacion', $uuid);
     }
-
 
     //Metodo para cargar formulario de edicion
     public function edit(Equipo $equipo)
     {
-        $equipo->load(['monitores', 'discosDuros', 'rams', 'perifericos', 'procesadores']);
-        $usuarios    = User::all();
-        $ubicaciones = Ubicacion::all();
-        $marcas = Marca::all();
-        $tiposActivo = TipoActivo::all();
-        return view('equipos.edit', compact('equipo', 'usuarios', 'ubicaciones', 'marcas','tiposActivo'));
+        $equipo->load(['usuario', 'ubicacion', 'marca', 'tipoActivo']);
+        $catalogos = $this->getFilterData();
+        return view('equipos.edit', compact('equipo'))->with($catalogos);
     }
+
+
 
     //Metodo para editar registro en Base de datos
     public function update(Request $request, Equipo $equipo)
@@ -195,14 +185,6 @@ class EquipoController extends Controller
             $relation->updateOrCreate(['id' => $id], $data);
         }
     }
-
-    //...
-    private function isEmptyRecord($data) 
-    {
-        $filtered = collect($data)->except(['id', '_delete'])->filter();
-        return $filtered->isEmpty();
-    }
-
 
     //Metodo para cargar vista
     public function indexaddwork (Equipo $equipo){
@@ -443,13 +425,19 @@ public function exportarGeneral()
         ];
     }
 
-
+    //Funciones privadas
     private function getFilterData() {
         return [
             'ubicaciones' => Ubicacion::all(),
             'usuarios'    => User::all(),
             'marcas'      => Marca::all(),
             'tipos'       => TipoActivo::all(),
+            'usuarios'    => User::all(),
+            'ubicaciones' => Ubicacion::all(),
+            'marcas' => Marca::all(),
+            'tiposActivo' => TipoActivo::all(),
+
+
             /* Metadatos */
             //Monitor
             'marcas_monitores' => Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca'),
