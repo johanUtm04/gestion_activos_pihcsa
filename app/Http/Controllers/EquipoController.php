@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Equipo;
-use App\Models\Ubicacion;
-use App\Models\Historial_log;
-use App\Models\User;
-use App\Models\Monitor;
-use App\Models\DiscoDuro;
-use App\Models\Ram;
-use App\Models\Procesador;
-use App\Models\Marca;
-use App\Models\TipoActivo;
+use App\Models\{
+    Equipo,
+    Ubicacion,
+    Historial_log,
+    User,
+    Monitor,
+    DiscoDuro,
+    Ram,
+    Procesador,
+    Marca,
+    TipoActivo,
+};
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,136 +32,10 @@ class EquipoController extends Controller
     public function index(Request $request)
     {
 
-        //Reiniciamos/borramos la sesion
         session()->forget('wizard_equipo');
 
-        //Iniciamos la consulta con todas las relaciones
-        $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 
-        'perifericos', 'procesadores', 'marca', 'tipoActivo']);
-
-        // REGLA DE ORO: Manejo de Inactivos
-        if ($request->filter == 'inactivos') {
-            $query->onlyTrashed(); 
-        } else {
-            $query->withoutTrashed(); 
-        }
-
-        //Filtros de busqueda
-        if ($request->filled('seccion')) {
-            $busqueda = $request->seccion;
-            $query->where(function($seccion) use ($busqueda) {
-            $seccion->where('marca_equipo', 'LIKE', '%' . $busqueda . '%')
-              ->orWhere('serial', 'LIKE', '%' . $busqueda . '%')
-              ->orWhere('tipo_equipo', 'LIKE', '%' . $busqueda . '%');
-            });
-        }
-
-        #Filtro por Ubicacion
-        if ($request->filled('ubicacion_id')) {
-        $query->where('ubicacion_id', $request->ubicacion_id);
-        }
-
-        #Filtro por Usuario
-        if ($request->filled('usuario_id')) {
-        $query->where('usuario_id', $request->usuario_id);
-        }
-
-        # Filtro por Tipo de Activo
-        if ($request->filled('marca_id')) {
-            $query->where('marca_id', $request->marca_id);
-        }
-
-        # Filtro por Marca
-        if ($request->filled('tipo_activo_id')) {
-            $query->where('tipo_activo_id', $request->tipo_activo_id );
-        }
-
-        //Filtro de Monitores
-        if ($request->filled('monitor_marca')) {
-            $query->whereHas('monitores', function ($q) use ($request) {
-                $q->where('marca', $request->monitor_marca)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('escala_pulgadas')) {
-            $query->whereHas('monitores', function ($q) use ($request) {
-                $q->where('escala_pulgadas', $request->escala_pulgadas)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('monitor_interface')) {
-            $query->whereHas('monitores', function ($q) use ($request) {
-                $q->where('interface', $request->monitor_interface)
-                ->where('is_active', 1);
-            });
-        }
-
-        //Filtro de Discos Duros
-        if ($request->filled('disco_capacidad')) {
-            $query->whereHas('discosDuros', function ($q) use ($request) {
-                $q->where('capacidad', $request->disco_capacidad)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('disco_tipo')) {
-            $query->whereHas('discosDuros', function ($q) use ($request) {
-                $q->where('tipo_hdd_ssd', $request->disco_tipo)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('disco_interface')) {
-            $query->whereHas('discosDuros', function ($q) use ($request) {
-                $q->where('interface', $request->disco_interface)
-                ->where('is_active', 1);
-            });
-        }
-
-        //Filtro por Rams
-        if ($request->filled('ram_capacidad')) {
-            $query->whereHas('rams', function ($q) use ($request) {
-                $q->where('capacidad_gb', $request->ram_capacidad)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('ram_clock')) {
-            $query->whereHas('rams', function ($q) use ($request) {
-                $q->where('clock_mhz', $request->ram_clock)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('ram_tipo')) {
-            $query->whereHas('rams', function ($q) use ($request) {
-                $q->where('tipo_chz', $request->ram_tipo)
-                ->where('is_active', 1);
-            });
-        }
-                
-        // Filtro por Procesador
-        if ($request->filled('procesador_marca')) {
-            $query->whereHas('procesadores', function ($q) use ($request) {
-                $q->where('marca', $request->procesador_marca)
-                ->where('is_active', 1);
-            });
-        }
-
-        if ($request->filled('procesador_tipo')) {
-            $query->whereHas('procesadores', function ($q) use ($request) {
-                $q->where('descripcion_tipo', $request->procesador_tipo)
-                ->where('is_active', 1);
-            });
-        }
-
-        //Inactivos
-        if ($request->filter == 'inactivos') {
-            $query->onlyTrashed(); 
-        } 
-        $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
+        $equipos = Equipo::with(['usuario', 'ubicacion', 'marca', 'tipoActivo', 'procesadores', 'rams', 'discosDuros'])
+        ->filtrar($request->all())
         ->orderBy('created_at', 'asc') 
         ->paginate(10)
         ->withQueryString();
@@ -169,11 +46,12 @@ class EquipoController extends Controller
         return $equipo;
         });
 
-
+        //Consultas
         $ubicaciones = Ubicacion::all();
         $usuarios = User::all();
         $marcas = Marca::all();
         $tipos = TipoActivo::all();
+
         //Monitores
         $marcas_monitores = Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca');
         $escalas_pulgadas = Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas');
