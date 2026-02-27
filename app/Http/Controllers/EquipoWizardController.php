@@ -109,15 +109,18 @@ class EquipoWizardController extends Controller
     }
 
     /**
-     * PASO 3: Monitores.
+     * PASO 3: Monitor
      */
     public function monitoresForm($uuid)
     {
         $wizard = session('wizard_equipo');
-        if (!$wizard || $wizard['uuid'] !== $uuid) abort(403, 'Acceso no autorizado.');
-        // dd($wizard);
+
+        if (!$wizard || $wizard['uuid'] !== $uuid) {
+            abort(403, 'Sesi n de wizard inv lida o expirada.');
+        }
 
         $equipo = data_get($wizard, 'equipo');
+
         return view('equipos.wizard.monitor', compact('equipo', 'uuid'));
     }
 
@@ -138,23 +141,25 @@ class EquipoWizardController extends Controller
         } else {
             session()->put('wizard_equipo.monitor', $datos);
         }
-
-        return redirect()->route('equipos.wizard-discos_duros', $uuid);
+        return redirect()->route('equipos.wizard.discoDuro', $uuid);
     }
-
     /**
-     * PASO 4: Discos Duros.
+     * PASO 4: Disco Duro
      */
     public function discoduroForm($uuid)
     {
         $wizard = session('wizard_equipo');
-        if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
+
+        if (!$wizard || $wizard['uuid'] !== $uuid) {
+            abort(403, 'Sesi n de wizard inv lida o expirada.');
+        }
 
         $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-discos_duros', compact('equipo', 'uuid'));
+
+        return view('equipos.wizard.discoDuro', compact('equipo', 'uuid'));
     }
 
-    public function saveDiscoduro(Request $request, $uuid)
+    public function savediscoduro(Request $request, $uuid)
     {
         $request->validate([
             'capacidad' => 'nullable|string',

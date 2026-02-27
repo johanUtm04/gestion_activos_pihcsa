@@ -83,7 +83,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-discos_duros', $uuid) }}">
+            <a href="{{ route('equipos.wizard.discoDuro', $uuid) }}">
                 <i class="fas fa-hdd"></i>
                 <div>Disco Duro</div>
             </a>

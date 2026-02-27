@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/equipos/{uuid}/detalles', [EquipoController::class, 'show'])->name('equipos.show');
 
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
+                                                //PENDIENTE//
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');
     
     // El UUID vincula los componentes al equipo en creación
@@ -49,8 +50,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/monitor', [EquipoWizardController::class, 'monitoresForm'])->name('equipos.wizard.monitor');
         Route::post('/monitor', [EquipoWizardController::class, 'saveMonitor'])->name('equipos.wizard.saveMonitor');
 
-        Route::get('/discoduro', [EquipoWizardController::class, 'discoduroForm'])->name('equipos.wizard-discos_duros');
-        Route::post('/discoduro', [EquipoWizardController::class, 'saveDiscoduro'])->name('equipos.wizard.saveDiscoduro');
+        Route::get('/discoduro', [EquipoWizardController::class, 'discoDuroForm'])->name('equipos.wizard.discoDuro');
+        Route::post('/discoduro', [EquipoWizardController::class, 'savediscoDuro'])->name('equipos.wizard.savediscoDuro');
 
         Route::get('/ram', [EquipoWizardController::class, 'ramForm'])->name('equipos.wizard-ram');
         Route::post('/ram', [EquipoWizardController::class, 'saveRam'])->name('equipos.wizard.saveRam');

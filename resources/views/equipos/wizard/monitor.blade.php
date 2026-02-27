@@ -251,7 +251,7 @@
 
             {{-- FOOTER --}}
             <div class="d-flex justify-content-between mt-4">
-                <a href="{{ route('equipos.wizard-discos_duros', $uuid) }}" class="btn btn-outline-secondary btn-lg">
+                <a href="{{ route('equipos.wizard.discoDuro', $uuid) }}" class="btn btn-outline-secondary btn-lg">
                     <i class="fas fa-fast-forward"></i> Omitir paso
                 </a>
 

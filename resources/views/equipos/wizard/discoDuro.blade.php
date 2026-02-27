@@ -84,7 +84,7 @@
             </div>
 
             <div class="wizard-step active">
-            <a href="{{ route('equipos.wizard-discos_duros', $uuid) }}">
+            <a href="{{ route('equipos.wizard.savediscoDuro', $uuid) }}">
                 <i class="fas fa-hdd"></i>
                 <div>Disco Duro</div>
             </a>
@@ -105,7 +105,7 @@
 <div class="card card-outline card-primary">
     <div class="card-body">
 
-        <form action="{{ route('equipos.wizard.saveDiscoduro', $uuid) }}" method="POST" id="discoForm">
+        <form action="{{ route('equipos.wizard.savediscoDuro', $uuid) }}" method="POST" id="discoForm">
             @csrf
 
             <fieldset class="fieldset-group">

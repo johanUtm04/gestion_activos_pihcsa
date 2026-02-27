@@ -33,7 +33,7 @@
                 Registrar Monitor 
             </a>
 
-            <a href="{{ route('equipos.wizard-discos_duros', $equipo) }}" class="list-group-item">
+            <a href="{{ route('equipos.wizard.discoDuro', $equipo) }}" class="list-group-item">
                 Registrar Disco Duro 
             </a>
 

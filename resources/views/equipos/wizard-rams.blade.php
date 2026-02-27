@@ -51,7 +51,7 @@
             </h1>
         </div>
 
-        <a href="{{ route('equipos.wizard-discos_duros', $uuid) }}" class="btn btn-outline-secondary">
+        <a href="{{ route('equipos.wizard.discoDuro', $uuid) }}" class="btn btn-outline-secondary">
             <i class="fas fa-chevron-left"></i> Anterior
         </a>
     </div>
@@ -84,7 +84,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-discos_duros', $uuid) }}">
+            <a href="{{ route('equipos.wizard.discoDuro', $uuid) }}">
                 <i class="fas fa-hdd"></i>
                 <div>Disco Duro</div>
             </a>
