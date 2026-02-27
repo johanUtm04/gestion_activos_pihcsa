@@ -245,7 +245,7 @@ class EquipoController extends Controller
         session()->put('wizard_equipo.uuid', $uuid);
         session()->put('wizard_equipo.equipo', $data);
 
-        return redirect()->route('equipos.wizard-ubicacion', $uuid);
+        return redirect()->route('equipos.wizard.ubicacion', $uuid);
     }
 
 

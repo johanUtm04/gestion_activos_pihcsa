@@ -51,7 +51,7 @@
             </h1>
         </div>
 
-        <a href="{{ route('equipos.wizard-ubicacion', $uuid) }}" class="btn btn-outline-secondary">
+        <a href="{{ route('equipos.wizard.ubicacion', $uuid) }}" class="btn btn-outline-secondary">
             <i class="fas fa-chevron-left"></i> Anterior
         </a>
     </div>
@@ -70,7 +70,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-ubicacion', $uuid) }}">
+            <a href="{{ route('equipos.wizard.ubicacion', $uuid) }}">
                 <i class="fas fa-map-marker-alt"></i>
                 <div>Ubicacion</div>
             </a>

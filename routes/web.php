@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     
     // El UUID vincula los componentes al equipo en creación
     Route::prefix('equipos/{uuid}')->group(function () {
-        Route::get('/ubicacion', [EquipoWizardController::class, 'ubicacionForm'])->name('equipos.wizard-ubicacion');
+        Route::get('/ubicacion', [EquipoWizardController::class, 'ubicacionForm'])->name('equipos.wizard.ubicacion');
         Route::post('/ubicacion', [EquipoWizardController::class, 'saveUbicacion'])->name('equipos.wizard.saveUbicacion');
 
         Route::get('/monitores', [EquipoWizardController::class, 'monitoresForm'])->name('equipos.wizard-monitores');

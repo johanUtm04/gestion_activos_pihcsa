@@ -62,24 +62,29 @@ class EquipoWizardController extends Controller
         // Guardamos en sesion el UUID y los datos base del equipo
         session()->put('wizard_equipo.uuid', $uuid);
         session()->put('wizard_equipo.equipo', $data);
-        return redirect()->route('equipos.wizard-ubicacion', $uuid);
+        return redirect()->route('equipos.wizard.ubicacion', $uuid);
     }
 
     /**
-     * Metodo para cargar en la sesion los datos dados por el usuario
-     * PASO 2: Ubicacion.
-     * Valida que el UUID de la URL coincida con la sesion activa.
+     * 
+     * PASO 2: Ubicacion |||
+     * 
      */
     public function ubicacionForm($uuid)
     {
+        //Llamar session 
         $wizard = session('wizard_equipo');
 
+        //Mensaje de error en caso de vacio o que no coincida el token
         if (!$wizard || $wizard['uuid'] !== $uuid) {
             abort(403, 'Sesi n de wizard inv lida o expirada.');
         }
 
+        //Extraemos los valores y loa guardamos en $equipo
         $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-ubicacion', compact('equipo', 'uuid'));
+        
+        //Mandamos a vista de ubicacion con 2 varaibales
+        return view('equipos.wizard.ubicacion', compact('equipo', 'uuid'));
     }
 
     /**

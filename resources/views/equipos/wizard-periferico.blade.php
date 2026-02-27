@@ -69,7 +69,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-ubicacion', $uuid) }}">
+            <a href="{{ route('equipos.wizard.ubicacion', $uuid) }}">
                 <i class="fas fa-map-marker-alt"></i>
                 <div>Ubicacion</div>
             </a>
