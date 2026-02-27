@@ -56,11 +56,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/ram', [EquipoWizardController::class, 'ramForm'])->name('equipos.wizard.ram');
         Route::post('/ram', [EquipoWizardController::class, 'saveRam'])->name('equipos.wizard.saveRam');
 
+        Route::get('/procesador', [EquipoWizardController::class, 'procesadorForm'])->name('equipos.wizard.procesador');
+        Route::post('/procesador', [EquipoWizardController::class, 'saveProcesador'])->name('equipos.wizard.saveProcesador');
+
         Route::get('/periferico', [EquipoWizardController::class, 'perifericoForm'])->name('equipos.wizard-periferico');
         Route::post('/periferico', [EquipoWizardController::class, 'savePeriferico'])->name('equipos.wizard.savePeriferico');
 
-        Route::get('/procesador', [EquipoWizardController::class, 'procesadorForm'])->name('equipos.wizard-procesador');
-        Route::post('/procesador', [EquipoWizardController::class, 'saveProcesador'])->name('equipos.wizard.saveProcesador');
     });
 
     /* --- MANTENIMIENTO Y FACTURACIÓN --- */

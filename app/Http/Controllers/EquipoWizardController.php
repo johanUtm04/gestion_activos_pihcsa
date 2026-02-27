@@ -209,7 +209,7 @@ class EquipoWizardController extends Controller
             session()->put('wizard_equipo.ram', $datos);
         }
 
-        return redirect()->route('equipos.wizard-procesador', $uuid);
+        return redirect()->route('equipos.wizard.procesador', $uuid);
     }
 
     /**
@@ -224,7 +224,7 @@ class EquipoWizardController extends Controller
         if (!$wizard || $wizard['uuid'] !== $uuid) abort(403);
 
         $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-procesador', compact('uuid', 'equipo'));
+        return view('equipos.wizard.procesador', compact('uuid', 'equipo'));
     }
 
     /**

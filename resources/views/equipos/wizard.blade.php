@@ -45,7 +45,7 @@
             Registrar un periferico
             </a>
         
-            <a href="{{ route('equipos.wizard-procesador', $equipo) }}" class="list-group-item">
+            <a href="{{ route('equipos.wizard.procesador', $equipo) }}" class="list-group-item">
             Registrar un Procesador
             </a>
         </div>

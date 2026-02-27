@@ -98,7 +98,7 @@
             </div>
 
             <div class="wizard-step active">
-            <a href="{{ route('equipos.wizard-procesador', $uuid) }}">
+            <a href="{{ route('equipos.wizard.procesador', $uuid) }}">
               <i class="fas fa-microchip"></i>
                 <div>Procesador</div>
             </a>
