@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
-| Controlador Principal ...
+| Controlador Principal
 |--------------------------------------------------------------------------
 */
 
@@ -31,58 +31,25 @@ class EquipoController extends Controller
     //Metodo para mostrar vista principal
     public function index(Request $request)
     {
-
+        //Limpiar sesion
         session()->forget('wizard_equipo');
 
+        //Consulta principal
         $equipos = Equipo::with(['usuario', 'ubicacion', 'marca', 'tipoActivo', 'procesadores', 'rams', 'discosDuros'])
         ->filtrar($request->all())
         ->orderBy('created_at', 'asc') 
         ->paginate(10)
         ->withQueryString();
 
-        //Logica de Semaforo
-        $equipos->getCollection()->transform(function ($equipo) {
-            $equipo->semaforo = $this->calcularSemaforo($equipo);
-        return $equipo;
-        });
+        //Datos para lso filtros
+        $data = $this->getFilterData();
 
-        //Consultas
-        $ubicaciones = Ubicacion::all();
-        $usuarios = User::all();
-        $marcas = Marca::all();
-        $tipos = TipoActivo::all();
-
-        //Monitores
-        $marcas_monitores = Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca');
-        $escalas_pulgadas = Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas');
-        $monitor_interface = Monitor::distinct()->orderBy('interface', 'asc')->pluck('interface');
-
-        //Discos
-        $discos_capacidades = DiscoDuro::distinct()->orderBy('capacidad', 'asc')->pluck('capacidad');
-        $discos_tipos = DiscoDuro::distinct()->pluck('tipo_hdd_ssd'); 
-        $discos_interfaces = DiscoDuro::distinct()->pluck('interface');
-
-        //Rams
-        $rams_capacidades = Ram::distinct()->orderBy('capacidad_gb', 'asc')->pluck('capacidad_gb');
-        $rams_clocks = Ram::distinct()->orderBy('clock_mhz', 'asc')->pluck('clock_mhz');
-        $rams_tipos = Ram::distinct()->orderBy('tipo_chz', 'asc')->pluck('tipo_chz');
-
-        //Procesadores
-        $procesador_marcas = Procesador::distinct()->orderBy('marca', 'asc')->pluck('marca');
-        $procesador_tipos = Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo');
-
-        $categorias = [
-            'Dispositivos de Usuario' => ['Laptop', 'Desktop', 'All-in-One', 'Tablet', 'Smartphone', 'Workstation'],
-            'Infraestructura' => ['Servidor', 'Rack', 'Switch', 'Router', 'Access Point', 'Firewall', 'UPS'],
-            'Perifericos' => ['Monitor', 'Impresora', 'Multifuncional', 'Escaner', 'Proyector', 'Camara'],
-        ];
-
-        return view('equipos.index', compact('equipos', 'ubicaciones', 'categorias', 'usuarios', 'marcas', 'tipos', 'marcas_monitores', 'escalas_pulgadas', 'monitor_interface',
-        'discos_capacidades', 'discos_tipos', 'discos_interfaces',
-        'rams_capacidades', 'rams_clocks', 'rams_tipos',
-        'procesador_marcas', 'procesador_tipos'
-        ));
+        //Regresar Vista
+        return view('equipos.index', compact('equipos'))->with($data);
     }
+
+
+
 
     //Metodo para crear registro en Base de datos
     public function store(Request $request)
@@ -431,7 +398,7 @@ public function exportarGeneral()
 
     public function indexFactura(Equipo $equipo)
     {
-        return view('equipos.factura', compact('equipo'));
+        return view('equipos.factura.edit', compact('equipo'));
     }
 
 
@@ -504,5 +471,35 @@ public function exportarGeneral()
             'icono' => 'fa-check-circle'
         ];
     }
+
+
+    private function getFilterData() {
+        return [
+            'ubicaciones' => Ubicacion::all(),
+            'usuarios'    => User::all(),
+            'marcas'      => Marca::all(),
+            'tipos'       => TipoActivo::all(),
+            /* Metadatos */
+            //Monitor
+            'marcas_monitores' => Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca'),
+            'escalas_pulgadas' => Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas'),
+            'monitor_interface' => Monitor::distinct()->orderBy('interface', 'asc')->pluck('interface'),
+
+            //Discos
+            'discos_capacidades' => DiscoDuro::distinct()->orderBy('capacidad', 'asc')->pluck('capacidad'),
+            'discos_tipos' => DiscoDuro::distinct()->pluck('tipo_hdd_ssd'),
+            'discos_interfaces' => DiscoDuro::distinct()->pluck('interface'),
+
+            //Rams
+            'rams_capacidades' => Ram::distinct()->orderBy('capacidad_gb', 'asc')->pluck('capacidad_gb'),
+            'rams_clocks' => Ram::distinct()->orderBy('clock_mhz', 'asc')->pluck('clock_mhz'),
+            'rams_tipos' => Ram::distinct()->orderBy('tipo_chz', 'asc')->pluck('tipo_chz'),
+
+            //Procesadores
+            'procesador_marcas' => Procesador::distinct()->orderBy('marca', 'asc')->pluck('marca'),
+            'procesador_tipos' => Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo'),
+        ];
+    }
+
 
 }

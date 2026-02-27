@@ -276,7 +276,6 @@
                                 <td class="text-center">
                                     @if($equipo->semaforo)
                                         <span class="badge {{ $equipo->semaforo->clase }} p-2 shadow-sm" style="min-width: 80px;">
-                                            <i class="fas {{ $equipo->semaforo->icono }} mr-1"></i>
                                             {{ $equipo->semaforo->texto }}
                                         </span>
                                     @else
