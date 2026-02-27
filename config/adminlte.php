@@ -375,14 +375,7 @@ return [
             'can'  => ['access-admin', 'access-sistemas'],
             'active' => ['historial*'],
         ],
-
         ['header' => 'SOPORTE Y AYUDA'],
-        [
-            'text' => 'Guía / Manual',
-            'icon' => 'fas fa-question-circle',
-            'icon_color' => 'info',
-            'route'  => 'soporte.manual',
-        ],
         [
             'text' => 'Contacto / Ayuda',
             'icon' => 'fas fa-headset',

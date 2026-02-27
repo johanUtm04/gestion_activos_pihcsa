@@ -36,6 +36,13 @@ class EquipoController extends Controller
         $query = Equipo::with(['usuario', 'ubicacion', 'monitores', 'discosDuros', 'rams', 
         'perifericos', 'procesadores', 'marca', 'tipoActivo']);
 
+        // REGLA DE ORO: Manejo de Inactivos
+        if ($request->filter == 'inactivos') {
+            $query->onlyTrashed(); 
+        } else {
+            $query->withoutTrashed(); 
+        }
+
         //Filtros de busqueda
         if ($request->filled('seccion')) {
             $busqueda = $request->seccion;
@@ -66,80 +73,91 @@ class EquipoController extends Controller
             $query->where('tipo_activo_id', $request->tipo_activo_id );
         }
 
-        if ($request->filter == 'inactivos') {
-            $query->onlyTrashed(); 
-        } 
-
         //Filtro de Monitores
         if ($request->filled('monitor_marca')) {
             $query->whereHas('monitores', function ($q) use ($request) {
-                $q->where('marca', $request->monitor_marca);
+                $q->where('marca', $request->monitor_marca)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('escala_pulgadas')) {
             $query->whereHas('monitores', function ($q) use ($request) {
-                $q->where('escala_pulgadas', $request->escala_pulgadas);
+                $q->where('escala_pulgadas', $request->escala_pulgadas)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('monitor_interface')) {
             $query->whereHas('monitores', function ($q) use ($request) {
-                $q->where('interface', $request->monitor_interface);
+                $q->where('interface', $request->monitor_interface)
+                ->where('is_active', 1);
             });
         }
 
         //Filtro de Discos Duros
         if ($request->filled('disco_capacidad')) {
             $query->whereHas('discosDuros', function ($q) use ($request) {
-                $q->where('capacidad', $request->disco_capacidad);
+                $q->where('capacidad', $request->disco_capacidad)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('disco_tipo')) {
             $query->whereHas('discosDuros', function ($q) use ($request) {
-                $q->where('tipo_hdd_ssd', $request->disco_tipo);
+                $q->where('tipo_hdd_ssd', $request->disco_tipo)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('disco_interface')) {
             $query->whereHas('discosDuros', function ($q) use ($request) {
-                $q->where('interface', $request->disco_interface);
+                $q->where('interface', $request->disco_interface)
+                ->where('is_active', 1);
             });
         }
 
         //Filtro por Rams
         if ($request->filled('ram_capacidad')) {
             $query->whereHas('rams', function ($q) use ($request) {
-                $q->where('capacidad_gb', $request->ram_capacidad);
+                $q->where('capacidad_gb', $request->ram_capacidad)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('ram_clock')) {
             $query->whereHas('rams', function ($q) use ($request) {
-                $q->where('clock_mhz', $request->ram_clock);
+                $q->where('clock_mhz', $request->ram_clock)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('ram_tipo')) {
             $query->whereHas('rams', function ($q) use ($request) {
-                $q->where('tipo_chz', $request->ram_tipo);
+                $q->where('tipo_chz', $request->ram_tipo)
+                ->where('is_active', 1);
             });
         }
                 
         // Filtro por Procesador
         if ($request->filled('procesador_marca')) {
             $query->whereHas('procesadores', function ($q) use ($request) {
-                $q->where('marca', $request->procesador_marca);
+                $q->where('marca', $request->procesador_marca)
+                ->where('is_active', 1);
             });
         }
 
         if ($request->filled('procesador_tipo')) {
             $query->whereHas('procesadores', function ($q) use ($request) {
-                $q->where('descripcion_tipo', $request->procesador_tipo);
+                $q->where('descripcion_tipo', $request->procesador_tipo)
+                ->where('is_active', 1);
             });
         }
 
+        //Inactivos
+        if ($request->filter == 'inactivos') {
+            $query->onlyTrashed(); 
+        } 
         $equipos = $query->with(['marca', 'tipoActivo', 'usuario', 'ubicacion'])
         ->orderBy('created_at', 'asc') 
         ->paginate(10)
