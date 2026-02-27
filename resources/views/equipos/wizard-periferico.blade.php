@@ -76,7 +76,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-monitores', $uuid) }}">
+            <a href="{{ route('equipos.wizard.monitor', $uuid) }}">
                 <i class="fas fa-tv"></i>
                 <div>Monitor</div>
             </a>

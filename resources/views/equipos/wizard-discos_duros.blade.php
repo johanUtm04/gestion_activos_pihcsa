@@ -51,7 +51,7 @@
             </h1>
         </div>
 
-        <a href="{{ route('equipos.wizard-monitores', $uuid) }}" class="btn btn-outline-secondary">
+        <a href="{{ route('equipos.wizard.monitor', $uuid) }}" class="btn btn-outline-secondary">
             <i class="fas fa-chevron-left"></i> Anterior
         </a>
     </div>
@@ -77,7 +77,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-monitores', $uuid) }}">
+            <a href="{{ route('equipos.wizard.monitor', $uuid) }}">
                 <i class="fas fa-tv"></i>
                 <div>Monitor</div>
             </a>

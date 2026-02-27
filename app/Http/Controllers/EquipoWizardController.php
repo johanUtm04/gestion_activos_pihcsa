@@ -105,7 +105,7 @@ class EquipoWizardController extends Controller
         ]);
 
         $uuid = $wizard['uuid'];
-        return redirect()->route('equipos.wizard-monitores', $uuid);
+        return redirect()->route('equipos.wizard.monitor', $uuid);
     }
 
     /**
@@ -118,7 +118,7 @@ class EquipoWizardController extends Controller
         // dd($wizard);
 
         $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-monitores', compact('equipo', 'uuid'));
+        return view('equipos.wizard.monitor', compact('equipo', 'uuid'));
     }
 
     public function saveMonitor(Request $request, $uuid)

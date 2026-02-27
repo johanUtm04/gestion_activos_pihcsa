@@ -29,7 +29,7 @@
                 Registrar Ubicación 
             </a>
 
-            <a href="{{ route('equipos.wizard-monitores', $equipo) }}" class="list-group-item">
+            <a href="{{ route('equipos.wizard.monitor', $equipo) }}" class="list-group-item">
                 Registrar Monitor 
             </a>
 
