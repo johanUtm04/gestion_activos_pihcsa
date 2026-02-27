@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/discoduro', [EquipoWizardController::class, 'discoDuroForm'])->name('equipos.wizard.discoDuro');
         Route::post('/discoduro', [EquipoWizardController::class, 'savediscoDuro'])->name('equipos.wizard.savediscoDuro');
 
-        Route::get('/ram', [EquipoWizardController::class, 'ramForm'])->name('equipos.wizard-ram');
+        Route::get('/ram', [EquipoWizardController::class, 'ramForm'])->name('equipos.wizard.ram');
         Route::post('/ram', [EquipoWizardController::class, 'saveRam'])->name('equipos.wizard.saveRam');
 
         Route::get('/periferico', [EquipoWizardController::class, 'perifericoForm'])->name('equipos.wizard-periferico');

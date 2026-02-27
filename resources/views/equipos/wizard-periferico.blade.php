@@ -90,7 +90,7 @@
             </div>
 
             <div class="wizard-step completed">
-            <a href="{{ route('equipos.wizard-ram', $uuid) }}">
+            <a href="{{ route('equipos.wizard.ram', $uuid) }}">
                <i class="fas fa-memory"></i>
                 <div>Ram</div>
             </a>

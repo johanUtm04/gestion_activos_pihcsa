@@ -176,7 +176,7 @@ class EquipoWizardController extends Controller
             session()->put('wizard_equipo.disco_duro', $datos);
         }
 
-        return redirect()->route('equipos.wizard-ram', $uuid);
+        return redirect()->route('equipos.wizard.ram', $uuid);
     }
 
     /**
@@ -189,7 +189,7 @@ class EquipoWizardController extends Controller
         // dd($wizard);
 
         $equipo = data_get($wizard, 'equipo');
-        return view('equipos.wizard-rams', compact('equipo', 'uuid'));
+        return view('equipos.wizard.ram', compact('equipo', 'uuid'));
     }
 
     public function saveRam(Request $request, $uuid)

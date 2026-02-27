@@ -37,7 +37,7 @@
                 Registrar Disco Duro 
             </a>
 
-            <a href="{{ route('equipos.wizard-ram', $equipo) }}" class="list-group-item">
+            <a href="{{ route('equipos.wizard.ram', $equipo) }}" class="list-group-item">
             Registrar una RAM
             </a>
 
