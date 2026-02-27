@@ -246,7 +246,7 @@
                                         @endcan
 
                                         @can('mantenimiento-equipo')
-                                            <a href="{{ route('equipos.edit_factura', $equipo) }}" class="btn btn-sm btn-default text-success" title="Asignar Factura">
+                                            <a href="{{ route('equipos.factura.edit', $equipo) }}" class="btn btn-sm btn-default text-success" title="Asignar Factura">
                                                 <i class="fas fa-file-invoice-dollar"></i>
                                             </a>
                                         @endcan

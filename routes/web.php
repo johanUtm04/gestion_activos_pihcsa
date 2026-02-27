@@ -67,8 +67,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/equipos/{equipo}/addwork', [EquipoController::class, 'indexaddwork'])->name('equipos.addwork');
     Route::post('/equipos/{equipo}/addwork', [EquipoController::class, 'saveWork'])->name('equipos.addwork.store');
     
-    Route::get('/equipos/{equipo}/factura', [EquipoController::class, 'indexFactura'])->name('equipos.edit_factura');
-    Route::post('/equipos/{equipo}/factura', [EquipoController::class, 'saveFactura'])->name('equipos.update_factura');
+    Route::get('/equipos/{equipo}/factura', [EquipoController::class, 'indexFactura'])->name('equipos.factura.edit');
+    Route::post('/equipos/{equipo}/factura', [EquipoController::class, 'saveFactura'])->name('equipos.factura.saveFactura');
 
     /* --- REPORTES Y DEPRECIACIÓN --- */
     Route::get('/depreciacion', [DepreciacionController::class, 'index'])->name('depreciacion.index');

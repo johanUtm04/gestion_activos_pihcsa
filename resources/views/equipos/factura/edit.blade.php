@@ -26,7 +26,7 @@
                     <p><strong>Serial:</strong> <span class="badge badge-info">{{ $equipo->serial }}</span></p>
                     <hr>
                     
-                    <form action="{{ route('equipos.update_factura', $equipo) }}" method="POST">
+                    <form action="{{ route('equipos.factura.saveFactura', $equipo) }}" method="POST">
                         @csrf
                         @method('POST') {{-- O PUT si así lo definiste en web.php --}}
                         
