@@ -20,6 +20,7 @@ use App\Models\{
 use App\Http\Requests\StoreEquipoRequest;
 use App\Http\Requests\StoreWorkRequest;
 use App\Services\MantenimientoService;
+use App\Services\ExportService;
 use App\Http\Requests\UpdateEquipoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -209,98 +210,13 @@ class EquipoController extends Controller
             ->with('new_mantenimiento', $equipo->id);
     }
 
-    public function exportarGeneral()
+    public function exportarGeneral(ExportService $exportService)
     {
-        $equipos = \App\Models\Equipo::with([
-            'usuario',
-            'ubicacion',
-            'marca',
-            'tipoActivo',
-            'monitores',
-            'discosDuros',
-            'rams',
-            'perifericos',
-            'procesadores'
-        ])->get();
-
-        $fileName = 'Reporte_Inventario_PIHCSA_' . date('Y-m-d') . '.csv';
-
-        $headers = [
-            "Content-type"        => "text/csv; charset=UTF-8",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
-        ];
-
-        $callback = function () use ($equipos) {
-            $file = fopen('php://output', 'w');
-
-            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            fputs($file, "sep=,\n");
-
-            fputcsv($file, [
-                'ID',
-                'Usuario Responsable',
-                'Ubicación / Depto',
-                'Tipo de Activo',
-                'Marca',
-                'Modelo',
-                'Serial / Service Tag',
-                'Factura',
-                'Sistema Operativo',
-                'Procesador (Detalle)',
-                'Memoria RAM (Total)',
-                'Almacenamiento',
-                'Monitores Asociados',
-                'Perifericos'
-            ]);
-
-            foreach ($equipos as $equipo) {
-                $procInfo = $equipo->procesadores
-                    ->map(fn($p) => "{$p->marca} {$p->descripcion_tipo}")
-                    ->implode(' | ');
-
-                $ramInfo = $equipo->rams
-                    ->map(fn($r) => "{$r->capacidad_gb}GB ({$r->tipo_chz} {$r->clock_mhz}MHz)")
-                    ->implode(' | ');
-
-                $discoInfo = $equipo->discosDuros
-                    ->map(fn($d) => "{$d->capacidad}GB ({$d->tipo_hdd_ssd} - {$d->interface})")
-                    ->implode(' | ');
-
-                $monInfo = $equipo->monitores
-                    ->map(fn($m) => "{$m->marca} {$m->escala_pulgadas}\" (S/N: " . ($m->serial ?? 'N/A') . ")")
-                    ->implode(' | ');
-
-                $perifInfo = $equipo->perifericos
-                    ->map(fn($p) => "{$p->tipo}: {$p->marca} (" . ($p->serial ?? 'N/A') . ")")
-                    ->implode(' | ');
-
-                fputcsv($file, [
-                    $equipo->id,
-                    $equipo->usuario ? $equipo->usuario->name : 'Disponible en Stock',
-                    $equipo->ubicacion ? $equipo->ubicacion->nombre : 'N/A',
-                    $equipo->tipoActivo?->nombre ?? 'N/A',
-                    $equipo->marca?->nombre ?? 'N/A',
-                    $equipo->modelo ?? 'N/A',
-                    $equipo->serial,
-                    $equipo->numero_factura ?? 'No asignada',
-                    $equipo->sistema_operativo ?? 'N/A',
-                    $procInfo ?: 'N/A',
-                    $ramInfo ?: 'N/A',
-                    $discoInfo ?: 'N/A',
-                    $monInfo ?: 'N/A',
-                    $perifInfo ?: 'N/A',
-                ]);
-            }
-
-            fclose($file);
-        };
-
+        [$callback, $headers] = $exportService->exportarInventarioCsv();
+        
         return response()->stream($callback, 200, $headers);
     }
-
+    
     public function indexFactura(Equipo $equipo)
     {
         return view('equipos.factura.edit', compact('equipo'));
