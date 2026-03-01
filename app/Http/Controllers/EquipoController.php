@@ -180,10 +180,11 @@ class EquipoController extends Controller
 
     public function indexaddwork(Equipo $equipo)
     {
-        $usuarios = User::all();
-        $semaforo = $this->calcularSemaforo($equipo);
+        $equipo->load(['marca', 'tipoActivo', 'ubicacion']);
 
-        return view('equipos.addwork', compact('equipo', 'usuarios', 'semaforo'));
+        $catalogos = $this->getFilterData();
+
+        return view('equipos.addwork', compact('equipo'))->with($catalogos);
     }
 
     public function saveWork(Equipo $equipo, Request $request)
@@ -374,56 +375,6 @@ class EquipoController extends Controller
                 "<strong>Mantenimiento Registrado:</strong> Se agregó una nueva orden de trabajo para el activo {$equipo->serial}."
             )
             ->with('actualizado_factura', $equipo->id);
-    }
-
-    private function calcularSemaforo($equipo)
-    {
-        $tipo = $equipo->tipoActivo;
-
-        if (!$tipo || $tipo->frecuencia_meses <= 0) {
-            return (object)[
-                'clase' => 'badge-secondary',
-                'texto' => 'N/A',
-                'icono' => 'fa-ban'
-            ];
-        }
-
-        $fechaBase = $equipo->fecha_ultimo_mantenimiento
-            ? \Carbon\Carbon::parse($equipo->fecha_ultimo_mantenimiento)
-            : \Carbon\Carbon::parse($equipo->fecha_adquisicion ?? $equipo->created_at);
-
-        $proximo = $fechaBase->copy()->addMonths($tipo->frecuencia_meses);
-        $hoy = now()->startOfDay();
-        $proximo = $proximo->startOfDay();
-
-        $diasRestantes = (int)$hoy->diffInDays($proximo, false);
-
-        if ($hoy->gt($proximo)) {
-            $atraso = abs($diasRestantes);
-
-            return (object)[
-                'clase' => 'badge-danger',
-                'texto' => "VENCIDO HACE ({$atraso} d)",
-                'dias'  => $diasRestantes,
-                'icono' => 'fa-exclamation-triangle'
-            ];
-        }
-
-        if ($diasRestantes <= 30) {
-            return (object)[
-                'clase' => 'badge-warning',
-                'texto' => "OBLIGATORIO ({$diasRestantes} d)",
-                'dias'  => $diasRestantes,
-                'icono' => 'fa-clock'
-            ];
-        }
-
-        return (object)[
-            'clase' => 'badge-success',
-            'texto' => 'EQUIPO AL DÍA',
-            'dias'  => $diasRestantes,
-            'icono' => 'fa-check-circle'
-        ];
     }
 
     private function getFilterData()

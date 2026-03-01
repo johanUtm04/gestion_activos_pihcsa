@@ -66,17 +66,9 @@
                                 <label>Tipo de evento </label>
                                     <select class="form-control" id="tipo_evento" name="tipo_evento" required>
                                         <option value="">Seleccione una opción</option>
-                                        
-                                        <option value="Mantenimiento mensual" style="background-color:#fff3cd; font-weight: bold;">
-                                            Realizar mantenimiento mensual
-                                            @if($semaforo->dias > 4000) 
-                                                {{-- Si el número es absurdo, mejor no mostrar los días --}}
-                                                (Pendiente de programar)
-                                            @elseif($semaforo->dias <= 0)
-                                                (¡VENCIDO!)
-                                            @else
-                                                (Faltan {{ $semaforo->dias }} días)
-                                            @endif
+                                                                                
+                                        <option value="Mantenimiento mensual" class="font-weight-bold" style="background-color:#fff3cd;">
+                                            {{ $equipo->estado_mantenimiento }}
                                         </option>
 
                                         <option value="Mantenimiento preventivo">Mantenimiento preventivo</option>

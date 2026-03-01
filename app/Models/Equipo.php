@@ -37,26 +37,41 @@ class Equipo extends Model
      */
     public function getSemaforoAttribute()
     {
+        //tomamos la relacion del tipo de activo
         $tipo = $this->tipoActivo;
-        
-        if (!$tipo || $tipo->frecuencia_meses <= 0) {
-            return (object) ['clase' => 'badge-secondary', 'texto' => 'N/A'];
-        }
 
+        //ROMAMOS LA FECHA BASE, YA SEA DE ESE CAMPO EN ESPECIFICO O ALTERNARIVAS
         $fechaBase = $this->fecha_ultimo_mantenimiento 
             ?? $this->fecha_adquisicion 
             ?? $this->created_at;
 
+        //CALCULAMOS SU PROXIMA FECHA DE ACUERDO A SU COLUMNA DE FRECUENCIA_MESES de la tabla de tipo
         $proximoManto = Carbon::parse($fechaBase)->addMonths($tipo->frecuencia_meses);
+
+        //
         $diasDiferencia = (int) now()->diffInDays($proximoManto, false);
 
+        //Si no viene vacio y su frecuencia es menor o igual a 0
+        // no se tomara en cuenta o bueno el objeto a la hora que se acceda sera null o datos vacios
+        if (!$tipo || $tipo->frecuencia_meses <= 0) {
+                return (object) [
+                    'clase' => 'badge-secondary', 
+                    'texto' => 'N/A',
+                    'dias'  => 'N/A', 
+                ];
+            }
+
         if ($diasDiferencia < 0) {
-            return (object) ['clase' => 'badge-danger', 'texto' => 'VENCIDO'];
+            return (object) [
+            'clase' => 'badge-danger',
+            'texto' => 'VENCIDO',
+            'dias'  => 'N/A', 
+            ];
         }
         
         return $diasDiferencia <= 30 
-            ? (object) ['clase' => 'badge-warning', 'texto' => 'POR VENCER']
-            : (object) ['clase' => 'badge-success', 'texto' => 'AL DÍA'];
+            ? (object) ['clase' => 'badge-warning', 'texto' => 'POR VENCER en ' . $diasDiferencia . ' dias', 'dias'  => $diasDiferencia, ]
+            : (object) ['clase' => 'badge-success', 'texto' => 'AL DÍA', 'dias'  => 'N/A'];
     }
 
     // ----------------------------------------------------
@@ -67,7 +82,6 @@ class Equipo extends Model
     public function ubicacion()  { return $this->belongsTo(Ubicacion::class, 'ubicacion_id'); }
     public function marca()      { return $this->belongsTo(Marca::class, 'marca_id'); }
     public function tipoActivo() { return $this->belongsTo(TipoActivo::class, 'tipo_activo_id'); }
-
     public function monitores()    { return $this->hasMany(Monitor::class, 'equipo_id'); }
     public function discosDuros()  { return $this->hasMany(DiscoDuro::class, 'equipo_id'); }
     public function rams()         { return $this->hasMany(Ram::class, 'equipo_id'); }
@@ -161,6 +175,23 @@ class Equipo extends Model
         
         //Manejo de Inactivos:
         ->when(($filtros['filter'] ?? null) == 'inactivos', fn($q) => $q->onlyTrashed());
+    }
+
+
+
+    public function getEstadoMantenimientoAttribute()
+    {
+        $semaforo = $this->semaforo;
+
+        if ($semaforo->dias > 4000) {
+            return "Realizar mantenimiento mensual (Pendiente de programar)";
+        }
+
+        if ($semaforo->dias <= 0) {
+            return "Realizar mantenimiento mensual (¡VENCIDO!)";
+        }
+
+        return "Realizar mantenimiento mensual (Faltan {$semaforo->dias} días)";
     }
 
 }
