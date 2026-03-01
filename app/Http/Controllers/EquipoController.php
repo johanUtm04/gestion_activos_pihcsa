@@ -108,18 +108,19 @@ class EquipoController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Equipo $equipo) 
     {
-        $equipo = Equipo::with([
-                'usuario',
-                'ubicacion',
-                'monitores',
-                'discosDuros',
-                'rams',
-                'perifericos',
-                'procesadores'
-            ])
-            ->findOrFail($id);
+        $equipo->load([
+            'usuario', 
+            'ubicacion', 
+            'marca',
+            'tipoActivo',
+            'monitores', 
+            'discosDuros', 
+            'rams', 
+            'perifericos', 
+            'procesadores'
+        ]);
 
         return view('equipos.detalles', compact('equipo'));
     }
