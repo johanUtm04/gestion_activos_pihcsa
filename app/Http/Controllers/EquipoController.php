@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Log;
 use App\Models\{
     Equipo,
     Ubicacion,
-    Historial_log,
     User,
     Monitor,
     DiscoDuro,
@@ -19,9 +18,12 @@ use App\Models\{
 };
 
 use App\Http\Requests\StoreEquipoRequest;
+use App\Http\Requests\StoreWorkRequest;
+use App\Services\MantenimientoService;
 use App\Http\Requests\UpdateEquipoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
 
 class EquipoController extends Controller
 {
@@ -187,66 +189,15 @@ class EquipoController extends Controller
         return view('equipos.addwork', compact('equipo'))->with($catalogos);
     }
 
-    public function saveWork(Equipo $equipo, Request $request)
+    public function saveWork(Equipo $equipo, StoreWorkRequest $request, MantenimientoService $service)
     {
-        $data = $request->validate([
-            'tipo_evento'        => 'required|string',
-            'tipo_evento_input'  => 'required_if:tipo_evento,OTRO_VALOR|nullable|string|max:255',
-            'usuario_id'         => 'required|string',
-            'fecha_evento'       => 'required|date',
-            'contexto'           => 'nullable|string',
-            'costo'              => 'nullable|numeric',
-        ]);
+        $data = $request->getCleanData();
 
-        $eventosQueResetan = [
-            'Mantenimiento mensual'
-        ];
-
-        if (in_array($request->tipo_evento, $eventosQueResetan)) {
-            $equipo->update([
-                'fecha_ultimo_mantenimiento' => $request->fecha_evento
-            ]);
+        if ($data['tipo_evento'] === 'Mantenimiento mensual') {
+            $equipo->update(['fecha_ultimo_mantenimiento' => $data['fecha_evento']]);
         }
 
-        $data = $request->only([
-            'tipo_evento',
-            'usuario_id',
-            'fecha_evento',
-            'contexto',
-            'costo',
-        ]);
-
-        $data['tipo_evento'] =
-            $request->tipo_evento === 'OTRO_VALOR'
-                ? $request->tipo_evento_input
-                : $request->tipo_evento;
-
-        $usuarioMantenimiento = User::find($data['usuario_id']);
-        $nombreUsuario = $usuarioMantenimiento->name;
-
-        Historial_log::create([
-            'activo_id'         => $equipo->id,
-            'usuario_accion_id' => auth()->id(),
-            'tipo_registro'     => 'MANTENIMIENTO',
-            'detalles_json'     => [
-                'mensaje' => 'Nuevo Mantenimiento agregado',
-                'usuario_asignado' => $historial->name ?? 'conexion mal hecha we',
-                'rol' => $historial->rol ?? 'conexion mal hecha amor',
-                'cambios' => [
-                    'Detalles del Servicio' => [
-                        'antes'   => 'N/A',
-                        'despues' =>
-                            "<div class='text-left'>" .
-                            "{$data['tipo_evento']}<br>" .
-                            "{$nombreUsuario}<br>" .
-                            "{$data['fecha_evento']}<br>" .
-                            ($data['contexto'] ?? 'N/A') . "<br>" .
-                            "$" . ($data['costo'] ?? '0.00') .
-                            "</div>"
-                    ]
-                ]
-            ]
-        ]);
+        $service->registrar($equipo, $data);
 
         $perPage = 10;
         $position = Equipo::where('id', '<=', $equipo->id)->count();

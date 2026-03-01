@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('title', 'Historial de Eventos')
+
 @section('content')
 <div class="container-fluid py-4">
     
