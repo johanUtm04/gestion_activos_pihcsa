@@ -128,7 +128,7 @@ class EquipoController extends Controller
     public function destroy(Request $request, Equipo $equipo)
     {
         $position = Equipo::where('id', '<=', $equipo->id)->count();
-        $page = ceil($position / 11);
+        $page = ceil($position / 10);
 
         if (!$request->motivo || trim($request->motivo) === '') {
             return back()->with('error', 'El motivo de inactivación es obligatorio.');
@@ -142,13 +142,7 @@ class EquipoController extends Controller
 
         return redirect()
             ->route('equipos.index', ['page' => $page])
-            ->with(
-                'danger',
-                'Equipo enviado a la papelera (Inactivado)
-                <a href="' . route('equipos.index', ['filter' => 'inactivos']) . '" class="btn-papelera-alert">
-                <i class="fas fa-trash-restore mr-1"></i> Ver Papelera
-                </a>'
-            );
+            ->with('danger', 'Equipo inactivado correctamente.');
     }
 
     protected function syncRelation($relation, array $items)
