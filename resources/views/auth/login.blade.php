@@ -1,5 +1,7 @@
 @extends('adminlte::auth.login')
 
+@section('title', 'Iniciar Sesion | Activos Pihcsa')
+
 @section('auth_body')
 <form method="POST" action="{{ route('login') }}">
     @csrf
