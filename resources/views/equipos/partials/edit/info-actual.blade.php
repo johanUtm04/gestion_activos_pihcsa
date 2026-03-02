@@ -38,6 +38,10 @@
                 <span class="data-label text-muted">Ubicación:</span> 
                 <span class="float-right">{{ $equipo->ubicacion->nombre ?? 'Sin ubicar' }}</span>
             </div>
+            <div class="data-item">
+                <span class="data-label text-muted">Ubicación:</span> 
+                <span class="float-right">{{ $equipo->departamento_perteneciente ?? 'Sin Departamento' }}</span>
+            </div>
         </fieldset>
 
         <fieldset class="border p-3 mb-4">

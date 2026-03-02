@@ -19,6 +19,7 @@ class UpdateEquipoRequest extends FormRequest
             'tipo_activo_id'     => 'required|exists:tipo_activos,id',
             'usuario_id'         => 'required|exists:users,id',
             'modelo'             => 'nullable|string|max:100',
+            'departamento_perteneciente' => 'nullable|string|max:100',
             'fecha_adquisicion'  => 'required|date',
             'valor_inicial'      => 'nullable|numeric',
             'sistema_operativo'  => 'nullable|string',

@@ -36,6 +36,52 @@
     </div>
 
     <div class="row">
+
+        <div class="form-group col-md-4">
+            <label for="departamento_perteneciente">
+                <i class="fas fa-building"></i> Departamento
+            </label>
+
+            <select name="departamento_perteneciente" 
+                    id="departamento_perteneciente"
+                    class="form-control select2 @error('departamento_perteneciente') is-invalid @enderror" 
+                    required>
+                
+                <option value="" disabled {{ old('departamento_perteneciente', $equipo->departamento_perteneciente) == '' ? 'selected' : '' }}>
+                    -- Seleccione un departamento --
+                </option>
+
+                @php
+                    $deps = [
+                        'ALMACEN' => 'ALMACEN', 'ASIST_PAGOS' => 'ASIST. PAGOS', 'COBRANZA' => 'COBRANZA',
+                        'AUDITORIA' => 'AUDITORIA', 'AUXILIAR_ADMINISTRATIVO' => 'AUXILIAR ADMINISTRATIVO',
+                        'AUXILIAR_LOGISTICA' => 'AUXILIAR LOGISTICA', 'CALIDAD' => 'CALIDAD',
+                        'COBRANZA_GOB' => 'COBRANZA GOB', 'COMPRAS' => 'COMPRAS', 'CONTABILIDAD' => 'CONTABILIDAD',
+                        'COPIADORA' => 'COPIADORA', 'COSTOS' => 'COSTOS', 'CREDITO' => 'CREDITO',
+                        'CULTURA_TALENTO' => 'CULTURA Y TALENTO', 'EMBARQUES' => 'EMBARQUES',
+                        'ETIQUETAS' => 'ETIQUETAS', 'FACTURACION' => 'FACTURACION', 'JURIDICO' => 'JURIDICO',
+                        'LOGISTICA' => 'LOGISTICA', 'NOMINAS' => 'NOMINAS', 'OPERACIONES' => 'OPERACIONES',
+                        'RECEPCION' => 'RECEPCION', 'RECEPCION_COMPRAS' => 'RECEPCION DE COMPRAS',
+                        'RECEPCION_MATERIAL' => 'RECEPCION DE MATERIAL', 'RESPONSABLE_SANITARIO' => 'RESPONSABLE SANITARIO',
+                        'SISTEMAS' => 'SISTEMAS', 'SITE' => 'SITE', 'VENTAS_GOB' => 'VENTAS GOB',
+                        'VENTAS_PRIV' => 'VENTAS PRIV', 'VIGILANCIA' => 'VIGILANCIA'
+                    ];
+                @endphp
+
+                @foreach($deps as $val => $label)
+                    <option value="{{ $val }}" {{ old('departamento_perteneciente', $equipo->departamento_perteneciente) == $val ? 'selected' : '' }}>
+                        {{ $label }}
+                    </option>
+                @endforeach
+            </select>
+
+            @error('departamento_perteneciente')
+                <span class="invalid-feedback" role="alert">
+                    <strong>El departamento es obligatorio.</strong>
+                </span>
+            @enderror
+        </div>
+
         <div class="form-group col-md-4">
             <label for="valor_inicial"><i class="fas fa-dollar-sign"></i> Valor Inicial</label>
             <input type="number" name="valor_inicial" id="valor_inicial" class="form-control "
