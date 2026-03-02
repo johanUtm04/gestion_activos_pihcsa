@@ -14,44 +14,65 @@
         <div class="card-body border-top bg-light">
             <form action="{{ route('equipos.index') }}" method="GET">
                 
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <label class="small font-weight-bold text-muted text-uppercase">Usuario</label>
-                        <select name="usuario_id" class="form-control form-control-sm shadow-sm">
-                            <option value="">-- Todos los usuarios --</option>
-                            @foreach($usuarios as $u)
-                                <option value="{{ $u->id }}" @selected(request('usuario_id') == $u->id)>{{ $u->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small font-weight-bold text-muted text-uppercase">Ubicación</label>
-                        <select name="ubicacion_id" class="form-control form-control-sm shadow-sm">
-                            <option value="">-- Todas las sedes --</option>
-                            @foreach($ubicaciones as $u)
-                                <option value="{{ $u->id }}" @selected(request('ubicacion_id') == $u->id)>{{ $u->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small font-weight-bold text-muted text-uppercase">Tipo Activo</label>
-                        <select name="tipo_activo_id" class="form-control form-control-sm shadow-sm">
-                            <option value="">-- Todos --</option>
-                            @foreach($tipos as $t)
-                                <option value="{{ $t->id }}" @selected(request('tipo_activo_id') == $t->id)>{{ $t->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small font-weight-bold text-muted text-uppercase">Marca Equipo</label>
-                        <select name="marca_id" class="form-control form-control-sm shadow-sm">
-                            <option value="">-- Todas las marcas --</option>
-                            @foreach($marcas as $m)
-                                <option value="{{ $m->id }}" @selected(request('marca_id') == $m->id)>{{ $m->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+        <div class="row mb-4">
+            <div class="col-md">
+                <label class="small font-weight-bold text-muted text-uppercase">Usuario</label>
+                <select name="usuario_id" class="form-control form-control-sm shadow-sm">
+                    <option value="">-- Todos --</option>
+                    @foreach($usuarios as $u)
+                        <option value="{{ $u->id }}" @selected(request('usuario_id') == $u->id)>{{ $u->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md">
+                <label class="small font-weight-bold text-muted text-uppercase">Ubicación</label>
+                <select name="ubicacion_id" class="form-control form-control-sm shadow-sm">
+                    <option value="">-- Todas --</option>
+                    @foreach($ubicaciones as $u)
+                        <option value="{{ $u->id }}" @selected(request('ubicacion_id') == $u->id)>{{ $u->nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md">
+                <label class="small font-weight-bold text-muted text-uppercase">Tipo Activo</label>
+                <select name="tipo_activo_id" class="form-control form-control-sm shadow-sm">
+                    <option value="">-- Todos --</option>
+                    @foreach($tipos as $t)
+                        <option value="{{ $t->id }}" @selected(request('tipo_activo_id') == $t->id)>{{ $t->nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <div class="col-md">
+                <label class="small font-weight-bold text-muted text-uppercase">Departamento</label>
+                <select name="departamento" class="form-control form-control-sm shadow-sm">
+                    <option value="">-- Todos --</option>
+                    @php
+                        $departamentos = [
+                            'ALMACEN', 'ASIST_PAGOS', 'COBRANZA', 'AUDITORIA', 'CALIDAD', 'COMPRAS', 
+                            'CONTABILIDAD', 'COSTOS', 'CREDITO', 'CULTURA_TALENTO', 'EMBARQUES', 
+                            'FACTURACION', 'JURIDICO', 'LOGISTICA', 'NOMINAS', 'OPERACIONES', 
+                            'RECEPCION', 'SISTEMAS', 'SITE', 'VENTAS_GOB', 'VENTAS_PRIV'
+                        ];
+                    @endphp
+                    @foreach($departamentos as $dep)
+                        <option value="{{ $dep }}" @selected(request('departamento') == $dep)>
+                            {{ str_replace('_', ' ', $dep) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md">
+                <label class="small font-weight-bold text-muted text-uppercase">Marca Equipo</label>
+                <select name="marca_id" class="form-control form-control-sm shadow-sm">
+                    <option value="">-- Todas --</option>
+                    @foreach($marcas as $m)
+                        <option value="{{ $m->id }}" @selected(request('marca_id') == $m->id)>{{ $m->nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">

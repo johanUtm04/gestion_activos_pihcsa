@@ -130,6 +130,7 @@ class Equipo extends Model
         ->when($filtros['usuario_id'] ?? null, fn($q, $id) => $q->where('usuario_id', $id))
         ->when($filtros['marca_id'] ?? null, fn($q, $id) => $q->where('marca_id', $id))
         ->when($filtros['tipo_activo_id'] ?? null, fn($q, $id) => $q->where('tipo_activo_id', $id))
+        ->when($filtros['departamento'] ?? null, fn($q, $dep) => $q->where('departamento_perteneciente', $dep))
 
         // Ram
         ->when($filtros['ram_capacidad'] ?? null, function ($q, $valor) {
