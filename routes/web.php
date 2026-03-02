@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/equipos/{equipo}/edit', [EquipoController::class, 'edit'])->name('equipos.edit');
     Route::put('/equipos/{equipo}', [EquipoController::class, 'update'])->name('equipos.update');
     Route::delete('/equipos/{equipo}', [EquipoController::class, 'destroy'])->name('equipos.destroy');
-    Route::get('/equipos/{uuid}/detalles', [EquipoController::class, 'show'])->name('equipos.show');
+    Route::get('/equipos/{equipo}/detalles', [EquipoController::class, 'show'])->name('equipos.show');
 
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');

@@ -252,7 +252,7 @@
                                             </a>
                                         @endcan
 
-                                        <a href="{{ route('equipos.show', ['uuid' => $equipo->id]) }}" class="btn btn-sm btn-default text-info" title="Ver Ficha">
+                                        <a href="{{ route('equipos.show', ['equipo' => $equipo->id]) }}" class="btn btn-sm btn-default text-info" title="Ver Ficha">
                                             <i class="fas fa-eye"></i>
                                         </a>
 

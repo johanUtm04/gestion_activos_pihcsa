@@ -156,7 +156,9 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="label-header">Departamento / Ubicación</div>
-                            <div class="value-text"><i class="fas fa-map-marker-alt mr-1"></i> {{ $equipo->ubicacion->nombre ?? 'N/A' }}</div>
+                            <span class="font-weight-bold text-dark"> {{ $equipo->departamento_perteneciente ?? 'N/A' }}</span>
+                            <span class="text-muted">| {{ $equipo->ubicacion->nombre ?? 'N/A' }}</span>
+                                
                         </div>
                         <div class="col-sm-4">
                             <div class="label-header">Sistema Operativo</div>

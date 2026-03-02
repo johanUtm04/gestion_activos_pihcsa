@@ -125,7 +125,8 @@ class EquipoController extends Controller
             'procesadores'
         ]);
 
-        return view('equipos.detalles', compact('equipo'));
+        $catalogos = $this->getFilterData();
+        return view('equipos.detalles', compact('equipo'))->with($catalogos);
     }
 
     public function destroy(Request $request, Equipo $equipo)
