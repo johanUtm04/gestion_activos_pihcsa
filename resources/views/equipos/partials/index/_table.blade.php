@@ -159,6 +159,7 @@
                             data-modelo="{{ $equipo->marca?->nombre ?? 'Genérica' }}"
                             data-tipo="{{ $equipo->tipoActivo?->nombre ?? 'Generico' }}"
                             data-serial="{{ $equipo->serial }}"
+                            data-departamento=" Dpto: {{ $equipo->departamento_perteneciente ?? 'Sin Depeartamento' }}"
                             data-so="{{ $equipo->sistema_operativo }}"
                             data-usuario="{{ $equipo->usuario->name ?? 'Sin asignar' }}"
                             data-email="{{ $equipo->usuario->email ?? '-' }}"

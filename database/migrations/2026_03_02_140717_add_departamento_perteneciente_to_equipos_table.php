@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('equipos', function (Blueprint $table) {
-            $table->softDeletes(); 
+            //
+            $table->string('departamento_perteneciente')->nullable()->after('ubicacion_id');
         });
- 
     }
 
     /**
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('equipos', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+            //
         });
     }
 };

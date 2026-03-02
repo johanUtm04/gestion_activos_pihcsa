@@ -42,6 +42,7 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
                 <div>
                     <div class="font-weight-bold text-dark" style="font-size: 0.65rem; text-uppercase">${formatInactivo(d.usuario, d.usuario_inactivo)}</div>
                     <div class="small text-muted" style="font-size: 0.65rem; text-uppercase">${d.email}</div>
+                    <div class="small text-muted" style="font-size: 0.65rem; ">${d.departamento}</div>
                 </div>
             </div>
 

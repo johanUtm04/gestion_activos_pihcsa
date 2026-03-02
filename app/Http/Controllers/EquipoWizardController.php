@@ -68,7 +68,7 @@ EquipoWizardController extends Controller
 
     /**
      * 
-     * PASO 2: Ubicacion |||
+     * PASO 2: Ubicacion
      * 
      */
     public function ubicacionForm($uuid)
@@ -96,6 +96,7 @@ EquipoWizardController extends Controller
     {
         $request->validate([
             'ubicacion_id' => 'required|exists:ubicaciones,id',
+            'departamento_perteneciente' => 'nullable'
         ]);
 
         $wizard = session('wizard_equipo');
@@ -103,9 +104,11 @@ EquipoWizardController extends Controller
         // Agregamos el array de ubicacion a la sesion
         session()->put('wizard_equipo.ubicacion', [
             'ubicacion_id' => $request->ubicacion_id,
+            'departamento_perteneciente' => $request->departamento_perteneciente,
         ]);
 
         $uuid = $wizard['uuid'];
+
         return redirect()->route('equipos.wizard.monitor', $uuid);
     }
 
@@ -302,11 +305,12 @@ EquipoWizardController extends Controller
             'marca_id'           => $wizard['equipo']['marca_id'], 
             'tipo_activo_id'     => $wizard['equipo']['tipo_activo_id'],
             'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
+            'departamento_perteneciente'=> $wizard['ubicacion']['departamento_perteneciente'] ?? null,
         ]);
 
         
         //Asiganr la mochila, 
-        $equipo->datos_wizard = $wizard;
+        // $equipo->datos_wizard = $wizard;
         $equipo->save(); //Se dispara el ID y el observer
         
         //Recorre los componentes del wizard y crea uno o varios registros para el equipo, sin activar eventos de Laravel.
