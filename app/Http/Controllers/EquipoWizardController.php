@@ -16,7 +16,8 @@ use Psy\Readline\Hoa\Console;
 |--------------------------------------------------------------------------
 */
 
-class EquipoWizardController extends Controller
+class 
+EquipoWizardController extends Controller
 {
     /**
      * Metodo para cargar vista de creacion de equipo Base

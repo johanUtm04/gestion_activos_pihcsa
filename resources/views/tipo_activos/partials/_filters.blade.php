@@ -1,18 +1,3 @@
-<div class="card card-outline card-danger shadow-sm mb-4">
-    <div class="search-header border-0 shadow-none" onclick="togglePanel()" 
-         style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: transparent;">
-        
-        <h3 class="card-title text-danger font-weight-bold mb-0">
-            <i class="fas fa-search mr-2"></i> Panel de Búsqueda de Tipos
-        </h3>
-        
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool text-danger">
-                <i class="fas fa-plus" id="toggle-icon"></i>
-            </button>
-        </div>
-    </div>
-
     <div class="search-body" id="searchBody" style="max-height: 0; overflow: hidden; transition: all 0.4s ease-in-out; opacity: 0;">
         <div class="card-body border-top">
             <form action="{{ route('tipo_activos.index') }}" method="GET">
@@ -44,4 +29,3 @@
             </form>
         </div>
     </div>
-</div>
