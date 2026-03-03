@@ -53,18 +53,21 @@
 
                 @php
                     $deps = [
-                        'JURIDICO' => 'JURIDICO',
-                        'SISTEMAS' => 'SISTEMAS',
-                        'EMBARQUES' => 'EMBARQUES',
-                        'COMPRAS' => 'COMPRAS',
-                        'VENTAS' => 'VENTAS',
-                        'CREDITO' => 'CREDITO',
-                        'COBRANZA' => 'COBRANZA',
-                        'ADMINISTRACION' => 'ADMINISTRACION',
+                        'ADMINISTRACION'    => 'ADMINISTRACION',
+                        'ALMACEN'           => 'ALMACEN',
+                        'CALIDAD'           => 'CALIDAD',
+                        'COBRANZA'          => 'COBRANZA',
+                        'COMPRAS'           => 'COMPRAS',
+                        'CONTABILIDAD'      => 'CONTABILIDAD',
+                        'CREDITO'           => 'CREDITO',
                         'CULTURA Y TALENTO' => 'CULTURA Y TALENTO',
-                        'CALIDAD' => 'CALIDAD',
-                        'ALMACEN' => 'ALMACEN',
-                        'CONTABILIDAD' => 'CONTABILIDAD'
+                        'DIRECCION'         => 'DIRECCION',       
+                        'EMBARQUES'         => 'EMBARQUES',
+                        'INVENTARIOS'       => 'INVENTARIOS',     
+                        'JURIDICO'          => 'JURIDICO',
+                        'LOGISTICA'         => 'LOGISTICA',      
+                        'SISTEMAS'          => 'SISTEMAS',
+                        'VENTAS'            => 'VENTAS',
                     ];
                 @endphp
 

@@ -139,25 +139,27 @@
                         </label>
 
                         <select name="departamento_perteneciente" id="departamento_perteneciente"
-                        class="form-control select2" required>
+                                class="form-control select2" required>
 
-                            <option value="" disabled {{ old('departamento') == '' ? 'selected' : '' }}>
+                            <option value="" disabled {{ !old('departamento_perteneciente', $equipo['departamento_perteneciente'] ?? '') ? 'selected' : '' }}>
                                 -- Seleccione --
                             </option>
-                            
-                            <option value="JURIDICO" {{ old('departamento') == 'JURIDICO' ? 'selected' : '' }}>JURIDICO</option>
-                            <option value="SISTEMAS" {{ old('departamento') == 'SISTEMAS' ? 'selected' : '' }}>SISTEMAS</option>
-                            <option value="EMBARQUES" {{ old('departamento') == 'EMBARQUES' ? 'selected' : '' }}>EMBARQUES</option>
-                            <option value="COMPRAS" {{ old('departamento') == 'COMPRAS' ? 'selected' : '' }}>COMPRAS</option>
-                            <option value="VENTAS" {{ old('departamento') == 'VENTAS' ? 'selected' : '' }}>VENTAS</option>
-                            <option value="CREDITO" {{ old('departamento') == 'CREDITO' ? 'selected' : '' }}>CREDITO</option>
-                            <option value="COBRANZA" {{ old('departamento') == 'COBRANZA' ? 'selected' : '' }}>COBRANZA</option>
-                            <option value="ADMINISTRACION" {{ old('departamento') == 'ADMINISTRACION' ? 'selected' : '' }}>ADMINISTRACION</option>
-                            <option value="CULTURA Y TALENTO" {{ old('departamento') == 'CULTURA Y TALENTO' ? 'selected' : '' }}>CULTURA Y TALENTO</option>
-                            <option value="CALIDAD" {{ old('departamento') == 'CALIDAD' ? 'selected' : '' }}>CALIDAD</option>
-                            <option value="ALMACEN" {{ old('departamento') == 'ALMACEN' ? 'selected' : '' }}>ALMACEN</option>
-                            <option value="CONTABILIDAD" {{ old('departamento') == 'CONTABILIDAD' ? 'selected' : '' }}>CONTABILIDAD</option>
 
+                            @php
+                                $departamentos = [
+                                    'ADMINISTRACION', 'ALMACEN', 'CALIDAD', 'COBRANZA', 'COMPRAS', 
+                                    'CONTABILIDAD', 'CREDITO', 'CULTURA Y TALENTO', 'DIRECCION', 
+                                    'EMBARQUES', 'INVENTARIOS', 'JURIDICO', 'LOGISTICA', 
+                                    'SISTEMAS', 'VENTAS'
+                                ];
+                            @endphp
+
+                            @foreach($departamentos as $dep)
+                                <option value="{{ $dep }}" 
+                                    {{ old('departamento_perteneciente', $equipo['departamento_perteneciente'] ?? '') == $dep ? 'selected' : '' }}>
+                                    {{ $dep }}
+                                </option>
+                            @endforeach
                         </select>
 
                         <small class="form-text text-muted">
