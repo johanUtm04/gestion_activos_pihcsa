@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use app\Http\Requests\StoreEquipoStep1;
 use App\Models\Equipo;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -26,9 +27,10 @@ EquipoWizardController extends Controller
      */
     public function create()
     {
-        $wizard = session('wizard_equipo');
-        $usuarios = User::select('id', 'name')->get();
-        $equipo = data_get($wizard, 'equipo', []);
+        // Usamos el helper de sesión de forma más limpia
+        $equipo = session('wizard_equipo.equipo', []);
+        $usuarios = User::select('id', 'name')->orderBy('name')->get();
+
         return view('equipos.wizard.create', compact('equipo', 'usuarios'));
     }
 
@@ -37,25 +39,14 @@ EquipoWizardController extends Controller
      * PROCESO PASO 1: Validaci n y creaci n del UUID.
      * Aqu  nace la "Persistencia Temporal" en la sesi n.
      */
-    public function store(Request $request)
+    public function store(StoreEquipoStep1 $request)
     {
-        $validated = $request->validate([
-            'marca_id' => 'required|integer|exists:marcas,id',
-            'modelo'             => 'required|string|max:100',
-            'tipo_activo_id' => 'required|integer|exists:tipo_activos,id',
-            'serial' => 'nullable|string|max:255',
-            'sistema_operativo' => 'required|string|max:35', 
-            'usuario_id' => 'required|integer|exists:users,id',
-            'valor_inicial' => 'nullable|numeric|min:0|max:99999999.99',
-            'fecha_adquisicion' => 'required|date',
-            'vida_util_estimada' => 'required|string|max:255',
-        ]);
+        $data = $request->validated();
+        if (empty($data['serial'])) {
+            $data['serial'] = $this->generarSerialTemporal();
+        }
 
-        $data = $validated;
-
-        // Logica de campos de respaldo (Valores por defecto, en caso de que el usuario no los ingrese)
-        $data['serial'] = $data['serial'] ?? 'INT-' . date('Y') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
-        $data['valor_inicial'] = $data['valor_inicial'] ?? 0;
+    $data['valor_inicial'] ??= 0;
 
         // Generacion del identificador unico para el recorrido de la URL
         $uuid = Str::uuid()->toString();
@@ -427,6 +418,18 @@ private function crearComponente($equipo, $tipo, $data) {
 
         return collect($resumen)->map(fn($v, $k) => "**$k**: $v")->implode(' | ');
     }
+
+    /**
+     * Genera un serial por defecto siguiendo el patrón INT-AÑO-CORRELATIVO
+     */
+    private function generarSerialTemporal(): string
+    {
+        $anio = date('Y');
+        $random = mt_rand(1, 999);
+        
+        return sprintf('INT-%s-%03d', $anio, $random);
+    }
+
 
 }
 
