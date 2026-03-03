@@ -53,18 +53,18 @@
 
                 @php
                     $deps = [
-                        'ALMACEN' => 'ALMACEN', 'ASIST_PAGOS' => 'ASIST. PAGOS', 'COBRANZA' => 'COBRANZA',
-                        'AUDITORIA' => 'AUDITORIA', 'AUXILIAR_ADMINISTRATIVO' => 'AUXILIAR ADMINISTRATIVO',
-                        'AUXILIAR_LOGISTICA' => 'AUXILIAR LOGISTICA', 'CALIDAD' => 'CALIDAD',
-                        'COBRANZA_GOB' => 'COBRANZA GOB', 'COMPRAS' => 'COMPRAS', 'CONTABILIDAD' => 'CONTABILIDAD',
-                        'COPIADORA' => 'COPIADORA', 'COSTOS' => 'COSTOS', 'CREDITO' => 'CREDITO',
-                        'CULTURA_TALENTO' => 'CULTURA Y TALENTO', 'EMBARQUES' => 'EMBARQUES',
-                        'ETIQUETAS' => 'ETIQUETAS', 'FACTURACION' => 'FACTURACION', 'JURIDICO' => 'JURIDICO',
-                        'LOGISTICA' => 'LOGISTICA', 'NOMINAS' => 'NOMINAS', 'OPERACIONES' => 'OPERACIONES',
-                        'RECEPCION' => 'RECEPCION', 'RECEPCION_COMPRAS' => 'RECEPCION DE COMPRAS',
-                        'RECEPCION_MATERIAL' => 'RECEPCION DE MATERIAL', 'RESPONSABLE_SANITARIO' => 'RESPONSABLE SANITARIO',
-                        'SISTEMAS' => 'SISTEMAS', 'SITE' => 'SITE', 'VENTAS_GOB' => 'VENTAS GOB',
-                        'VENTAS_PRIV' => 'VENTAS PRIV', 'VIGILANCIA' => 'VIGILANCIA'
+                        'JURIDICO' => 'JURIDICO',
+                        'SISTEMAS' => 'SISTEMAS',
+                        'EMBARQUES' => 'EMBARQUES',
+                        'COMPRAS' => 'COMPRAS',
+                        'VENTAS' => 'VENTAS',
+                        'CREDITO' => 'CREDITO',
+                        'COBRANZA' => 'COBRANZA',
+                        'ADMINISTRACION' => 'ADMINISTRACION',
+                        'CULTURA Y TALENTO' => 'CULTURA Y TALENTO',
+                        'CALIDAD' => 'CALIDAD',
+                        'ALMACEN' => 'ALMACEN',
+                        'CONTABILIDAD' => 'CONTABILIDAD'
                     ];
                 @endphp
 
