@@ -49,15 +49,23 @@
                     <option value="">-- Todos --</option>
                     @php
                         $departamentos = [
-                            'ALMACEN', 'ASIST_PAGOS', 'COBRANZA', 'AUDITORIA', 'CALIDAD', 'COMPRAS', 
-                            'CONTABILIDAD', 'COSTOS', 'CREDITO', 'CULTURA_TALENTO', 'EMBARQUES', 
-                            'FACTURACION', 'JURIDICO', 'LOGISTICA', 'NOMINAS', 'OPERACIONES', 
-                            'RECEPCION', 'SISTEMAS', 'SITE', 'VENTAS_GOB', 'VENTAS_PRIV'
+                            'JURIDICO',
+                            'SISTEMAS',
+                            'EMBARQUES',
+                            'COMPRAS',
+                            'VENTAS',
+                            'CREDITO',
+                            'COBRANZA',
+                            'ADMINISTRACION',
+                            'CULTURA Y TALENTO',
+                            'CALIDAD',
+                            'ALMACEN',
+                            'CONTABILIDAD'
                         ];
                     @endphp
                     @foreach($departamentos as $dep)
                         <option value="{{ $dep }}" @selected(request('departamento') == $dep)>
-                            {{ str_replace('_', ' ', $dep) }}
+                            {{ $dep }}
                         </option>
                     @endforeach
                 </select>
