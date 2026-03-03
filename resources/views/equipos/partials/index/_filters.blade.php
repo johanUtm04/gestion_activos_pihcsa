@@ -49,18 +49,21 @@
                     <option value="">-- Todos --</option>
                     @php
                         $departamentos = [
-                            'JURIDICO',
-                            'SISTEMAS',
-                            'EMBARQUES',
-                            'COMPRAS',
-                            'VENTAS',
-                            'CREDITO',
-                            'COBRANZA',
                             'ADMINISTRACION',
-                            'CULTURA Y TALENTO',
-                            'CALIDAD',
                             'ALMACEN',
-                            'CONTABILIDAD'
+                            'CALIDAD',
+                            'COBRANZA',
+                            'COMPRAS',
+                            'CONTABILIDAD',
+                            'CREDITO',
+                            'CULTURA Y TALENTO',
+                            'DIRECCION',      
+                            'EMBARQUES',       
+                            'INVENTARIOS',     
+                            'JURIDICO',
+                            'LOGISTICA',       
+                            'SISTEMAS',
+                            'VENTAS'
                         ];
                     @endphp
                     @foreach($departamentos as $dep)
