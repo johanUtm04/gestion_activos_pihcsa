@@ -141,7 +141,7 @@
 
                         <div class="form-group col-md-6">
                             <label>Modelo</label>
-                            <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Ej. Latitude 3410 / ThinkPad X1">
+                            <input type="text" id="modelo" name="modelo" class="form-control" placeholder="Ej. Latitude 3410 / ThinkPad X1" required>
                         </div>
                     </div>
 
@@ -181,7 +181,7 @@
 
                         <div class="form-group col-md-6">
                             <label>Versión</label>
-                            <input type="text" id="so_version" class="form-control" placeholder="Ej: 11 Pro / Ubuntu 22.04" oninput="combinarSO()">
+                            <input type="text" id="so_version" class="form-control" placeholder="Ej: 11 Pro / Ubuntu 22.04" oninput="combinarSO()" required>
                         </div>
 
                         <input type="hidden" name="sistema_operativo" id="so_final" value="{{ old('sistema_operativo', $equipo->sistema_operativo ?? '') }}">
@@ -240,24 +240,24 @@
                     </div>
 
                     <!-- Input con select asociado -->
-                    <div class="form-group">
-                        <label>Vida útil estimada </label>
-                            <div class="input-group">
-                            <select class="form-control" name="vida_util_unidad" required>
-                                <option value="" disabled selected>Seleccione unidad</option>
-                                <option value="años">Años</option>
-                                <option value="meses">Meses</option>
-                            </select>
-                        </div>
+                <div class="form-group">
+                    <label><i class="fas fa-hourglass-half"></i> Vida útil estimada (Años)</label>
+                    <div class="input-group">
                         <input 
-                        type="number"
-                        name="vida_util_estimada" 
-                        class="form-control"
-                        placeholder="Cantidad"
-                        value="{{ old('vida_util_estimada', $equipo['vida_util_estimada'] ?? '') }}" 
-                         disabled
-                        required>
+                            type="number" 
+                            name="vida_util_estimada" 
+                            class="form-control" 
+                            placeholder="Ej. 5" 
+                            min="1" 
+                            max="20"
+                            value="{{ old('vida_util_estimada', $equipo['vida_util_estimada'] ?? '') }}" 
+                            required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Años</span>
+                        </div>
                     </div>
+                    <small class="text-muted">Tiempo estimado de depreciación/uso.</small>
+                </div>
                 </fieldset>
             </div>
 

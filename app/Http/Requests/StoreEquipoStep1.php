@@ -23,12 +23,12 @@ class StoreEquipoStep1 extends FormRequest
             'marca_id'           => 'required|integer|exists:marcas,id',
             'modelo'             => 'required|string|max:100',
             'tipo_activo_id'     => 'required|integer|exists:tipo_activos,id',
-            'serial'             => 'nullable|string|max:255|unique:equipos,serial', // Blind spot: ¡Evita duplicados en DB!
+            'serial'             => 'nullable|string|max:255|unique:equipos,serial', 
             'sistema_operativo'  => 'required|string|max:35', 
             'usuario_id'         => 'required|integer|exists:users,id',
             'valor_inicial'      => 'nullable|numeric|min:0|max:99999999.99',
             'fecha_adquisicion'  => 'required|date',
-            'vida_util_estimada' => 'required|integer|min:1|max:50', // Cambiado a integer por lo que discutimos
+            'vida_util_estimada' => 'required|integer|min:1|max:50',
         ];
     }
 
