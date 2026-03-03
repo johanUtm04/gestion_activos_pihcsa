@@ -112,34 +112,29 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label for="vida_util_estimada"><i class="fas fa-hourglass-half"></i> Vida Util Estimada</label>
+            <label for="vida_util_input"><i class="fas fa-hourglass-half"></i> Vida Útil Estimada</label>
             <div class="input-group">
-                <select class="form-control " name="vida_util_unidad" id="vida_util_unidad" data-label=" la vida util estimada">
-                    @php
-                        $unidadActual = old('vida_util_unidad', $equipo->vida_util_unidad ?? '');
-                    @endphp
-                    <option value="" disabled {{ $unidadActual == '' ? 'selected' : '' }}>Unidad</option>
-                    <option value="años" {{ $unidadActual == 'años' ? 'selected' : '' }}>Años</option>
-                    <option value="meses" {{ $unidadActual == 'meses' ? 'selected' : '' }}>Meses</option>
-                </select>
-
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-light">Años</span>
+                </div>
+                
                 <input 
                     type="number" 
                     name="vida_util_estimada" 
                     id="vida_util_input"
                     class="form-control form-componentes" 
-                    style="width: 50%;"
-                    placeholder="Cantidad"
+                    placeholder="Ej. 5"
                     min="1"
+                    max="100"
                     value="{{ old('vida_util_estimada', $equipo->vida_util_estimada) }}" 
-                    {{ $unidadActual ? '' : 'disabled' }}
                     data-current="{{ $equipo->vida_util_estimada }}"
-                        data-label=" la vida util estimada"
-                            data-placeholder="Seleccione la fecha"
-                                data-motivo-input="#motivo_cambio_vidaEstimada">
-                    <input type="hidden" name="" id="motivo_cambio_vidaEstimada">
-
+                    data-label="la vida útil estimada"
+                    data-motivo-input="#motivo_cambio_vidaEstimada"
+                    required>
+                
+                <input type="hidden" name="motivo_cambio_vida_util" id="motivo_cambio_vidaEstimada">
             </div>
+            <small class="text-muted">Ingrese la cantidad de años para depreciación.</small>
         </div>
     </div>
 </fieldset>

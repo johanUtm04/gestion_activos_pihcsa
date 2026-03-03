@@ -298,7 +298,7 @@ class EquipoWizardController extends Controller
 
         //3.- Tomamos la sesion en esa variable
         $wizard = session('wizard_equipo');
-        
+
         if (!$wizard || $wizard['uuid'] !== $uuid) {
             abort(403, 'Sesión expirada.');
         }
@@ -438,6 +438,7 @@ private function crearComponente($equipo, $tipo, $data) {
 
     /**
      * Genera un serial por defecto siguiendo el patrón INT-AÑO-CORRELATIVO
+     * Si lees esto suerte mi may xd, Johan Estuvo aqui 3 de marzo de 2026
      */
     private function generarSerialTemporal(): string
     {
