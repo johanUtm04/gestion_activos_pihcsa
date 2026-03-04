@@ -28,7 +28,7 @@ function confirmarAgregar(tipo, nombreLegible) {
             });
         }
     });
-}
+} 
 
 function agregarComponente(tipo) {
     const container = document.getElementById(`${tipo}-container`);
@@ -116,17 +116,22 @@ $(document).on('change', '.switch-estado-componente', function() {
  * Protege los componentes nuevos para que no nazcan inactivos.
  */
 function bloquearSwitchNuevo(contenedor) {
-
     const esNuevo = contenedor.getAttribute('data-nuevo') === 'true';
-    
-
     const sw = contenedor.querySelector('.switch-estado-componente');
 
     if (esNuevo && sw) {
-        sw.checked = true;
-        // sw.disabled = true;
-        sw.parentElement.style.cursor = 'not-allowed';
-        sw.parentElement.title = 'Un componente nuevo debe estar activo al registrarse';
+        sw.checked = true; // Forzamos que esté activo
+        sw.disabled = true; // <-- ESTO es lo que impide que se "desactive"
+        
+        // El estilo visual para que el usuario entienda por qué no puede moverlo
+        const label = sw.parentElement;
+        if (label) {
+            label.style.cursor = 'not-allowed';
+            label.title = 'Un componente nuevo debe estar activo al registrarse';
+            
+            // Si usas clases de CSS (como Bootstrap o Tailwind), podrías añadir:
+            // label.classList.add('opacity-50');
+        }
     }
 }
 
