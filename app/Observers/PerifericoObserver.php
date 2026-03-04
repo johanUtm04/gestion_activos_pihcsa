@@ -17,15 +17,24 @@ class PerifericoObserver
         'PERIFERICO' => 'componente-extra',
     ];
 
+    // Cambia el nombre de la función de created a creating
+    public function creating(Periferico $periferico): void
+    {
+        $periferico->is_active = true;
+        $periferico->motivo_inactivo = null;
+    }
+
     public function created(Periferico $periferico): void
     {
-        // DD($periferico);
-        // $periferico->is_active = true;
-        // $periferico->motivo_inactivo = null;
+        // dd($periferico);
+
+        $periferico->is_active = true;
+        $periferico->motivo_inactivo = null;
         $periferico->saveQuietly();
 
         $equipo = $periferico->equipos; 
         $esActivo = true; 
+
 
         $tipoRegistro = 'componente-extra (Periferico)';
         $mensaje = "SE AGREGÓ PERIFÉRICO: " . $periferico->tipo . " " . $periferico->marca;

@@ -21,6 +21,8 @@ class MonitorObserver
     public function created(Monitor $monitor): void
     {
 
+        // dd($monitor);
+    
         $monitor->is_active = true;
         $monitor->motivo_inactivo = null;
         $monitor->saveQuietly();

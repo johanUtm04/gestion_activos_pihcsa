@@ -19,6 +19,8 @@ class DiscoDuroObserver
 
     public function created(DiscoDuro $discoDuro): void
     {
+        // dd($discoDuro);
+
         $discoDuro->is_active = true;
         $discoDuro->motivo_inactivo = null;
         $discoDuro->saveQuietly();

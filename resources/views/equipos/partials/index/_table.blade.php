@@ -256,7 +256,7 @@
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        @can('eliminar-equipo')
+                                        @can('inactivar-equipo')
                                         <div class="d-inline"> {{-- Cambia el div por d-inline para que no rompa la fila --}}
                                             <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" class="d-inline" title="Inactivar">
                                                 @csrf
