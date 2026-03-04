@@ -224,7 +224,7 @@
 
                                 @php
                                     $interfaces = [
-                                        ''Integrado',HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1',
+                                        'Integrado','HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1',
                                         'VGA',
                                         'DisplayPort (DP)',
                                         'Mini DisplayPort',
