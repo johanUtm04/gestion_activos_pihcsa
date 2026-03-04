@@ -18,11 +18,14 @@ class MonitorObserver
         'MONITOR' => 'componente-extra',
     ];
 
+    public function creating(Monitor $monitor): void
+    {
+        $monitor->is_active = true;
+        $monitor->motivo_inactivo = null;
+    }
+    
     public function created(Monitor $monitor): void
     {
-
-        // dd($monitor);
-    
         $monitor->is_active = true;
         $monitor->motivo_inactivo = null;
         $monitor->saveQuietly();

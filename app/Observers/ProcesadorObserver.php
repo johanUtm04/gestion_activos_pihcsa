@@ -16,6 +16,13 @@ class ProcesadorObserver
         'DELETED' => 'Eliminacion',
         'PROCESADOR' => 'componente-extra',
     ];
+
+    public function creating(Procesador $procesador): void
+    {
+        $procesador->is_active = true;
+        $procesador->motivo_inactivo = null;
+    }
+
     public function created(Procesador $procesador): void
     {
 

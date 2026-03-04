@@ -17,6 +17,13 @@ class DiscoDuroObserver
         'DISCODURO' => 'componente-extra',
     ];
 
+    public function creating(DiscoDuro $discoDuro): void
+    {
+        $discoDuro->is_active = true;
+        $discoDuro->motivo_inactivo = null;
+    }
+
+
     public function created(DiscoDuro $discoDuro): void
     {
         // dd($discoDuro);

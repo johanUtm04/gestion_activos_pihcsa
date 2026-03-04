@@ -17,6 +17,12 @@ class RamObserver
         'RAM'     => 'componente-extra',
     ];
 
+    public function creating(Ram $ram): void
+    {
+        $ram->is_active = true;
+        $ram->motivo_inactivo = null;
+    }
+
     public function created(Ram $ram): void
     {
         $ram->is_active = true;
