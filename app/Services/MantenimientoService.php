@@ -34,7 +34,7 @@ class MantenimientoService{
                "<strong>Evento:</strong> {$data['tipo_evento_final']}<br>" .
                "<strong>Técnico:</strong> {$usuario->name}<br>" .
                "<strong>Fecha:</strong> {$data['fecha_evento']}<br>" .
-               "<strong>Fecha:</strong> {$data['contexto']}<br>" .
+               "<strong>Contexto del Evento:</strong> {$data['contexto']}<br>" .
                "<strong>Costo:</strong> $" . number_format($data['costo'] ?? 0, 2) .
                "</div>";
     }
