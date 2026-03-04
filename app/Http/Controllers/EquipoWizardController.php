@@ -448,6 +448,23 @@ private function crearComponente($equipo, $tipo, $data) {
         return sprintf('INT-%s-%03d', $anio, $random);
     }
 
+public function validarSerial(Request $request)
+{
+    $serial = strtoupper(trim($request->serial));
+    
+    if (empty($serial)) {
+        return response()->json(['disponible' => true]);
+    }
+
+    $existe = \App\Models\Equipo::where('serial', $serial)
+                ->where('id', '!=', $request->equipo_id) // Por si es edición
+                ->exists();
+
+    return response()->json([
+        'disponible' => !$existe,
+        'mensaje' => $existe ? 'Este serial ya está registrado en PIHCSA' : 'Serial disponible'
+    ]);
+}
 
 }
 

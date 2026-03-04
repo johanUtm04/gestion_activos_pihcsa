@@ -159,14 +159,12 @@
                     
                     <div class="form-group">
                         <label>Serial</label>
-                        <input type="text" name="serial" class="form-control"
-                               placeholder="Número de serie"
-                               value="{{ old('serial', $equipo['serial'] ?? '') }}">
-                        <small class="form-text text-muted">
-                            Identificador único del activo
-                        </small>
+                        <input type="text" name="serial" id="serial" class="form-control" 
+                            placeholder="Número de serie"
+                            value="{{ old('serial', $equipo['serial'] ?? '') }}"
+                            oninput="this.value = this.value.toUpperCase()"> {{-- Convierte a mayúsculas mientras escribe --}}
+                        <small id="serial-feedback" style="display:none; font-weight:bold;"></small>
                     </div>
-
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>SO</label>
@@ -266,7 +264,7 @@
 
     {{-- FOOTER --}}
     <div class="card-footer text-right">
-        <button type="submit" class="btn btn-success btn-lg">
+        <button type="submit" id="btn-continuar" class="btn btn-success btn-lg">
             <i class="fas fa-arrow-right"></i> Continuar
         </button>
         
@@ -339,7 +337,52 @@ function actualizarSO() {
     }
 }
 
+
+$(document).ready(function() {
+    $('#serial').on('blur', function() {
+        let serial = $(this).val().trim();
+        let input = $(this);
+        let feedback = $('#serial-feedback');
+        let btn = $('#btn-continuar');
+
+        // Si está vacío, es válido (porque el sistema genera uno temporal)
+        if (serial.length === 0) {
+            input.removeClass('is-invalid is-valid');
+            feedback.hide();
+            btn.prop('disabled', false);
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('equipos.validar_serial') }}",
+            method: "GET",
+            data: { serial: serial },
+            beforeSend: function() {
+                feedback.text('🔍 Verificando...').addClass('text-muted').show();
+            },
+            success: function(response) {
+                input.removeClass('is-invalid is-valid');
+                feedback.removeClass('text-danger text-success text-muted');
+
+                if (response.disponible) {
+                    input.addClass('is-valid');
+                    feedback.text('✅ ' + response.mensaje).addClass('text-success');
+                    btn.prop('disabled', false);
+                } else {
+                    input.addClass('is-invalid');
+                    feedback.text('❌ ' + response.mensaje).addClass('text-danger');
+                    btn.prop('disabled', true); 
+                }
+            },
+            error: function() {
+                feedback.text('⚠️ Error al conectar con el servidor').addClass('text-warning');
+            }
+        });
+    });
+});
+
 </script>
+
 
 
 @stop

@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');
-    
+    Route::get('/validar-serial-activo', [EquipoWizardController::class, 'validarSerial'])->name('equipos.validar_serial');
     // El UUID vincula los componentes al equipo en creación
     Route::prefix('equipos/{uuid}')->group(function () {
         Route::get('/ubicacion', [EquipoWizardController::class, 'ubicacionForm'])->name('equipos.wizard.ubicacion');

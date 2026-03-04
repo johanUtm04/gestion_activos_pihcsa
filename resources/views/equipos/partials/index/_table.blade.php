@@ -145,8 +145,8 @@
                                 @endif
                                 @if(request('filter') !== 'inactivos')
                                     <th class="text-center">Acciones</th>
+                                    <th class="text-center">MANTENIMIENTO ANUAL</th>
                                 @endif
-                                <th class="text-center">MANTENIMIENTO ANUAL</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -23,13 +23,16 @@ class StoreEquipoStep1 extends FormRequest
             'marca_id'           => 'required|integer|exists:marcas,id',
             'modelo'             => 'required|string|max:100',
             'tipo_activo_id'     => 'required|integer|exists:tipo_activos,id',
-            'serial'             => 'nullable|string|max:255|unique:equipos,serial', 
+            'serial'             => 'required|string|max:255|unique:equipos,serial',
             'sistema_operativo'  => 'required|string|max:35', 
             'usuario_id'         => 'required|integer|exists:users,id',
             'valor_inicial'      => 'nullable|numeric|min:0|max:99999999.99',
             'fecha_adquisicion'  => 'required|date',
             'vida_util_estimada' => 'required|integer|min:1|max:50',
         ];
+        [
+        'serial.unique' => '¡Error! Este número de serial ya está registrado en el sistema.',
+    ];
     }
 
     /**
@@ -38,7 +41,7 @@ class StoreEquipoStep1 extends FormRequest
     public function messages(): array
     {
         return [
-            'serial.unique' => 'Este número de serie ya está registrado en el sistema.',
+            'serial.unique' => '¡Error! Este número de serial ya está registrado en el sistema.',
             'vida_util_estimada.integer' => 'La vida útil debe ser un número de años.',
         ];
     }
