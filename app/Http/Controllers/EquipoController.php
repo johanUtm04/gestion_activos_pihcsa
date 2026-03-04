@@ -172,10 +172,19 @@ class EquipoController extends Controller
 
             $motivoActual = $item['motivo_inactivo'] ?? 'Sin motivo';
 
-            if (!$data['is_active'] && strpos($motivoActual, '|') === false) {
-                $data['motivo_inactivo'] = $motivoActual . ' | ' . date('d/m/Y');
+            if (!$data['is_active']) {
+                // 1. Limpiamos el motivo de posibles ":" o espacios extras al final
+                $motivoLimpio = rtrim(trim($motivoActual), ':');
+
+                // 2. Solo concatenamos la fecha si NO existe ya una fecha (buscando el '|')
+                if (strpos($motivoLimpio, '|') === false) {
+                    $data['motivo_inactivo'] = $motivoLimpio . ' | ' . date('d/m/Y');
+                } else {
+                    $data['motivo_inactivo'] = $motivoLimpio;
+                }
             } else {
-                $data['motivo_inactivo'] = $data['is_active'] ? null : $motivoActual;
+                // Si se activa, borramos el motivo
+                $data['motivo_inactivo'] = null;
             }
 
             $relation->updateOrCreate(['id' => $id], $data);

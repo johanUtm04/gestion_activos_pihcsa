@@ -19,8 +19,9 @@ class PerifericoObserver
 
     public function created(Periferico $periferico): void
     {
-        $periferico->is_active = true;
-        $periferico->motivo_inactivo = null;
+        // DD($periferico);
+        // $periferico->is_active = true;
+        // $periferico->motivo_inactivo = null;
         $periferico->saveQuietly();
 
         $equipo = $periferico->equipos; 
@@ -75,7 +76,7 @@ class PerifericoObserver
                 if ($atributo === 'is_active') {
                     if ($valorAnterior == 1 && $nuevoValor == 0) {
                         $tipoFinal = 'inactivacion Periferico';
-                        $mensajeFinal = 'COMPONENTE INACTIVADO: El periférico ha sido puesto fuera de servicio.';
+                        $mensajeFinal = 'COMPONENTE INACTIVADO: El periférico ha sido puesto fuera de servicio';
                     } elseif ($valorAnterior == 0 && $nuevoValor == 1) {
                         $tipoFinal = 'activacion Periferico';
                         $mensajeFinal = 'COMPONENTE REACTIVADO: ¡El periférico vuelve a estar operativo!';

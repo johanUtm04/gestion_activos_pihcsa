@@ -124,7 +124,7 @@ function bloquearSwitchNuevo(contenedor) {
 
     if (esNuevo && sw) {
         sw.checked = true;
-        sw.disabled = true;
+        // sw.disabled = true;
         sw.parentElement.style.cursor = 'not-allowed';
         sw.parentElement.title = 'Un componente nuevo debe estar activo al registrarse';
     }

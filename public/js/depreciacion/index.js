@@ -1,8 +1,6 @@
 /**
  * CALCULO DE DEPRECIACIÓN DE ACTIVOS (Línea Recta Mensual)
  * * NOTA PARA EL SIGUIENTE INGENIERO:
- * Se cambió el cálculo de años cerrados a meses transcurridos.
- * En equipo médico, depreciar por años "calendario" genera saltos bruscos e irreales.
  * Este script calcula la pérdida de valor por cada mes que el equipo ha estado en operación.
  */
 $(document).ready(function() {
