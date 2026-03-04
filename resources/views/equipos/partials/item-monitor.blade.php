@@ -56,7 +56,7 @@
                 <label class="small font-weight-bold">Escala En Pulgadas</label>
                 <select name="monitor[{{$index}}][escala_pulgadas]" class="form-control form-control-sm">
                     <option value="">Seleccione...</option>
-                    @foreach([15, 17, 18.5, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 31.5, 32, 34, 38, 40] as $pulgada)
+                    @foreach([14,15, 17, 18.5, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 31.5, 32, 34, 38, 40] as $pulgada)
                         <option value="{{ $pulgada }}" {{ ($monitor->escala_pulgadas ?? '') == $pulgada ? 'selected' : '' }}>
                             {{ $pulgada }}"
                         </option>
@@ -68,7 +68,7 @@
                 <label class="small font-weight-bold">Interface</label>
                 <select name="monitor[{{$index}}][interface]" class="form-control form-control-sm">
                     <option value="">Seleccione...</option>
-                    @foreach(['HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1','VGA','DisplayPort (DP)','Mini DisplayPort','DVI','DVI-D','DVI-I','USB-C (Display)','Thunderbolt'] as $inter)
+                    @foreach(['Integrado', 'HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1','VGA','DisplayPort (DP)','Mini DisplayPort','DVI','DVI-D','DVI-I','USB-C (Display)','Thunderbolt'] as $inter)
                         <option value="{{ $inter }}" {{ ($monitor->interface ?? '') == $inter ? 'selected' : '' }}>
                             {{ $inter }}
                         </option>

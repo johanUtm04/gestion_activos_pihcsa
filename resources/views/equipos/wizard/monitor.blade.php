@@ -183,7 +183,7 @@
                             <label for="pulgadas_select"><i class="fas fa-ruler-combined"></i> Tamaño (pulgadas)</label>
                             <select id="pulgadas_select" class="form-control">
                                 <option value="">Seleccione tamaño</option>
-
+                                <option value="14">14"</option>
                                 <option value="15">15"</option>
                                 <option value="17">17"</option>
                                 <option value="18.5">18.5"</option>
@@ -224,7 +224,7 @@
 
                                 @php
                                     $interfaces = [
-                                        'HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1',
+                                        ''Integrado',HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1',
                                         'VGA',
                                         'DisplayPort (DP)',
                                         'Mini DisplayPort',
