@@ -49,7 +49,7 @@
                 <div class="card-header">
                     <h3 class="card-title font-weight-bold">
                         <i class="fas fa-tools"></i>
-                        Mantenimiento de {{ $equipo->tipo_equipo ?? '[Activo]' }} | Marca: {{ $equipo->marca_equipo ?? '[Activo]' }}
+                        Mantenimiento de {{ $equipo->tipoActivo->nombre ?? '[Activo]' }} | Marca: {{ $equipo->marca->nombre ?? '[Activo]' }}
                     </h3>
                 </div>
                 <form method="POST" action="{{ route('equipos.addwork.store', $equipo) }}">
