@@ -47,12 +47,12 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
             </div>
 
             <div class="section-divider">Arquitectura de Hardware</div>
-            
+                        
             <div class="info-box-custom">
-                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-hdd mr-1"></i> Procesamiento</span>
+                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-microchip mr-1"></i> Procesamiento</span>
                 <span class="info-value" style="font-size: 0.65rem; text-uppercase">
-                    ${d.procesadores} Procesador(es) Activo(s) 
-                    ${d.procesadores > 0 ? `<span class="text-danger small font-italic">(${d.procesadores} inactivos)</span>` : ''}
+                    ${d.procesadores} Activo(s) 
+                    ${d.procesadores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.procesadores_inactivos} inactivos)</span>` : ''}
                 </span>
             </div>
 
