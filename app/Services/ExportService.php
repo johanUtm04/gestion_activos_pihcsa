@@ -24,7 +24,7 @@ class ExportService
             
             // Encabezados
             fputcsv($file, [
-                'ID', 'Usuario', 'Ubicación', 'Tipo', 'Marca', 'Modelo', 
+                'ID', 'Usuario', 'Ubicación','Departamento', 'Tipo', 'Marca', 'Modelo', 
                 'Serial', 'Factura', 'OS', 'Procesador', 'RAM', 'Disco', 'Monitores'
             ]);
 
@@ -35,6 +35,7 @@ class ExportService
                         $equipo->id,
                         $equipo->usuario?->name ?? 'Disponible',
                         $equipo->ubicacion?->nombre ?? 'N/A',
+                        $equipo->departamento_perteneciente ?? 'N/A',
                         $equipo->tipoActivo?->nombre ?? 'N/A',
                         $equipo->marca?->nombre ?? 'N/A',
                         $equipo->modelo,
