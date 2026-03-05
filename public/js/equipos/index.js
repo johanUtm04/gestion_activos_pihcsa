@@ -22,7 +22,7 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
                     </span>
                                         
                     <p class="mb-0 opacity-8" style="font-size: 0.75rem;">
-                        <i class="fas fa-hashtag mr-1"></i>${d.id} | 
+                        ID en Base de datos: ${d.id} | 
                         <i class="fas fa-barcode mr-1"></i>${d.serial} |
                         ${d.marca}  |
                         <i class="fab fa-windows mr-1"></i>${d.so} |

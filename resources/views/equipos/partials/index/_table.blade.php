@@ -185,7 +185,9 @@
                             data-numero_factura="{{ $equipo->numero_factura ?? 'No asignada' }}"
                             style="cursor: pointer;">
                                 
-                                <td class="text-center font-weight-bold text-muted">{{ $equipo->id }}</td>
+                                <td class="text-center font-weight-bold text-muted">
+                                    {{ ($equipos->currentPage() - 1) * $equipos->perPage() + $loop->iteration }}
+                                </td>
                                 <td>
                         
                                     @if(session('actualizado_id') == $equipo->id)
