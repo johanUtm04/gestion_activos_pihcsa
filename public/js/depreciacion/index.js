@@ -1,6 +1,5 @@
 /**
  * CALCULO DE DEPRECIACIÓN DE ACTIVOS (Línea Recta Mensual)
- * * NOTA PARA EL SIGUIENTE INGENIERO:
  * Este script calcula la pérdida de valor por cada mes que el equipo ha estado en operación.
  */
 $(document).ready(function() {
@@ -20,6 +19,7 @@ $(document).ready(function() {
         mesesTranscurridos += hoy.getMonth() - fechaAdquisicion.getMonth();
         
         // Si el día de hoy es menor al día de compra, no se ha cumplido el mes completo
+        //9-marzo-2026 < 20 marzo 2026 = mesesTranscurrodos=0?
         if (hoy.getDate() < fechaAdquisicion.getDate()) {
             mesesTranscurridos--;
         }

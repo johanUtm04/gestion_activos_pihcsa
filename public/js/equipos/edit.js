@@ -171,4 +171,14 @@ function gestionarBloqueoCampos(contenedor) {
             input.classList.remove('bg-light');
         });
     }
+
+    document.getElementById('btnGuardarCambios').addEventListener('click', function(e) {
+
+        var respuesta = confirm("¿Estás seguro de que deseas guardar los cambios?");
+    
+        if (respuesta) {
+            document.getElementById('formEditarEquipo').submit();
+        }
+
+});
 }

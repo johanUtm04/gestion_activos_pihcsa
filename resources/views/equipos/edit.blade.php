@@ -46,7 +46,7 @@
                     @include('equipos.partials.edit.form-componentes')
 
                     <div class="card-footer text-center bg-transparent">
-                        <button type="submit" id="btnPrevisualizar" class="btn btn-success">
+                        <button type="submit" id="btnGuardarCambios" class="btn btn-success">
                             <i class="fas fa-save mr-1"></i> Guardar Cambios
                         </button>
                     </div>

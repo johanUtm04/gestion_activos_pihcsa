@@ -154,7 +154,6 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
 });
 
 // --- Funciones Globales ---
-
 function togglePanel() {
     const body = document.getElementById('searchBody');
     const icon = document.getElementById('toggle-icon');
@@ -197,6 +196,7 @@ function ejecutarInactivacion(elemento) {
     $('#modalInactivar').modal('show');
 }
 
+
 $('#btnConfirmarInactivacion').on('click', function() {
     const motivo = $('#motivo_texto').val().trim();
     if (motivo.length < 10) {
@@ -208,3 +208,5 @@ $('#btnConfirmarInactivacion').on('click', function() {
     $(this).html('<i class="fas fa-spinner fa-spin"></i> Procesando...').prop('disabled', true);
     formularioActual[0].submit();
 });
+
+
