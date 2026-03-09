@@ -17,8 +17,6 @@ protected $tiposMapeados = [
 
 //Bandera para evitar que el observer registre el mismo evento varias veces
 protected static $registrado = false;
-
-    //👻Metodo que se ejecuta cuando se crea un equipo
     public function created(Equipo $equipo): void
     {
 

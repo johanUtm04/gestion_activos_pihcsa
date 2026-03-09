@@ -279,7 +279,7 @@ class EquipoWizardController extends Controller
      */
     public function savePeriferico(Request $request, $uuid)
     {
-        
+        //SE DEJA
         //1.-Ocurre la validacion
         $request->validate([
             'tipo' => 'nullable|string',
@@ -288,6 +288,7 @@ class EquipoWizardController extends Controller
             'interface' => 'nullable|string',
         ]);
 
+        //SE DEJA
         //2.-Guardamos el último paso en la sesión
         $datos = array_filter($request->only(['tipo', 'marca', 'serial', 'interface']));
         if (empty($datos)) {
@@ -297,53 +298,32 @@ class EquipoWizardController extends Controller
         }
 
         //3.- Tomamos la sesion en esa variable
+        // ESTO SE DEJA
         $wizard = session('wizard_equipo');
 
+        //SE DEJA
         if (!$wizard || $wizard['uuid'] !== $uuid) {
             abort(403, 'Sesión expirada.');
         }
 
         // 4. Instanciar el Equipo (Sin guardarlo aún)
-        $equipo = new \App\Models\Equipo([
-            'serial'             => $wizard['equipo']['serial'],
-            'usuario_id'         => $wizard['equipo']['usuario_id'],
-            'valor_inicial'      => $wizard['equipo']['valor_inicial'],
-            'fecha_adquisicion'  => $wizard['equipo']['fecha_adquisicion'],
-            'vida_util_estimada' => $wizard['equipo']['vida_util_estimada'],
-            'sistema_operativo'  => $wizard['equipo']['sistema_operativo'],
-            'modelo'             => $wizard['equipo']['modelo'],
-            'marca_id'           => $wizard['equipo']['marca_id'], 
-            'tipo_activo_id'     => $wizard['equipo']['tipo_activo_id'],
-            'ubicacion_id'       => $wizard['ubicacion']['ubicacion_id'] ?? null,
-            'departamento_perteneciente'=> $wizard['ubicacion']['departamento_perteneciente'] ?? null,
-        ]);
+        $equipo = $this->instanciarEquipoDesdeWizard($wizard);
 
-        
-        $equipo->save(); //Se dispara el ID y el observer
+        $equipo->save(); //Se dispara el ID y el observer //Esto no quedaria pq ya estaria en el obsever
         
         //Recorre los componentes del wizard y crea uno o varios registros para el equipo, sin activar eventos de Laravel.
-        Equipo::withoutEvents(function () use ($equipo, $wizard) {
-                foreach (['monitor', 'disco_duro', 'ram', 'periferico', 'procesador'] as $key) {
-                    if (!empty($wizard[$key])) {
-                        // Si es un array de varios (como tus procesadores)
-                        if (isset($wizard[$key][0]) && is_array($wizard[$key][0])) {
-                            foreach ($wizard[$key] as $item) {
-                                $this->crearComponente($equipo, $key, $item);
-                            }
-                        } else {
-                            $this->crearComponente($equipo, $key, $wizard[$key]);
-                        }
-                    }
-                }
-            });
+        $this->vincularComponentesWizard($equipo, $wizard);
 
+            //SE QUEDA O BUENO SI SE PUEDE AL OBSERVERV
             // 3. Ahora sí podemos armar el resumen porque ya hay datos en la DB -Ve a la bodega y traeme estas cajas (5)-
             $equipo->load(['procesadores', 'rams', 'discosDuros', 'monitores', 'perifericos']);
 
             //Pasar al observer el resumen del hardware
+            //OBSERVER
             $hardwareString = $this->armarResumenHardware($equipo);
             $equipo->resumen_temporal = $hardwareString;
             
+            //OBSERVER
             Historial_log::create([
                 'activo_id'         => $equipo->id,
                 'usuario_accion_id' => auth()->id() ?? 1,
@@ -382,13 +362,49 @@ class EquipoWizardController extends Controller
             ->with('success', 'Equipo Creado Correctamente')
             ->with('new_id', $equipo->id);
     }   
-    
 
+    private function crearComponente($equipo, $tipo, $data) {
+        $rel = ['monitor'=>'monitores','disco_duro'=>'discosDuros','ram'=>'rams','periferico'=>'perifericos','procesador'=>'procesadores'];
+        $equipo->{$rel[$tipo]}()->create($data);
+    }
 
-private function crearComponente($equipo, $tipo, $data) {
-    $rel = ['monitor'=>'monitores','disco_duro'=>'discosDuros','ram'=>'rams','periferico'=>'perifericos','procesador'=>'procesadores'];
-    $equipo->{$rel[$tipo]}()->create($data);
-}
+    private function instanciarEquipoDesdeWizard(array $wizard)
+    {
+        return new \App\Models\Equipo([
+            'serial'                     => $wizard['equipo']['serial'],
+            'usuario_id'                 => $wizard['equipo']['usuario_id'],
+            'valor_inicial'              => $wizard['equipo']['valor_inicial'],
+            'fecha_adquisicion'          => $wizard['equipo']['fecha_adquisicion'],
+            'vida_util_estimada'         => $wizard['equipo']['vida_util_estimada'],
+            'sistema_operativo'          => $wizard['equipo']['sistema_operativo'],
+            'modelo'                     => $wizard['equipo']['modelo'],
+            'marca_id'                   => $wizard['equipo']['marca_id'], 
+            'tipo_activo_id'             => $wizard['equipo']['tipo_activo_id'],
+            'ubicacion_id'               => $wizard['ubicacion']['ubicacion_id'] ?? null,
+            'departamento_perteneciente' => $wizard['ubicacion']['departamento_perteneciente'] ?? null,
+        ]);
+    }
+
+    private function vincularComponentesWizard($equipo, array $wizard)
+    {
+    Equipo::withoutEvents(function () use ($equipo, $wizard) {
+        $tiposComponentes = ['monitor', 'disco_duro', 'ram', 'periferico', 'procesador'];
+
+        foreach ($tiposComponentes as $key) {
+            if (!empty($wizard[$key])) {
+                // Si el componente viene como una lista (ej. varios procesadores o RAMs)
+                if (isset($wizard[$key][0]) && is_array($wizard[$key][0])) {
+                    foreach ($wizard[$key] as $item) {
+                        $this->crearComponente($equipo, $key, $item);
+                    }
+                } else {
+                    // Si es un componente único
+                    $this->crearComponente($equipo, $key, $wizard[$key]);
+                }
+            }
+        }
+    });
+    }
 
     private function armarResumenHardware(Equipo $equipo): string
     {
@@ -448,23 +464,23 @@ private function crearComponente($equipo, $tipo, $data) {
         return sprintf('INT-%s-%03d', $anio, $random);
     }
 
-public function validarSerial(Request $request)
-{
-    $serial = strtoupper(trim($request->serial));
-    
-    if (empty($serial)) {
-        return response()->json(['disponible' => true]);
+    public function validarSerial(Request $request)
+    {
+        $serial = strtoupper(trim($request->serial));
+        
+        if (empty($serial)) {
+            return response()->json(['disponible' => true]);
+        }
+
+        $existe = \App\Models\Equipo::where('serial', $serial)
+                    ->where('id', '!=', $request->equipo_id) 
+                    ->exists();
+
+        return response()->json([
+            'disponible' => !$existe,
+            'mensaje' => $existe ? 'Este serial ya está registrado en PIHCSA' : 'Serial disponible'
+        ]);
     }
-
-    $existe = \App\Models\Equipo::where('serial', $serial)
-                ->where('id', '!=', $request->equipo_id) // Por si es edición
-                ->exists();
-
-    return response()->json([
-        'disponible' => !$existe,
-        'mensaje' => $existe ? 'Este serial ya está registrado en PIHCSA' : 'Serial disponible'
-    ]);
-}
 
 }
 
