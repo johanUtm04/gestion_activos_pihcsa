@@ -96,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('soporte/contacto', [SoporteController::class, 'contacto'])->name('soporte.contacto');
+    Route::get('soporte/manual', [SoporteController::class, 'manual'])->name('soporte.manual');
 });
 
 /*

@@ -375,12 +375,17 @@ return [
             'can'  => ['access-admin', 'access-sistemas'],
             'active' => ['historial*'],
         ],
-        ['header' => 'Contacto'],
+        ['header' => 'Contacto y Ayuda'],
         [
             'text' => 'Contacto / Ayuda',
             'icon' => 'fas fa-headset',
             'icon_color' => 'success',
             'route'  => 'soporte.contacto',
+        ],
+        [
+            'text' => 'Manual De Trabajo',
+            'icon' => 'fas fa-book',
+            'route'  => 'soporte.manual',
         ],
 
     ],
