@@ -172,13 +172,16 @@ function gestionarBloqueoCampos(contenedor) {
         });
     }
 
-    document.getElementById('btnGuardarCambios').addEventListener('click', function(e) {
+document.getElementById('btnGuardarCambios').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-        var respuesta = confirm("¿Estás seguro de que deseas guardar los cambios?");
+    var respuesta = confirm("¿Estás seguro de que deseas guardar los cambios técnicos y de depreciación?");
     
-        if (respuesta) {
-            document.getElementById('formEditarEquipo').submit();
-        }
-
+    if (respuesta) {
+        document.getElementById('formEditarEquipo').submit();
+    } else {
+        console.log("Acción cancelada por el usuario.");
+    }
 });
 }
