@@ -186,6 +186,7 @@
                                 <div class="component-item">
                                     <div class="font-weight-bold">{{ $cpu->marca }}</div>
                                     <div class="text-sm">{{ $cpu->descripcion_tipo }}</div>
+                                    <div class="text-sm">{{ $cpu->clock_ghz }}</div>
                                 </div>
                             @empty
                                 <div class="text-muted p-2 italic">Sin CPUs registrados</div>

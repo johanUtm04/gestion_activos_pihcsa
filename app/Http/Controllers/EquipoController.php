@@ -271,6 +271,7 @@ class EquipoController extends Controller
 
             'procesador_marcas' => Procesador::distinct()->orderBy('marca', 'asc')->pluck('marca'),
             'procesador_tipos'  => Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo'),
+            'procesador_ghz' => Procesador::whereNotNull('clock_ghz')->distinct()->orderBy('clock_ghz', 'asc')->pluck('clock_ghz'),
         ];
     }
 }

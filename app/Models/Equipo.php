@@ -173,6 +173,9 @@ class Equipo extends Model
         ->when($filtros['procesador_tipo'] ?? null, function ($q, $tipo) {
             $q->whereHas('procesadores', fn($sq) => $sq->where('descripcion_tipo', $tipo)->where('is_active', 1));
         })
+        ->when($filtros['procesador_ghz'] ?? null, function ($q, $ghz) {
+            $q->whereHas('procesadores', fn($sq) => $sq->where('clock_ghz', $ghz)->where('is_active', 1));
+        })
         
         //Manejo de Inactivos:
         ->when(($filtros['filter'] ?? null) == 'inactivos', fn($q) => $q->onlyTrashed());

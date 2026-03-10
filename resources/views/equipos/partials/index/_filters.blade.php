@@ -213,7 +213,7 @@
                         <div class="p-3 bg-white border rounded shadow-sm h-100" style="border-left: 4px solid #dc3545 !important;">
                             <h6 class="text-danger font-weight-bold small mb-3"><i class="fas fa-microchip mr-2"></i> PROCESADOR</h6>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label class="x-small font-weight-bold text-muted">MARCA</label>
                                     <select name="procesador_marca" class="form-control form-control-sm">
                                         <option value="">-- Todas --</option>
@@ -224,7 +224,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label class="x-small font-weight-bold text-muted">MODELO</label>
                                     <select name="procesador_tipo" class="form-control form-control-sm">
                                         <option value="">-- Todos --</option>
@@ -235,6 +235,19 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <label class="x-small font-weight-bold text-muted">Tipo GHZ</label>
+                                    <select name="procesador_ghz" class="form-control form-control-sm">
+                                        <option value="">-- Todos --</option>
+                                        @foreach($procesador_ghz as $tipo)
+                                            @if(!empty(trim($tipo)))
+                                                <option value="{{ $tipo }}" @selected(request('procesador_ghz') == $tipo)>{{ $tipo }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
                         </div>
                     </div>
