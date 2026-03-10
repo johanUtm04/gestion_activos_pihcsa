@@ -1,55 +1,49 @@
+<!-- Modal Depreciacion -->
 <div class="modal fade" id="modalDepreciacion" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content shadow-lg border-0">
-            <div class="modal-header bg-dark text-white p-4" style="background: linear-gradient(45deg, #1a1a1a, #343a40);">
-                <h5 class="modal-title font-weight-bold">
-                    <i class="fas fa-chart-line mr-2 text-info"></i>Análisis de Valoración
+    <div class="modal-dialog modal-lg shadow-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-navy">
+                <h5 class="modal-title">
+                    Depreciación: <span id="span-marca" class="badge badge-warning"></span>
                 </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
-
-            <div class="modal-body p-4 bg-white">
-                <div class="text-center mb-4">
-                    <h6 class="text-uppercase text-muted small font-weight-bold mb-1">Equipo Identificado</h6>
-                    <h4 class="font-weight-bold text-dark" id="d-activo">---</h4>
-                    <span class="badge badge-pill badge-info px-3 py-2" id="d-añosTrasncurridos"></span>
-                </div>
-
-                <div class="row no-gutters mb-4 shadow-sm rounded border">
-                    <div class="col-6 border-right p-3 bg-light">
-                        <small class="text-muted d-block mb-1">Costo Original</small>
-                        <span class="h5 font-weight-bold text-primary">$<span id="d-valor"></span></span>
+            <div class="modal-body bg-light">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="info-box bg-white border">
+                            <span class="info-box-icon bg-info"><i class="fas fa-coins"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text text-muted">Monto Original (MOI)</span>
+                                <span class="info-box-number h5" id="val-moi-text">$0.00</span>
+                                <input type="hidden" id="hidden-moi">
+                                <input type="hidden" id="hidden-fecha">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="small">Tasa de Depreciación (%)</label>
+                            <select id="select-tasa" class="form-control form-control-sm select2">
+                                <option value="0.30">30% - Equipo de Cómputo</option>
+                                <option value="0.10">10% - Mobiliario y Equipo</option>
+                                <option value="0.25">25% - Automóviles</option>
+                                <option value="0.05">5% - Edificios</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-navy btn-block shadow-sm" id="btn-recalcular">
+                            <i class="fas fa-sync mr-1"></i> Procesar Cálculo
+                        </button>
                     </div>
-                    <div class="col-6 p-3 bg-light">
-                        <small class="text-muted d-block mb-1">Depreciación</small>
-                        <span class="h5 font-weight-bold text-danger">-$<span id="d-depreciado"></span></span>
+
+                    <div class="col-md-7">
+                        <div id="calculo-animado">
+                            {{-- Aquí se inyectan los resultados con JS --}}
+                            <div class="text-center p-4 text-muted border rounded bg-white h-100">
+                                <i class="fas fa-calculator fa-3x mb-3 opacity-25"></i>
+                                <p>Presione el botón para generar la proyección fiscal.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between mb-1">
-                        <small class="font-weight-bold text-muted">Vida Útil Remanente</small>
-                        <small id="d-porcentaje-text" class="font-weight-bold"></small>
-                    </div>
-                    <div class="progress" style="height: 12px; border-radius: 10px;">
-                        <div id="d-progreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
-                    </div>
-                </div>
-
-                <div class="py-3 px-2 rounded-lg text-center" style="background-color: #f8f9fa; border: 2px dashed #dee2e6;">
-                    <p class="text-muted mb-1 small text-uppercase font-weight-bold">Valor Actual de Libros</p>
-                    <h2 class="text-success font-weight-bold mb-0">
-                        $<span id="d-actual"></span>
-                    </h2>
-                </div>
-            </div>
-
-            <div class="modal-footer border-0 p-3">
-                <button type="button" class="btn btn-outline-dark btn-block font-weight-bold py-2" data-dismiss="modal">
-                    Finalizar Consulta
-                </button>
             </div>
         </div>
     </div>

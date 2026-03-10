@@ -8,7 +8,7 @@
                         <th><i class="fas fa-desktop mr-1"></i> Activo</th>
                         <th><i class="fas fa-user mr-1"></i> Usuario</th>
                         <th><i class="fas fa-map-marker-alt mr-1"></i> Ubicación</th>
-                        <th><i class="fas fa-dollar-sign mr-1"></i> Valor Inicial</th>
+                        <th><i class="fas fa-coins mr-1"></i> Valor Inicial</th>
                         <th><i class="fas fa-calendar-alt mr-1"></i> Adquisición</th>
                         <th><i class="fas fa-hourglass-half mr-1"></i> Vida Útil</th>
                         <th class="text-center">Calcular</th>

@@ -1,77 +1,60 @@
-/**
- * CALCULO DE DEPRECIACIÓN DE ACTIVOS (Línea Recta Mensual)
- * Este script calcula la pérdida de valor por cada mes que el equipo ha estado en operación.
- */
-$(document).ready(function() {
-    $(document).on('click', '.btn-depreciar', function() {
-        
-        // 1. Extracción y Saneamiento de Datos
-        const marca            = $(this).data('marca');
-        const valorInicial     = parseFloat($(this).data('valor')) || 0;
-        const fechaAdquisicion = new Date($(this).data('fecha'));
-        const vidaUtilAnios    = parseInt($(this).data('vida')) || 1; // Siempre llega en años desde el Blade
-        
-        const hoy = new Date();
-        
-        // 2. Cálculo de Tiempo Transcurrido en Meses (Más preciso para contabilidad médica)
-        // Calculamos la diferencia total de meses entre hoy y la compra
-        let mesesTranscurridos = (hoy.getFullYear() - fechaAdquisicion.getFullYear()) * 12;
-        mesesTranscurridos += hoy.getMonth() - fechaAdquisicion.getMonth();
-        
-        // Si el día de hoy es menor al día de compra, no se ha cumplido el mes completo
-        //9-marzo-2026 < 20 marzo 2026 = mesesTranscurrodos=0?
-        if (hoy.getDate() < fechaAdquisicion.getDate()) {
-            mesesTranscurridos--;
-        }
+//Extrae datos de la tabla y los coloca en el Modal
+$(document).on('click', '.btn-depreciar', function() {
+    // 1. Extraer datos del botón
+    const marca = $(this).data('marca');
+    const valor = $(this).data('valor');
+    const fecha = $(this).data('fecha');
 
-        // Aseguramos que no sea negativo (por si la fecha de compra es futura por error)
-        mesesTranscurridos = Math.max(0, mesesTranscurridos);
+    // 2. Colocar datos base en el modal
+    $('#span-marca').text(marca);
+    $('#val-moi-text').text(new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(valor));
+    $('#hidden-moi').val(valor);
+    $('#hidden-fecha').val(fecha);
 
-        // 3. Lógica de Depreciación Lineal Mensual
-        const vidaUtilMeses = vidaUtilAnios * 12;
-        const depreciacionMensual = valorInicial / vidaUtilMeses;
-        
-        // El total depreciado no puede exceder el valor inicial del equipo
-        const totalDepreciado = Math.min(depreciacionMensual * mesesTranscurridos, valorInicial);
-        const valorActual = valorInicial - totalDepreciado;
-
-        // 4. Formateo para la Interfaz (Cálculo de años/meses para mostrar al usuario)
-        const aniosFinales = Math.floor(mesesTranscurridos / 12);
-        const mesesRestantes = mesesTranscurridos % 12;
-        
-        let textoTiempo = `${aniosFinales} ${aniosFinales === 1 ? 'año' : 'años'}`;
-        if (mesesRestantes > 0) {
-            textoTiempo += ` y ${mesesRestantes} ${mesesRestantes === 1 ? 'mes' : 'meses'}`;
-        }
-
-        // 5. Inyección en el DOM (Modal)
-        $('#d-activo').text(marca);
-        $('#d-valor').text(valorInicial.toLocaleString('en-US', {minimumFractionDigits: 2}));
-        $('#d-añosTrasncurridos').text(textoTiempo);
-        $('#d-depreciado').text(totalDepreciado.toLocaleString('en-US', {minimumFractionDigits: 2}));
-        $('#d-actual').text(valorActual.toLocaleString('en-US', {minimumFractionDigits: 2}));
-
-        // 6. Alerta visual si el equipo está totalmente depreciado
-        if (valorActual <= 0) {
-            $('#d-actual').addClass('text-danger').append(' (Vida útil agotada)');
-        } else {
-            $('#d-actual').removeClass('text-danger');
-        }
-
-        $('#modalDepreciacion').modal('show');
-    });
+    // 3. Limpiar resultados anteriores y abrir modal
+    $('#calculo-animado').html('<div class="text-center p-4 text-muted border rounded bg-white h-100"><i class="fas fa-calculator fa-3x mb-3"></i><p>Listo para calcular...</p></div>');
+    $('#modalDepreciacion').modal('show');
 });
 
 
-// Cálculo del porcentaje de vida restante
-const porcentajeRestante = Math.max(0, ((valorActual / valor) * 100).toFixed(0));
-const progressBar = $('#d-progreso');
+//Logica de Calculo + animacion
+$('#btn-recalcular').on('click', function() {
+    const moi = parseFloat($('#hidden-moi').val());
+    const tasa = parseFloat($('#select-tasa').val());
+    const fechaAdq = new Date($('#hidden-fecha').val());
+    const finAnio = new Date(fechaAdq.getFullYear(), 11, 31);
 
-// Actualizar la barra visualmente
-progressBar.css('width', porcentajeRestante + '%');
-$('#d-porcentaje-text').text(porcentajeRestante + '%');
+    // Cálculo de meses deducibles (LISR México)
+    let mesesDeducibles = (finAnio.getMonth() - fechaAdq.getMonth()) + 1;
 
-// Cambiar color de la barra según el estado
-if (porcentajeRestante > 50) progressBar.addClass('bg-success').removeClass('bg-warning bg-danger');
-else if (porcentajeRestante > 20) progressBar.addClass('bg-warning').removeClass('bg-success bg-danger');
-else progressBar.addClass('bg-danger').removeClass('bg-success bg-warning');
+    // Animación de carga
+    $('#calculo-animado').html(`
+        <div class="text-center py-5">
+            <div class="spinner-grow text-info" role="status"></div>
+            <p class="mt-3 font-italic">Aplicando tasas de depreciación...</p>
+        </div>
+    `);
+
+    setTimeout(() => {
+        const anual = moi * tasa;
+        const mensual = anual / 12;
+        const totalEjercicio = mensual * mesesDeducibles;
+
+        const f = (n) => new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN'}).format(n);
+
+        // Inyectar HTML con los resultados finales
+        $('#calculo-animado').hide().html(`
+            <div class="card card-outline card-success shadow-none mb-0">
+                <div class="card-body p-2">
+                    <table class="table table-sm mb-0">
+                        <tr><td>Depreciación Anual (${tasa*100}%):</td><td class="text-right">${f(anual)}</td></tr>
+                        <tr><td>Depreciación Mensual:</td><td class="text-right">${f(mensual)}</td></tr>
+                        <tr class="bg-light"><td><strong>Meses de Uso:</strong></td><td class="text-right text-primary font-weight-bold">${mesesDeducibles}</td></tr>
+                        <tr class="h5"><td><strong>Deducción Total:</strong></td><td class="text-right text-success font-weight-bold">${f(totalEjercicio)}</td></tr>
+                    </table>
+                </div>
+            </div>
+            <p class="small text-muted mt-2"><i class="fas fa-info-circle mr-1"></i> Basado en adquisición del ${fechaAdq.toLocaleDateString()}</p>
+        `).fadeIn(400);
+    }, 700);
+});

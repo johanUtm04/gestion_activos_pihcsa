@@ -22,7 +22,6 @@
     @include('depreciacion.partials._footer')
     @include('depreciacion.partials._modal')
 @stop
-
 @section('js')
     <script src="{{ asset('js/depreciacion/index.js') }}"></script>
 @stop 

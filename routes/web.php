@@ -79,10 +79,12 @@ Route::middleware(['auth'])->group(function () {
     /* --- ADMINISTRACIÓN DE CATÁLOGOS --- */
     
     // Usuarios
-    Route::resource('gestionUsuarios', GestionUsuariosController::class)->names('users');
+    Route::resource('gestionUsuarios', GestionUsuariosController::class)->names('users')
+    ->parameters(['gestionUsuarios' => 'user']);
     
     // Ubicaciones
-    Route::resource('gestionUbicaciones', GestionUbicacionesController::class)->names('ubicaciones');
+    Route::resource('gestionUbicaciones', GestionUbicacionesController::class)->names('ubicaciones')
+    ->parameters(['gestionUbicaciones' => 'ubicacion']);
 
     // Marcas
     Route::resource('gestionMarcas', MarcaController::class)->names('marcas');
