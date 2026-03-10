@@ -88,7 +88,7 @@
                             <div class="data-item">
                                 <span class="data-label"><i class="fas fa-history"></i> Última actualización:</span> 
                                 <span class="float-right text-muted">
-                                    {{ $tipo_activo->updated_at->diffForHumans() }}
+                                    {{ $tipo_activo->updated_at?->diffForHumans() }}
                                 </span>
                             </div>
                         </fieldset>

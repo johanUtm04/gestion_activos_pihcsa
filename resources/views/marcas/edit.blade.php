@@ -81,7 +81,7 @@
                                 <span class="data-label">
                                     <i class="fas fa-calendar-alt"></i> Fecha Registro:
                                 </span> 
-                                <span class="float-right">{{ $marca->created_at->format('d/m/Y H:i') }}</span>
+                                <span class="float-right">{{ $marca->created_at?->format('d/m/Y H:i') }}</span>
                             </div>
 
                             <div class="data-item">

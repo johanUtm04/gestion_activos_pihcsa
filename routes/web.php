@@ -87,10 +87,12 @@ Route::middleware(['auth'])->group(function () {
     ->parameters(['gestionUbicaciones' => 'ubicacion']);
 
     // Marcas
-    Route::resource('gestionMarcas', MarcaController::class)->names('marcas');
+    Route::resource('gestionMarcas', MarcaController::class)->names('marcas')
+    ->parameters(['gestionMarcas' => 'marca']);
 
     // Tipos de Activo
-    Route::resource('gestionTipoActivos', TipoActivoController::class)->names('tipo_activos');
+    Route::resource('gestionTipoActivos', TipoActivoController::class)->names('tipo_activos')
+    ->parameters(['gestionTipoActivos' => 'tipo_activo']);
 
     /* --- CONFIGURACIÓN Y SOPORTE --- */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
