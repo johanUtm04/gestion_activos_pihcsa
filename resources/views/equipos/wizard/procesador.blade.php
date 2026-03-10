@@ -131,7 +131,7 @@
 
                 <div class="row">
                     {{-- Marca --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="marca_select"><i class="fas fa-tag"></i> Marca CPU</label>
                             <select id="marca_select" class="form-control">
@@ -170,7 +170,7 @@
                     </div>
 
                     {{-- Modelo --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="desc_select"><i class="fas fa-list-alt"></i> Modelo / Descripción</label>
                             <select id="desc_select" class="form-control">
@@ -216,6 +216,28 @@
                             @error('descripcion_tipo') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
+
+
+                    {{-- Frecuencia (NUEVO CAMPO) --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="frec_select"><i class="fas fa-tachometer-alt"></i> Frecuencia (GHz)</label>
+                            <select id="frec_select" class="form-control">
+                                <option value="">Seleccione velocidad</option>
+                                <option value="2.10">2.10 GHz</option>
+                                <option value="2.40">2.40 GHz</option>
+                                <option value="2.80">2.80 GHz</option>
+                                <option value="3.20">3.20 GHz</option>
+                                <option value="3.60">3.60 GHz</option>
+                                <option value="4.00">4.00 GHz</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                            <input type="number" step="0.01" name="clock_ghz" id="frec_input" class="form-control custom-input" placeholder="Ej. 3.45" value="{{ old('clock_ghz', session('wizard_equipo.procesador.clock_ghz')) }}">
+                            @error('clock_ghz') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                    </div>
+
+
                 </div>
 
             </fieldset>

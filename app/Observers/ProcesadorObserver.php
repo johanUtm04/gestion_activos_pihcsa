@@ -54,7 +54,7 @@ class ProcesadorObserver
                 ],
                 'Detalle' => [
                     'antes'   => '-',
-                    'despues' => "Marca: {$procesador->marca}GB | Modelo: {$procesador->descripcion_tipo}"
+                    'despues' => "Marca: {$procesador->marca}GB | Modelo: {$procesador->descripcion_tipo} | Relog: {$procesador->clock_ghz}"
                 ]
             ]
         ]

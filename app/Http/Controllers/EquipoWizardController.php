@@ -245,11 +245,11 @@ class EquipoWizardController extends Controller
         $request->validate([
             'marca' => 'nullable|string|max:255',
             'descripcion_tipo' => 'nullable|string|max:255',
-            'frecuenciaMicro' => 'nullable|string|max:100',
+            'clock_ghz' => 'nullable|string|max:100',
         ]);
 
         $datos = array_filter($request->only([
-            'marca', 'descripcion_tipo', 'frecuenciaMicro'
+            'marca', 'descripcion_tipo', 'clock_ghz'
         ]));
 
         empty($datos)
@@ -412,6 +412,7 @@ class EquipoWizardController extends Controller
             'Procesador' => $equipo->procesadores->first() 
                 ? collect([
                     $equipo->procesadores->first()->marca,
+                    $equipo->procesadores->first()->clock_ghz,
                     $equipo->procesadores->first()->descripcion_tipo ? "({$equipo->procesadores->first()->descripcion_tipo})" : null
                 ])->filter()->implode(' ') 
                 : 'N/A',

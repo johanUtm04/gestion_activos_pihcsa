@@ -35,7 +35,7 @@
         <input type="hidden" name="procesador[{{ $index }}][_delete]" value="">
 
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label class="small font-weight-bold">Marca</label>
                 <select name="procesador[{{$index}}][marca]" class="form-control form-control-sm">
                     <option value="">Seleccione...</option>
@@ -47,11 +47,28 @@
                 </select>
             </div>
 
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label class="small font-weight-bold">Descripcion/Tipo</label>
                 <input type="text" name="procesador[{{$index}}][descripcion_tipo]" class="form-control form-control-sm"
                 value="{{ $procesador->descripcion_tipo ?? '' }}" placeholder="Modelo O Nombre">
             </div>
+
+            {{-- Frecuencia (NUEVO) --}}
+            <div class="form-group col-md-4">
+                <label class="small font-weight-bold">Frecuencia (GHz)</label>
+                <select name="procesador[{{$index}}][clock_ghz]" class="form-control form-control-sm">
+                    <option value="">Seleccione...</option>
+                    @foreach(['2.10', '2.40', '2.80', '3.20', '3.60', '4.00', 'Otro'] as $frec)
+                        <option value="{{ $frec }}" {{ ($procesador->clock_ghz ?? '') == $frec ? 'selected' : '' }}>
+                            {{ $frec }} GHz
+                        </option>
+                    @endforeach
+                </select>
+                {{-- Input oculto opcional: Si planeas usar la lógica de "Otro" aquí también, 
+                    necesitarás un script que maneje este arreglo específico --}}
+            </div>
+
+
         </div>
 
         {{-- Switch de Estado y Motivo --}}
