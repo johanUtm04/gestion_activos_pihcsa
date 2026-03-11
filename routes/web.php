@@ -101,6 +101,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('soporte/contacto', [SoporteController::class, 'contacto'])->name('soporte.contacto');
     Route::get('soporte/manual', [SoporteController::class, 'manual'])->name('soporte.manual');
+
+    /* --- Codigo de Barras --- */
+    Route::get('/buscar-equipo', [EquipoController::class, 'vistaBusqueda'])->name('equipos.busqueda');
+    Route::post('/buscar-equipo', [EquipoController::class, 'procesarEscaneo'])->name('equipos.procesar');
 });
 
 /*

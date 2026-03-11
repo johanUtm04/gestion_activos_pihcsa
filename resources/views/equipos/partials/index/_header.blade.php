@@ -34,6 +34,10 @@
         @endif
 
         @if(request('filter') !== 'inactivos')
+        <a href="{{ route('equipos.busqueda') }}" class="btn btn-sm btn-outline-secondary shadow-sm" title="Escanear Activo">
+            <i class="fas fa-barcode mr-1"></i> Escanear
+        </a>
+
         <a href="{{ route('equipos.wizard.create') }}" class="btn btn-sm btn-info shadow-sm">
             <i class="fas fa-plus-circle"></i> Nuevo
         </a>

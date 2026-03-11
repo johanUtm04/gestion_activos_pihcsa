@@ -245,6 +245,21 @@ class EquipoController extends Controller
             ->with('actualizado_factura', $equipo->id);
     }
 
+    public function vistaBusqueda(){
+        return view ('equipos.busqueda');
+    }
+
+    public function procesarEscaneo(Request $request){
+        $equipo = Equipo::where('serial', $request->serial)->first();
+
+        if ($equipo) {
+            # code...
+            return redirect()->route('equipos.show', $equipo->id);
+        }
+
+        return back()->with('error', 'Equipo No Encontrado');
+    }
+
     private function getFilterData()
     {
         return [
