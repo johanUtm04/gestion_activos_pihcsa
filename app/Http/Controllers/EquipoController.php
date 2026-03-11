@@ -245,6 +245,12 @@ class EquipoController extends Controller
             ->with('actualizado_factura', $equipo->id);
     }
 
+    public function ticket($id)
+    {
+        $equipo = \App\Models\Equipo::findOrFail($id);
+        return view('equipos.ticket', compact('equipo'));
+    }
+
     public function vistaBusqueda(){
         return view ('equipos.busqueda');
     }

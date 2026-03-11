@@ -274,7 +274,15 @@
                                             </form>
                                         </div>
                                         @endcan
+
+                                        <a href="{{ route('equipos.ticket', $equipo->id) }}" 
+                                        class="btn btn-sm btn-default shadow-sm text-secondary" 
+                                        title="Imprimir Código de Barras" 
+                                        target="_blank">
+                                            <i class="fas fa-print"></i>
+                                        </a>
                                     </div>
+                                    
                                 </td>
                                 <td class="text-center">
                                     @if($equipo->semaforo)

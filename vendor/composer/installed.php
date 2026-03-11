@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '18a82841fdd90135334165b7bccfc54b8901d4f7',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '9a03a2e26ebe9d601ccd586d0002fcd001f06a08',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -434,9 +434,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '18a82841fdd90135334165b7bccfc54b8901d4f7',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '9a03a2e26ebe9d601ccd586d0002fcd001f06a08',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -549,6 +549,15 @@
             'install_path' => __DIR__ . '/../maximebf/debugbar',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'milon/barcode' => array(
+            'pretty_version' => 'v13.1',
+            'version' => '13.1.0.0',
+            'reference' => 'ce84b0ba0d9c0f19f1ef058cd39187bd9468dfc8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../milon/barcode',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'mockery/mockery' => array(
             'pretty_version' => '1.6.12',
