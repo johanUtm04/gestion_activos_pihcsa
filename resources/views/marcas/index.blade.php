@@ -12,7 +12,8 @@
 
 @section('content')
     {{-- Reutilizamos el sistema dinámico de alertas --}}
-    @include('users.partials._alerts')
+    @include('marcas.partials._alerts')
+    @include('marcas.partials._filters')
 
     <div class="row">
         <div class="col-12">

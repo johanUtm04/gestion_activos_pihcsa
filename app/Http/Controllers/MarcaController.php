@@ -1,64 +1,87 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Marca;
-use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| Controlador destinado para manejar CRUD(CREATE, READ, UPDATE, DELETE) de Marcas
-|--------------------------------------------------------------------------
-*/
+use App\Models\Marca;
+use App\Models\Equipo;
+use Illuminate\Http\Request;
 
 class MarcaController extends Controller
 {
-    //Metodo para mostrar vista
-    public function index()
-    {
-    $marcas = Marca::paginate(10);
-    return view('marcas.index', compact('marcas'));
+    const PER_PAGE = 10;
+
+public function index(Request $request)
+{
+    $query = Marca::query();
+
+    // Aquí no usas whereHas porque ya estás en el modelo Marca
+    if ($request->filled('marca_nombre')) {
+        $query->where('nombre', $request->marca_nombre);
     }
 
-    //Metodo para cargar formulario de creacion
+    $marcas = $query->orderBy('id', 'asc')->paginate(10)->withQueryString();
+    
+    // Para el select del filtro
+    $todasLasMarcas = Marca::orderBy('nombre', 'asc')->get();
+
+    return view('marcas.index', compact('marcas', 'todasLasMarcas'));
+}
+
     public function create()
     {
-     return view('marcas.create');
+        return view('marcas.create');
     }
 
-    //Metodo para crear registro en Base de datos
     public function store(Request $request)
     {
-        $request->validate(['nombre' => 'required|unique:marcas|max:255']);
-        Marca::create($request->all());
-        return redirect()->route('marcas.index')->with('success', 'Marca creada correctamente.');
+        $data = $request->validate([
+            'nombre' => 'required|string|max:255|unique:marcas,nombre'
+        ]);
+
+        $marca = Marca::create($data);
+
+        return redirect()->route('marcas.index', ['page' => $this->getReturnPage($marca->id)])
+            ->with('new_id', $marca->id)
+            ->with('success', 'Marca creada correctamente.');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
-    //Metodo para cargar formulario de edicion
     public function edit(Marca $marca)
     {
-	return view('marcas.edit', compact('marca'));
+        return view('marcas.edit', compact('marca'));
     }
 
-    //Metodo para editar registro en Base de datos
     public function update(Request $request, Marca $marca)
     {
-        $request->validate(['nombre' => 'required|max:255|unique:marcas,nombre,' . $marca->id]);
-        $marca->update($request->all());
-        return redirect()->route('marcas.index')->with('success', 'Marca actualizada correctamente.');
+        $data = $request->validate([
+            'nombre' => 'required|string|max:255|unique:marcas,nombre,' . $marca->id
+        ]);
+
+        $marca->update($data);
+
+        return redirect()->route('marcas.index', ['page' => $this->getReturnPage($marca->id)])
+            ->with('actualizado_id', $marca->id)
+            ->with('warning', 'Marca actualizada correctamente.');
     }
 
-    //Metodo para eliminar registro de base de datos
     public function destroy(Marca $marca)
     {
-        if($marca->equipos()->count() > 0) {
-        return redirect()->route('marcas.index')->with('danger', 'No se puede eliminar: esta marca tiene equipos asociados.');
+        if ($marca->equipos()->count() > 0) {
+            return redirect()->back()->with('danger', 'No se puede eliminar: esta marca tiene equipos asociados.');
         }
+
+        $page = $this->getReturnPage($marca->id);
         $marca->delete();
-        return redirect()->route('marcas.index')->with('danger', 'Marca eliminada.');
+
+        return redirect()->route('marcas.index', ['page' => $page])
+            ->with('danger', 'Marca eliminada.');
+    }
+
+    private function getReturnPage($marcaId)
+    {
+        $target = Marca::find($marcaId);
+        if (!$target) return 1;
+
+        $position = Marca::where('id', '<=', $marcaId)->count();
+        return ceil($position / self::PER_PAGE);
     }
 }
