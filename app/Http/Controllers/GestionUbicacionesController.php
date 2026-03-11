@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class GestionUbicacionesController extends Controller
 {
-    const PER_PAGE = 3;
+    const PER_PAGE = 10;
 
     //Metodo para mostrar vista
     public function index(Request $request)
@@ -24,11 +24,13 @@ class GestionUbicacionesController extends Controller
         $query->where('id', $request->ubicacion_id);
     }
 
-    $ubicaciones = $query->orderBy('nombre', 'asc') 
-    ->paginate(10)
+    $ubicaciones = $query->orderBy('id', 'asc') 
+    ->paginate(self::PER_PAGE)
     ->withQueryString(); 
 
-    return view('ubicaciones.index', compact('ubicaciones'));
+    $todasLasUbicaciones = Ubicacion::orderBy('nombre', 'asc')->get();
+
+    return view('ubicaciones.index', compact('ubicaciones', 'todasLasUbicaciones'));
     }
 
     //Metodo para cargar formulario de creacion
