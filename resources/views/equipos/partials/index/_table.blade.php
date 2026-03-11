@@ -310,7 +310,21 @@
                     </table>
                 </div>
             </div>
-            <div class="card-footer bg-white border-top-0">
-                {{ $equipos->links() }}
+            <div class="card-footer bg-white border-top-0 d-flex align-items-center justify-content-between">
+                {{-- Contenedor de la Paginación --}}
+                <div>
+                    {{ $equipos->links() }}
+                </div>
+
+                {{-- Contenedor del Logo --}}
+                <div class="d-flex align-items-center" style="opacity: 0.8;">
+                    <div class="text-right mr-2 d-none d-sm-block">
+                        <small class="text-muted d-block" style="font-size: 0.55rem; line-height: 1;">SISTEMA DE GESTIÓN</small>
+                        <span class="font-weight-bold text-secondary" style="font-size: 0.7rem;">ACTIVOS TI</span>
+                    </div>
+                    <img src="{{ asset('vendor/adminlte/dist/img/logohd.png') }}" 
+                        alt="Logo PIHCSA" 
+                        style="height: 40px; width: auto; filter: grayscale(30%);">
+                </div>
             </div>
         </div>
