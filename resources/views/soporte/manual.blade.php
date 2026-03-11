@@ -352,6 +352,139 @@ Route::get('/depreciacion', [DepreciacionController::class, 'index'])
 
 
 
+{{-- SECCIÓN 6: Historial de Cambios --}}
+<div class="card card-info card-outline mb-0 shadow-none border-bottom">
+    <a class="d-block w-100 collapsed" data-toggle="collapse" href="#collapseSix">
+        <div class="card-header">
+            <h4 class="card-title w-100 font-weight-bold">
+                <i class="fas fa-history mr-2 text-info"></i> 6. Historial de Cambios
+            </h4>
+        </div>
+    </a>
+    <div id="collapseSix" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <p class="text-justify">
+                        El sistema integra un módulo de <strong>Auditoría (Log)</strong> que registra automáticamente cualquier modificación realizada sobre los activos.
+                    </p>
+                    
+                    <ul class="text-muted small">
+                        <li><i class="fas fa-fingerprint mr-1"></i> <strong>Rastreo:</strong> Identifica al usuario que realizó el cambio y la fecha exacta.</li>
+                        <li><i class="fas fa-exchange-alt mr-1"></i> <strong>Comparativa:</strong> Guarda un registro del valor "Anterior" y el valor "Nuevo" en formato JSON.</li>
+                        <li><i class="fas fa-shield-alt mr-1"></i> <strong>Integridad:</strong> Documenta mantenimientos, reubicaciones y actualizaciones de hardware.</li>
+                    </ul>
+
+                    <div class="card bg-dark shadow-sm border-0 mb-3" style="border-radius: 8px; overflow: hidden;">
+                        <div class="card-header py-2 px-3" style="background: #2d3238; border-bottom: 1px solid #3e444d;">
+                            <i class="fas fa-database text-info mr-2"></i>
+                            <span class="small text-gray-300 font-italic text-uppercase" style="font-size: 10px">Estructura de Datos</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <pre class="m-0 p-3" style="background: #1e2227; line-height: 1.4;"><code class="text-white" style="font-family: 'Source Code Pro', monospace; font-size: 0.8rem;">// Tabla: historiales_log
+- user_id (Responsable)
+- evento (Update/Create/Delete)
+- detalles_json (Cambios realizados)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7 text-center">
+                    {{-- Aquí puedes colocar una captura de la tabla de depreciación cuando la tengas lista --}}
+                    <div class="img-container shadow-sm border rounded p-2 bg-light">
+                        <img src="{{ asset('vendor/adminlte/dist/manual/historial/historial.png') }}" 
+                             alt="Acciones de Activo" 
+                             class="img-fluid rounded img-guide">
+                        <p class="small text-muted mt-2 mb-0">
+                            <i class="fas fa-mouse-pointer mr-1"></i> Use el menú de acciones en la tabla principal para acceder.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{{-- SECCIÓN 7: Ficha Técnica --}}
+<div class="card card-info card-outline mb-0 shadow-none border-bottom">
+    <a class="d-block w-100 collapsed" data-toggle="collapse" href="#collapseSeven">
+        <div class="card-header">
+            <h4 class="card-title w-100 font-weight-bold">
+                <i class="fas fa-file-invoice mr-2 text-info"></i> 7. Ficha Técnica
+            </h4>
+        </div>
+    </a>
+    <div id="collapseSeven" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <p>La <strong>Ficha Técnica</strong> es el expediente centralizado del equipo, donde se agrupa la información en cuatro pilares principales:</p>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="info-box shadow-none border">
+                        <span class="info-box-icon bg-info"><i class="fas fa-desktop"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text font-weight-bold">Hardware</span>
+                            <span class="info-box-number small text-muted">RAM, Discos, SO, Serial</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-box shadow-none border">
+                        <span class="info-box-icon bg-success"><i class="fas fa-user-tag"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text font-weight-bold">Asignación</span>
+                            <span class="info-box-number small text-muted">Usuario y Ubicación actual</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-box shadow-none border">
+                        <span class="info-box-icon bg-warning"><i class="fas fa-coins"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text font-weight-bold">Contable</span>
+                            <span class="info-box-number small text-muted">Valor compra y Vida útil</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-box shadow-none border">
+                        <span class="info-box-icon bg-danger"><i class="fas fa-keyboard"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text font-weight-bold">Periféricos</span>
+                            <span class="info-box-number small text-muted">Monitores, Mouse, Teclado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <div class="img-container shadow-sm border rounded p-3 bg-light">
+                         <i class="fas fa-print mr-2"></i> <strong>Nota:</strong> Desde esta vista puede generar la impresión en PDF de la ficha de entrega/recepción.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
