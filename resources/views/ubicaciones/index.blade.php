@@ -11,6 +11,7 @@
 @stop
 
 @section('content')
+@include('ubicaciones.partials._alerts')
     @include('ubicaciones.partials._filters')
     <div class="row">
         <div class="col-12">
@@ -24,5 +25,10 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('js/ubicaciones/index.js') }}"></script>
+<script>
+    window.newId = "{{ session('new_id') }}";
+    window.updatedId = "{{ session('actualizado_id') }}";
+</script>
+
+<script src="{{ asset('js/ubicaciones/index.js') }}"></script>
 @stop

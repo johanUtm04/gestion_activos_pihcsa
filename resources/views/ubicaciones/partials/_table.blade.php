@@ -1,3 +1,8 @@
+@if($targetId = (session('new_id') ?? session('actualizado_id')))
+    <span id="scroll-target-marker" data-id="{{ $targetId }}"></span>
+@endif
+
+
 <div class="card shadow-sm border-0" style="border-radius: 12px;">
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -17,11 +22,13 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="mr-2">
-                                    @if(session('actualizado->id') == $ubicacion->id)
-                                        <span class="badge badge-warning badge-status">Editado</span>
+                                    {{-- Cambiamos 'actualizado->id' por 'actualizado_id' --}}
+                                    @if(session('actualizado_id') == $ubicacion->id)
+                                        <span class="badge badge-warning badge-status-pill animate__animated animate__flash">Editado</span>
                                     @endif
+                                    
                                     @if(session('new_id') == $ubicacion->id)
-                                        <span class="badge badge-success badge-status">Nuevo</span>
+                                        <span class="badge badge-success badge-status-pill animate__animated animate__bounceIn">Nuevo</span>
                                     @endif
                                 </div>
                                 <div>

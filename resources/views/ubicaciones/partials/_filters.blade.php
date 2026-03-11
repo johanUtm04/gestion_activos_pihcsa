@@ -21,10 +21,10 @@
                     <div class="col-md-3">
                         <div class="form-group mb-1">
                             <label class="small font-weight-bold text-muted text-uppercase">Usuario</label>
-                            <select name="usuario_id" class="form-control form-control-sm shadow-sm">
+                            <select name="ubicacion_id" class="form-control form-control-sm shadow-sm">
                                 <option value="">-- Todos --</option>
                                 @foreach($todasLasUbicaciones as $u)
-                                    <option value="{{ $u->id }}" @selected(request('usuario_id') == $u->id)>
+                                    <option value="{{ $u->id }}" @selected(request('ubicacion_id') == $u->id)>
                                         {{ $u->nombre }}  ({{ $u->codigo }})
                                     </option>
                                 @endforeach

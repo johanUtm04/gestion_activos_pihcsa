@@ -71,8 +71,8 @@ class GestionUbicacionesController extends Controller
         $ubicacion->update($data);
 
         return redirect()->route('ubicaciones.index', ['page' => $this->getReturnPage($ubicacion->id)])
-            ->with('warning', 'Ubicación editada correctamente')
-            ->with('actualizado_id', $ubicacion->id);
+        ->with('actualizado_id', $ubicacion->id)    
+        ->with('warning', 'Ubicación editada correctamente');
     }
 
     //Metodo para eliminar registro de base de datos

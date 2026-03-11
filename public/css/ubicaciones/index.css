@@ -10,7 +10,7 @@
 }
 .table-ubicaciones tbody td { vertical-align: middle; padding: 15px; }
 .table-ubicaciones tbody tr:hover { background-color: rgba(220, 53, 69, 0.02) !important; }
-.badge-status { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+/* .badge-status { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; } */
 .secondary-data { color: #888; font-size: 0.85em; display: block; }
 .fa-map-marker-alt{
     animation: float 2s ease-in-out infinite;
@@ -24,6 +24,14 @@
     margin: 0 auto;
     padding: 0 20px;
 }
+
+    .badge-status-pill {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-weight: 600;
+    }
+
 
     .footer-left, .footer-right {
         display: flex;

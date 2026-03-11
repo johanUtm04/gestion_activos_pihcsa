@@ -1,3 +1,7 @@
+@if($targetId = (session('new_id') ?? session('actualizado_id') ?? session('actualizado_factura') ?? session('new_mantenimiento')))
+    <span id="scroll-target-marker" data-id="{{ $targetId }}"></span>
+@endif
+
 <div class="card shadow-sm border-0" style="border-radius: 12px;">
     <div class="card-body p-0">
         <div class="table-responsive">

@@ -1,17 +1,3 @@
-$(document).ready(function() {
-    const newUserRow = $('tr[id^="user-"]').filter(function() {
-        return $(this).find('.badge-status-pill').length > 0;
-    });
-
-    if (newUserRow.length) {
-        newUserRow[0].scrollIntoView({behavior: 'smooth', block: 'center'});
-        newUserRow.css('background-color', '#f8fff9');
-        setTimeout(() => {
-            newUserRow.animate({ backgroundColor: "transparent" }, 2000);
-        }, 1000);
-    }
-});
-
 function togglePanel() {
     const body = document.getElementById('searchBody');
     const icon = document.getElementById('toggle-icon');
@@ -37,30 +23,27 @@ function togglePanel() {
 }
 
 $(document).ready(function() {
-    const newId = "{{ session('new_id') }}";
-    const updatedId = "{{ session('actualizado_id') }}";
-    const targetId = newId || updatedId;
+    const marker = document.getElementById('scroll-target-marker');
 
-    if (targetId) {
-        const targetRow = $('#user-' + targetId);
+    if (marker) {
+        const equipoId = marker.getAttribute('data-id');
+        const targetRow = document.getElementById('user-' + equipoId);
 
-        if (targetRow.length) {
-            targetRow[0].scrollIntoView({ 
+        if (targetRow) {
+            targetRow.scrollIntoView({ 
                 behavior: 'smooth', 
                 block: 'center' 
             });
 
-            targetRow.css('background-color', '#d4edda'); 
+            $(targetRow).css('background-color', '#e9f7ef');
             
-            if (updatedId) {
-                targetRow.css('background-color', '#fff3cd'); 
-            }
-
-            setTimeout(() => {
-                targetRow.animate({
-                    backgroundColor: "transparent"
-                }, 2000);
-            }, 1000);
+            $(targetRow).fadeOut(400).fadeIn(400).fadeOut(400).fadeIn(400, function() {
+                setTimeout(() => {
+                    $(this).animate({ backgroundColor: "transparent" }, 2000);
+                }, 3000);
+            });
         }
     }
 });
+
+
