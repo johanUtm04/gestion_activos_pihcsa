@@ -105,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
     /* --- Codigo de Barras --- */
     Route::get('/ticket/{id}', [EquipoController::class, 'ticket'])->name('equipos.ticket');
     Route::get('/buscar-equipo', [EquipoController::class, 'vistaBusqueda'])->name('equipos.busqueda');
-    Route::post('/buscar-equipo', [EquipoController::class, 'procesarEscaneo'])->name('equipos.procesar');
+    Route::post('/buscar-equipo', [EquipoController::class, 'procesar'])->name('equipos.procesar');
 });
 
 /*
