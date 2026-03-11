@@ -227,6 +227,134 @@ Route::get('/equipos/{equipo}/edit', [EquipoController::class, 'edit'])->name('e
 
 
 
+{{-- SECCIÓN 4: Acciones Disponibles --}}
+<div class="card card-info card-outline mb-0 shadow-none border-bottom">
+    <a class="d-block w-100 collapsed" data-toggle="collapse" href="#collapseFour">
+        <div class="card-header">
+            <h4 class="card-title w-100 font-weight-bold">
+                <i class="fas fa-list-ul mr-2 text-info"></i> 4. Acciones disponibles
+            </h4>
+        </div>
+    </a>
+    <div id="collapseFour" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <p class="text-justify">
+                        Una vez dentro del menú principal de activos, existen diversas opciones para la gestión integral de cada equipo:
+                    </p>
+                    
+                    <ul class="text-muted small">
+                        <li><i class="fas fa-edit mr-1 text-warning"></i> <strong>Edición:</strong> Permite modificar la información técnica y los componentes del activo.</li>
+                        <li><i class="fas fa-tools mr-1 text-primary"></i> <strong>Mantenimiento:</strong> Registro de servicios preventivos anuales o reparaciones extra.</li>
+                        <li><i class="fas fa-file-invoice mr-1 text-success"></i> <strong>Factura:</strong> Opción para adjuntar y consultar el número de factura de compra.</li>
+                        <li><i class="fas fa-eye mr-1 text-info"></i> <strong>Ver:</strong> Visualización de la ficha técnica completa y detallada.</li>
+                        <li><i class="fas fa-ban mr-1 text-danger"></i> <strong>Inactivar:</strong> Permite dar de baja un activo (ej. daño irreparable o desecho).</li>
+                        <li><i class="fas fa-barcode mr-1 text-dark"></i> <strong>Código de Barras:</strong> Genera la etiqueta para el etiquetado físico del equipo.</li>
+                    </ul>
+
+                    <p class="text-justify font-italic small mt-3">
+                        Rutas relacionadas en el sistema:
+                    </p>
+
+                    <div class="card bg-dark shadow-sm border-0 mb-3" style="border-radius: 8px; overflow: hidden;">
+                        <div class="card-header py-2 px-3" style="background: #2d3238; border-bottom: 1px solid #3e444d;">
+                            <i class="fas fa-file-code text-warning mr-2"></i>
+                            <span class="small text-gray-300 font-italic text-uppercase" style="font-size: 10px">routes/web.php</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <pre class="m-0 p-3" style="background: #1e2227; line-height: 1.4;"><code class="text-white" style="font-family: 'Source Code Pro', monospace; font-size: 0.8rem;">// Mantenimiento y Factura
+Route::post('/equipos/{equipo}/addwork', [EquipoController::class, 'saveWork']);
+Route::post('/equipos/{equipo}/factura', [EquipoController::class, 'saveFactura']);
+// Etiquetas
+Route::get('/ticket/{id}', [EquipoController::class, 'ticket']);</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7 text-center">
+                    <div class="img-container shadow-sm border rounded p-2 bg-light">
+                        <img src="{{ asset('vendor/adminlte/dist/manual/acciones/acciones.png') }}" 
+                             alt="Acciones de Activo" 
+                             class="img-fluid rounded img-guide">
+                        <p class="small text-muted mt-2 mb-0">
+                            <i class="fas fa-mouse-pointer mr-1"></i> Use el menú de acciones en la tabla principal para acceder.
+                        </p>
+                    </div>
+                </div>
+            </div> {{-- /.row --}}
+        </div>
+    </div>
+</div>
+
+
+
+
+{{-- SECCIÓN 5: Cálculo de Depreciación --}}
+<div class="card card-info card-outline mb-0 shadow-none border-bottom"> 
+    <a class="d-block w-100 collapsed" data-toggle="collapse" href="#collapseFive">
+        <div class="card-header">
+            <h4 class="card-title w-100 font-weight-bold">
+                <i class="fas fa-calculator mr-2 text-info"></i> 5. Cálculo de Depreciación
+            </h4>
+        </div>
+    </a>
+    <div id="collapseFive" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <p class="text-justify">
+                        Este módulo permite conocer el <strong>valor contable actual</strong> de cada activo, aplicando porcentajes de desgaste anual según su categoría.
+                    </p>
+                    
+                    <ul class="text-muted small">
+                        <li><i class="fas fa-percentage mr-1 text-success"></i> <strong>Automatización:</strong> El sistema calcula el tiempo transcurrido desde la fecha de compra hasta hoy.</li>
+                        <li><i class="fas fa-chart-line mr-1 text-success"></i> <strong>Valor de Rescate:</strong> Muestra cuánto vale el equipo después de su vida útil estimada.</li>
+                        <li><i class="fas fa-history mr-1 text-success"></i> <strong>Histórico Contable:</strong> Útil para auditorías y toma de decisiones sobre renovación de hardware.</li>
+                    </ul>
+
+                    <p class="text-justify font-italic small mt-3">
+                        Ruta del controlador encargado:
+                    </p>
+
+                    <div class="card bg-dark shadow-sm border-0 mb-3" style="border-radius: 8px; overflow: hidden;">
+                        <div class="card-header py-2 px-3" style="background: #2d3238; border-bottom: 1px solid #3e444d;">
+                            <i class="fas fa-file-code text-warning mr-2"></i>
+                            <span class="small text-gray-300 font-italic text-uppercase" style="font-size: 10px">routes/web.php</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <pre class="m-0 p-3" style="background: #1e2227; line-height: 1.4;"><code class="text-white" style="font-family: 'Source Code Pro', monospace; font-size: 0.8rem;">// Reportes y Depreciación
+Route::get('/depreciacion', [DepreciacionController::class, 'index'])
+    ->name('depreciacion.index');</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7 text-center">
+                    {{-- Aquí puedes colocar una captura de la tabla de depreciación cuando la tengas lista --}}
+                    <div class="img-container shadow-sm border rounded p-2 bg-light">
+                        <img src="{{ asset('vendor/adminlte/dist/manual/depreciacion/depreciacion.png') }}" 
+                             alt="Acciones de Activo" 
+                             class="img-fluid rounded img-guide">
+                        <p class="small text-muted mt-2 mb-0">
+                            <i class="fas fa-mouse-pointer mr-1"></i> Use el menú de acciones en la tabla principal para acceder.
+                        </p>
+                    </div>
+                </div>
+            </div> {{-- /.row --}}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
             
         </div> {{-- /#accordion --}}
     </div> {{-- /.card-body principal --}}
