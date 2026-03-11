@@ -1,17 +1,3 @@
-$(document).ready(function() {
-    const alertRow = $('tr').filter(function() {
-        return $(this).find('.badge-status').length > 0;
-    });
-
-    if (alertRow.length) {
-        alertRow[0].scrollIntoView({behavior: 'smooth', block: 'center'});
-        alertRow.css('background-color', '#fff5f5');
-        setTimeout(() => {
-            alertRow.animate({ backgroundColor: "transparent" }, 2000);
-        }, 1000);
-    }
-});
-
 function togglePanel() {
     const body = document.getElementById('searchBody');
     const icon = document.getElementById('toggle-icon');
@@ -35,3 +21,29 @@ function togglePanel() {
         icon.style.transform = "rotate(0deg)";
     }
 }
+
+
+$(document).ready(function() {
+    const marker = document.getElementById('scroll-target-marker');
+
+    if (marker) {
+        const equipoId = marker.getAttribute('data-id');
+        const targetRow = document.getElementById('tipo-' + equipoId);
+
+        if (targetRow) {
+            targetRow.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+
+            $(targetRow).css('background-color', '#fdecea');
+            
+            $(targetRow).fadeOut(400).fadeIn(400).fadeOut(400).fadeIn(400, function() {
+                setTimeout(() => {
+                    $(this).animate({ backgroundColor: "transparent" }, 2000);
+                }, 3000);
+            });
+        }
+    }
+});
+

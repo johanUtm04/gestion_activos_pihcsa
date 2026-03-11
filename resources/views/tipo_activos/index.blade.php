@@ -11,6 +11,7 @@
 @stop
 
 @section('content')
+    @include('marcas.partials._alerts')
     @include('tipo_activos.partials._filters')
 
     <div class="row">
