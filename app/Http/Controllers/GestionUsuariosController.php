@@ -5,43 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-/*
-|--------------------------------------------------------------------------
-| Controlador destinado para manejar CRUD(CREATE, READ, UPDATE, DELETE) de Catalogo de Usuarios
-|--------------------------------------------------------------------------
-*/
+
 class GestionUsuariosController extends Controller
 {
     const PER_PAGE = 10;
 
-    //Metodo para mostrar vista
-public function index(Request $request)
-{
-    // 1. Iniciamos la consulta
-    $query = User::query(); 
-
-    // 2. Filtro de búsqueda general (Nombre o Email)
-    if ($request->filled('usuario_id')) {
-        $query->where('id', $request->usuario_id);
-    }
-
-    // 3. Orden y Paginación (Usando tu constante o un número fijo)
-    $users = $query->orderBy('name', 'asc') 
-    ->paginate(10)
-    ->withQueryString(); 
-
-    $todosLosUsuarios = User::orderBy('name', 'asc')->get();
-
-    return view('users.index', compact('users', 'todosLosUsuarios'));
-}
-
-    //Metodo para cargar formulario de creacion
-    public function create()
+    public function index(Request $request)
     {
-        return view('users.create');
+        $query = User::query(); 
+
+        if ($request->filled('usuario_id')) {
+            $query->where('id', $request->usuario_id);
+        }
+
+        if ($request->filled('rol')) {
+            $query->where('rol', $request->rol);
+        }
+
+        if ($request->filled('departamento')) {
+            $query->where('departamento', $request->departamento);
+        }
+
+        $users = $query->orderBy('id', 'asc') 
+            ->paginate(self::PER_PAGE)
+            ->withQueryString(); 
+
+        $todosLosUsuarios = User::orderBy('name', 'asc')->get();
+
+        return view('users.index', compact('users', 'todosLosUsuarios'));
     }
 
-    //Metodo para crear registro en Base de datos
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -54,21 +47,13 @@ public function index(Request $request)
         ]);
 
         $data['password'] = Hash::make($data['password']);
-        
         $user = User::create($data);
 
-        return redirect()->route('users.index', ['page' => $this->getReturnPage($user->id)])
-        ->with('new_id', $user->id)
+    return redirect()->route('users.index', ['page' => $this->getReturnPage($user->id)])
+        ->with('new_id', $user->id) 
         ->with('success', 'Usuario agregado correctamente');
     }
 
-    //Metodo para cargar formulario de edicion
-    public function edit(User $user)
-    {
-        return view('users.edit', compact('user'));
-    }
-
-    //Metodo para editar registro en Base de datos
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
@@ -81,26 +66,38 @@ public function index(Request $request)
 
         $user->update($data);
 
-        return redirect()->route('users.index', ['page' => $this->getReturnPage($user->id)])
-        ->with('actualizado->id', $user->id)
-        ->with('warning', 'Usuario editado correctamente');
+    return redirect()->route('users.index', ['page' => $this->getReturnPage($user->id)])
+    ->with('actualizado_id', $user->id)
+    ->with('warning', 'Usuario editado correctamente');
     }
 
-    //Metodo para eliminar registro de base de datos
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
     public function destroy(User $user)
     {
         $page = $this->getReturnPage($user->id);
-        
         $user->delete();
 
         return redirect()->route('users.index', ['page' => $page])
             ->with('danger', 'Usuario eliminado correctamente');
     }
 
-    //METODO HELPER: Calcula la página en la que se encuentra un registro
-    private function getReturnPage($userId)
-    {
-        $position = User::where('id', '<=', $userId)->count();
-        return ceil($position / self::PER_PAGE);
-    }
+private function getReturnPage($userId)
+{
+    $usuarioTarget = User::find($userId);
+
+    if (!$usuarioTarget) return 1;
+
+    $position = User::where('id', '<=', $userId)->count();
+
+    return ceil($position / self::PER_PAGE);
+}
 }

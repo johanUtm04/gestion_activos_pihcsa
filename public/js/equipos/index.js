@@ -22,7 +22,7 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
                     </span>
                                         
                     <p class="mb-0 opacity-8" style="font-size: 0.75rem;">
-                        ID en Base de datos: ${d.id} | 
+                        ID en BD: ${d.id} | 
                         <i class="fas fa-barcode mr-1"></i>${d.serial} |
                         ${d.marca}  |
                         <i class="fab fa-windows mr-1"></i>${d.so} |
@@ -197,6 +197,7 @@ function ejecutarInactivacion(elemento) {
 }
 
 
+
 $('#btnConfirmarInactivacion').on('click', function() {
     const motivo = $('#motivo_texto').val().trim();
     if (motivo.length < 10) {
@@ -209,4 +210,26 @@ $('#btnConfirmarInactivacion').on('click', function() {
     formularioActual[0].submit();
 });
 
+$(document).ready(function() {
+    const marker = document.getElementById('scroll-target-marker');
 
+    if (marker) {
+        const equipoId = marker.getAttribute('data-id');
+        const targetRow = document.getElementById('equipo-' + equipoId);
+
+        if (targetRow) {
+            targetRow.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+
+            $(targetRow).css('background-color', '#fff3cd');
+            
+            $(targetRow).fadeOut(400).fadeIn(400).fadeOut(400).fadeIn(400, function() {
+                setTimeout(() => {
+                    $(this).animate({ backgroundColor: "transparent" }, 2000);
+                }, 3000);
+            });
+        }
+    }
+});

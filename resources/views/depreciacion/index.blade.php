@@ -8,6 +8,7 @@
 
 @section('content_header')
     @include('depreciacion.partials._header')
+    @include('depreciacion.partials._filters')
 @stop
 
 @section('content')

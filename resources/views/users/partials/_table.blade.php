@@ -19,11 +19,13 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="mr-2">
-                                    @if(session('actualizado->id') == $user->id)
-                                        <span class="badge badge-warning badge-status-pill">Editado</span>
+                                    {{-- Cambiamos 'actualizado->id' por 'actualizado_id' --}}
+                                    @if(session('actualizado_id') == $user->id)
+                                        <span class="badge badge-warning badge-status-pill animate__animated animate__flash">Editado</span>
                                     @endif
+                                    
                                     @if(session('new_id') == $user->id)
-                                        <span class="badge badge-success badge-status-pill">Nuevo</span>
+                                        <span class="badge badge-success badge-status-pill animate__animated animate__bounceIn">Nuevo</span>
                                     @endif
                                 </div>
                                 <div>

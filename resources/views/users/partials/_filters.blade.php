@@ -1,8 +1,8 @@
-<div class="card card-outline card-success shadow-sm mb-4">
+<div class="card card-outline card-success shadow-sm mb-2">
     <div class="search-header border-0 shadow-none" onclick="togglePanel()" 
-         style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: transparent;">
+         style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; background: transparent;">
         
-        <h3 class="card-title text-success font-weight-bold mb-0">
+        <h3 class="card-title text-success font-weight-bold mb-0" style="font-size: 1rem;">
             <i class="fas fa-search mr-2"></i> Panel de Búsqueda de Usuarios
         </h3>
         
@@ -14,30 +14,60 @@
     </div>
 
     <div class="search-body" id="searchBody" style="max-height: 0; overflow: hidden; transition: all 0.4s ease-in-out; opacity: 0;">
-        <div class="card-body border-top">
+        <div class="card-body border-top py-2 bg-light">
             <form action="{{ route('users.index') }}" method="GET">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="small font-weight-bold text-muted">Seleccionar Usuario</label>
-                            <select name="usuario_id" class="form-control form-control-sm">
-                                <option value="">-- Todos los usuarios --</option>
+                <div class="row align-items-end">
+                    {{-- 1. USUARIO --}}
+                    <div class="col-md-3">
+                        <div class="form-group mb-1">
+                            <label class="small font-weight-bold text-muted text-uppercase">Usuario</label>
+                            <select name="usuario_id" class="form-control form-control-sm shadow-sm">
+                                <option value="">-- Todos --</option>
                                 @foreach($todosLosUsuarios as $u)
-                                    <option value="{{ $u->id }}" {{ request('usuario_id') == $u->id ? 'selected' : '' }}>
-                                        {{ $u->name }} ({{ $u->email }})
+                                    <option value="{{ $u->id }}" @selected(request('usuario_id') == $u->id)>
+                                        {{ $u->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="col-md-3 d-flex align-items-end">
-                        <div class="form-group w-100">
+                    {{-- 2. ROL --}}
+                    <div class="col-md-3">
+                        <div class="form-group mb-1">
+                            <label class="small font-weight-bold text-muted text-uppercase">Rol</label>
+                            <select name="rol" class="form-control form-control-sm shadow-sm">
+                                <option value="">-- Todos --</option>
+                                <option value="admin" @selected(request('rol') == 'admin')>ADMIN</option>
+                                <option value="INVITADO" @selected(request('rol') == 'INVITADO')>INVITADO</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- 3. DEPARTAMENTO --}}
+                    <div class="col-md-3">
+                        <div class="form-group mb-1">
+                            <label class="small font-weight-bold text-muted text-uppercase">Departamento</label>
+                            <select name="departamento" class="form-control form-control-sm shadow-sm">
+                                <option value="">-- Todos --</option>
+                                @php
+                                    $deps = ['ADMINISTRACION','ALMACEN','CALIDAD','COBRANZA','COMPRAS','CONTABILIDAD','CREDITO','CULTURA Y TALENTO','DIRECCION','EMBARQUES','INVENTARIOS','JURIDICO','LOGISTICA','SISTEMAS','VENTAS','VENTAS_GOB','VENTAS_PRIV'];
+                                @endphp
+                                @foreach($deps as $d)
+                                    <option value="{{ $d }}" @selected(request('departamento') == $d)>{{ $d }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- BOTONES --}}
+                    <div class="col-md-3 text-right">
+                        <div class="form-group mb-1">
                             <div class="btn-group w-100">
                                 <button type="submit" class="btn btn-success btn-sm shadow-sm">
-                                    <i class="fas fa-filter mr-1"></i> Filtrar
+                                    <i class="fas fa-filter mr-1"></i> FILTRAR
                                 </button>
-                                <a href="{{ route('users.index') }}" class="btn btn-default btn-sm shadow-sm" title="Limpiar búsqueda">
+                                <a href="{{ route('users.index') }}" class="btn btn-default btn-sm shadow-sm" title="Limpiar">
                                     <i class="fas fa-sync-alt text-danger"></i>
                                 </a>
                             </div>

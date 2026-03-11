@@ -58,3 +58,24 @@ $('#btn-recalcular').on('click', function() {
         `).fadeIn(400);
     }, 700);
 });
+
+function togglePanel() {
+    const body = document.getElementById('searchBody');
+    const icon = document.getElementById('toggle-icon');
+
+    if (body.style.maxHeight === "0px" || body.style.maxHeight === "") {
+        // Abrir: Usamos un valor lo suficientemente grande (ej. 500px) para el contenido
+        body.style.maxHeight = "500px"; 
+        body.style.opacity = "1";
+        body.style.paddingTop = "15px"; // Opcional, para que no pegue con el borde
+        icon.classList.replace('fa-plus', 'fa-minus');
+        icon.style.transform = "rotate(180deg)";
+    } else {
+        // Cerrar
+        body.style.maxHeight = "0";
+        body.style.opacity = "0";
+        body.style.paddingTop = "0";
+        icon.classList.replace('fa-minus', 'fa-plus');
+        icon.style.transform = "rotate(0deg)";
+    }
+}

@@ -85,10 +85,23 @@
             </table>
         </div>
     </div>
-    
-    @if($equipos->hasPages())
-    <div class="card-footer bg-white border-top-0">
-        {{ $equipos->links() }}
+    <div class="card-footer bg-white border-top-0 d-flex align-items-center justify-content-between">
+        {{-- Contenedor de la Paginación --}}
+        <div>
+            {{ $equipos->links() }}
+        </div>
+
+        {{-- Contenedor del Logo --}}
+        
+        <div class="d-flex align-items-center ml-auto" style="opacity: 0.9;">
+            <div class="mx-1 d-none d-md-block" style="border-left: 1px solid #e0e0e0; height: 45px;"></div>
+            <div class="text-right mr-2 d-none d-lg-block">
+                <small class="text-muted d-block" style="font-size: 0.55rem; line-height: 1; letter-spacing: 0.5px;">SISTEMA DE GESTIÓN</small>
+                <span class="font-weight-bold text-secondary" style="font-size: 0.75rem;">ACTIVOS TI</span>
+            </div>
+            <img src="{{ asset('vendor/adminlte/dist/img/logohd.png') }}" 
+                alt="Logo PIHCSA" 
+                style="height: 40px; width: auto; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1));">
+        </div>
     </div>
-    @endif
 </div>

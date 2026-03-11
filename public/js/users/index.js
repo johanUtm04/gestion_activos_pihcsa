@@ -35,3 +35,32 @@ function togglePanel() {
         icon.style.transform = "rotate(0deg)";
     }
 }
+
+$(document).ready(function() {
+    const newId = "{{ session('new_id') }}";
+    const updatedId = "{{ session('actualizado_id') }}";
+    const targetId = newId || updatedId;
+
+    if (targetId) {
+        const targetRow = $('#user-' + targetId);
+
+        if (targetRow.length) {
+            targetRow[0].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+
+            targetRow.css('background-color', '#d4edda'); 
+            
+            if (updatedId) {
+                targetRow.css('background-color', '#fff3cd'); 
+            }
+
+            setTimeout(() => {
+                targetRow.animate({
+                    backgroundColor: "transparent"
+                }, 2000);
+            }, 1000);
+        }
+    }
+});
