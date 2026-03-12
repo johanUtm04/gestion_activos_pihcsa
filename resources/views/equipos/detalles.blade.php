@@ -123,6 +123,8 @@
                     @else
                         <span class="badge badge-light text-muted border">Sin Factura</span>
                     @endif
+                    <div class="label-header">Inicio de Uso</div>
+                    <div class="h3 font-weight-bold text-success mb-2">{{ $equipo->fecha_inicio_uso ?? Pendiente }}</div>
                 </div>
                 
                 <div class="col-md-9 pl-md-4">
@@ -185,8 +187,8 @@
                             @forelse($equipo->procesadores->where('is_active', 1) as $cpu)
                                 <div class="component-item">
                                     <div class="font-weight-bold">{{ $cpu->marca }}</div>
-                                    <div class="text-sm">{{ $cpu->descripcion_tipo }}</div>
-                                    <div class="text-sm">{{ $cpu->clock_ghz }}</div>
+                                    <div class="text-sm"> <strong>Tipo</strong> {{ $cpu->descripcion_tipo }}</div>
+                                    <div class="text-sm">{{ $cpu->clock_ghz }} <strong>Ghz</strong></div>
                                 </div>
                             @empty
                                 <div class="text-muted p-2 italic">Sin CPUs registrados</div>

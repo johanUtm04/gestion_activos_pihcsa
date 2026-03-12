@@ -311,7 +311,6 @@ $(document).ready(function() {
             const val = $(this).val();
             if (val === 'OTRO_VALOR') {
                 $input.removeClass('custom-input').hide().fadeIn().focus();
-                // No borramos el valor inmediatamente para permitir correcciones
             } else {
                 $input.fadeOut(function() {
                     $(this).addClass('custom-input').val(val);
@@ -319,11 +318,8 @@ $(document).ready(function() {
             }
         });
 
-        // Lógica de carga inicial (Session/Old Data)
         let initialVal = $input.val();
         if (initialVal !== '') {
-            // Intentar encontrar el valor en las opciones del select
-            // Usamos parseFloat para comparar números como 2.4 y 2.40 correctamente
             let matchingOption = $select.find('option').filter(function() {
                 return parseFloat($(this).val()) === parseFloat(initialVal);
             });
