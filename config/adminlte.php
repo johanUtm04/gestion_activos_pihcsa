@@ -298,97 +298,114 @@ return [
     |
     */
 
-    'menu' => [
-        // Navbar items:
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => false,
-        ],
-        ['header' => 'Acciones Principales'],
-        //Inicio
-        [
-            'text' => 'Inicio',
-            'url' => '/equipos',
-            'icon' => 'fas fa-boxes',
-            'icon_color' => 'primary',
-            'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
-            'active' => ['equipos*'],
-
-        ],
-        //Mi Perfil
-        [
-            'text' => 'profile',
-            'url' => '/profile',
-            'icon' => 'fas fa-user-cog',
-            'can'  => ['access-admin', 'access-sistemas'],
-            'active' => ['profile*'],
-        ],
-        //Calcular Depreciacion
-        [
-            'text' => 'Calcular_depreciacion',
-            'url' => '/depreciacion',
-            'icon' => 'fas fa-dollar-sign',
-            'icon_color' => 'success',
-            'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
-            'active' => ['depreciacion*'],
-        ],
-        ['header' => 'CATALOGOS',
-        'can'    => 'ver-admin',
-        ],
-        //Gestion de Usuarios
-        [
-            'text' => 'gestion_usuarios',
-            'url' => '/gestionUsuarios',
-            'icon' => 'fas fa-users-cog',
-            'can' => 'access-admin',
-            'active' => ['gestionUsuarios*'],
-            'can'  => ['access-admin'],
-        ],
-        //Gestion de Ubicaciones
-        [
-            'text' => 'gestion_ubicaciones',
-            'url' => '/gestionUbicaciones',
-            'icon' => 'fas fa-map-marker-alt',
-            'can'  => ['access-admin'],
-            'active' => ['gestionUbicaciones*'],
-        ],
-        [
-            'text' => 'Gestión de Marcas',
-            'url'  => 'gestionMarcas', 
-            'icon' => 'fas fa-tags',
-            'can'  => ['access-admin'],
-            'active' => ['gestionMarcas*'],
-        ],
-        [
-            'text' => 'Tipos de Activo',
-            'url'  => 'gestionTipoActivos', 
-            'icon' => 'fas fa-fw fa-laptop-house',
-            'can'  => ['access-admin'],
-            'active' => ['gestionTipoActivos*'],
-        ],
-        ['header' => 'Historial'],
-        //Historial
-        [
-            'text' => 'historial',
-            'url' => '/historial',
-            'icon' => 'fas fa-history',
-            'can'  => ['access-admin', 'access-sistemas'],
-            'active' => ['historial*'],
-        ],
-        ['header' => 'Contacto y Ayuda'],
-        [
-            'text' => 'Contacto / Ayuda',
-            'icon' => 'fas fa-headset',
-            'icon_color' => 'success',
-            'route'  => 'soporte.contacto',
-        ],
-        [
-            'text' => 'Manual De Trabajo',
-            'icon' => 'fas fa-book',
-            'route'  => 'soporte.manual',
-        ],
-
+'menu' => [
+    // Navbar items
+    [
+        'type' => 'fullscreen-widget',
+        'topnav_right' => false,
     ],
+
+    // --- SECCIÓN: OPERACIONES ---
+    ['header' => 'ACCIONES PRINCIPALES'],
+    [
+        'text' => 'Inicio',
+        'url'  => '/equipos',
+        'icon' => 'fas fa-boxes',
+        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active' => ['equipos*'],
+    ],
+    [
+        'text' => 'profile',
+        'url'  => '/profile',
+        'icon' => 'fas fa-user-cog',
+        'can'  => ['access-admin', 'access-sistemas'],
+        'active' => ['profile*'],
+    ],
+
+    // --- SECCIÓN: MÓDULO FISCAL ---
+    ['header' => 'ANÁLISIS Y DEPRECIACIÓN'],
+    [
+        'text' => 'Calcular_depreciacion', // Tu vista de cálculo principal
+        'url'  => '/depreciacion',
+        'icon' => 'fas fa-calculator',
+        'icon_color' => 'success',
+        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active' => ['depreciacion'],
+    ],
+    [
+        'text' => 'inpc', // Catálogo de índices
+        'url'  => '/configuracion/inpc',
+        'icon' => 'fas fa-chart-bar',
+        'icon_color' => 'info',
+        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active' => ['configuracion/inpc*'],
+    ],
+    [
+        'text' => 'tasa_intereses', // Configuración de Tasas LISR
+        'url'  => '/configuracion/tasas',
+        'icon' => 'fas fa-percent',
+        'icon_color' => 'warning',
+        'can'  => ['calcular-depreciacion'],
+        'active' => ['configuracion/tasas*'],
+    ],
+
+    // --- SECCIÓN: CATÁLOGOS ---
+    [
+        'header' => 'CATALOGOS',
+        'can'    => ['access-admin'], // Solo el administrador ve este encabezado
+    ],
+    [
+        'text' => 'gestion_usuarios',
+        'url'  => '/gestionUsuarios',
+        'icon' => 'fas fa-users-cog',
+        'can'  => ['access-admin'],
+        'active' => ['gestionUsuarios*'],
+    ],
+    [
+        'text' => 'gestion_ubicaciones',
+        'url'  => '/gestionUbicaciones',
+        'icon' => 'fas fa-map-marker-alt',
+        'can'  => ['access-admin'],
+        'active' => ['gestionUbicaciones*'],
+    ],
+    [
+        'text' => 'Gestión de Marcas',
+        'url'  => 'gestionMarcas', 
+        'icon' => 'fas fa-tags',
+        'can'  => ['access-admin'],
+        'active' => ['gestionMarcas*'],
+    ],
+    [
+        'text' => 'Tipos de Activo',
+        'url'  => 'gestionTipoActivos', 
+        'icon' => 'fas fa-laptop-house',
+        'can'  => ['access-admin'],
+        'active' => ['gestionTipoActivos*'],
+    ],
+
+    // --- SECCIÓN: HISTÓRICO ---
+    ['header' => 'REPORTES'],
+    [
+        'text' => 'historial',
+        'url'  => '/historial',
+        'icon' => 'fas fa-history',
+        'can'  => ['access-admin', 'access-sistemas'],
+        'active' => ['historial*'],
+    ],
+
+    // --- SECCIÓN: AYUDA ---
+    ['header' => 'CONTACTO Y AYUDA'],
+    [
+        'text'  => 'Contacto / Ayuda',
+        'icon'  => 'fas fa-headset',
+        'route' => 'soporte.contacto',
+    ],
+    [
+        'text'  => 'Manual De Trabajo',
+        'icon'  => 'fas fa-book',
+        'route' => 'soporte.manual',
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------

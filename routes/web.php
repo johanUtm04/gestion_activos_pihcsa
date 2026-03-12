@@ -12,7 +12,9 @@ use App\Http\Controllers\{
     HistorialController,
     MarcaController,
     TipoActivoController,
-    SoporteController
+    SoporteController,
+    InpcController,
+    TasasController
 };
 
 /*
@@ -75,6 +77,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/depreciacion', [DepreciacionController::class, 'index'])->name('depreciacion.index');
     Route::get('/reporte-general-equipos', [EquipoController::class, 'exportarGeneral'])->name('equipos.reporte');
     Route::get('/historial', [HistorialController::class, 'index'])->name('historial.index');
+    Route::get('/obtener-datos-fiscales', [DepreciacionController::class, 'getFiscalData']);
+
+
+    /* --- CONFIGURACION FISCAL --- */
+    Route::prefix('configuracion')->group(function () {
+    
+    // Rutas para el Catálogo de Tasas LISR
+    Route::get('/tasas', [TasasController::class, 'index'])->name('tasas.index');
+    Route::post('/tasas', [TasasController::class, 'store'])->name('tasas.store');
+    Route::delete('/tasas/{id}', [TasasController::class, 'destroy'])->name('tasas.destroy');
+
+    // Rutas para el Catálogo de INPC
+    Route::get('/inpc', [InpcController::class, 'index'])->name('inpc.index');
+    Route::post('/inpc', [InpcController::class, 'store'])->name('inpc.store');
+    
+    });
+
+
+
 
     /* --- ADMINISTRACIÓN DE CATÁLOGOS --- */
     

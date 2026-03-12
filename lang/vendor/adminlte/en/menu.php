@@ -22,13 +22,15 @@ return [
     'finance_section'              => 'CONTROL FINANCIERO',
     'depreciation'                 => 'Cálculo de Depreciación',
     'asset_value'                  => 'Valor de Activos',
+    'Calcular_depreciacion'        => 'Calcular Depreciacion',
+    'tasa_intereses'               =>'Tasas de Intereses',
+    'inpc'                         => 'INPC',
 
     // Configuración de Cuenta y Perfil
     'inicio'                       => 'Principal',
     'account_settings'             => 'Ajustes',
     'profile'                      => 'Mi Perfil',
     'change_password'              => 'Cambiar Contraseña',
-    'Calcular_depreciacion'        => 'Calcular Depreciacion',
     'Papelera_Activos_Eliminados'  => 'Papelera',
     'gestion_usuarios'             => 'Gestion de Usuarios',
     'gestion_ubicaciones'           => 'Gestion de Ubicaciones',

@@ -67,6 +67,7 @@
                                 data-marca="{{ $equipo->marca->nombre ?? 'Sin Marca' }}"
                                 data-valor="{{ $equipo->valor_inicial }}"
                                 data-fecha="{{ $equipo->fecha_adquisicion }}"
+                                data-fecha-uso="{{ $equipo->fecha_inicio_uso }}"
                                 data-vida="{{ $equipo->vida_util_estimada }}"
                                 title="Calcular depreciación">
                                 <i class="fas fa-calculator"></i>

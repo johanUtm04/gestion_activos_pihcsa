@@ -257,20 +257,16 @@ class EquipoController extends Controller
 
     public function procesar(Request $request)
     {
-        // Limpiamos el serial por si la pistola trae espacios o caracteres raros
         $serial = trim($request->serial);
 
-        // Buscamos el equipo
         $equipo = Equipo::where('serial', $serial)
-                        ->orWhere('id', $serial) // Agregué esto por si escaneas el ID directo
+                        ->orWhere('id', $serial) 
                         ->first();
 
         if ($equipo) {
-            // Si lo encuentras, lo mandas al detalle
             return redirect()->route('equipos.show', $equipo->id);
         }
 
-        // Si no, regresas con mensaje de error
         return back()->with('error', 'El Activo con serial [' . $serial . '] no existe en la base de datos.');
     }
     private function getFilterData()

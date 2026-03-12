@@ -20,6 +20,12 @@ class StoreEquipoRequest extends FormRequest
             'usuario_id'         => 'required|integer|exists:users,id',
             'ubicacion_id'       => 'nullable|integer|exists:ubicaciones,id',
             'valor_inicial'      => 'nullable|numeric|min:0',
+            'fecha_inicio_uso'  => [
+                'required',
+                'date',
+                'after_or_equal:fecha_adquisicion', 
+                'before_or_equal:today',           
+            ],
             'fecha_adquisicion'  => 'required|date',
             'vida_util_estimada' => 'required|string|max:255',
         ];
