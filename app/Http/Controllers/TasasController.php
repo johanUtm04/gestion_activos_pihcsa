@@ -31,6 +31,19 @@ class TasasController extends Controller
         return redirect()->route('tasas.index')->with('success', 'Tasa registrada correctamente.');
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nombre' => 'required',
+            'porcentaje' => 'required|numeric',
+        ]);
+
+        $tasa = Tasa::findOrFail($id);
+        $tasa->update($request->all());
+
+        return redirect()->route('tasas.index')->with('actualizado', 'La tasa se actualizó correctamente.');
+    }
+
     public function destroy($id)
     {
         $tasa = Tasa::findOrFail($id);

@@ -107,8 +107,7 @@ $('#btnProcesarCalculo').on('click', function() {
         $('#out_total_actualizado').text(f(actualizada)).addClass('animated tada');
 
         // Restaurar Botón
-        btn.html('<i class="fas fa-check-double mr-2"></i> ANÁLISIS COMPLETO').removeClass('btn-info').addClass('btn-success').prop('disabled', false);
-        
+        btn.html('<i class="fas fa-check-double mr-2"></i> ANÁLISIS COMPLETO').removeClass('btn-info').addClass('btn-success').prop('disabled', false);  
     })
     .fail(function(xhr) {
         // Manejo de error específico (Mes faltante en catálogo)
