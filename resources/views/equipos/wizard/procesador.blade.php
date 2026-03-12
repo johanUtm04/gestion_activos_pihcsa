@@ -234,24 +234,43 @@
                     </div>
 
 
-                    {{-- Frecuencia (NUEVO CAMPO) --}}
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="frec_select"><i class="fas fa-tachometer-alt"></i> Frecuencia (GHz)</label>
-                            <select id="frec_select" class="form-control">
-                                <option value="">Seleccione velocidad</option>
-                                <option value="2.10">2.10 GHz</option>
-                                <option value="2.40">2.40 GHz</option>
-                                <option value="2.80">2.80 GHz</option>
-                                <option value="3.20">3.20 GHz</option>
-                                <option value="3.60">3.60 GHz</option>
-                                <option value="4.00">4.00 GHz</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                            <input type="number" step="0.01" name="clock_ghz" id="frec_input" class="form-control custom-input" placeholder="Ej. 3.45" value="{{ old('clock_ghz', session('wizard_equipo.procesador.clock_ghz')) }}">
-                            @error('clock_ghz') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
+                {{-- Frecuencia (NUEVO CAMPO) --}}
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="frec_select"><i class="fas fa-tachometer-alt"></i> Frecuencia (GHz)</label>
+                        
+                        @php
+                            // Generación de lista completa
+                            $rangoFrec = [];
+                            for ($i = 0.9; $i <= 5.0; $i += 0.1) { $rangoFrec[] = number_format($i, 2); }
+                            $especialesFrec = ['1.30', '1.70', '2.42', '2.59', '3.19', '3.33'];
+                            $frecuenciasFinales = collect($rangoFrec)->merge($especialesFrec)->unique()->sort()->values();
+                            
+                            // Detectar valor actual en la sesión del Wizard
+                            $valorSesion = old('clock_ghz', session('wizard_equipo.procesador.clock_ghz'));
+                            $valorFormateado = $valorSesion ? number_format((float)$valorSesion, 2) : null;
+                            $esOtroFrec = $valorSesion && !$frecuenciasFinales->contains($valorFormateado);
+                        @endphp
+
+                        <select id="frec_select" class="form-control">
+                            <option value="">Seleccione velocidad</option>
+                            @foreach($frecuenciasFinales as $frec)
+                                <option value="{{ $frec }}" {{ ($valorFormateado == $frec) ? 'selected' : '' }}>
+                                    {{ $frec }} GHz
+                                </option>
+                            @endforeach
+                            <option value="OTRO_VALOR" {{ $esOtroFrec ? 'selected' : '' }}>[ Otro valor ]</option>
+                        </select>
+
+                        {{-- Input real que se envía al servidor --}}
+                        <input type="number" step="0.01" name="clock_ghz" id="frec_input" 
+                            class="form-control mt-2 {{ $esOtroFrec ? '' : 'custom-input' }}" 
+                            placeholder="Ej. 3.45" 
+                            value="{{ $valorSesion }}">
+                        
+                        @error('clock_ghz') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
+                </div>
 
 
                 </div>
@@ -280,27 +299,46 @@
 @section('js')
 <script>
 $(document).ready(function() {
+    /**
+     * @param selectId ID del selector visual
+     * @param inputId  ID del input real que se guarda
+     */
     function setupSelectOtro(selectId, inputId) {
         const $select = $(`#${selectId}`);
         const $input = $(`#${inputId}`);
 
         $select.on('change', function() {
-            if ($(this).val() === 'OTRO_VALOR') {
-                $input.fadeIn().focus();
+            const val = $(this).val();
+            if (val === 'OTRO_VALOR') {
+                $input.removeClass('custom-input').hide().fadeIn().focus();
+                // No borramos el valor inmediatamente para permitir correcciones
             } else {
-                $input.hide().val($(this).val()); 
+                $input.fadeOut(function() {
+                    $(this).addClass('custom-input').val(val);
+                });
             }
         });
 
+        // Lógica de carga inicial (Session/Old Data)
         let initialVal = $input.val();
-        if(initialVal && !$select.find(`option[value='${initialVal}']`).length && initialVal !== '') {
-            $select.val('OTRO_VALOR');
-            $input.show();
-        } else if (initialVal !== '') {
-            $select.val(initialVal);
+        if (initialVal !== '') {
+            // Intentar encontrar el valor en las opciones del select
+            // Usamos parseFloat para comparar números como 2.4 y 2.40 correctamente
+            let matchingOption = $select.find('option').filter(function() {
+                return parseFloat($(this).val()) === parseFloat(initialVal);
+            });
+
+            if (matchingOption.length > 0) {
+                $select.val(matchingOption.val());
+                $input.addClass('custom-input').hide();
+            } else {
+                $select.val('OTRO_VALOR');
+                $input.removeClass('custom-input').show();
+            }
         }
     }
 
+    // Inicializar los tres campos del Wizard
     setupSelectOtro('marca_select', 'marca_input');
     setupSelectOtro('desc_select', 'desc_input');
     setupSelectOtro('frec_select', 'frec_input');

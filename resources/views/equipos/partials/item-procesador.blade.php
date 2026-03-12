@@ -53,20 +53,45 @@
                 value="{{ $procesador->descripcion_tipo ?? '' }}" placeholder="Modelo O Nombre">
             </div>
 
-            {{-- Frecuencia (NUEVO) --}}
-            <div class="form-group col-md-4">
-                <label class="small font-weight-bold">Frecuencia (GHz)</label>
-                <select name="procesador[{{$index}}][clock_ghz]" class="form-control form-control-sm">
-                    <option value="">Seleccione...</option>
-                    @foreach(['2.10', '2.40', '2.80', '3.20', '3.60', '4.00', 'Otro'] as $frec)
-                        <option value="{{ $frec }}" {{ ($procesador->clock_ghz ?? '') == $frec ? 'selected' : '' }}>
-                            {{ $frec }} GHz
-                        </option>
-                    @endforeach
-                </select>
-                {{-- Input oculto opcional: Si planeas usar la lógica de "Otro" aquí también, 
-                    necesitarás un script que maneje este arreglo específico --}}
-            </div>
+{{-- Frecuencia (NUEVO) --}}
+<div class="form-group col-md-4">
+    <label class="small font-weight-bold">Frecuencia (GHz)</label>
+    
+    <div class="input-group input-group-sm">
+        <select id="select_frec_{{$index}}" 
+                class="form-control form-control-sm" 
+                onchange="checkOtroFrec(this, {{$index}})">
+            <option value="">Seleccione...</option>
+            
+            @php
+                $rangoFrec = [];
+                for ($i = 0.9; $i <= 5.0; $i += 0.1) { $rangoFrec[] = number_format($i, 2); }
+                $especialesFrec = ['1.30', '1.70', '2.42', '2.59', '3.19', '3.33'];
+                $frecuenciasFinales = collect($rangoFrec)->merge($especialesFrec)->unique()->sort()->values();
+                
+                $valorActual = number_format((float)($procesador->clock_ghz ?? 0), 2);
+                $esOtro = !empty($procesador->clock_ghz) && !$frecuenciasFinales->contains($valorActual);
+            @endphp
+
+            @foreach($frecuenciasFinales as $frec)
+                <option value="{{ $frec }}" {{ $valorActual == $frec ? 'selected' : '' }}>
+                    {{ $frec }} GHz
+                </option>
+            @endforeach
+            
+            <option value="otro" {{ $esOtro ? 'selected' : '' }}>[ Otro valor ]</option>
+        </select>
+
+        {{-- Este es el input que realmente se guarda en la BD --}}
+        <input type="number" 
+               step="0.01" 
+               name="procesador[{{$index}}][clock_ghz]" 
+               id="input_frec_{{$index}}"
+               class="form-control form-control-sm {{ $esOtro ? '' : 'd-none' }}" 
+               placeholder="0.00"
+               value="{{ $procesador->clock_ghz ?? '' }}">
+    </div>
+</div>
 
 
         </div>
@@ -117,3 +142,18 @@
         </div>
     </div> {{-- Fin Collapse --}}
 </div>
+
+
+<script>
+function checkOtroFrec(select, index) {
+    const input = document.getElementById('input_frec_' + index);
+    if (select.value === 'otro') {
+        input.classList.remove('d-none');
+        input.value = '';
+        input.focus();
+    } else {
+        input.classList.add('d-none');
+        input.value = select.value;
+    }
+}
+</script>
