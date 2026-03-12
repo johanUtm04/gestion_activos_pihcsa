@@ -21,7 +21,7 @@ class StoreEquipoRequest extends FormRequest
             'ubicacion_id'       => 'nullable|integer|exists:ubicaciones,id',
             'valor_inicial'      => 'nullable|numeric|min:0',
             'fecha_inicio_uso'  => [
-                'required',
+                'nullable',
                 'date',
                 'after_or_equal:fecha_adquisicion', 
                 'before_or_equal:today',           
