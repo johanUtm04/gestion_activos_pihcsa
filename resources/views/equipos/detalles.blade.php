@@ -124,7 +124,7 @@
                         <span class="badge badge-light text-muted border">Sin Factura</span>
                     @endif
                     <div class="label-header">Inicio de Uso</div>
-                    <div class="h3 font-weight-bold text-success mb-2">{{ $equipo->fecha_inicio_uso ?? Pendiente }}</div>
+                    <div class="h5 font-weight-bold text-success mb-0">{{ $equipo->fecha_inicio_uso ?? 'Pendiente' }}</div>
                 </div>
                 
                 <div class="col-md-9 pl-md-4">
