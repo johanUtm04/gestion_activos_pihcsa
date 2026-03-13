@@ -22,13 +22,12 @@ class TasasController extends Controller
             'descripcion' => 'nullable|string'
         ]);
 
-        Tasa::create([
-            'nombre' => $request->nombre,
-            'porcentaje' => $request->porcentaje,
-            'descripcion' => $request->descripcion
-        ]);
+        $tasa = Tasa::create($request->all());
 
-        return redirect()->route('tasas.index')->with('success', 'Tasa registrada correctamente.');
+        
+        return redirect()->route('tasas.index')
+        ->with('success', 'Tasa registrada correctamente.')
+        ->with('tasa_id', $tasa->id);
     }
 
     public function update(Request $request, $id)
@@ -41,7 +40,8 @@ class TasasController extends Controller
         $tasa = Tasa::findOrFail($id);
         $tasa->update($request->all());
 
-        return redirect()->route('tasas.index')->with('actualizado', 'La tasa se actualizó correctamente.');
+        return redirect()->route('tasas.index')->with('actualizado', 'La tasa se actualizó correctamente.')
+        ->with('tasa_id', $id);;
     }
 
     public function destroy($id)
