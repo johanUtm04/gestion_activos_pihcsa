@@ -70,7 +70,7 @@ $('#btnProcesarCalculo').on('click', function() {
     btn.html('<i class="fas fa-sync fa-spin"></i> CONSULTANDO CATÁLOGOS...').prop('disabled', true);
 
     // LLAMADA AL SERVIDOR PARA OBTENER TASAS E INPC REALES
-    $.get('/obtener-datos-fiscales', dataEnvio, function(response) {
+    $.get(window.baseRoute, dataEnvio, function(response) {
         
         // --- BLOQUE I: DEDUCCIÓN LINEAL ---
         const moi = dataEnvio.valor_base + dataEnvio.gastos + dataEnvio.imptos;

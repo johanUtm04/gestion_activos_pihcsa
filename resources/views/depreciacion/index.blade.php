@@ -24,5 +24,8 @@
     @include('depreciacion.partials._modal')
 @stop
 @section('js')
+    <script>
+        window.baseRoute = "{{ url('obtener-datos-fiscales') }}";
+    </script>
     <script src="{{ asset('js/depreciacion/index.js') }}"></script>
 @stop 
