@@ -11,7 +11,7 @@ class TasasController extends Controller
     public function index(Request $request)
     {
         $tasas = Tasa::all();
-        dd($tasas->id);
+        // dd($tasas->id);
         return view('tasas.index', compact('tasas'));
     }
 
