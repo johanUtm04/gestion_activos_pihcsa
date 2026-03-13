@@ -306,7 +306,7 @@
                                     <td colspan="4" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="fas fa-folder-open fa-3x mb-3"></i>
-                                            <p class="h5">No se encontraron equipos inactivos</p>
+                                            <p class="h5">Sin Resultados</p>
                                         </div>
                                     </td>
                                 </tr>

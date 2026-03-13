@@ -44,6 +44,8 @@
                     @include('equipos.partials.edit.form-datos-base')
                     @include('equipos.partials.edit.form-asignacion')
                     @include('equipos.partials.edit.form-componentes')
+                    @include('equipos.partials.edit.bolsa-cambios')
+
 
                     <div class="card-footer text-center bg-transparent">
                         <button type="submit" id="btnGuardarCambios" class="btn btn-success">

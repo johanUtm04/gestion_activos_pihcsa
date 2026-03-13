@@ -12,19 +12,19 @@ class Equipo extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // Atributos calculados que se añaden al JSON/Array del modelo
     protected $appends = ['semaforo'];
 
     protected $casts = [
         'fecha_ultimo_mantenimiento' => 'date',
         'fecha_adquisicion' => 'date',
+        'vida_util_estimada' => 'integer',
     ];
 
     protected $fillable = [
         'marca_equipo','marca_id', 'modelo', 'fecha_ultimo_mantenimiento',
         'tipo_equipo','tipo_activo_id', 'serial', 'numero_factura', 'fecha_inicio_uso',
-        'sistema_operativo', 'usuario_id', 'ubicacion_id','departamento_perteneciente','valor_inicial',
-        'fecha_adquisicion', 'vida_util_estimada', 'motivo_inactivacion'
+        'sistema_operativo', 'usuario_id', 'ubicacion_id','departamento_perteneciente',
+        'valor_inicial','fecha_adquisicion', 'vida_util_estimada', 'motivo_inactivacion'
     ];
 
     // ----------------------------------------------------

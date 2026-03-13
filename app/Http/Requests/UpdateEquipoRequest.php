@@ -18,6 +18,7 @@ class UpdateEquipoRequest extends FormRequest
             'marca_id'           => 'required|exists:marcas,id',
             'tipo_activo_id'     => 'required|exists:tipo_activos,id',
             'usuario_id'         => 'required|exists:users,id',
+            'ubicacion_id'       => 'required|exists:users,id',
             'modelo'             => 'nullable|string|max:100',
             'departamento_perteneciente' => 'nullable|string|max:100',
             'fecha_adquisicion'  => 'required|date',
@@ -28,6 +29,7 @@ class UpdateEquipoRequest extends FormRequest
                 'before_or_equal:today',           
             ],
             'valor_inicial'      => 'nullable|numeric',
+            'vida_util_estimada' => 'nullable|integer',
             'sistema_operativo'  => 'nullable|string',
             'serial' => [
                 'required',

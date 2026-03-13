@@ -15,20 +15,101 @@ function confirmarAgregar(tipo, nombreLegible) {
     }).then((result) => {
         if (result.value) {
             agregarComponente(tipo);
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000
-            });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            showClass: { popup: 'animate__animated animate__fadeInRight' },
+            hideClass: { popup: 'animate__animated animate__fadeOutRight' }
+        });
 
-            Toast.fire({
-                icon: 'success',
-                title: `${nombreLegible} preparado`
-            });
+        Toast.fire({
+            icon: 'success',
+            html: `
+                <div class="d-flex align-items-center">
+                    <div class="mr-3" style="font-size: 1.5rem; color: #28a745;">
+                        <i class="fas fa-microchip"></i> 
+                    </div>
+                    <div class="text-left">
+                        <b class="d-block" style="font-size: 1rem;">${nombreLegible}</b>
+                        <small class="text-muted">Componente preparado con éxito</small>
+                    </div>
+                </div>
+            `,
+            background: '#ffffff',
+            customClass: {
+                popup: 'shadow-lg border-left border-success' 
+            }
+        });
         }
     });
 } 
+
+
+
+$(document).ready(function() {
+
+    $('#btnGuardarCambios').on('click', function(e) {
+        e.preventDefault();
+
+        const contenidoCambios = $('#lista-cambios').html();
+
+        if (!contenidoCambios || contenidoCambios.trim() === "") {
+            Swal.fire({
+                icon: 'info',
+                title: 'Sin cambios',
+                text: 'No se han detectado modificaciones para guardar.',
+                confirmButtonColor: '#3085d6',
+            });
+            return;
+        }
+        const tablaHtml = `
+            <div class="text-left">
+                <p class="text-muted small">Revisa los cambios antes de confirmar:</p>
+                <table class="table table-sm table-striped border">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Campo</th>
+                            <th>Anterior</th>
+                            <th>Nuevo</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 0.85rem;">
+                        ${contenidoCambios}
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        Swal.fire({
+            title: '¿Confirmar cambios?',
+            html: tablaHtml, 
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745', 
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fas fa-save"></i> Sí, guardar todo',
+            cancelButtonText: 'Cancelar',
+            width: '600px', 
+        }).then((result) => {
+            if (result.value) {
+
+                Swal.fire({
+                    title: 'Guardando...',
+                    text: 'Actualizando información del activo',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $('#formEditarEquipo').submit();
+            }
+        });
+    });
+});
 
 function agregarComponente(tipo) {
     const container = document.getElementById(`${tipo}-container`);
@@ -171,4 +252,99 @@ function gestionarBloqueoCampos(contenedor) {
             input.classList.remove('bg-light');
         });
     }
+
+/**
+ * Mostrar Bolsa de Cambios
+ */
+$(document).ready(function() {
+    // 1. Diccionario para nombres amigables
+    const labels = {
+        'usuario_id': 'Usuario Responsable',
+        'ubicacion_id': 'Ubicación',
+        'departamento_perteneciente': 'Departamento',
+        'valor_inicial': 'Valor Inicial',
+        'fecha_adquisicion': 'Fecha de Adquisición',
+        'fecha_inicio_uso': 'Fecha Inicio de Uso',
+        'vida_util_input': 'Vida Útil Estimada'
+    };
+
+ // 2. Función principal de monitoreo
+function actualizarBolsaCambios() {
+    let cambios = [];
+    const $lista = $('#lista-cambios');
+    const $panel = $('#panel-resumen-cambios');
+
+    $('input[data-current], select[data-current]').each(function() {
+        const $input = $(this);
+        const id = $input.attr('id');
+        const valorOriginal = String($input.data('current') || '').trim();
+        const valorActual = String($input.val() || '').trim();
+        
+
+        if (valorActual !== valorOriginal) {
+            let textoMostrarAnterior = valorOriginal;
+            let textoMostrarNuevo = valorActual;
+
+            // Lógica para SELECTS: Extraer nombres en vez de IDs
+            if ($input.is('select')) {
+                textoMostrarNuevo = $input.find('option:selected').text().trim();
+                
+                const $opcionAnterior = $input.find(`option[value="${valorOriginal}"]`);
+                textoMostrarAnterior = $opcionAnterior.length > 0 
+                    ? $opcionAnterior.text().trim() 
+                    : (valorOriginal || 'Sin asignar');
+            }
+
+            // Limpieza de fechas (quitar la hora 00:00:00 si existe)
+            if ($input.attr('type') === 'date' || id.includes('fecha')) {
+                textoMostrarAnterior = textoMostrarAnterior.split(' ')[0];
+            }
+
+            const nombreCampo = labels[id] || id;
+            
+            // Usamos las variables "textoMostrar" que son las que ya tienen los nombres
+            const badgeAnterior = textoMostrarAnterior === "" || textoMostrarAnterior === 'Sin asignar' 
+                ? '<span class="text-muted">Sin dato</span>' 
+                : textoMostrarAnterior;
+
+            cambios.push(`
+                <tr>
+                    <td class="pl-4 py-3">
+                        <span class="text-muted small d-block">Campo modificado</span>
+                        <strong class="text-dark">${nombreCampo}</strong>
+                    </td>
+                    <td class="py-3">
+                        <span class="badge badge-secondary p-2" style="font-size: 0.9rem; font-weight: 400;">
+                            ${textoMostrarAnterior || 'N/A'}
+                        </span>
+                    </td>
+                    <td class="py-3 text-center text-muted">
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </td>
+                    <td class="py-3">
+                        <span class="badge badge-success p-2 shadow-sm" style="font-size: 0.9rem;">
+                            <i class="fas fa-check-circle mr-1"></i> ${textoMostrarNuevo}
+                        </span>
+                    </td>
+                </tr>
+            `);
+        }
+    });
+
+    if (cambios.length > 0) {
+        $lista.html(cambios.join(''));
+        $panel.fadeIn();
+    } else {
+        $panel.fadeOut();
+    }
+}
+
+    // 4. Escuchar cualquier cambio en el formulario
+    $('#formEditarEquipo').on('change input', 'input, select', function() {
+        actualizarBolsaCambios();
+    });
+});
+
+
+
 }

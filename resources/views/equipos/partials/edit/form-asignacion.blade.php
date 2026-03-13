@@ -6,7 +6,9 @@
         {{-- Usuario Responsable --}}
         <div class="form-group col-md-6">
             <label for="usuario_id"><i class="fas fa-user-tag"></i> Usuario Responsable</label>
-            <select name="usuario_id" id="usuario_id" class="form-control" data-placeholder="Seleccione un usuario">
+            <select name="usuario_id" id="usuario_id" class="form-control" 
+            data-current="{{ $equipo->usuario_id }}"
+            data-placeholder="Seleccione un usuario">
                 <option value="">Seleccione...</option>
                 @foreach($usuarios as $usuario) 
                 <option value="{{ $usuario->id }}" {{ $equipo->usuario_id == $usuario->id ? 'selected' : '' }}>
@@ -41,7 +43,9 @@
         {{-- Departamento --}}
         <div class="form-group col-md-4">
             <label for="departamento_perteneciente"><i class="fas fa-building"></i> Departamento</label>
-            <select name="departamento_perteneciente" id="departamento_perteneciente" class="form-control select2 @error('departamento_perteneciente') is-invalid @enderror" required>
+            <select name="departamento_perteneciente" id="departamento_perteneciente" 
+            data-current="{{ $equipo->departamento_perteneciente }}"
+            class="form-control select2 @error('departamento_perteneciente') is-invalid @enderror" required>
                 <option value="" disabled {{ old('departamento_perteneciente', $equipo->departamento_perteneciente) == '' ? 'selected' : '' }}>
                     -- Seleccione un departamento --
                 </option>
@@ -73,7 +77,7 @@
             <label for="fecha_adquisicion"><i class="fas fa-calendar-alt"></i> Fecha de Adquisicion</label>
             <input type="date" name="fecha_adquisicion" id="fecha_adquisicion" class="form-control"
                 value="{{ old('fecha_adquisicion', $equipo->fecha_adquisicion ? $equipo->fecha_adquisicion->format('Y-m-d') : '') }}"
-                data-current="{{ $equipo->fecha_adquisicion }}"
+                data-current="{{ $equipo->fecha_adquisicion ? $equipo->fecha_adquisicion->format('Y-m-d') : '' }}"
                 data-motivo-input="#motivo_cambio_fecha">
             <input type="hidden" id="motivo_cambio_fecha">
             <small class="text-muted">Fecha según factura de compra.</small>
@@ -91,7 +95,7 @@
                 id="fecha_inicio_uso" 
                 class="form-control border-success"
                 value="{{ $equipo->fecha_inicio_uso ? \Carbon\Carbon::parse($equipo->fecha_inicio_uso)->format('Y-m-d') : '' }}"
-                data-current="{{ $equipo->fecha_inicio_uso }}"
+                data-current="{{ $equipo->fecha_inicio_uso ? \Carbon\Carbon::parse($equipo->fecha_inicio_uso)->format('Y-m-d') : '' }}"
                 data-label="la fecha de inicio de uso"
                 data-motivo-input="#motivo_cambio_inicio_uso">
             <input type="hidden" name="motivo_cambio_inicio_uso" id="motivo_cambio_inicio_uso">
