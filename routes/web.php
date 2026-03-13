@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     // Rutas para el Catálogo de Tasas LISR
     Route::get('/tasas', [TasasController::class, 'index'])->name('tasas.index');
     Route::post('/tasas', [TasasController::class, 'store'])->name('tasas.store');
+    Route::put('/tasas/{id}', [TasasController::class, 'update'])->name('tasas.update');
     Route::delete('/tasas/{id}', [TasasController::class, 'destroy'])->name('tasas.destroy');
 
     // Rutas para el Catálogo de INPC

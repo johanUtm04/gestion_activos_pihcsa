@@ -7,9 +7,9 @@
 $(document).on('click', '.btn-depreciar', function() {
     const btn = $(this);
     
-    // 1. DECLARACIÓN (Esto evita el ReferenceError)
+    // 1. DECLARACIÓN 
     const inputFechaUso = $('#in_fecha_uso'); 
-    const lockIcon = $('#lock-icon'); // Si agregaste el icono del candado
+    const lockIcon = $('#lock-icon'); 
     
     // 2. CAPTURA DE DATOS
     const marca = btn.data('marca');
@@ -36,7 +36,7 @@ $(document).on('click', '.btn-depreciar', function() {
                      .prop('readonly', false)
                      .removeClass('bg-light');
         
-        if(lockIcon.length) lockIcon.hide(); // Ocultamos candado
+        if(lockIcon.length) lockIcon.hide();
     }
 
     $('#modalDepreciacion').modal('show');
@@ -84,12 +84,10 @@ $('#btnProcesarCalculo').on('click', function() {
 
         // --- BLOQUE II: AJUSTE POR INFLACIÓN ---
         // El factor se redondea a 4 decimales según norma fiscal
-// Reemplaza tus líneas por estas:
+
 let division = response.inpc_mitad / response.inpc_adq;
-// Redondeo a 4 decimales estándar
 let factor = Math.round(division * 10000) / 10000;
 
-// Regla de oro: El factor nunca es menor a 1
 if (factor < 1 || isNaN(factor)) {
     factor = 1.0000;
 }

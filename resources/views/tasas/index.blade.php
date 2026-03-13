@@ -130,7 +130,7 @@ $('#modalEditarTasa').on('show.bs.modal', function (event) {
 
     var modal = $(this);
     
-    var urlAccion = "{{ url('configuracion/tasas') }}";
+    var urlAccion = "{{ url('configuracion/tasas') }}/" + id;
     
     modal.find('#formEditarTasa').attr('action', urlAccion);
     

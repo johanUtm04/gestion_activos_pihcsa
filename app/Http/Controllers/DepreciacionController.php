@@ -49,7 +49,6 @@ public function getFiscalData(Request $request)
                            ->first();
 
             // 3. Lógica LISR: Determinar mes de la 1ra mitad del periodo de uso
-            // Ejemplo: Si se usa de Feb a Dic = 11 meses. Mitad = mes 6 del periodo (Julio)
             $mesesDeUso = 12 - $fechaUso->month + 1;
             $mesMitadRelativo = ceil($mesesDeUso / 2);
             $mesCronologicoMitad = $fechaUso->month + $mesMitadRelativo - 1;
@@ -67,7 +66,7 @@ public function getFiscalData(Request $request)
             }
 
             return response()->json([
-                'tasa' => (float)$request->tasa_id, // El JS ya manda el decimal (0.30)
+                'tasa' => (float)$request->tasa_id, 
                 'inpc_adq' => (float)$inpcAdq->valor,
                 'inpc_mitad' => (float)$inpcMitad->valor,
                 'meses_uso' => $mesesDeUso
