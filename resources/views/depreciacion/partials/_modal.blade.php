@@ -46,7 +46,7 @@
                                     <select id="in_tasa" class="form-control form-control-sm border-success shadow-sm">
                                         <option value="" disabled selected>-- Seleccione una opción --</option>
                                         @foreach($tasas as $tasa)
-                                            <option value="{{ $tasa->porcentaje / 100 }}">
+                                            <option value="{{ $tasa->id }}">
                                                 {{ number_format($tasa->porcentaje, 0) }}% - {{ $tasa->nombre }}
                                             </option>
                                         @endforeach
