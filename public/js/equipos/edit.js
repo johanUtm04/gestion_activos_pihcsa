@@ -274,71 +274,126 @@ function actualizarBolsaCambios() {
     const $lista = $('#lista-cambios');
     const $panel = $('#panel-resumen-cambios');
 
-    $('input[data-current], select[data-current]').each(function() {
+    let countMod = 0;
+    let countAdd = 0;
+    let countDel = 0;
+
+    // 1. CAMPOS GENERALES DEL EQUIPO (Evita duplicados con componentes)
+    $('input[data-current], select[data-current]').not('.item-componente *').each(function() {
         const $input = $(this);
         const id = $input.attr('id');
-        const valorOriginal = String($input.data('current') || '').trim();
-        const valorActual = String($input.val() || '').trim();
-        
+        const original = String($input.data('current') || '').trim();
+        const actual = String($input.val() || '').trim();
 
-        if (valorActual !== valorOriginal) {
-            let textoMostrarAnterior = valorOriginal;
-            let textoMostrarNuevo = valorActual;
+        if (actual !== original) {
+            let txtAnt = original;
+            let txtNue = actual;
 
-            // Lógica para SELECTS: Extraer nombres en vez de IDs
             if ($input.is('select')) {
-                textoMostrarNuevo = $input.find('option:selected').text().trim();
-                
-                const $opcionAnterior = $input.find(`option[value="${valorOriginal}"]`);
-                textoMostrarAnterior = $opcionAnterior.length > 0 
-                    ? $opcionAnterior.text().trim() 
-                    : (valorOriginal || 'Sin asignar');
+                txtNue = $input.find('option:selected').text().trim();
+                const $optAnt = $input.find(`option[value="${original}"]`);
+                txtAnt = $optAnt.length > 0 ? $optAnt.text().trim() : (original || 'Sin asignar');
             }
 
-            // Limpieza de fechas (quitar la hora 00:00:00 si existe)
-            if ($input.attr('type') === 'date' || id.includes('fecha')) {
-                textoMostrarAnterior = textoMostrarAnterior.split(' ')[0];
-            }
-
-            const nombreCampo = labels[id] || id;
-            
-            // Usamos las variables "textoMostrar" que son las que ya tienen los nombres
-            const badgeAnterior = textoMostrarAnterior === "" || textoMostrarAnterior === 'Sin asignar' 
-                ? '<span class="text-muted">Sin dato</span>' 
-                : textoMostrarAnterior;
-
-            cambios.push(`
-                <tr>
-                    <td class="pl-4 py-3">
-                        <span class="text-muted small d-block">Campo modificado</span>
-                        <strong class="text-dark">${nombreCampo}</strong>
-                    </td>
-                    <td class="py-3">
-                        <span class="badge badge-secondary p-2" style="font-size: 0.9rem; font-weight: 400;">
-                            ${textoMostrarAnterior || 'N/A'}
-                        </span>
-                    </td>
-                    <td class="py-3 text-center text-muted">
-                        <i class="fas fa-long-arrow-alt-right"></i>
-                    </td>
-                    <td class="py-3">
-                        <span class="badge badge-success p-2 shadow-sm" style="font-size: 0.9rem;">
-                            <i class="fas fa-check-circle mr-1"></i> ${textoMostrarNuevo}
-                        </span>
-                    </td>
-                </tr>
-            `);
+            const nombreCampo = labels[id] || id || 'Campo General';
+            cambios.push(generarFilaCambio(nombreCampo, txtAnt, txtNue, 'Equipo Principal', 'text-info'));
+            countMod++;
         }
     });
 
+    // 2. LÓGICA UNIVERSAL PARA COMPONENTES (RAM, Procesadores, Discos, Monitores, Periféricos)
+    $('.item-componente').each(function() {
+        const $item = $(this);
+        
+        // Detectar automáticamente el tipo de componente (ej. "RAM #1", "Disco Duro #2")
+        const nombreBase = $item.find('h6').text().split('Ver')[0].trim(); 
+        const esNuevo = $item.find('.numero-index').text().includes('Nuevo');
+
+        if (esNuevo) {
+            cambios.push(generarFilaCambio(nombreBase, 'N/A', 'Nuevo componente agregado', 'Alta', 'text-success'));
+            countAdd++;
+        } else {
+            // Rastrear inputs y selects internos
+            $item.find('input[data-current], select[data-current]').each(function() {
+                const $input = $(this);
+
+                // Evitar duplicidad en selects de frecuencia/otros que usan input alterno
+                if ($input.val() === 'otro' && $input.is('select')) return;
+
+                const original = String($input.data('current') || '').trim();
+                const actual = String($input.val() || '').trim();
+
+                if (actual !== original) {
+                    const nombreProp = $input.closest('.form-group').find('label').text().trim() || 'Dato';
+                    
+                    let txtAnt = original;
+                    let txtNue = actual;
+
+                    if ($input.is('select')) {
+                        txtNue = $input.find('option:selected').text().trim();
+                        const $optAnt = $input.find(`option[value="${original}"]`);
+                        txtAnt = $optAnt.length > 0 ? $optAnt.text().trim() : original;
+                    }
+
+                    // Formateo de unidades
+                    if (nombreProp.toLowerCase().includes('capacidad')) { txtAnt += " GB"; txtNue += " GB"; }
+                    if (nombreProp.toLowerCase().includes('frecuencia')) { txtAnt += " GHz"; txtNue += " GHz"; }
+                    if (nombreProp.toLowerCase().includes('clock')) { txtAnt += " MHz"; txtNue += " MHz"; }
+
+                    cambios.push(generarFilaCambio(`${nombreBase}: ${nombreProp}`, txtAnt, txtNue, 'Modificación', 'text-primary'));
+                    countMod++;
+                }
+            });
+
+            // Rastrear Switch de Estado (Activo/Inactivo)
+            const $switch = $item.find('.switch-estado-componente');
+            if ($switch.length) {
+                const estOriginal = String($switch.data('current')) === "1";
+                const estActual = $switch.prop('checked');
+
+                if (estActual !== estOriginal) {
+                    cambios.push(generarFilaCambio(
+                        `Estado ${nombreBase}`, 
+                        estOriginal ? 'ACTIVO' : 'INACTIVO', 
+                        estActual ? 'ACTIVO' : 'INACTIVO', 
+                        'Estatus', 
+                        'text-danger'
+                    ));
+                    countDel++;
+                }
+            }
+        }
+    });
+
+    // Renderizado Final
     if (cambios.length > 0) {
         $lista.html(cambios.join(''));
+        actualizarContadores(countMod, countAdd, countDel);
         $panel.fadeIn();
     } else {
         $panel.fadeOut();
     }
 }
 
+function actualizarContadores(mod, add, del) {
+    if(mod > 0) $('#cnt-mod').show().find('.num').text(mod); else $('#cnt-mod').hide();
+    if(add > 0) $('#cnt-add').show().find('.num').text(add); else $('#cnt-add').hide();
+    if(del > 0) $('#cnt-del').show().find('.num').text(del); else $('#cnt-del').hide();
+}
+
+function generarFilaCambio(titulo, anterior, nuevo, categoria, colorClase) {
+    const antLimpios = (anterior === "" || anterior === "Seleccione...") ? "Sin dato" : anterior;
+    return `
+        <tr>
+            <td class="pl-4 py-3">
+                <span class="small d-block ${colorClase}" style="font-weight: 700; text-transform: uppercase; font-size: 0.7rem;">${categoria}</span>
+                <strong class="text-dark">${titulo}</strong>
+            </td>
+            <td><span class="badge badge-secondary p-2" style="background:#f1f3f5; color:#495057;">${antLimpios}</span></td>
+            <td class="text-center text-muted"><i class="fas fa-arrow-right"></i></td>
+            <td><span class="badge badge-success p-2 shadow-sm"><i class="fas fa-edit mr-1"></i> ${nuevo}</span></td>
+        </tr>`;
+}
     // 4. Escuchar cualquier cambio en el formulario
     $('#formEditarEquipo').on('change input', 'input, select', function() {
         actualizarBolsaCambios();

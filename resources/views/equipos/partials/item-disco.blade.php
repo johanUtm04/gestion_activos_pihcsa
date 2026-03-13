@@ -34,9 +34,12 @@
         <input type="hidden" name="discoDuro[{{ $index }}][_delete]" value="">
 
         <div class="row">
+            {{-- Capacidad --}}
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Capacidad</label>
-                <select name="discoDuro[{{$index}}][capacidad]" class="form-control form-control-sm">
+                <select name="discoDuro[{{$index}}][capacidad]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $discoDuro->capacidad ?? '' }}">
                     <option value="">Seleccione...</option>
                     @foreach(['120GB','128GB','240GB','256GB','480GB','500GB','512GB','1TB','2TB','3TB','4TB','6TB','8TB','10TB','12TB','16TB'] as $cap)
                         <option value="{{ $cap }}" {{ ($discoDuro->capacidad ?? '') == $cap ? 'selected' : '' }}>{{ $cap }}</option>
@@ -44,9 +47,12 @@
                 </select>
             </div>
 
+            {{-- Tipo --}}
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Tipo</label>
-                <select name="discoDuro[{{$index}}][tipo_hdd_ssd]" class="form-control form-control-sm">
+                <select name="discoDuro[{{$index}}][tipo_hdd_ssd]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $discoDuro->tipo_hdd_ssd ?? '' }}">
                     <option value="">Seleccione...</option>
                     @foreach(['HDD','SSD','SATA SSD','M.2 SATA','M.2 NVMe','PCIe NVMe','Hybrid SSHD','External HDD','External SSD','Otro'] as $tipo)
                         <option value="{{ $tipo }}" {{ ($discoDuro->tipo_hdd_ssd ?? '') == $tipo ? 'selected' : '' }}>{{ $tipo }}</option>
@@ -54,9 +60,12 @@
                 </select>
             </div>
 
+            {{-- Interface --}}
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Interface</label>
-                <select name="discoDuro[{{$index}}][interface]" class="form-control form-control-sm">
+                <select name="discoDuro[{{$index}}][interface]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $discoDuro->interface ?? '' }}">
                     <option value="">Seleccione...</option>
                     @foreach(['SATA','SATA III','NVMe','PCIe NVMe','M.2 NVMe','USB','USB 3.0','USB-C','Thunderbolt','SAS','eSATA','Otro'] as $inter)
                         <option value="{{ $inter }}" {{ trim(strtoupper($discoDuro->interface ?? '')) === strtoupper($inter) ? 'selected' : '' }}>{{ $inter }}</option>
@@ -64,13 +73,15 @@
                 </select>
             </div>
 
+            {{-- Serial --}}
             <div class="col-md-3">
                 <label class="small font-weight-bold"><i class="fas fa-barcode"></i> Serial</label>
                 <input type="text" 
                     name="discoDuro[{{ $index }}][serial]" 
                     class="form-control form-control-sm" 
                     placeholder="S/N" 
-                    value="{{ $discoDuro->serial ?? '' }}">
+                    value="{{ $discoDuro->serial ?? '' }}"
+                    data-current="{{ $discoDuro->serial ?? '' }}">
             </div>
         </div>
 
@@ -83,6 +94,7 @@
                            id="switch-disc-{{ $index }}" 
                            name="discoDuro[{{ $index }}][is_active]" 
                            value="1" 
+                           data-current="{{ !isset($discoDuro) || $discoDuro->is_active ? '1' : '0' }}"
                            {{ !isset($discoDuro) || $discoDuro->is_active ? 'checked' : '' }}>
                     <label class="custom-control-label small font-weight-bold {{ !isset($discoDuro) || $discoDuro->is_active ? 'text-success' : 'text-danger' }}" 
                            for="switch-disc-{{ $index }}">
@@ -92,12 +104,16 @@
             </div>
 
             <div class="col-md-8">
+                @php 
+                    $motivoActual = isset($discoDuro->motivo_inactivo) ? trim(explode('|', $discoDuro->motivo_inactivo)[0]) : '';
+                @endphp
                 <div class="div-motivo" @if(!isset($discoDuro) || $discoDuro->is_active) style="display: none;" @endif>
                     <input type="text" 
                            name="discoDuro[{{ $index }}][motivo_inactivo]" 
                            class="form-control form-control-sm border-danger input-motivo" 
                            placeholder="¿Por qué se marca como inactivo?"
-                           value="{{ isset($discoDuro->motivo_inactivo) ? trim(explode('|', $discoDuro->motivo_inactivo)[0]) : '' }}"
+                           value="{{ $motivoActual }}"
+                           data-current="{{ $motivoActual }}"
                            {{ isset($discoDuro) && !$discoDuro->is_active ? 'required' : '' }}>
 
                     @if(isset($discoDuro->motivo_inactivo) && strpos($discoDuro->motivo_inactivo, '|') !== false)

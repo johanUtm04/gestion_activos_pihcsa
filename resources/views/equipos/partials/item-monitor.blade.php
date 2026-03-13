@@ -36,7 +36,9 @@
         <div class="row">
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Marca</label>
-                <select name="monitor[{{$index}}][marca]" class="form-control form-control-sm">
+                <select name="monitor[{{$index}}][marca]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $monitor->marca ?? '' }}">
                     <option value="">Seleccione...</option>
                     @foreach(['Dell','HP','LG','Samsung','Acer','ASUS','BenQ','Lenovo','Manhattan','MSI','Gigabyte','ViewSonic','Philips','AOC','Eizo','Sony','Panasonic','Xiaomi','Huawei','Otro'] as $mar)
                         <option value="{{ $mar }}" {{ ($monitor->marca ?? '') == $mar ? 'selected' : '' }}>
@@ -48,15 +50,20 @@
 
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Serial</label>
-                <input type="text" name="monitor[{{$index}}][serial]" class="form-control form-control-sm"
-                       value="{{ $monitor->serial ?? '' }}" placeholder="Ej. SN-123456789">
+                <input type="text" name="monitor[{{$index}}][serial]" 
+                       class="form-control form-control-sm"
+                       value="{{ $monitor->serial ?? '' }}" 
+                       data-current="{{ $monitor->serial ?? '' }}"
+                       placeholder="Ej. SN-123456789">
             </div>
 
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Escala En Pulgadas</label>
-                <select name="monitor[{{$index}}][escala_pulgadas]" class="form-control form-control-sm">
+                <select name="monitor[{{$index}}][escala_pulgadas]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $monitor->escala_pulgadas ?? '' }}">
                     <option value="">Seleccione...</option>
-                    @foreach([14,15, 17, 18.5, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 31.5, 32, 34, 38, 40] as $pulgada)
+                    @foreach([14, 15, 17, 18.5, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 31.5, 32, 34, 38, 40] as $pulgada)
                         <option value="{{ $pulgada }}" {{ ($monitor->escala_pulgadas ?? '') == $pulgada ? 'selected' : '' }}>
                             {{ $pulgada }}"
                         </option>
@@ -66,7 +73,9 @@
 
             <div class="form-group col-md-3">
                 <label class="small font-weight-bold">Interface</label>
-                <select name="monitor[{{$index}}][interface]" class="form-control form-control-sm">
+                <select name="monitor[{{$index}}][interface]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $monitor->interface ?? '' }}">
                     <option value="">Seleccione...</option>
                     @foreach(['Integrado', 'HDMI','HDMI 1.4','HDMI 2.0','HDMI 2.1','VGA','DisplayPort (DP)','Mini DisplayPort','DVI','DVI-D','DVI-I','USB-C (Display)','Thunderbolt'] as $inter)
                         <option value="{{ $inter }}" {{ ($monitor->interface ?? '') == $inter ? 'selected' : '' }}>
@@ -82,26 +91,31 @@
             <div class="col-md-4">
                 <div class="custom-control custom-switch">
                     <input type="checkbox" 
-                           class="custom-control-input switch-estado-componente" 
-                           id="switch-mon-{{ $index }}" 
-                           name="monitor[{{ $index }}][is_active]" 
-                           value="1" 
-                           {{ !isset($monitor) || $monitor->is_active ? 'checked' : '' }}>
+                            class="custom-control-input switch-estado-componente" 
+                            id="switch-mon-{{ $index }}" 
+                            name="monitor[{{ $index }}][is_active]" 
+                            value="1" 
+                            data-current="{{ !isset($monitor) || $monitor->is_active ? '1' : '0' }}"
+                            {{ !isset($monitor) || $monitor->is_active ? 'checked' : '' }}>
                     <label class="custom-control-label small font-weight-bold {{ !isset($monitor) || $monitor->is_active ? 'text-success' : 'text-danger' }}" 
-                           for="switch-mon-{{ $index }}">
+                            for="switch-mon-{{ $index }}">
                         {{ !isset($monitor) || $monitor->is_active ? 'COMPONENTE ACTIVO' : 'COMPONENTE INACTIVO' }}
                     </label>
                 </div>
             </div>
             
             <div class="col-md-8">
+                @php 
+                    $motivoActual = isset($monitor->motivo_inactivo) ? trim(explode('|', $monitor->motivo_inactivo)[0]) : '';
+                @endphp
                 <div class="div-motivo" @if(!isset($monitor) || $monitor->is_active) style="display: none;" @endif>
                     <input type="text" 
-                           name="monitor[{{ $index }}][motivo_inactivo]" 
-                           class="form-control form-control-sm border-danger input-motivo" 
-                           placeholder="¿Por qué se marca como inactivo?"
-                           value="{{ isset($monitor->motivo_inactivo) ? trim(explode('|', $monitor->motivo_inactivo)[0]) : '' }}"
-                           {{ isset($monitor) && !$monitor->is_active ? 'required' : '' }}>
+                            name="monitor[{{ $index }}][motivo_inactivo]" 
+                            class="form-control form-control-sm border-danger input-motivo" 
+                            placeholder="¿Por qué se marca como inactivo?"
+                            value="{{ $motivoActual }}"
+                            data-current="{{ $motivoActual }}"
+                            {{ isset($monitor) && !$monitor->is_active ? 'required' : '' }}>
 
                         @if(isset($monitor->motivo_inactivo) && strpos($monitor->motivo_inactivo, '|') !== false)
                         <div class="mt-1">
@@ -117,9 +131,6 @@
 
         <div class="mt-2">
             <small class="text-muted">ID Sistema: {{ $monitor->id ?? 'Pendiente' }}</small>
-            @if($estaInactivo)
-                <span class="badge badge-danger">Dado de baja</span>
-            @endif
         </div>
     </div>
 </div>

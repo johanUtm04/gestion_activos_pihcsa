@@ -1,5 +1,6 @@
 @php
     $estaInactivo = isset($procesador) && !$procesador->is_active;
+    $valOriginalFrec = $procesador->clock_ghz ?? '';
 @endphp
 
 <div class="procesador-item p-3 mb-3 border rounded {{ $estaInactivo ? 'bg-light border-danger opacity-75' : 'bg-light shadow-sm' }} item-componente">
@@ -7,7 +8,7 @@
     {{-- ENCABEZADO COMPACTO --}}
     <div class="d-flex justify-content-between align-items-center {{ $estaInactivo ? '' : 'mb-3' }}">
         <h6 class="text-secondary mb-0">
-            <i class="fas fa-microchip"></i> Procesadores # 
+            <i class="fas fa-microchip"></i> Procesador # 
             <span class="numero-index badge {{ $estaInactivo ? 'badge-danger' : 'badge-secondary' }}">
                 {{ is_numeric($index) ? $index + 1 : 'Nuevo' }} 
             </span>
@@ -17,7 +18,6 @@
         </h6>
 
         <div class="btn-group">
-            {{-- BOTÓN DE COLAPSO --}}
             <button type="button" 
                     class="btn btn-sm btn-outline-info mr-2" 
                     data-toggle="collapse" 
@@ -35,9 +35,12 @@
         <input type="hidden" name="procesador[{{ $index }}][_delete]" value="">
 
         <div class="row">
+            {{-- Marca --}}
             <div class="form-group col-md-4">
                 <label class="small font-weight-bold">Marca</label>
-                <select name="procesador[{{$index}}][marca]" class="form-control form-control-sm">
+                <select name="procesador[{{$index}}][marca]" 
+                        class="form-control form-control-sm"
+                        data-current="{{ $procesador->marca ?? '' }}">
                     <option value="">Seleccione...</option>
                     @foreach(['Intel','AMD','Apple','Qualcomm','MediaTek','IBM','NVIDIA','VIA','Dell','HP','Lenovo','ASUS','Acer','Samsung','LG','Microsoft','Huawei','MSI','Gigabyte','Otro'] as $mar)
                         <option value="{{ $mar }}" {{ ($procesador->marca ?? '') == $mar ? 'selected' : '' }}>
@@ -47,53 +50,57 @@
                 </select>
             </div>
 
+            {{-- Descripción/Tipo --}}
             <div class="form-group col-md-4">
                 <label class="small font-weight-bold">Descripcion/Tipo</label>
-                <input type="text" name="procesador[{{$index}}][descripcion_tipo]" class="form-control form-control-sm"
-                value="{{ $procesador->descripcion_tipo ?? '' }}" placeholder="Modelo O Nombre">
+                <input type="text" name="procesador[{{$index}}][descripcion_tipo]" 
+                       class="form-control form-control-sm"
+                       value="{{ $procesador->descripcion_tipo ?? '' }}" 
+                       data-current="{{ $procesador->descripcion_tipo ?? '' }}"
+                       placeholder="Modelo O Nombre">
             </div>
 
-{{-- Frecuencia (NUEVO) --}}
-<div class="form-group col-md-4">
-    <label class="small font-weight-bold">Frecuencia (GHz)</label>
-    
-    <div class="input-group input-group-sm">
-        <select id="select_frec_{{$index}}" 
-                class="form-control form-control-sm" 
-                onchange="checkOtroFrec(this, {{$index}})">
-            <option value="">Seleccione...</option>
-            
-            @php
-                $rangoFrec = [];
-                for ($i = 0.9; $i <= 5.0; $i += 0.1) { $rangoFrec[] = number_format($i, 2); }
-                $especialesFrec = ['1.30', '1.70', '2.42', '2.59', '3.19', '3.33'];
-                $frecuenciasFinales = collect($rangoFrec)->merge($especialesFrec)->unique()->sort()->values();
+            {{-- Frecuencia --}}
+            <div class="form-group col-md-4">
+                <label class="small font-weight-bold">Frecuencia (GHz)</label>
                 
-                $valorActual = number_format((float)($procesador->clock_ghz ?? 0), 2);
-                $esOtro = !empty($procesador->clock_ghz) && !$frecuenciasFinales->contains($valorActual);
-            @endphp
+                <div class="input-group input-group-sm">
+                    @php
+                        $rangoFrec = [];
+                        for ($i = 0.9; $i <= 5.0; $i += 0.1) { $rangoFrec[] = number_format($i, 2); }
+                        $especialesFrec = ['1.30', '1.70', '2.42', '2.59', '3.19', '3.33'];
+                        $frecuenciasFinales = collect($rangoFrec)->merge($especialesFrec)->unique()->sort()->values();
+                        
+                        $valorActual = number_format((float)($procesador->clock_ghz ?? 0), 2);
+                        $esOtro = !empty($procesador->clock_ghz) && !$frecuenciasFinales->contains($valorActual);
+                        
+                        // Determinar el valor del select para data-current
+                        $selectCurrentValue = $esOtro ? 'otro' : $valorActual;
+                    @endphp
 
-            @foreach($frecuenciasFinales as $frec)
-                <option value="{{ $frec }}" {{ $valorActual == $frec ? 'selected' : '' }}>
-                    {{ $frec }} GHz
-                </option>
-            @endforeach
-            
-            <option value="otro" {{ $esOtro ? 'selected' : '' }}>[ Otro valor ]</option>
-        </select>
+                    <select id="select_frec_{{$index}}" 
+                            class="form-control form-control-sm" 
+                            data-current="{{ $selectCurrentValue }}"
+                            onchange="checkOtroFrec(this, {{$index}})">
+                        <option value="">Seleccione...</option>
+                        @foreach($frecuenciasFinales as $frec)
+                            <option value="{{ $frec }}" {{ $valorActual == $frec ? 'selected' : '' }}>
+                                {{ $frec }} GHz
+                            </option>
+                        @endforeach
+                        <option value="otro" {{ $esOtro ? 'selected' : '' }}>[ Otro valor ]</option>
+                    </select>
 
-        {{-- Este es el input que realmente se guarda en la BD --}}
-        <input type="number" 
-               step="0.01" 
-               name="procesador[{{$index}}][clock_ghz]" 
-               id="input_frec_{{$index}}"
-               class="form-control form-control-sm {{ $esOtro ? '' : 'd-none' }}" 
-               placeholder="0.00"
-               value="{{ $procesador->clock_ghz ?? '' }}">
-    </div>
-</div>
-
-
+                    <input type="number" 
+                           step="0.01" 
+                           name="procesador[{{$index}}][clock_ghz]" 
+                           id="input_frec_{{$index}}"
+                           class="form-control form-control-sm {{ $esOtro ? '' : 'd-none' }}" 
+                           placeholder="0.00"
+                           value="{{ $procesador->clock_ghz ?? '' }}"
+                           data-current="{{ $valOriginalFrec }}">
+                </div>
+            </div>
         </div>
 
         {{-- Switch de Estado y Motivo --}}
@@ -105,6 +112,7 @@
                            id="switch-proc-{{ $index }}" 
                            name="procesador[{{ $index }}][is_active]" 
                            value="1" 
+                           data-current="{{ !isset($procesador) || $procesador->is_active ? '1' : '0' }}"
                            {{ !isset($procesador) || $procesador->is_active ? 'checked' : '' }}>
                     <label class="custom-control-label small font-weight-bold {{ !isset($procesador) || $procesador->is_active ? 'text-success' : 'text-danger' }}" 
                            for="switch-proc-{{ $index }}">
@@ -114,12 +122,16 @@
             </div>
             
             <div class="col-md-8">
+                @php 
+                    $motivoActual = isset($procesador->motivo_inactivo) ? trim(explode('|', $procesador->motivo_inactivo)[0]) : '';
+                @endphp
                 <div class="div-motivo" style="{{ !isset($procesador) || $procesador->is_active ? 'display: none;' : '' }}">
                     <input type="text" 
                            name="procesador[{{ $index }}][motivo_inactivo]" 
                            class="form-control form-control-sm border-danger input-motivo" 
                            placeholder="¿Por qué se marca como inactivo?"
-                           value="{{ isset($procesador->motivo_inactivo) ? trim(explode('|', $procesador->motivo_inactivo)[0]) : '' }}"
+                           value="{{ $motivoActual }}"
+                           data-current="{{ $motivoActual }}"
                            {{ isset($procesador) && !$procesador->is_active ? 'required' : '' }}>
 
                     @if(isset($procesador->motivo_inactivo) && strpos($procesador->motivo_inactivo, '|') !== false)
@@ -136,24 +148,6 @@
 
         <div class="mt-2">
             <small class="text-muted">ID Sistema: {{ $procesador->id ?? 'Pendiente' }}</small>
-            @if(isset($procesador) && $procesador->is_active == false)
-                <span class="badge badge-danger">Dado de baja</span>
-            @endif
         </div>
-    </div> {{-- Fin Collapse --}}
+    </div>
 </div>
-
-
-<script>
-function checkOtroFrec(select, index) {
-    const input = document.getElementById('input_frec_' + index);
-    if (select.value === 'otro') {
-        input.classList.remove('d-none');
-        input.value = '';
-        input.focus();
-    } else {
-        input.classList.add('d-none');
-        input.value = select.value;
-    }
-}
-</script>
