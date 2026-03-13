@@ -39,14 +39,24 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="small font-weight-bold">Fecha Inicio Uso</label>
-                                    <input type="date" id="in_fecha_uso" class="form-control form-control-sm border-success">
+                                    <div class="input-group input-group-sm">
+                                        <input type="date" id="in_fecha_uso" class="form-control border-success">
+                                        <div class="input-group-append" id="lock-icon" style="display: none;">
+                                            <span class="input-group-text bg-white border-success text-warning">
+                                                <i class="fas fa-lock" title="Fecha bloqueada (ya guardada en BD)"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted" style="font-size: 0.7rem;">
+                                        * Se utiliza para determinar los meses de uso en el año.
+                                    </small>
                                 </div>
                                 <div class="form-group">
                                     <label class="small font-weight-bold">Tipo de Activo (Tasa LISR)</label>
                                     <select id="in_tasa" class="form-control form-control-sm border-success shadow-sm">
                                         <option value="" disabled selected>-- Seleccione una opción --</option>
                                         @foreach($tasas as $tasa)
-                                            <option value="{{ $tasa->id }}">
+                                            <option value="{{ $tasa->porcentaje / 100 }}">
                                                 {{ number_format($tasa->porcentaje, 0) }}% - {{ $tasa->nombre }}
                                             </option>
                                         @endforeach

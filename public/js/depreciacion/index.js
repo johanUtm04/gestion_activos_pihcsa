@@ -15,19 +15,19 @@ $(document).on('click', '.btn-depreciar', function() {
     const marca = btn.data('marca');
     const valor = btn.data('valor');
     const fechaAdq = btn.data('fecha');
-    const fechaUsoBD = btn.data('fecha-uso'); // El dato que viene de tu base de datos
+    const fechaUsoBD = btn.data('fecha-uso'); 
 
     // 3. ASIGNACIÓN BÁSICA
     $('#nombreActivo').text(marca);
     $('#in_valor_inicial').val(valor);
     $('#hidden_fecha_adquisicion').val(fechaAdq);
 
-    // 4. LÓGICA DE BLOQUEO (Mitigación del error)
+    // 4. LÓGICA DE BLOQUEO -Revisa null de 3 maneras-
     if (fechaUsoBD && fechaUsoBD !== "" && fechaUsoBD !== "null") {
         // Si ya existe en BD: Cargamos y bloqueamos
         inputFechaUso.val(fechaUsoBD)
                      .prop('readonly', true)
-                     .addClass('bg-light'); // Estilo gris de "solo lectura"
+                     .addClass('bg-light text-muted')
         
         if(lockIcon.length) lockIcon.show(); // Mostramos candado si existe
     } else {
@@ -84,12 +84,25 @@ $('#btnProcesarCalculo').on('click', function() {
 
         // --- BLOQUE II: AJUSTE POR INFLACIÓN ---
         // El factor se redondea a 4 decimales según norma fiscal
-        let factor = Math.floor((response.inpc_mitad / response.inpc_adq) * 10000) / 10000;
-        
-        // Por ley, si el factor es menor a 1, se utiliza 1 (no se desactualiza)
-        if (factor < 1) factor = 1.0000;
-        
-        const actualizada = sinAct * factor;
+// Reemplaza tus líneas por estas:
+let division = response.inpc_mitad / response.inpc_adq;
+// Redondeo a 4 decimales estándar
+let factor = Math.round(division * 10000) / 10000;
+
+// Regla de oro: El factor nunca es menor a 1
+if (factor < 1 || isNaN(factor)) {
+    factor = 1.0000;
+}
+
+const actualizada = sinAct * factor;
+
+// Para depurar en consola y ver qué está pasando:
+console.log({
+    mitad: response.inpc_mitad,
+    adq: response.inpc_adq,
+    resultado_division: division,
+    factor_final: factor
+});
 
         // --- RENDERIZADO DE RESULTADOS ---
         // Sección I
