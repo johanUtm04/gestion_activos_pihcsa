@@ -62,11 +62,11 @@ Solution: Automated calculation of asset depreciation based on purchase date.
 
 ---
 ## Arquitectura/Architecture:
--Arquitectura/Architecture: MVC (Model-View-Controller).
--Patrones y librerias/Patterns and bookstores:
-  -Eloquent ORM
-  -Blade Templates
-  -CSRF protection and Haching Bcrypt
+- Arquitectura/Architecture: MVC (Model-View-Controller).
+- Patrones y librerias/Patterns and bookstores:
+  - Eloquent ORM
+  - Blade Templates
+  - CSRF protection and Haching Bcrypt
 
 ---
 
