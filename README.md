@@ -42,19 +42,22 @@ Build: Passing
 ---
 
 ## Retos Clave Resueltos / Key Challenges Solved
--Registro de hardware complejo con múltiples componentes. 
+- Registro de hardware complejo con múltiples componentes. 
 Solución: Implementación de un Wizard multietapa con validación asíncrona de números de serie.
-/Complex hardware registration with multiple components.
+
+- Complex hardware registration with multiple components.
 Solution: Implementation of a multi-stage wizard with asynchronous serial number validation.
 
--Pérdida de rastro de equipo. 
+- Pérdida de rastro de equipo. 
 Solución: Módulo de Historial de Auditoría que registra cada cambio de ubicación o usuario con marca de tiempo.
-/Loss of equipment trace.
+
+-  Loss of equipment trace.
 Solution: Audit History module that records every change of location or user with a timestamp.
 
--Cumplimiento fiscal/contable. 
+- Cumplimiento fiscal/contable. 
 Solución: Cálculo automatizado de Depreciación de Activos basado en fecha de compra.
-/Tax/accounting compliance. 
+
+- Tax/accounting compliance. 
 Solution: Automated calculation of asset depreciation based on purchase date.
 
 ---
@@ -64,24 +67,6 @@ Solution: Automated calculation of asset depreciation based on purchase date.
   -Eloquent ORM
   -Blade Templates
   -CSRF protection and Haching Bcrypt
-
----
-
-## Retos Clave Resueltos / Key Challenges Solved
--Registro de hardware complejo con múltiples componentes. 
-Solución: Implementación de un Wizard multietapa con validación asíncrona de números de serie.
-/Complex hardware registration with multiple components.
-Solution: Implementation of a multi-stage wizard with asynchronous serial number validation.
-
--Pérdida de rastro de equipo. 
-Solución: Módulo de Historial de Auditoría que registra cada cambio de ubicación o usuario con marca de tiempo.
-/Loss of equipment trace.
-Solution: Audit History module that records every change of location or user with a timestamp.
-
--Cumplimiento fiscal/contable. 
-Solución: Cálculo automatizado de Depreciación de Activos basado en fecha de compra.
-/Tax/accounting compliance. 
-Solution: Automated calculation of asset depreciation based on purchase date.
 
 ---
 
