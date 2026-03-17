@@ -90,7 +90,7 @@
 
         <div class="barcode-section">
             <div style="display: inline-block;">
-                {!! DNS1D::getBarcodeHTML($equipo->serial, 'C128', 1.8, 36) !!} {{-- Altura ajustada a 36 --}}
+                {!! DNS1D::getBarcodeHTML($equipo->serial, 'C128', 1.8, 45) !!} 
             </div>
             <div class="serial-text">{{ $equipo->serial }}</div>
         </div>
