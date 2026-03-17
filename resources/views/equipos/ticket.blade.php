@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <style>
         @page {
-            /* Definimos el tamaño exacto de la etiqueta física */
             size: 2in 1in;
             margin: 0;
         }
