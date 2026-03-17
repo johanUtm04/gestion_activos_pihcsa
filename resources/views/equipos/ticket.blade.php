@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <style>
         @page {
-            size: 80mm 45mm;
+            /* Definimos el tamaño exacto de la etiqueta física */
+            size: 2in 1in;
             margin: 0;
         }
 
         body {
             margin: 0;
             padding: 0;
-            width: 80mm;
-            height: 45mm;
+            width: 2in;
+            height: 1in;
             background-color: white;
             font-family: Arial, sans-serif;
-            overflow: hidden; 
+            overflow: hidden;
         }
 
         .etiqueta-container {
-            width: 90mm;
-            height: 45mm;
-            padding: 5mm 5mm; 
+            width: 2in;
+            height: 1in;
+            padding: 1mm 2mm; /* Pequeño margen interno para que no toque los bordes */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; 
-            align-items: center; 
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header {
@@ -34,13 +35,13 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            margin-bottom: 2mm;
+            margin-top: 1mm;
         }
 
         .logo-box {
-            width: 16mm;
+            width: 10mm; /* Logo reducido para dar espacio al texto */
             text-align: center;
-            margin-right: 4mm;
+            margin-right: 2mm;
         }
 
         .logo-img {
@@ -49,28 +50,28 @@
         }
 
         .titulo {
-            font-size: 19pt;
+            font-size: 13pt; /* Tamaño ajustado para 1 pulgada de alto */
             font-weight: bold;
             text-transform: uppercase;
             margin: 0;
-            white-space: nowrap; 
+            white-space: nowrap;
         }
 
         .barcode-section {
             text-align: center;
             width: 100%;
-            margin-top: auto; 
             margin-bottom: 1mm;
         }
 
         .serial-text {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 11.5pt; 
+            font-size: 8pt; /* Fuente más pequeña para que el serial largo no se amontone */
             font-weight: bold;
-            margin-top: 1.5mm;
-            letter-spacing: 2.5px; 
+            margin-top: 0.5mm;
+            letter-spacing: 0.5px; 
         }
 
+        /* Forzamos que los colores se impriman siempre */
         * {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
@@ -83,14 +84,15 @@
         <div class="header">
             <div class="logo-box">
                 <img src="{{ asset('vendor/adminlte/dist/img/logohd.png') }}" class="logo-img">
-                <div style="font-size: 5pt; font-weight: bold; margin-top: 1mm;">MATERIAL MÉDICO</div>
+                <div style="font-size: 4pt; font-weight: bold; line-height: 1;">MATERIAL MÉDICO</div>
             </div>
             <h1 class="titulo">Activo Fijo</h1>
         </div>
 
         <div class="barcode-section">
-            <div style="display: inline-block;">
-                {!! DNS1D::getBarcodeHTML($equipo->serial, 'C128', 1.8, 45) !!} 
+            <div style="display: inline-block; width: 100%;">
+                {{-- Bajamos la escala de 1.8 a 1.1 para que el código sea más denso y quepa en el ancho --}}
+                {!! DNS1D::getBarcodeHTML($equipo->serial, 'C128', 1.1, 30) !!} 
             </div>
             <div class="serial-text">{{ $equipo->serial }}</div>
         </div>
