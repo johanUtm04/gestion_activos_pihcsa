@@ -1,101 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <style>
-        @page {
-            size: 2in 1in;
-            margin: 0;
-        }
+<meta charset="UTF-8">
 
-        body {
-            margin: 0;
-            padding: 0;
-            width: 2in;
-            height: 1in;
-            background-color: white;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+<style>
 
-        .etiqueta-container {
-            width: 2in;
-            height: 1in;
-            padding: 1mm 2mm; /* Pequeño margen interno para que no toque los bordes */
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-        }
+@page{
+    size:2in 1in;
+    margin:0;
+}
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin-top: 1mm;
-        }
+body{
+    margin:0;
+    width:2in;
+    height:1in;
+    font-family:Arial, sans-serif;
+}
 
-        .logo-box {
-            width: 10mm; /* Logo reducido para dar espacio al texto */
-            text-align: center;
-            margin-right: 2mm;
-        }
+.etiqueta{
+    width:2in;
+    height:1in;
+    box-sizing:border-box;
+    padding:2mm;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
 
-        .logo-img {
-            width: 100%;
-            height: auto;
-        }
+/* HEADER */
 
-        .titulo {
-            font-size: 13pt; /* Tamaño ajustado para 1 pulgada de alto */
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-            white-space: nowrap;
-        }
+.header{
+    display:flex;
+    align-items:center;
+}
 
-        .barcode-section {
-            text-align: center;
-            width: 100%;
-            margin-bottom: 1mm;
-        }
+.logo{
+    width:9mm;
+    margin-right:2mm;
+}
 
-        .serial-text {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 8pt; /* Fuente más pequeña para que el serial largo no se amontone */
-            font-weight: bold;
-            margin-top: 0.5mm;
-            letter-spacing: 0.5px; 
-        }
+.logo img{
+    width:100%;
+}
 
-        /* Forzamos que los colores se impriman siempre */
-        * {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-    </style>
+.titulo{
+    font-size:9pt;
+    font-weight:bold;
+}
+
+/* BARCODE */
+
+.barcode{
+    text-align:center;
+}
+
+.barcode svg{
+    max-width:100%;
+}
+
+.serial{
+    font-size:7pt;
+    font-family:monospace;
+    margin-top:1px;
+}
+
+</style>
 </head>
-<body onload="window.print();">
 
-    <div class="etiqueta-container">
-        <div class="header">
-            <div class="logo-box">
-                <img src="{{ asset('vendor/adminlte/dist/img/logohd.png') }}" class="logo-img">
-                <div style="font-size: 4pt; font-weight: bold; line-height: 1;">MATERIAL MÉDICO</div>
-            </div>
-            <h1 class="titulo">Activo Fijo</h1>
-        </div>
+<body onload="window.print()">
 
-        <div class="barcode-section">
-            <div style="display: inline-block; width: 100%;">
-                {{-- Bajamos la escala de 1.8 a 1.1 para que el código sea más denso y quepa en el ancho --}}
-                {!! DNS1D::getBarcodeHTML($equipo->serial, 'C128', 1.1, 30) !!} 
-            </div>
-            <div class="serial-text">{{ $equipo->serial }}</div>
-        </div>
-    </div>
+<div class="etiqueta">
+
+<div class="header">
+
+<div class="logo">
+<img src="{{ asset('vendor/adminlte/dist/img/logohd.png') }}">
+</div>
+
+<div class="titulo">
+ACTIVO FIJO
+</div>
+
+</div>
+
+<div class="barcode">
+
+{!! DNS1D::getBarcodeHTML($equipo->serial, 'C128', 0.7, 25) !!}
+
+<div class="serial">
+{{ $equipo->serial }}
+</div>
+
+</div>
+
+</div>
 
 </body>
 </html>
