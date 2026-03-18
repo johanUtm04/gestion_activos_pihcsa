@@ -35,7 +35,7 @@
                 {{-- MODELO DEL EQUIPO --}}
                 <div class="form-group col-md-6">
                     <label><i class="fas fa-laptop-code"></i> Modelo Específico</label>
-                    <input type="text" name="modelo" class="form-control" value="{{ $equipo->modelo }}" readonly>
+                    <input type="text" name="modelo" class="form-control" value="{{ $equipo->modelo }}">
                     <small class="text-muted">Nombre comercial del producto.</small>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 {{-- SERIAL DEL EQUIPO --}}
                 <div class="form-group col-md-6">
                     <label><i class="fas fa-barcode"></i> No. Serial del Equipo</label>
-                    <input type="text" name="serial" class="form-control" value="{{ $equipo->serial }}" readonly>
+                    <input type="text" name="serial" class="form-control" value="{{ $equipo->serial }}">
                     <small class="text-muted">Identificador único de fábrica (S/N).</small>
                 </div>
             </div>
