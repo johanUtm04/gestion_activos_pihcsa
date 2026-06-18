@@ -14,7 +14,8 @@ use App\Http\Controllers\{
     TipoActivoController,
     SoporteController,
     InpcController,
-    TasasController
+    TasasController,
+    VehiculoController
 };
 
 /*
@@ -40,6 +41,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/equipos/{equipo}', [EquipoController::class, 'update'])->name('equipos.update');
     Route::delete('/equipos/{equipo}', [EquipoController::class, 'destroy'])->name('equipos.destroy');
     Route::get('/equipos/{equipo}/detalles', [EquipoController::class, 'show'])->name('equipos.show');
+
+    /* --- GESTIÓN DE VEHÍCULOS --- */
+    Route::get('vehiculos/filtros', [VehiculoController::class, 'filtros'])->name('vehiculos.filtros');
+    Route::resource('vehiculos', VehiculoController::class);
+    Route::get('/vehiculos/datos-filtros', [VehiculoController::class, 'getFilterData'])->name('vehiculos.filtros');
+    Route::resource('vehiculos', VehiculoController::class)->parameters([
+        'vehiculos' => 'vehiculo'
+    ]);
 
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');
