@@ -14,9 +14,11 @@ use App\Http\Controllers\{
     TipoActivoController,
     SoporteController,
     InpcController,
-    TasasController,
-    VehiculoController
+    TasasController,    
 };
+
+use App\Http\Controllers\VehiculoController;
+use App\Http\Controllers\CatTipoVehiculoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,11 +46,13 @@ Route::middleware(['auth'])->group(function () {
 
     /* --- GESTIÓN DE VEHÍCULOS --- */
     Route::get('vehiculos/filtros', [VehiculoController::class, 'filtros'])->name('vehiculos.filtros');
-    Route::resource('vehiculos', VehiculoController::class);
-    Route::get('/vehiculos/datos-filtros', [VehiculoController::class, 'getFilterData'])->name('vehiculos.filtros');
+    Route::get('/vehiculos/datos-filtros', [VehiculoController::class, 'getFilterData'])->name('vehiculos.datos_filtros');
+    // El recurso principal de vehículos
     Route::resource('vehiculos', VehiculoController::class)->parameters([
         'vehiculos' => 'vehiculo'
     ]);
+    // El catálogo para controlar si es Pick-up, Sedán, etc. (Espejo de gestionTipoActivos)
+    Route::resource('tipo_vehiculos', CatTipoVehiculoController::class)->names('tipo_vehiculos');
 
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');
