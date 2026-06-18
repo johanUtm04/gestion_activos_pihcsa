@@ -10,12 +10,10 @@ return new class extends Migration
     {
         Schema::create('vehiculo_documentacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehiculo_id')->constrained('vehiculos')->onDelete('cascade');
-            
+            $table->foreignId('vehiculo_id')->constrained('vehiculos')->cascadeOnDelete();
             $table->string('no_poliza_seguro')->nullable();
             $table->date('vigencia_seguro')->nullable();
             $table->string('tarjeta_circulacion')->nullable();
-            
             $table->timestamps();
         });
     }

@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('cat_tipo_vehiculos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre'); 
-            $table->integer('frecuencia_meses')->default(0); 
+            $table->string('nombre');
+            $table->integer('frecuencia_meses')->default(0);
             $table->timestamps();
         });
     }
