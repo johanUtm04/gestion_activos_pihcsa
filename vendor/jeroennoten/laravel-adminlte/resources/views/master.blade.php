@@ -25,12 +25,6 @@
         body.iframe-mode .preloader {
             display: none !important;
         }
-        /* Cambia el color del botón activo en el sidebar */
-        .nav-pills .nav-link.active, 
-        .nav-pills .show > .nav-link {
-        background-color: #d4d5d7 !important; /* Aquí pon tu color (ej. el cian de antes) */
-        color: #000000 !important;
-        }
     </style>
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
