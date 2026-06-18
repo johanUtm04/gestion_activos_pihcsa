@@ -61,10 +61,14 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <h1 class="m-0 text-dark font-weight-bold" style="font-size: 1.6rem;">Inventario</h1>
+            <h1 class="m-0 text-dark font-weight-bold" style="font-size: 1.6rem;">Inventario de Vehículos</h1>
             <small class="text-muted">Rol: <span class="badge badge-info px-2 py-1" style="font-size: 0.65rem;">ADMIN</span></small>
         </div>
         <div>
+            <a href="{{ route('equipos.index') }}" class="btn btn-sm btn-outline-info font-weight-bold mr-1 shadow-sm" title="Ver Inventario de Equipos">
+                <i class="fas fa-boxes mr-1"></i> Equipos
+            </a>
+
             <button type="button" class="btn btn-sm btn-outline-danger font-weight-bold mr-1">
                 <i class="fas fa-ban mr-1"></i> Inactivos
             </button>
