@@ -308,14 +308,21 @@ return [
     // --- SECCIÓN: OPERACIONES ---
     ['header' => 'ACCIONES PRINCIPALES'],
     [
-        'text' => 'Inicio',
+        'text' => 'Inventario de Equipos',
         'url'  => '/equipos',
         'icon' => 'fas fa-boxes',
         'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
         'active' => ['equipos*'],
     ],
     [
-        'text' => 'profile',
+        'text' => 'Inventario de Vehículos',
+        'url'  => '/vehiculos',
+        'icon' => 'fas fa-car',
+        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active' => ['vehiculos*'],
+    ],
+    [
+        'text' => 'Perfil de Usuario',
         'url'  => '/profile',
         'icon' => 'fas fa-user-cog',
         'can'  => ['access-admin', 'access-sistemas'],
@@ -325,15 +332,15 @@ return [
     // --- SECCIÓN: MÓDULO FISCAL ---
     ['header' => 'ANÁLISIS Y DEPRECIACIÓN'],
     [
-        'text' => 'Calcular_depreciacion', // Tu vista de cálculo principal
+        'text' => 'Calcular Depreciación',
         'url'  => '/depreciacion',
         'icon' => 'fas fa-calculator',
         'icon_color' => 'success',
         'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active' => ['depreciacion'],
+        'active' => ['depreciacion*'],
     ],
     [
-        'text' => 'inpc', // Catálogo de índices
+        'text' => 'Índices INPC',
         'url'  => '/configuracion/inpc',
         'icon' => 'fas fa-chart-bar',
         'icon_color' => 'info',
@@ -341,7 +348,7 @@ return [
         'active' => ['configuracion/inpc*'],
     ],
     [
-        'text' => 'tasa_intereses', // Configuración de Tasas LISR
+        'text' => 'Tasa de Intereses LISR',
         'url'  => '/configuracion/tasas',
         'icon' => 'fas fa-percent',
         'icon_color' => 'warning',
@@ -351,18 +358,18 @@ return [
 
     // --- SECCIÓN: CATÁLOGOS ---
     [
-        'header' => 'CATALOGOS',
-        'can'    => ['access-admin'], // Solo el administrador ve este encabezado
+        'header' => 'CATÁLOGOS ADMINISTRATIVOS',
+        'can'    => ['access-admin'], 
     ],
     [
-        'text' => 'gestion_usuarios',
+        'text' => 'Gestión de Usuarios',
         'url'  => '/gestionUsuarios',
         'icon' => 'fas fa-users-cog',
         'can'  => ['access-admin'],
         'active' => ['gestionUsuarios*'],
     ],
     [
-        'text' => 'gestion_ubicaciones',
+        'text' => 'Gestión de Ubicaciones',
         'url'  => '/gestionUbicaciones',
         'icon' => 'fas fa-map-marker-alt',
         'can'  => ['access-admin'],
@@ -370,23 +377,30 @@ return [
     ],
     [
         'text' => 'Gestión de Marcas',
-        'url'  => 'gestionMarcas', 
+        'url'  => '/gestionMarcas', // <-- Corregido con '/'
         'icon' => 'fas fa-tags',
         'can'  => ['access-admin'],
         'active' => ['gestionMarcas*'],
     ],
     [
-        'text' => 'Tipos de Activo',
-        'url'  => 'gestionTipoActivos', 
+        'text' => 'Tipos de Activo (Equipos)',
+        'url'  => '/gestionTipoActivos', // <-- Corregido con '/'
         'icon' => 'fas fa-laptop-house',
         'can'  => ['access-admin'],
         'active' => ['gestionTipoActivos*'],
+    ],
+    [
+        'text' => 'Tipos de Vehículo',
+        'url'  => '/tipo_vehiculos', // <-- Nuevo catálogo para el flujo de transporte
+        'icon' => 'fas fa-bus',
+        'can'  => ['access-admin'],
+        'active' => ['tipo_vehiculos*'],
     ],
 
     // --- SECCIÓN: HISTÓRICO ---
     ['header' => 'REPORTES'],
     [
-        'text' => 'historial',
+        'text' => 'Historial de Cambios',
         'url'  => '/historial',
         'icon' => 'fas fa-history',
         'can'  => ['access-admin', 'access-sistemas'],
@@ -401,7 +415,7 @@ return [
         'route' => 'soporte.contacto',
     ],
     [
-        'text'  => 'Manual De Trabajo',
+        'text'  => 'Manual de Trabajo',
         'icon'  => 'fas fa-book',
         'route' => 'soporte.manual',
     ],
