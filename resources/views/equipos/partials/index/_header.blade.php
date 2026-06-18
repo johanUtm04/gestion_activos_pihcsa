@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-between align-items-center mb-1 py-1">
     <div>
         <h4 class="text-dark font-weight-bold mb-0">
-            <i class="fas fa-boxes text-info mr-2"></i>Inventario
+            <i class="fas fa-boxes text-info mr-2"></i>Inventario de Equipos
         </h4>
         <div class="d-flex align-items-center mt-1">
             <small class="text-muted mr-2">Rol:</small>
@@ -15,6 +15,12 @@
 
     @can('crear-equipo')
     <div class="d-flex" style="gap: 5px;"> 
+        
+        {{-- BOTÓN AGREGADO: Enlace rápido para saltar al inventario de vehículos --}}
+        <a href="{{ route('vehiculos.index') }}" class="btn btn-sm btn-outline-info font-weight-bold shadow-sm" title="Ver Inventario de Vehículos">
+            <i class="fas fa-car mr-1"></i> Vehículos
+        </a>
+
         <div class="btn-group shadow-sm">
             @if(request('filter') == 'inactivos')
                 <a href="{{ route('equipos.index') }}" class="btn btn-sm btn-outline-secondary font-weight-bold">
