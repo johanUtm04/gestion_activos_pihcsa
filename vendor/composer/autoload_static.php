@@ -39,17 +39,17 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
     );
 
     public static $prefixLengthsPsr4 = array (
-        'v' =>
+        'v' => 
         array (
             'voku\\' => 5,
         ),
-        'T' =>
+        'T' => 
         array (
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
             'Tests\\' => 6,
             'Termwind\\' => 9,
         ),
-        'S' =>
+        'S' => 
         array (
             'Symfony\\Polyfill\\Uuid\\' => 22,
             'Symfony\\Polyfill\\Php83\\' => 23,
@@ -84,12 +84,12 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
             'Spatie\\ErrorSolutions\\' => 22,
             'Spatie\\Backtrace\\' => 17,
         ),
-        'R' =>
+        'R' => 
         array (
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
-        'P' =>
+        'P' => 
         array (
             'Psy\\' => 4,
             'Psr\\SimpleCache\\' => 16,
@@ -103,16 +103,16 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
         ),
-        'N' =>
+        'N' => 
         array (
             'Nette\\' => 6,
         ),
-        'M' =>
+        'M' => 
         array (
             'Monolog\\' => 8,
             'Mockery\\' => 8,
         ),
-        'L' =>
+        'L' => 
         array (
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\Local\\' => 23,
@@ -126,16 +126,16 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
             'Laravel\\Prompts\\' => 16,
             'Laravel\\Breeze\\' => 15,
         ),
-        'J' =>
+        'J' => 
         array (
             'JeroenNoten\\LaravelAdminLte\\' => 28,
         ),
-        'I' =>
+        'I' => 
         array (
             'Illuminate\\Support\\' => 19,
             'Illuminate\\' => 11,
         ),
-        'G' =>
+        'G' => 
         array (
             'GuzzleHttp\\UriTemplate\\' => 23,
             'GuzzleHttp\\Psr7\\' => 16,
@@ -143,16 +143,16 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
             'GuzzleHttp\\' => 11,
             'GrahamCampbell\\ResultType\\' => 26,
         ),
-        'F' =>
+        'F' => 
         array (
             'Fruitcake\\Cors\\' => 15,
             'Faker\\' => 6,
         ),
-        'E' =>
+        'E' => 
         array (
             'Egulias\\EmailValidator\\' => 23,
         ),
-        'D' =>
+        'D' => 
         array (
             'Dotenv\\' => 7,
             'Doctrine\\Inflector\\' => 19,
@@ -165,389 +165,389 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
             'Database\\Seeders\\' => 17,
             'Database\\Factories\\' => 19,
         ),
-        'C' =>
+        'C' => 
         array (
             'Cron\\' => 5,
             'Carbon\\Doctrine\\' => 16,
             'Carbon\\' => 7,
         ),
-        'B' =>
+        'B' => 
         array (
             'Brick\\Math\\' => 11,
             'Barryvdh\\Debugbar\\' => 18,
         ),
-        'A' =>
+        'A' => 
         array (
             'App\\' => 4,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'voku\\' =>
+        'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
         ),
-        'TijsVerkoyen\\CssToInlineStyles\\' =>
+        'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
             0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
         ),
-        'Tests\\' =>
+        'Tests\\' => 
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'Termwind\\' =>
+        'Termwind\\' => 
         array (
             0 => __DIR__ . '/..' . '/nunomaduro/termwind/src',
         ),
-        'Symfony\\Polyfill\\Uuid\\' =>
+        'Symfony\\Polyfill\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-uuid',
         ),
-        'Symfony\\Polyfill\\Php83\\' =>
+        'Symfony\\Polyfill\\Php83\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Php80\\' =>
+        'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' =>
+        'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Intl\\Normalizer\\' =>
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
         ),
-        'Symfony\\Polyfill\\Intl\\Idn\\' =>
+        'Symfony\\Polyfill\\Intl\\Idn\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
         ),
-        'Symfony\\Polyfill\\Intl\\Grapheme\\' =>
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
         ),
-        'Symfony\\Polyfill\\Ctype\\' =>
+        'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'Symfony\\Contracts\\Translation\\' =>
+        'Symfony\\Contracts\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation-contracts',
         ),
-        'Symfony\\Contracts\\Service\\' =>
+        'Symfony\\Contracts\\Service\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/service-contracts',
         ),
-        'Symfony\\Contracts\\EventDispatcher\\' =>
+        'Symfony\\Contracts\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts',
         ),
-        'Symfony\\Component\\Yaml\\' =>
+        'Symfony\\Component\\Yaml\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Symfony\\Component\\VarDumper\\' =>
+        'Symfony\\Component\\VarDumper\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
         ),
-        'Symfony\\Component\\Uid\\' =>
+        'Symfony\\Component\\Uid\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/uid',
         ),
-        'Symfony\\Component\\Translation\\' =>
+        'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
         ),
-        'Symfony\\Component\\String\\' =>
+        'Symfony\\Component\\String\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/string',
         ),
-        'Symfony\\Component\\Routing\\' =>
+        'Symfony\\Component\\Routing\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/routing',
         ),
-        'Symfony\\Component\\Process\\' =>
+        'Symfony\\Component\\Process\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
         ),
-        'Symfony\\Component\\Mime\\' =>
+        'Symfony\\Component\\Mime\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/mime',
         ),
-        'Symfony\\Component\\Mailer\\' =>
+        'Symfony\\Component\\Mailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/mailer',
         ),
-        'Symfony\\Component\\HttpKernel\\' =>
+        'Symfony\\Component\\HttpKernel\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-kernel',
         ),
-        'Symfony\\Component\\HttpFoundation\\' =>
+        'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
         ),
-        'Symfony\\Component\\Finder\\' =>
+        'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
         ),
-        'Symfony\\Component\\EventDispatcher\\' =>
+        'Symfony\\Component\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
-        'Symfony\\Component\\ErrorHandler\\' =>
+        'Symfony\\Component\\ErrorHandler\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/error-handler',
         ),
-        'Symfony\\Component\\CssSelector\\' =>
+        'Symfony\\Component\\CssSelector\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/css-selector',
         ),
-        'Symfony\\Component\\Console\\' =>
+        'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
-        'Spatie\\LaravelIgnition\\' =>
+        'Spatie\\LaravelIgnition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
+            1 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
         ),
-        'Spatie\\Ignition\\' =>
+        'Spatie\\Ignition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            1 => __DIR__ . '/..' . '/spatie/ignition/src',
         ),
-        'Spatie\\FlareClient\\' =>
+        'Spatie\\FlareClient\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/flare-client-php/src',
         ),
-        'Spatie\\ErrorSolutions\\' =>
+        'Spatie\\ErrorSolutions\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/error-solutions/src',
         ),
-        'Spatie\\Backtrace\\' =>
+        'Spatie\\Backtrace\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/backtrace/src',
         ),
-        'Ramsey\\Uuid\\' =>
+        'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
         ),
-        'Ramsey\\Collection\\' =>
+        'Ramsey\\Collection\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/collection/src',
         ),
-        'Psy\\' =>
+        'Psy\\' => 
         array (
             0 => __DIR__ . '/..' . '/psy/psysh/src',
         ),
-        'Psr\\SimpleCache\\' =>
+        'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
-        'Psr\\Log\\' =>
+        'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/src',
         ),
-        'Psr\\Http\\Message\\' =>
+        'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' =>
+        'Psr\\Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\EventDispatcher\\' =>
+        'Psr\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/event-dispatcher/src',
         ),
-        'Psr\\Container\\' =>
+        'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Psr\\Clock\\' =>
+        'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
-        'Psr\\Cache\\' =>
+        'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
-        'PhpParser\\' =>
+        'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
-        'PhpOption\\' =>
+        'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
-        'Nette\\' =>
+        'Nette\\' => 
         array (
             0 => __DIR__ . '/..' . '/nette/schema/src',
             1 => __DIR__ . '/..' . '/nette/utils/src',
         ),
-        'Monolog\\' =>
+        'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'Mockery\\' =>
+        'Mockery\\' => 
         array (
             0 => __DIR__ . '/..' . '/mockery/mockery/library/Mockery',
         ),
-        'League\\MimeTypeDetection\\' =>
+        'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
-        'League\\Flysystem\\Local\\' =>
+        'League\\Flysystem\\Local\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem-local',
         ),
-        'League\\Flysystem\\' =>
+        'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
         ),
-        'League\\Config\\' =>
+        'League\\Config\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/config/src',
         ),
-        'League\\CommonMark\\' =>
+        'League\\CommonMark\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/commonmark/src',
         ),
-        'Laravel\\Tinker\\' =>
+        'Laravel\\Tinker\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/tinker/src',
         ),
-        'Laravel\\SerializableClosure\\' =>
+        'Laravel\\SerializableClosure\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
         ),
-        'Laravel\\Sanctum\\' =>
+        'Laravel\\Sanctum\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/sanctum/src',
         ),
-        'Laravel\\Sail\\' =>
+        'Laravel\\Sail\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/sail/src',
         ),
-        'Laravel\\Prompts\\' =>
+        'Laravel\\Prompts\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/prompts/src',
         ),
-        'Laravel\\Breeze\\' =>
+        'Laravel\\Breeze\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/breeze/src',
         ),
-        'JeroenNoten\\LaravelAdminLte\\' =>
+        'JeroenNoten\\LaravelAdminLte\\' => 
         array (
             0 => __DIR__ . '/..' . '/jeroennoten/laravel-adminlte/src',
         ),
-        'Illuminate\\Support\\' =>
+        'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
             1 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections',
             2 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Conditionable',
         ),
-        'Illuminate\\' =>
+        'Illuminate\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
         ),
-        'GuzzleHttp\\UriTemplate\\' =>
+        'GuzzleHttp\\UriTemplate\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/uri-template/src',
         ),
-        'GuzzleHttp\\Psr7\\' =>
+        'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' =>
+        'GuzzleHttp\\Promise\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' =>
+        'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'GrahamCampbell\\ResultType\\' =>
+        'GrahamCampbell\\ResultType\\' => 
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
         ),
-        'Fruitcake\\Cors\\' =>
+        'Fruitcake\\Cors\\' => 
         array (
             0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
         ),
-        'Faker\\' =>
+        'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
         ),
-        'Egulias\\EmailValidator\\' =>
+        'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
         ),
-        'Dotenv\\' =>
+        'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
-        'Doctrine\\Inflector\\' =>
+        'Doctrine\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/src',
         ),
-        'Doctrine\\Deprecations\\' =>
+        'Doctrine\\Deprecations\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/deprecations/src',
         ),
-        'Doctrine\\DBAL\\' =>
+        'Doctrine\\DBAL\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/dbal/src',
         ),
-        'Doctrine\\Common\\Lexer\\' =>
+        'Doctrine\\Common\\Lexer\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/lexer/src',
         ),
-        'Doctrine\\Common\\' =>
+        'Doctrine\\Common\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
         ),
-        'Dflydev\\DotAccessData\\' =>
+        'Dflydev\\DotAccessData\\' => 
         array (
             0 => __DIR__ . '/..' . '/dflydev/dot-access-data/src',
         ),
-        'DebugBar\\' =>
+        'DebugBar\\' => 
         array (
             0 => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar',
         ),
-        'Database\\Seeders\\' =>
+        'Database\\Seeders\\' => 
         array (
             0 => __DIR__ . '/../..' . '/database/seeders',
             1 => __DIR__ . '/..' . '/laravel/pint/database/seeders',
         ),
-        'Database\\Factories\\' =>
+        'Database\\Factories\\' => 
         array (
             0 => __DIR__ . '/../..' . '/database/factories',
             1 => __DIR__ . '/..' . '/laravel/pint/database/factories',
         ),
-        'Cron\\' =>
+        'Cron\\' => 
         array (
             0 => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron',
         ),
-        'Carbon\\Doctrine\\' =>
+        'Carbon\\Doctrine\\' => 
         array (
             0 => __DIR__ . '/..' . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine',
         ),
-        'Carbon\\' =>
+        'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
         ),
-        'Brick\\Math\\' =>
+        'Brick\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
-        'Barryvdh\\Debugbar\\' =>
+        'Barryvdh\\Debugbar\\' => 
         array (
             0 => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src',
         ),
-        'App\\' =>
+        'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
             1 => __DIR__ . '/..' . '/laravel/pint/app',
@@ -555,9 +555,9 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
     );
 
     public static $prefixesPsr0 = array (
-        'M' =>
+        'M' => 
         array (
-            'Milon\\Barcode' =>
+            'Milon\\Barcode' => 
             array (
                 0 => __DIR__ . '/..' . '/milon/barcode/src',
             ),
@@ -578,6 +578,7 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
         'App\\Http\\Controllers\\Auth\\PasswordResetLinkController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/PasswordResetLinkController.php',
         'App\\Http\\Controllers\\Auth\\RegisteredUserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisteredUserController.php',
         'App\\Http\\Controllers\\Auth\\VerifyEmailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerifyEmailController.php',
+        'App\\Http\\Controllers\\CatTipoVehiculoController' => __DIR__ . '/../..' . '/app/Http/Controllers/CatTipoVehiculoController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DepreciacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/DepreciacionController.php',
         'App\\Http\\Controllers\\EquipoController' => __DIR__ . '/../..' . '/app/Http/Controllers/EquipoController.php',
@@ -807,11 +808,21 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
         'Database\\Factories\\RamFactory' => __DIR__ . '/../..' . '/database/factories/RamFactory.php',
         'Database\\Factories\\UbicacionFactory' => __DIR__ . '/../..' . '/database/factories/UbicacionFactory.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
+        'Database\\Seeders\\CatTipoVehiculosSeeder' => __DIR__ . '/../..' . '/database/seeders/CatTipoVehiculosSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
-        'Database\\Seeders\\EquipoSeeder' => __DIR__ . '/../..' . '/database/seeders/EquipoSeeder.php',
-        'Database\\Seeders\\MasterSeeder' => __DIR__ . '/../..' . '/database/seeders/MasterSeeder.php',
-        'Database\\Seeders\\UbicacionSeeder' => __DIR__ . '/../..' . '/database/seeders/UbicacionSeeder.php',
-        'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
+        'Database\\Seeders\\DiscosDurosSeeder' => __DIR__ . '/../..' . '/database/seeders/DiscosDurosSeeder.php',
+        'Database\\Seeders\\EquiposSeeder' => __DIR__ . '/../..' . '/database/seeders/EquiposSeeder.php',
+        'Database\\Seeders\\HistorialesLogSeeder' => __DIR__ . '/../..' . '/database/seeders/HistorialesLogSeeder.php',
+        'Database\\Seeders\\MarcasSeeder' => __DIR__ . '/../..' . '/database/seeders/MarcasSeeder.php',
+        'Database\\Seeders\\MonitoresSeeder' => __DIR__ . '/../..' . '/database/seeders/MonitoresSeeder.php',
+        'Database\\Seeders\\PerifericosSeeder' => __DIR__ . '/../..' . '/database/seeders/PerifericosSeeder.php',
+        'Database\\Seeders\\ProcesadoresSeeder' => __DIR__ . '/../..' . '/database/seeders/ProcesadoresSeeder.php',
+        'Database\\Seeders\\RamsSeeder' => __DIR__ . '/../..' . '/database/seeders/RamsSeeder.php',
+        'Database\\Seeders\\TipoActivosSeeder' => __DIR__ . '/../..' . '/database/seeders/TipoActivosSeeder.php',
+        'Database\\Seeders\\UbicacionesSeeder' => __DIR__ . '/../..' . '/database/seeders/UbicacionesSeeder.php',
+        'Database\\Seeders\\UsersSeeder' => __DIR__ . '/../..' . '/database/seeders/UsersSeeder.php',
+        'Database\\Seeders\\VehiculoDocumentacionSeeder' => __DIR__ . '/../..' . '/database/seeders/VehiculoDocumentacionSeeder.php',
+        'Database\\Seeders\\VehiculosSeeder' => __DIR__ . '/../..' . '/database/seeders/VehiculosSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
@@ -5025,43 +5036,43 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
         'Spatie\\LaravelIgnition\\Recorders\\QueryRecorder\\QueryRecorder' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Recorders/QueryRecorder/QueryRecorder.php',
         'Spatie\\LaravelIgnition\\Renderers\\ErrorPageRenderer' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Renderers/ErrorPageRenderer.php',
         'Spatie\\LaravelIgnition\\Renderers\\IgnitionExceptionRenderer' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Renderers/IgnitionExceptionRenderer.php',
-        'Spatie\\LaravelIgnition\\Solutions\\GenerateAppKeySolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/GenerateAppKeySolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\LivewireDiscoverSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/LivewireDiscoverSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\MakeViewVariableOptionalSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/MakeViewVariableOptionalSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\RunMigrationsSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/RunMigrationsSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\DefaultDbNameSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/DefaultDbNameSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\GenericLaravelExceptionSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/GenericLaravelExceptionSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\IncorrectValetDbCredentialsSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/IncorrectValetDbCredentialsSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\InvalidRouteActionSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/InvalidRouteActionSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\LazyLoadingViolationSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/LazyLoadingViolationSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingAppKeySolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/MissingAppKeySolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingColumnSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/MissingColumnSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingImportSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/MissingImportSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingLivewireComponentSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/MissingLivewireComponentSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingMixManifestSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/MissingMixManifestSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingViteManifestSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/MissingViteManifestSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\GenerateAppKeySolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/GenerateAppKeySolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\LivewireDiscoverSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/LivewireDiscoverSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\MakeViewVariableOptionalSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/MakeViewVariableOptionalSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\RunMigrationsSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/RunMigrationsSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\DefaultDbNameSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/DefaultDbNameSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\GenericLaravelExceptionSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/GenericLaravelExceptionSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\IncorrectValetDbCredentialsSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/IncorrectValetDbCredentialsSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\InvalidRouteActionSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/InvalidRouteActionSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\LazyLoadingViolationSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/LazyLoadingViolationSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingAppKeySolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/MissingAppKeySolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingColumnSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/MissingColumnSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingImportSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/MissingImportSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingLivewireComponentSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/MissingLivewireComponentSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingMixManifestSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/MissingMixManifestSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\MissingViteManifestSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/MissingViteManifestSolutionProvider.php',
         'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\OpenAiSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/OpenAiSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\RouteNotDefinedSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/RouteNotDefinedSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\RunningLaravelDuskInProductionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/RunningLaravelDuskInProductionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\RouteNotDefinedSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/RouteNotDefinedSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\RunningLaravelDuskInProductionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/RunningLaravelDuskInProductionProvider.php',
         'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\SailNetworkSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/SailNetworkSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\SolutionProviderRepository' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/SolutionProviderRepository.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\TableNotFoundSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/TableNotFoundSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UndefinedLivewireMethodSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/UndefinedLivewireMethodSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UndefinedLivewirePropertySolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/UndefinedLivewirePropertySolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UndefinedViewVariableSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/UndefinedViewVariableSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\SolutionProviderRepository' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/SolutionProviderRepository.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\TableNotFoundSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/TableNotFoundSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UndefinedLivewireMethodSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/UndefinedLivewireMethodSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UndefinedLivewirePropertySolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/UndefinedLivewirePropertySolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UndefinedViewVariableSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/UndefinedViewVariableSolutionProvider.php',
         'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UnknownMariadbCollationSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/UnknownMariadbCollationSolutionProvider.php',
         'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UnknownMysql8CollationSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/UnknownMysql8CollationSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UnknownValidationSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/UnknownValidationSolutionProvider.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\ViewNotFoundSolutionProvider' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionProviders/ViewNotFoundSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\UnknownValidationSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/UnknownValidationSolutionProvider.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SolutionProviders\\ViewNotFoundSolutionProvider' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SolutionProviders/ViewNotFoundSolutionProvider.php',
         'Spatie\\LaravelIgnition\\Solutions\\SolutionTransformers\\LaravelSolutionTransformer' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SolutionTransformers/LaravelSolutionTransformer.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SuggestCorrectVariableNameSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SuggestCorrectVariableNameSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SuggestImportSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SuggestImportSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SuggestLivewireMethodNameSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SuggestLivewireMethodNameSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SuggestLivewirePropertyNameSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SuggestLivewirePropertyNameSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\SuggestUsingCorrectDbNameSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/SuggestUsingCorrectDbNameSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SuggestCorrectVariableNameSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestCorrectVariableNameSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SuggestImportSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestImportSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SuggestLivewireMethodNameSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestLivewireMethodNameSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SuggestLivewirePropertyNameSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestLivewirePropertyNameSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\SuggestUsingCorrectDbNameSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestUsingCorrectDbNameSolution.php',
         'Spatie\\LaravelIgnition\\Solutions\\SuggestUsingMariadbDatabaseSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestUsingMariadbDatabaseSolution.php',
         'Spatie\\LaravelIgnition\\Solutions\\SuggestUsingMysql8DatabaseSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/SuggestUsingMysql8DatabaseSolution.php',
-        'Spatie\\LaravelIgnition\\Solutions\\UseDefaultValetDbCredentialsSolution' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Solutions/UseDefaultValetDbCredentialsSolution.php',
+        'Spatie\\LaravelIgnition\\Solutions\\UseDefaultValetDbCredentialsSolution' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Solutions/UseDefaultValetDbCredentialsSolution.php',
         'Spatie\\LaravelIgnition\\Support\\Composer\\Composer' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/Composer/Composer.php',
         'Spatie\\LaravelIgnition\\Support\\Composer\\ComposerClassMap' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/Composer/ComposerClassMap.php',
         'Spatie\\LaravelIgnition\\Support\\Composer\\FakeComposer' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/Composer/FakeComposer.php',
@@ -5071,7 +5082,7 @@ class ComposerStaticInit59506d82032a8c90416578e444ce0087
         'Spatie\\LaravelIgnition\\Support\\LivewireComponentParser' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/LivewireComponentParser.php',
         'Spatie\\LaravelIgnition\\Support\\RunnableSolutionsGuard' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/RunnableSolutionsGuard.php',
         'Spatie\\LaravelIgnition\\Support\\SentReports' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/SentReports.php',
-        'Spatie\\LaravelIgnition\\Support\\StringComparator' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/StringComparator.php',
+        'Spatie\\LaravelIgnition\\Support\\StringComparator' => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition/Support/StringComparator.php',
         'Spatie\\LaravelIgnition\\Views\\BladeSourceMapCompiler' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Views/BladeSourceMapCompiler.php',
         'Spatie\\LaravelIgnition\\Views\\ViewExceptionMapper' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Views/ViewExceptionMapper.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
