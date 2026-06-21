@@ -1,0 +1,610 @@
+body{
+    overflow-x: hidden !important;
+}
+
+.table-assets thead th {
+        background-color: #f4f6f9; 
+        color: #17a2b8; 
+        font-weight: 800;
+        border-bottom: 3px solid #17a2b8;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .table-assets tbody td {
+        vertical-align: middle; 
+        font-size: 15px;
+        transition: all 0.2s;
+    }
+
+    .equipo-row { cursor: pointer; }
+    .equipo-row:hover { background-color: rgba(23, 162, 184, 0.05) !important; }
+
+    .secondary-data {
+        color: #6c757d; 
+        font-size: 0.85em;
+        display: block; 
+    }
+
+    .sticky-details {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 20px;
+    }
+
+    .detail-card {
+        border: none;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .detail-header-premium {
+        background: linear-gradient(45deg, #17a2b8, #117a8b);
+        color: white;
+        padding: 20px;
+    }
+
+    .info-box-custom {
+        padding: 12px 15px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .info-box-custom:last-child { border-bottom: none; }
+
+    .info-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #333;
+        text-align: right;
+    }
+
+    .section-divider {
+        background: #f8f9fa;
+        padding: 6px 15px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #17a2b8;
+        border-top: 1px solid #eee;
+    }
+
+    .empty-state-container {
+        padding: 60px 20px;
+        text-align: center;
+        color: #ccc;
+    }
+
+    @keyframes fadeInRight {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-details { animation: fadeInRight 0.4s ease-out; }
+
+    .custom-input {
+    display: none;
+    margin-top: 10px;
+    }
+
+.footer-assets {
+    width: 100%;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #6c757d; 
+    font-size: 14px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-left, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.app-name {
+    font-weight: bold;
+    color: #495057;
+}
+
+.footer-right {
+    color: #868e96;
+}
+
+.footer-left strong {
+    color: #343a40;
+}
+
+
+.search-panel-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-header {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+    background: transparent;
+}
+
+.search-header:hover {
+    background: transparent;
+}
+
+.icon-pulse {
+    color: #17a2b8;
+    margin-right: 8px;
+    animation: gentle-bounce 3s infinite ease-in-out;
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); } 
+}
+
+.search-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+.search-body.is-open {
+    max-height: 500px; 
+    opacity: 1;
+    padding: 20px;
+}
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+.toggle-icon.rotate {
+    transform: rotate(180deg);
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+.icon-pulse {
+    display: inline-block;
+    animation: gentle-bounce 2s infinite ease-in-out;
+}
+
+.table-assets tbody tr.clickable-row:hover {
+    background-color: rgba(23, 162, 184, 0.08) !important;
+    transition: all 0.2s ease;
+}
+
+.secondary-data {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.table-assets td {
+    vertical-align: middle !important;
+}
+
+.fa-boxes {
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+.btn-historial-alert {
+    display: inline-flex;
+    align-items: center;
+    background-color: #343a40; 
+    color: #ffffff !important;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 15px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    transition: all 0.3s ease;
+}
+
+.btn-historial-alert:hover {
+    background-color: #23272b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.btn-historial-alert u {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.btn-historial-alert:hover i {
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.btn-papelera-alert {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff; 
+    color: #dc3545 !important; 
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 15px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.btn-papelera-alert:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #a71d2a !important;
+}
+
+.btn-papelera-alert:hover i {
+    transform: rotate(-10deg);
+}
+
+
+.btn-success-alert {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff;
+    color: #28a745 !important; 
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 15px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-success-alert:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-success-alert:hover i {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+}
+
+.row-inactive {
+        background-color: #e9ecef !important;
+        color: #6c757d !important;         
+        border-left: 5px solid #ff0000;      
+    }
+
+    .row-inactive:hover {
+        background-color: #dee2e6 !important; 
+    }
+    
+    .row-inactive i {
+        opacity: 0.6;
+    }
+
+#toggle-icon {
+    transition: transform 0.3s ease-in-out;
+}
+
+.search-body {
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+
+/* 1. Animación del Icono Principal (Flotación y Pulso) */
+.fa-boxes {
+    display: inline-block;
+    color: #17a2b8;
+    animation: boxes-float 3s ease-in-out infinite;
+}
+
+@keyframes boxes-float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-4px) rotate(8deg); }
+}
+
+/* 2. Badge de Rol (Efecto de brillo sutil) */
+.badge-outline-info {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.badge-outline-info:hover {
+    background-color: #17a2b8;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(23, 162, 184, 0.5);
+}
+
+/* 3. Animación de Botones (El "baile" al pasar el mouse) */
+.btn-sm {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    position: relative;
+    top: 0;
+}
+
+.btn-sm:hover {
+    top: -3px; /* Salta hacia arriba */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.btn-sm:active {
+    transform: scale(0.95); /* Se encoge al clickear */
+}
+
+/* 4. Iconos dentro de botones (Giran o reaccionan) */
+.btn-sm:hover i {
+    animation: icon-bounce 0.5s ease;
+}
+
+@keyframes icon-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+/* Específicos para botones según su color */
+.btn-outline-danger:hover i { animation: icon-shake 0.3s infinite; } /* El basurero tiembla */
+.btn-info:hover i { transform: rotate(90deg); transition: 0.4s; }    /* El "Mas" gira */
+.btn-outline-success:hover i { transform: translateY(-2px); }       /* El Excel sube */
+
+@keyframes icon-shake {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0); }
+}
+
+/* 5. Entrada suave de la cabecera (Fade In) */
+@keyframes header-slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.d-flex.justify-content-between.align-items-center {
+    animation: header-slide-down 0.6s ease-out;
+}
+
+/* Efecto de iluminación en filas */
+.table-assets tbody tr {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.table-assets tbody tr:hover {
+    background-color: #ffffff !important;
+    transform: scale(1.005); /* Un crecimiento casi imperceptible */
+    box-shadow: inset 5px 0 0 #17a2b8, 0 5px 15px rgba(0,0,0,0.08);
+    z-index: 10;
+}
+
+/* El texto secundario se vuelve más nítido al hover */
+.table-assets tr:hover .secondary-data {
+    color: #333;
+    font-weight: 500;
+}
+
+
+
+/* Glow para estados positivos (Al día) */
+.badge-success, .btn-success, [class*="badge-success"] {
+    background-color: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+    border: none;
+    animation: status-pulse-green 2s infinite;
+}
+
+/* Glow para advertencias (Por vencer) */
+.badge-warning, [class*="badge-warning"] {
+    background-color: #ffc107;
+    color: #856404 !important;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
+    animation: status-pulse-yellow 2s infinite;
+}
+
+@keyframes status-pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+    70% { box-shadow: 0 0 0 5px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+@keyframes status-pulse-yellow {
+    0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
+    70% { box-shadow: 0 0 0 5px rgba(255, 193, 7, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
+
+/* Los iconos de acción saltan al tocarlos */
+.table-assets .btn-sm:hover i {
+    transform: translateY(-3px) scale(1.2);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Icono de búsqueda con pulso en el panel */
+.icon-pulse {
+    display: inline-block;
+    animation: search-icon-beat 1.5s infinite alternate;
+}
+
+@keyframes search-icon-beat {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.2); opacity: 1; text-shadow: 0 0 8px #17a2b8; }
+}
+
+/* Tarjeta de vista previa con degradado animado al fondo */
+.detail-header-premium {
+    background: linear-gradient(-45deg, #17a2b8, #117a8b, #0e6675, #17a2b8);
+    background-size: 400% 400%;
+    animation: gradient-flow 10s ease infinite;
+}
+
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* Contenedor con Gradiente Radial Dinámico */
+.empty-state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px; /* Ajusta según tu tabla */
+    background: radial-gradient(circle at center, rgba(23, 162, 184, 0.08) 0%, rgba(255, 255, 255, 0) 75%);
+    text-align: center;
+    padding: 20px;
+    transition: all 0.5s ease;
+}
+
+/* El Wrapper del SVG y el Pulso */
+.svg-box-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+}
+
+.floating-svg {
+    width: 85px;
+    height: 85px;
+    color: #17a2b8;
+    filter: drop-shadow(0 10px 15px rgba(23, 162, 184, 0.3));
+    animation: float-and-glow 4s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* Anillo de pulso expansivo */
+.pulse-ring {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(23, 162, 184, 0.2);
+    border-radius: 50%;
+    animation: ripple-out 3s linear infinite;
+}
+
+/* Animaciones */
+@keyframes float-and-glow {
+    0%, 100% { transform: translateY(0) rotate(0deg); filter: drop-shadow(0 5px 10px rgba(23, 162, 184, 0.2)); }
+    50% { transform: translateY(-15px) rotate(5deg); filter: drop-shadow(0 15px 25px rgba(23, 162, 184, 0.4)); }
+}
+
+@keyframes ripple-out {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* El puntito parpadeante (Dot Flashing) */
+.dot-flashing {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #17a2b8;
+    animation: dot-beat 1.5s infinite alternate;
+}
+
+@keyframes dot-beat {
+    from { opacity: 0.3; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1.2); }
+}
+
+/* Badge inferior decorativo */
+.hint-badge {
+    background: #f4f6f9;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: #17a2b8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(23, 162, 184, 0.1);
+}
+
+/* Quita el scroll pero permite que el contenido se ajuste */
+.card-body, .table-responsive {
+    overflow-x: hidden !important;
+}
+
+
+.search-panel-container {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px); /* El truco del vidrio */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
+}
+
+.search-header {
+    background: linear-gradient(90deg, rgba(23, 162, 184, 0.1), transparent) !important;
+}
+
+
+.user-panel:hover .info a {
+    color: #17a2b8 !important;
+    text-shadow: 0 0 8px rgba(23, 162, 184, 0.3);
+    transition: all 0.3s ease;
+}
+
+.main-sidebar .image img:hover {
+    transform: scale(1.1) rotate(5deg);
+    border-color: #17a2b8;
+}   
+
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh !important;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+.footer-assets {
+    flex-shrink: 0;
+    margin-top: auto; /* El truco mágico de Flexbox */
+    background: white;
+    width: 100%;
+}

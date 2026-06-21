@@ -4,14 +4,13 @@
 
 @section('css')
 <style>
-    /* Sincronización Estricta con el Estilo Visual de Activos PIHCSA */
     .table-custom-pihcsa {
         border-collapse: separate;
-        border-spacing: 0 8px; /* Crea el efecto de filas separadas */
+        border-spacing: 0 8px; 
     }
     .table-custom-pihcsa thead th {
         border: none !important;
-        color: #17a2b8; /* Turquesa característico de tus cabeceras */
+        color: #17a2b8; 
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
@@ -49,7 +48,6 @@
         color: #858796;
         margin-top: 2px;
     }
-    /* Limpieza de los inputs de DataTables para que no rompan el layout */
     .dataTables_wrapper .dataTables_filter input {
         border: 1px solid #ced4da;
         border-radius: 4px;

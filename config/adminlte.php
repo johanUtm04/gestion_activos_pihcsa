@@ -377,14 +377,14 @@ return [
     ],
     [
         'text' => 'Gestión de Marcas',
-        'url'  => '/gestionMarcas', // <-- Corregido con '/'
+        'url'  => '/gestionMarcas',
         'icon' => 'fas fa-tags',
         'can'  => ['access-admin'],
         'active' => ['gestionMarcas*'],
     ],
     [
         'text' => 'Tipos de Activo (Equipos)',
-        'url'  => '/gestionTipoActivos', // <-- Corregido con '/'
+        'url'  => '/gestionTipoActivos', 
         'icon' => 'fas fa-laptop-house',
         'can'  => ['access-admin'],
         'active' => ['gestionTipoActivos*'],
