@@ -19,6 +19,7 @@ use App\Http\Controllers\{
 
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\CatTipoVehiculoController;
+use App\Http\Controllers\EmpresaSeleccionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,38 @@ Route::get('/', function () {
 */
 Route::middleware(['auth'])->group(function () {
 
+    /* --- FLUJO OBLIGATORIO DE SELECCIÓN DE EMPRESA --- */
+    // Solo se activará cuando se intente interactuar con el módulo de vehículos
+    Route::get('seleccionar-empresa', [EmpresaSeleccionController::class, 'mostrarSelector'])->name('empresa.seleccionar');
+    Route::post('seleccionar-empresa', [EmpresaSeleccionController::class, 'guardarSeleccion'])->name('empresa.guardar');
+
+
+    /*
+    |----------------------------------------------------------------------
+    | MÓDULOS FILTRADOS POR EMPRESA (Únicamente Vehículos)
+    |----------------------------------------------------------------------
+    */
+    Route::middleware(['EnsureEmpresaIsSelected'])->group(function () {
+        
+        /* --- GESTIÓN DE VEHÍCULOS --- */
+        Route::get('vehiculos/filtros', [VehiculoController::class, 'filtros'])->name('vehiculos.filtros');
+        Route::get('/vehiculos/datos-filtros', [VehiculoController::class, 'getFilterData'])->name('vehiculos.datos_filters');
+        
+        Route::resource('vehiculos', VehiculoController::class)->parameters([
+            'vehiculos' => 'vehiculo'
+        ]);
+        
+        Route::resource('tipo_vehiculos', CatTipoVehiculoController::class)->names('tipo_vehiculos');
+
+    });
+
+
+    /*
+    |----------------------------------------------------------------------
+    | MÓDULOS GLOBALES (No alterados, no piden seleccionar empresa)
+    |----------------------------------------------------------------------
+    */
+
     /* --- GESTIÓN DE EQUIPOS --- */
     Route::get('/equipos', [EquipoController::class, 'index'])->name('equipos.index');
     Route::post('/equipos', [EquipoController::class, 'store'])->name('equipos.store');
@@ -44,20 +77,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/equipos/{equipo}', [EquipoController::class, 'destroy'])->name('equipos.destroy');
     Route::get('/equipos/{equipo}/detalles', [EquipoController::class, 'show'])->name('equipos.show');
 
-    /* --- GESTIÓN DE VEHÍCULOS --- */
-    Route::get('vehiculos/filtros', [VehiculoController::class, 'filtros'])->name('vehiculos.filtros');
-    Route::get('/vehiculos/datos-filtros', [VehiculoController::class, 'getFilterData'])->name('vehiculos.datos_filtros');
-    // El recurso principal de vehículos
-    Route::resource('vehiculos', VehiculoController::class)->parameters([
-        'vehiculos' => 'vehiculo'
-    ]);
-    // El catálogo para controlar si es Pick-up, Sedán, etc. (Espejo de gestionTipoActivos)
-    Route::resource('tipo_vehiculos', CatTipoVehiculoController::class)->names('tipo_vehiculos');
-
     /* --- FLUJO DE REGISTRO (WIZARD) --- */
     Route::get('/equipos/wizard/create', [EquipoWizardController::class, 'create'])->name('equipos.wizard.create');
     Route::get('/validar-serial-activo', [EquipoWizardController::class, 'validarSerial'])->name('equipos.validar_serial');
-    // El UUID vincula los componentes al equipo en creación
+    
     Route::prefix('equipos/{uuid}')->group(function () {
         Route::get('/ubicacion', [EquipoWizardController::class, 'ubicacionForm'])->name('equipos.wizard.ubicacion');
         Route::post('/ubicacion', [EquipoWizardController::class, 'saveUbicacion'])->name('equipos.wizard.saveUbicacion');
@@ -76,7 +99,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/periferico', [EquipoWizardController::class, 'perifericoForm'])->name('equipos.wizard.periferico');
         Route::post('/periferico', [EquipoWizardController::class, 'savePeriferico'])->name('equipos.wizard.savePeriferico');
-
     });
 
     /* --- MANTENIMIENTO Y FACTURACIÓN --- */
@@ -92,42 +114,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/historial', [HistorialController::class, 'index'])->name('historial.index');
     Route::get('/obtener-datos-fiscales', [DepreciacionController::class, 'getFiscalData']);
 
-
     /* --- CONFIGURACION FISCAL --- */
     Route::prefix('configuracion')->group(function () {
-    
-    // Rutas para el Catálogo de Tasas LISR
-    Route::get('/tasas', [TasasController::class, 'index'])->name('tasas.index');
-    Route::post('/tasas', [TasasController::class, 'store'])->name('tasas.store');
-    Route::put('/tasas/{id}', [TasasController::class, 'update'])->name('tasas.update');
-    Route::delete('/tasas/{id}', [TasasController::class, 'destroy'])->name('tasas.destroy');
+        Route::get('/tasas', [TasasController::class, 'index'])->name('tasas.index');
+        Route::post('/tasas', [TasasController::class, 'store'])->name('tasas.store');
+        Route::put('/tasas/{id}', [TasasController::class, 'update'])->name('tasas.update');
+        Route::delete('/tasas/{id}', [TasasController::class, 'destroy'])->name('tasas.destroy');
 
-    // Rutas para el Catálogo de INPC
-    Route::get('/inpc', [InpcController::class, 'index'])->name('inpc.index');
-    Route::post('/inpc', [InpcController::class, 'store'])->name('inpc.store');
-    
+        Route::get('/inpc', [InpcController::class, 'index'])->name('inpc.index');
+        Route::post('/inpc', [InpcController::class, 'store'])->name('inpc.store');
     });
 
-
-
-
     /* --- ADMINISTRACIÓN DE CATÁLOGOS --- */
-    
-    // Usuarios
     Route::resource('gestionUsuarios', GestionUsuariosController::class)->names('users')
-    ->parameters(['gestionUsuarios' => 'user']);
+        ->parameters(['gestionUsuarios' => 'user']);
     
-    // Ubicaciones
     Route::resource('gestionUbicaciones', GestionUbicacionesController::class)->names('ubicaciones')
-    ->parameters(['gestionUbicaciones' => 'ubicacion']);
+        ->parameters(['gestionUbicaciones' => 'ubicacion']);
 
-    // Marcas
     Route::resource('gestionMarcas', MarcaController::class)->names('marcas')
-    ->parameters(['gestionMarcas' => 'marca']);
+        ->parameters(['gestionMarcas' => 'marca']);
 
-    // Tipos de Activo
     Route::resource('gestionTipoActivos', TipoActivoController::class)->names('tipo_activos')
-    ->parameters(['gestionTipoActivos' => 'tipo_activo']);
+        ->parameters(['gestionTipoActivos' => 'tipo_activo']);
 
     /* --- CONFIGURACIÓN Y SOPORTE --- */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -137,7 +146,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('soporte/contacto', [SoporteController::class, 'contacto'])->name('soporte.contacto');
     Route::get('soporte/manual', [SoporteController::class, 'manual'])->name('soporte.manual');
 
-    /* --- Codigo de Barras --- */
+    /* --- Código de Barras --- */
     Route::get('/ticket/{id}', [EquipoController::class, 'ticket'])->name('equipos.ticket');
     Route::get('/buscar-equipo', [EquipoController::class, 'vistaBusqueda'])->name('equipos.busqueda');
     Route::post('/buscar-equipo', [EquipoController::class, 'procesar'])->name('equipos.procesar');

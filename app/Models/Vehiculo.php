@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder; // Importación necesaria para el Scope
 use Carbon\Carbon;
 
 class Vehiculo extends Model
@@ -13,6 +14,7 @@ class Vehiculo extends Model
     protected $table = 'vehiculos';
 
     protected $fillable = [
+        'empresa_id',
         'tipo_vehiculo_id',
         'marca_id',
         'usuario_id',
@@ -31,6 +33,25 @@ class Vehiculo extends Model
         'is_active',
         'motivo_inactivacion'
     ];
+
+    /**
+     * El "booted" aplica filtros automáticos de forma invisible.
+     * No altera tus consultas manuales ni rompe vistas actuales.
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope('empresa', function (Builder $builder) {
+            if (session()->has('empresa_id')) {
+                $builder->where('empresa_id', session('empresa_id'));
+            }
+        });
+    }
+
+    // Relación con la Empresa Maestra (Nueva)
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
 
     // Relación con el Catálogo de Tipos
     public function tipoVehiculo()
