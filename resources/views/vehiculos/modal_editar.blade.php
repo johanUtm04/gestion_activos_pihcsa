@@ -10,6 +10,9 @@
             <form id="formEditarVehiculo" method="POST">
                 @csrf
                 @method('PUT')
+                
+                <input type="hidden" id="edit_vehiculo_id" name="id">
+
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 form-group">

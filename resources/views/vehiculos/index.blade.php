@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeSidebarBtn = document.getElementById('closeSidebar');
     const rows = document.querySelectorAll('#tablaVehiculos tbody tr');
 
-    // --- Animación secuencial de entrada ---
+    /* --- Animación secuencial de entrada --- */
     rows.forEach((row, index) => {
         row.style.opacity = '0';
         row.style.transform = 'translateY(5px)';
@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, index * 30);
     });
 
-    // --- Mecánica de Selección y Carga en Panel Lateral ---
+    /* --- Mecánica de Selección y Carga en Panel Lateral --- */
     rows.forEach(row => {
         row.addEventListener('click', function() {
             if (this.classList.contains('row-inactive') || this.cells.length <= 1) return;
@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('sideUser').innerText = usuario;
             document.getElementById('sideEmail').innerText = email;
 
-            // Determinar métricas basadas en el estatus de mantenimiento del activo
+            // Determinar métricas basadas en el estatus de mantenimiento
             let motorVal, tiresVal, fluidsVal, progressClass;
             if (estatus === 'rojo') {
                 motorVal = 42; tiresVal = 55; fluidsVal = 30;
@@ -476,7 +476,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 progressClass = 'bg-success';
             }
 
-            // Actualizar barras con animación fluida de rediseño
+            // Actualizar barras
             updateMetric('barMotor', motorVal, progressClass);
             updateMetric('barTires', tiresVal, progressClass);
             updateMetric('barFluids', fluidsVal, progressClass);
@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 50);
     }
 
-    // --- Control de Cierre del Panel ---
+    /* --- Control de Cierre del Panel --- */
     if (closeSidebarBtn) {
         closeSidebarBtn.addEventListener('click', function() {
             sidebar.classList.remove('active');
@@ -506,7 +506,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // --- Lógica Interna de Catálogos (Filtros & Modales) ---
+    /* --- Lógica Interna de Catálogos (Filtros & Modales) --- */
     function cargarOpciones(selectId, items, propNombre, selectedId = null) {
         const select = document.getElementById(selectId);
         if(!select) return;
@@ -532,6 +532,83 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al precargar catálogos:', error));
     }
 
+    /* --- EVENTO CORREGIDO PARA EDITAR VEHÍCULO --- */
+    document.getElementById('tablaVehiculos').addEventListener('click', function(e) {
+        const btnEditar = e.target.closest('.btn-editar-vehiculo');
+        
+        if (btnEditar) {
+            e.preventDefault();
+            e.stopPropagation(); // Evita detonar la selección de fila
+            const vehiculoId = btnEditar.getAttribute('data-id');
+
+            prefetchCatalogos(() => {
+                fetch(`/vehiculos/${vehiculoId}/edit`)
+                    .then(response => response.json())
+                    .then(vehiculo => {
+                        // Rellenar campos estándar
+                        document.getElementById('edit_vehiculo_id').value = vehiculo.id;
+                        document.getElementById('edit_modelo').value = vehiculo.modelo;
+                        document.getElementById('edit_anio').value = vehiculo.anio;
+                        document.getElementById('edit_placas').value = vehiculo.placas || '';
+                        document.getElementById('edit_no_serie').value = vehiculo.no_serie || '';
+                        document.getElementById('edit_no_motor').value = vehiculo.no_motor || '';
+                        
+                        // Cargar selects primarios
+                        cargarOpciones('edit_tipo_vehiculo_id', dataCatalogos.tipos, 'nombre', vehiculo.tipo_vehiculo_id);
+                        cargarOpciones('edit_marca_id', dataCatalogos.marcas, 'nombre', vehiculo.marca_id);
+                        
+                        // Cargar resguardantes y locaciones
+                        cargarOpciones('edit_usuario_id', dataCatalogos.usuarios || [], 'name', vehiculo.usuario_id);
+                        cargarOpciones('edit_ubicacion_id', dataCatalogos.ubicaciones || [], 'nombre', vehiculo.ubicacion_id);
+
+                        // Estatus Operativo Activo/Inactivo
+                        const selectActive = document.getElementById('edit_is_active');
+                        const contenedorMotivo = document.getElementById('contenedor_motivo');
+                        const inputMotivo = document.getElementById('edit_motivo_inactivacion');
+
+                        selectActive.value = vehiculo.is_active;
+                        if (vehiculo.is_active == 0) {
+                            contenedorMotivo.style.display = 'block';
+                            inputMotivo.value = vehiculo.motivo_inactivacion || '';
+                            inputMotivo.required = true;
+                        } else {
+                            contenedorMotivo.style.display = 'none';
+                            inputMotivo.value = '';
+                            inputMotivo.required = false;
+                        }
+                        
+                        const formEditar = document.getElementById('formEditarVehiculo');
+                        if(formEditar) {
+                            formEditar.action = `/vehiculos/${vehiculoId}`;
+                        }
+
+                        $('#modalEditarVehiculo').modal('show');
+                    })
+                    .catch(error => console.error('Error al obtener datos del vehículo:', error));
+            });
+        }
+    });
+
+    /* --- LISTENER INTERACTIVO PARA ESTADO OPERATIVO EN MODAL EDITAR --- */
+    const editActiveSelect = document.getElementById('edit_is_active');
+    if (editActiveSelect) {
+        editActiveSelect.addEventListener('change', function() {
+            const contenedor = document.getElementById('contenedor_motivo');
+            const input = document.getElementById('edit_motivo_inactivacion');
+            
+            if (this.value == '0') {
+                contenedor.style.display = 'block';
+                input.required = true;
+                input.focus();
+            } else {
+                contenedor.style.display = 'none';
+                input.required = false;
+                input.value = '';
+            }
+        });
+    }
+
+    /* --- Evento Modal Crear --- */
     $('#modalCrearVehiculo').on('show.bs.modal', function () {
         prefetchCatalogos(() => {
             cargarOpciones('tipo_vehiculo_id', dataCatalogos.tipos, 'nombre');
