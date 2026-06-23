@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vehiculo;
-use App\Models\CatTipoVehiculo; // Ajusta el nombre exacto de tu modelo de tipos si varía
+use App\Models\CatTipoVehiculo;
 use App\Models\Marca;
 use App\Models\Ubicacion;
 use App\Models\User;
@@ -16,9 +16,16 @@ class VehiculoController extends Controller
      */
     public function index()
     {
-        // Cargamos las relaciones para evitar el problema de consultas N+1 en la tabla
+        // El Global Scope ya filtra los vehículos por la empresa activa en la sesión automáticamente
         $vehiculos = Vehiculo::with(['tipoVehiculo', 'marca', 'ubicacion', 'usuario'])->get();
-        return view('vehiculos.index', compact('vehiculos'));
+
+        // Enviamos los catálogos directamente a la vista para asegurar que los modales carguen al tiro
+        $tiposVehiculo = CatTipoVehiculo::select('id', 'nombre')->get();
+        $marcas = Marca::select('id', 'nombre')->get();
+        $usuarios = User::select('id', 'name')->get();
+        $ubicaciones = Ubicacion::select('id', 'nombre')->get();
+
+        return view('vehiculos.index', compact('vehiculos', 'tiposVehiculo', 'marcas', 'usuarios', 'ubicaciones'));
     }
 
     /**
@@ -52,10 +59,17 @@ class VehiculoController extends Controller
             'cilindros'        => 'nullable|integer|min:1',
             'tipo_combustible' => 'nullable|string',
             'fecha_ultimo_mantenimiento' => 'nullable|date',
+            // NUEVO: Validamos que la empresa que viene del input oculto exista en la DB
+            'empresa_id'       => 'required|exists:empresas,id', 
         ]);
 
         // Por defecto entra como activo
         $validated['is_active'] = true;
+
+        // DOBLE CANDADO: Si por algún motivo el input oculto falló, lo planchamos con la sesión activa
+        if (!isset($validated['empresa_id'])) {
+            $validated['empresa_id'] = session('empresa_id');
+        }
 
         Vehiculo::create($validated);
 

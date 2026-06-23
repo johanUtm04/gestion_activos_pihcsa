@@ -9,6 +9,9 @@
             </div>
             <form action="{{ route('vehiculos.store') }}" method="POST">
                 @csrf
+                
+                <input type="hidden" name="empresa_id" value="{{ session('empresa_id') }}">
+
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 form-group">

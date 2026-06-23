@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             UbicacionesSeeder::class,
             MarcasSeeder::class,
+            EmpresaSeeder::class,
             TipoActivosSeeder::class,
             CatTipoVehiculosSeeder::class,
 

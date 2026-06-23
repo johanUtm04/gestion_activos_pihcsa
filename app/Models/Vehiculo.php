@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder; // Importación necesaria para el Scope
+use App\Models\Scopes\EmpresaScope;
 use Carbon\Carbon;
 
 class Vehiculo extends Model
@@ -36,15 +36,11 @@ class Vehiculo extends Model
 
     /**
      * El "booted" aplica filtros automáticos de forma invisible.
-     * No altera tus consultas manuales ni rompe vistas actuales.
+     * Centralizado en la clase EmpresaScope para mantener el modelo limpio.
      */
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::addGlobalScope('empresa', function (Builder $builder) {
-            if (session()->has('empresa_id')) {
-                $builder->where('empresa_id', session('empresa_id'));
-            }
-        });
+        static::addGlobalScope(new EmpresaScope);
     }
 
     // Relación con la Empresa Maestra (Nueva)

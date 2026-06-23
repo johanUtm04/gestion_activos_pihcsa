@@ -609,10 +609,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* --- Evento Modal Crear --- */
-    $('#modalCrearVehiculo').on('show.bs.modal', function () {
+$('#modalCrearVehiculo').on('show.bs.modal', function () {
         prefetchCatalogos(() => {
+            // 1. Estos ya los tenías bien:
             cargarOpciones('tipo_vehiculo_id', dataCatalogos.tipos, 'nombre');
             cargarOpciones('marca_id', dataCatalogos.marcas, 'nombre');
+
+            // 2. LO QUE FALTABA: Forzar la carga de los usuarios y las ubicaciones en el modal de creación
+            cargarOpciones('usuario_id', dataCatalogos.usuarios || [], 'name');
+            cargarOpciones('ubicacion_id', dataCatalogos.ubicaciones || [], 'nombre');
         });
     });
 });

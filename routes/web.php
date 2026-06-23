@@ -20,6 +20,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\CatTipoVehiculoController;
 use App\Http\Controllers\EmpresaSeleccionController;
+use App\Http\Controllers\EmpresaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,6 @@ Route::middleware(['auth'])->group(function () {
         ]);
         
         Route::resource('tipo_vehiculos', CatTipoVehiculoController::class)->names('tipo_vehiculos');
-
     });
 
 
@@ -137,6 +137,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('gestionTipoActivos', TipoActivoController::class)->names('tipo_activos')
         ->parameters(['gestionTipoActivos' => 'tipo_activo']);
+
+    Route::resource('empresas', EmpresaController::class);
 
     /* --- CONFIGURACIÓN Y SOPORTE --- */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

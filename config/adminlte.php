@@ -396,7 +396,13 @@ return [
         'can'  => ['access-admin'],
         'active' => ['tipo_vehiculos*'],
     ],
-
+        [
+        'text' => 'Catálogo de Empresas',
+        'url'  => '/empresas', 
+        'icon' => 'fas fa-building',
+        'can'  => ['access-admin'],
+        'active' => ['empresas*'],
+    ],
     // --- SECCIÓN: HISTÓRICO ---
     ['header' => 'REPORTES'],
     [
