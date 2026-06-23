@@ -194,6 +194,23 @@
         </div>
     @endif
 
+    <div class="d-flex border-0 shadow-sm p-3 bg-white mb-3 align-items-center justify-content-between" style="border-radius: 12px;">
+        <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-light text-primary d-flex align-items-center justify-content-center mr-3 shadow-sm" style="width: 40px; height: 40px;">
+                <i class="fas fa-building"></i>
+            </div>
+            <div>
+                <span class="text-muted d-block text-xs font-weight-bold text-uppercase" style="letter-spacing: 0.5px;">Filtro Operativo de Contexto</span> 
+                <strong class="text-uppercase text-dark" style="font-size: 1.05rem;">{{ App\Models\Empresa::find(session('empresa_id'))->nombre ?? 'Sin Empresa Asignada' }}</strong>
+            </div>
+        </div>
+        <div>
+            <a href="{{ route('vehiculos.cambiar_empresa') }}" class="btn btn-outline-secondary btn-sm px-3 font-weight-bold shadow-sm" style="border-radius: 8px;">
+                <i class="fas fa-exchange-alt mr-1"></i> Cambiar de Empresa
+            </a>
+        </div>
+    </div>
+
     {{-- Buscador colapsable mejorado --}}
     <div class="card card-outline card-info shadow-sm mb-3 collapsed-card">
         <div class="card-header p-2 d-flex align-items-center" data-card-widget="collapse" style="cursor: pointer;">
@@ -609,13 +626,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* --- Evento Modal Crear --- */
-$('#modalCrearVehiculo').on('show.bs.modal', function () {
+    $('#modalCrearVehiculo').on('show.bs.modal', function () {
         prefetchCatalogos(() => {
-            // 1. Estos ya los tenías bien:
             cargarOpciones('tipo_vehiculo_id', dataCatalogos.tipos, 'nombre');
             cargarOpciones('marca_id', dataCatalogos.marcas, 'nombre');
-
-            // 2. LO QUE FALTABA: Forzar la carga de los usuarios y las ubicaciones en el modal de creación
             cargarOpciones('usuario_id', dataCatalogos.usuarios || [], 'name');
             cargarOpciones('ubicacion_id', dataCatalogos.ubicaciones || [], 'nombre');
         });

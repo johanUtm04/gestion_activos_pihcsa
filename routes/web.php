@@ -55,6 +55,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('vehiculos/filtros', [VehiculoController::class, 'filtros'])->name('vehiculos.filtros');
         Route::get('/vehiculos/datos-filtros', [VehiculoController::class, 'getFilterData'])->name('vehiculos.datos_filters');
         
+        // NUEVO: Ruta para romper el contexto actual de la sesión y forzar re-selección de empresa
+        Route::get('/vehiculos/cambiar-contexto', function() {
+            session()->forget('empresa_id');
+            return redirect()->route('vehiculos.index');
+        })->name('vehiculos.cambiar_empresa');
+
         Route::resource('vehiculos', VehiculoController::class)->parameters([
             'vehiculos' => 'vehiculo'
         ]);
