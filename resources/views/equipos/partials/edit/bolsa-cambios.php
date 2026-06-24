@@ -17,7 +17,7 @@
                     <tr>
                         <th class="pl-4 border-0" style="width: 35%">Elemento / Propiedad</th>
                         <th class="border-0" style="width: 25%">Dato Anterior</th>
-                        <th class="text-center border-0" style="width: 10%"></th>
+                       <th class="text-center border-0" style="width: 10%"></th>
                         <th class="border-0" style="width: 30%">Nuevo Dato</th>
                     </tr>
                 </thead>
