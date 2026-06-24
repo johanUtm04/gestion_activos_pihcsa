@@ -151,7 +151,7 @@
                             <label for="marca_id"> Marca:</label>
                             <select name="marca_id" id="marca_id" class="form-control select2" required>
                                 <option value="">Seleccione marca (o agregue desde catalogo) </option>
-                                @foreach(\App\Models\Marca::all() as $marca)
+                                @foreach(\App\Models\Marca::where('tipo', 'TI')->get() as $marca)
                                 <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
                                 {{ strtoupper($marca->nombre) }}
                                 </option>
