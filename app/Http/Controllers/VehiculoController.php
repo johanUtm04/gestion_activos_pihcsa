@@ -14,19 +14,52 @@ class VehiculoController extends Controller
     /**
      * Muestra el inventario principal.
      */
-    public function index()
-    {
-        // El Global Scope ya filtra los vehículos por la empresa activa en la sesión automáticamente
-        $vehiculos = Vehiculo::with(['tipoVehiculo', 'marca', 'ubicacion', 'usuario'])->get();
+public function index(Request $request)
+{
+    // Construimos la consulta base con sus relaciones
+    $query = Vehiculo::with(['tipoVehiculo', 'marca', 'ubicacion', 'usuario']);
 
-        // Enviamos los catálogos directamente a la vista para asegurar que los modales carguen al tiro
-        $tiposVehiculo = CatTipoVehiculo::select('id', 'nombre')->get();
-        $marcas = Marca::select('id', 'nombre')->get();
-        $usuarios = User::select('id', 'name')->get();
-        $ubicaciones = Ubicacion::select('id', 'nombre')->get();
-
-        return view('vehiculos.index', compact('vehiculos', 'tiposVehiculo', 'marcas', 'usuarios', 'ubicaciones'));
+    // Filtro por Tipo de Vehículo
+    if ($request->filled('tipo_vehiculo_id')) {
+        $query->where('tipo_vehiculo_id', $request->tipo_vehiculo_id);
     }
+
+    // Filtro por Marca
+    if ($request->filled('marca_id')) {
+        $query->where('marca_id', $request->marca_id);
+    }
+
+    // Filtro por Ubicación
+    if ($request->filled('ubicacion_id')) {
+        $query->where('ubicacion_id', $request->ubicacion_id);
+    }
+
+    // Filtro por Estatus (Activos / Inactivos)
+    if ($request->filled('estatus')) {
+        $query->where('is_active', $request->estatus);
+    }
+
+    // Búsqueda libre (Placas, Modelo o Número de Serie)
+    if ($request->filled('buscar')) {
+        $buscar = $request->buscar;
+        $query->where(function($q) use ($buscar) {
+            $q->where('placas', 'LIKE', "%{$buscar}%")
+              ->orWhere('modelo', 'LIKE', "%{$buscar}%")
+              ->orWhere('no_serie', 'LIKE', "%{$buscar}%");
+        });
+    }
+
+    // Ejecutamos la consulta filtrada
+    $vehiculos = $query->get();
+
+    // Catálogos para los selects del buscador y modales
+    $tiposVehiculo = CatTipoVehiculo::select('id', 'nombre')->get();
+    $marcas        = Marca::select('id', 'nombre')->get();
+    $usuarios      = User::select('id', 'name')->get();
+    $ubicaciones   = Ubicacion::select('id', 'nombre')->get();
+
+    return view('vehiculos.index', compact('vehiculos', 'tiposVehiculo', 'marcas', 'usuarios', 'ubicaciones'));
+}
 
     /**
      * Endpoint que retorna los catálogos para rellenar los selects vía Fetch API.

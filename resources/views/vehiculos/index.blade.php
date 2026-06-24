@@ -212,19 +212,75 @@
     </div>
 
     {{-- Buscador colapsable mejorado --}}
-    <div class="card card-outline card-info shadow-sm mb-3 collapsed-card">
-        <div class="card-header p-2 d-flex align-items-center" data-card-widget="collapse" style="cursor: pointer;">
-            <h3 class="card-title text-info font-weight-bold small mb-0 ml-2">
-                <i class="fas fa-search-plus mr-1"></i> PANEL DE BÚSQUEDA AVANZADA
-            </h3>
-            <div class="card-tools ml-auto">
-                <button type="button" class="btn btn-tool text-info"><i class="fas fa-plus"></i></button>
-            </div>
-        </div>
-        <div class="card-body small" style="display: none;">
-            {{-- Filtros del buscador --}}
+<div class="card card-outline card-info shadow-sm mb-3 search-panel-container {{ request()->anyFilled(['tipo_vehiculo_id', 'marca_id', 'ubicacion_id', 'estatus', 'buscar']) ? '' : 'collapsed-card' }}">
+    <div class="card-header p-2 d-flex align-items-center search-header" data-card-widget="collapse" style="cursor: pointer;">
+        <h3 class="card-title text-info font-weight-bold small mb-0 ml-2" style="letter-spacing: 0.5px;">
+            <i class="fas fa-search mr-1"></i> PANEL DE BÚSQUEDA AVANZADA
+        </h3>
+        <div class="card-tools ml-auto mr-1">
+            <button type="button" class="btn btn-tool text-info p-1" data-card-widget="collapse">
+                <i class="fas {{ request()->anyFilled(['tipo_vehiculo_id', 'marca_id', 'ubicacion_id', 'estatus', 'buscar']) ? 'fa-minus' : 'fa-plus' }} transition-icon" id="toggle-icon"></i>
+            </button>
         </div>
     </div>
+    <div class="card-body small" style="{{ request()->anyFilled(['tipo_vehiculo_id', 'marca_id', 'ubicacion_id', 'estatus', 'buscar']) ? 'display: block;' : 'display: none;' }} background-color: rgba(255, 255, 255, 0.5);">
+        
+        <form action="{{ route('vehiculos.index') }}" method="GET" autocomplete="off">
+            <div class="row m-0 p-1">
+
+                <div class="col-md-3 mb-2">
+                    <label class="font-weight-bold text-muted">Tipo</label>
+                    <select name="tipo_vehiculo_id" class="form-control form-control-sm">
+                        <option value="">-- Todos --</option>
+                        @foreach($tiposVehiculo as $tipo)
+                            <option value="{{ $tipo->id }}" {{ request('tipo_vehiculo_id') == $tipo->id ? 'selected' : '' }}>{{ $tipo->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    <label class="font-weight-bold text-muted">Marca</label>
+                    <select name="marca_id" class="form-control form-control-sm">
+                        <option value="">-- Todas --</option>
+                        @foreach($marcas as $marca)
+                            <option value="{{ $marca->id }}" {{ request('marca_id') == $marca->id ? 'selected' : '' }}>{{ $marca->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    <label class="font-weight-bold text-muted">Ubicación BASE</label>
+                    <select name="ubicacion_id" class="form-control form-control-sm">
+                        <option value="">-- Todas --</option>
+                        @foreach($ubicaciones as $ub)
+                            <option value="{{ $ub->id }}" {{ request('ubicacion_id') == $ub->id ? 'selected' : '' }}>{{ $ub->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-2 mb-2">
+                    <label class="font-weight-bold text-muted">Estatus</label>
+                    <select name="estatus" class="form-control form-control-sm">
+                        <option value="">-- Todos --</option>
+                        <option value="1" {{ request('estatus') === '1' ? 'selected' : '' }}>Activos</option>
+                        <option value="0" {{ request('estatus') === '0' ? 'selected' : '' }}>Inactivos</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1 mb-2 d-flex align-items-end justify-content-between">
+                    <button type="submit" class="btn btn-sm btn-info w-50 mr-1" title="Filtrar">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <a href="{{ route('vehiculos.index') }}" class="btn btn-sm btn-secondary w-50" title="Limpiar">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
 
     {{-- Contenedor de FlexBox Dinámico --}}
     <div class="inventory-wrapper">
