@@ -299,122 +299,143 @@ return [
     */
 
 'menu' => [
-    // Navbar items
+    // ==========================================
+    // NAVBAR OPTIONS
+    // ==========================================
     [
-        'type' => 'fullscreen-widget',
+        'type'         => 'fullscreen-widget',
         'topnav_right' => false,
     ],
 
-    // --- SECCIÓN: OPERACIONES ---
-    ['header' => 'ACCIONES PRINCIPALES'],
+    // ==========================================
+    // SECTION: MAIN OPERATIONS
+    // ==========================================
     [
-        'text' => 'Inventario de Equipos',
-        'url'  => '/equipos',
-        'icon' => 'fas fa-boxes',
-        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'header' => 'ACCIONES PRINCIPALES'
+    ],
+    [
+        'text'   => 'Inventario de Equipos',
+        'url'    => '/equipos',
+        'icon'   => 'fas fa-boxes',
+        'can'    => ['access-admin', 'access-sistemas', 'access-invitado'],
         'active' => ['equipos*'],
     ],
     [
-        'text' => 'Inventario de Vehículos',
-        'url'  => '/vehiculos',
-        'icon' => 'fas fa-car',
-        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'text'   => 'Inventario de Vehículos',
+        'url'    => '/vehiculos',
+        'icon'   => 'fas fa-car',
+        'can'    => ['access-admin', 'access-sistemas', 'access-invitado'],
         'active' => ['vehiculos*'],
     ],
     [
-        'text' => 'Perfil de Usuario',
-        'url'  => '/profile',
-        'icon' => 'fas fa-user-cog',
-        'can'  => ['access-admin', 'access-sistemas'],
+        'text'   => 'Perfil de Usuario',
+        'url'    => '/profile',
+        'icon'   => 'fas fa-user-cog',
+        'can'    => ['access-admin', 'access-sistemas'],
         'active' => ['profile*'],
     ],
 
-    // --- SECCIÓN: MÓDULO FISCAL ---
-    ['header' => 'ANÁLISIS Y DEPRECIACIÓN'],
+    // ==========================================
+    // SECTION: FISCAL MODULE
+    // ==========================================
     [
-        'text' => 'Calcular Depreciación',
-        'url'  => '/depreciacion',
-        'icon' => 'fas fa-calculator',
+        'header' => 'ANÁLISIS Y DEPRECIACIÓN'
+    ],
+    [
+        'text'       => 'Calcular Depreciación',
+        'url'        => '/depreciacion',
+        'icon'       => 'fas fa-calculator',
         'icon_color' => 'success',
-        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active' => ['depreciacion*'],
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['depreciacion*'],
     ],
     [
-        'text' => 'Índices INPC',
-        'url'  => '/configuracion/inpc',
-        'icon' => 'fas fa-chart-bar',
+        'text'       => 'Índices INPC',
+        'url'        => '/configuracion/inpc',
+        'icon'       => 'fas fa-chart-bar',
         'icon_color' => 'info',
-        'can'  => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active' => ['configuracion/inpc*'],
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['configuracion/inpc*'],
     ],
     [
-        'text' => 'Tasa de Intereses LISR',
-        'url'  => '/configuracion/tasas',
-        'icon' => 'fas fa-percent',
+        'text'       => 'Tasa de Intereses LISR',
+        'url'        => '/configuracion/tasas',
+        'icon'       => 'fas fa-percent',
         'icon_color' => 'warning',
-        'can'  => ['calcular-depreciacion'],
-        'active' => ['configuracion/tasas*'],
+        'can'        => ['calcular-depreciacion'],
+        'active'     => ['configuracion/tasas*'],
     ],
 
-    // --- SECCIÓN: CATÁLOGOS ---
+    // ==========================================
+    // SECTION: SYSTEM CATALOGS
+    // ==========================================
     [
         'header' => 'CATÁLOGOS ADMINISTRATIVOS',
         'can'    => ['access-admin'], 
     ],
     [
-        'text' => 'Gestión de Usuarios',
-        'url'  => '/gestionUsuarios',
-        'icon' => 'fas fa-users-cog',
-        'can'  => ['access-admin'],
+        'text'   => 'Gestión de Usuarios',
+        'url'    => '/gestionUsuarios',
+        'icon'   => 'fas fa-users-cog',
+        'can'    => ['access-admin'],
         'active' => ['gestionUsuarios*'],
     ],
     [
-        'text' => 'Gestión de Ubicaciones',
-        'url'  => '/gestionUbicaciones',
-        'icon' => 'fas fa-map-marker-alt',
-        'can'  => ['access-admin'],
+        'text'   => 'Gestión de Ubicaciones',
+        'url'    => '/gestionUbicaciones',
+        'icon'   => 'fas fa-map-marker-alt',
+        'can'    => ['access-admin'],
         'active' => ['gestionUbicaciones*'],
     ],
     [
-        'text' => 'Gestión de Marcas',
-        'url'  => '/gestionMarcas',
-        'icon' => 'fas fa-tags',
-        'can'  => ['access-admin'],
+        'text'   => 'Gestión de Marcas',
+        'url'    => '/gestionMarcas',
+        'icon'   => 'fas fa-tags',
+        'can'    => ['access-admin'],
         'active' => ['gestionMarcas*'],
     ],
     [
-        'text' => 'Tipos de Activo (Equipos)',
-        'url'  => '/gestionTipoActivos', 
-        'icon' => 'fas fa-laptop-house',
-        'can'  => ['access-admin'],
+        'text'   => 'Tipos de Activo (Equipos)',
+        'url'    => '/gestionTipoActivos', 
+        'icon'   => 'fas fa-laptop-house',
+        'can'    => ['access-admin'],
         'active' => ['gestionTipoActivos*'],
     ],
     [
-        'text' => 'Tipos de Vehículo',
-        'url'  => '/tipo_vehiculos', // <-- Nuevo catálogo para el flujo de transporte
-        'icon' => 'fas fa-bus',
-        'can'  => ['access-admin'],
+        'text'   => 'Tipos de Vehículo',
+        'url'    => '/tipo_vehiculos',
+        'icon'   => 'fas fa-bus',
+        'can'    => ['access-admin'],
         'active' => ['tipo_vehiculos*'],
     ],
-        [
-        'text' => 'Catálogo de Empresas',
-        'url'  => '/empresas', 
-        'icon' => 'fas fa-building',
-        'can'  => ['access-admin'],
+    [
+        'text'   => 'Catálogo de Empresas',
+        'url'    => '/empresas', 
+        'icon'   => 'fas fa-building',
+        'can'    => ['access-admin'],
         'active' => ['empresas*'],
     ],
-    // --- SECCIÓN: HISTÓRICO ---
-    ['header' => 'REPORTES'],
+
+    // ==========================================
+    // SECTION: AUDITING & REPORTS
+    // ==========================================
     [
-        'text' => 'Historial de Cambios',
-        'url'  => '/historial',
-        'icon' => 'fas fa-history',
-        'can'  => ['access-admin', 'access-sistemas'],
+        'header' => 'REPORTES'
+    ],
+    [
+        'text'   => 'Historial de Cambios',
+        'url'    => '/historial',
+        'icon'   => 'fas fa-history',
+        'can'    => ['access-admin', 'access-sistemas'],
         'active' => ['historial*'],
     ],
 
-    // --- SECCIÓN: AYUDA ---
-    ['header' => 'CONTACTO Y AYUDA'],
+    // ==========================================
+    // SECTION: HELP & SUPPORT
+    // ==========================================
+    [
+        'header' => 'CONTACTO Y AYUDA'
+    ],
     [
         'text'  => 'Contacto / Ayuda',
         'icon'  => 'fas fa-headset',
