@@ -22,7 +22,11 @@
                     <table class="table table-sm table-striped my-0">
                         <tbody>
                             <tr>
-                                <td class="font-weight-bold" style="width: 40%;">Tipo de Activo:</td>
+                                <td class="font-weight-bold" style="width: 40%;">Empresa:</td>
+                                <td><span class="badge badge-info px-2 py-1 font-weight-bold">{{ $vehiculo->empresa->nombre ?? 'Sin Empresa Assigned' }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Tipo de Activo:</td>
                                 <td>{{ $vehiculo->tipoVehiculo->nombre ?? 'N/A' }}</td>
                             </tr>
                             <tr>
