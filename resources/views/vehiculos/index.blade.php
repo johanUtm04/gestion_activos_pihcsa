@@ -342,9 +342,12 @@
                                     </td>
                                     <td class="text-center" onclick="event.stopPropagation();">
                                         <div class="btn-group btn-group-actions shadow-sm">
-                                            <button type="button" class="btn btn-sm btn-edit btn-editar-vehiculo" data-id="{{ $vehiculo->id }}" title="Editar Parámetros">
+                                            <a href="{{ route('vehiculos.edit', $vehiculo) }}"
+                                            class="btn btn-sm btn-edit"
+                                            title="Editar Parámetros"
+                                            onclick="event.stopPropagation();">
                                                 <i class="fas fa-pen"></i>
-                                            </button>
+                                            </a>
                                             <a href="{{ route('vehiculos.show', $vehiculo) }}" class="btn btn-sm btn-view" title="Ver Ficha Técnica">
                                                 <i class="fas fa-eye"></i>
                                             </a>
@@ -485,9 +488,6 @@
         </div>
 
     </div>
-
-    @include('vehiculos.modal_crear')
-    @include('vehiculos.modal_editar')
 
 @stop
 

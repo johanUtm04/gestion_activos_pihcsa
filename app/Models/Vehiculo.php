@@ -104,4 +104,189 @@ class Vehiculo extends Model
 
         return 'verde';
     }
+
+
+    public function getIndicadoresOperativosAttribute()
+{
+    return [
+        $this->indicadorMantenimiento(),
+        $this->indicadorSeguro(),
+        $this->indicadorVidaUtil(),
+    ];
+}
+
+private function indicadorMantenimiento(): array
+{
+    if (
+        !$this->fecha_ultimo_mantenimiento ||
+        !$this->tipoVehiculo ||
+        !$this->tipoVehiculo->frecuencia_meses ||
+        $this->tipoVehiculo->frecuencia_meses <= 0
+    ) {
+        return [
+            'label' => 'Mantenimiento preventivo',
+            'icon' => 'fa-tools',
+            'score' => 0,
+            'status' => 'Sin dato',
+            'detail' => 'No hay frecuencia o último mantenimiento registrado',
+            'class' => 'bg-secondary',
+            'badge' => 'badge-secondary',
+        ];
+    }
+
+    $ultimo = Carbon::parse($this->fecha_ultimo_mantenimiento);
+    $proximo = $ultimo->copy()->addMonths($this->tipoVehiculo->frecuencia_meses);
+    $hoy = Carbon::now();
+
+    $diasTotales = max($ultimo->diffInDays($proximo), 1);
+    $diasRestantes = $hoy->diffInDays($proximo, false);
+
+    $score = max(0, min(100, round(($diasRestantes / $diasTotales) * 100)));
+
+    if ($diasRestantes < 0) {
+        return [
+            'label' => 'Mantenimiento preventivo',
+            'icon' => 'fa-tools',
+            'score' => 0,
+            'status' => 'Vencido',
+            'detail' => 'Venció hace ' . abs($diasRestantes) . ' día(s)',
+            'class' => 'bg-danger',
+            'badge' => 'badge-danger',
+        ];
+    }
+
+    if ($diasRestantes <= 30) {
+        return [
+            'label' => 'Mantenimiento preventivo',
+            'icon' => 'fa-tools',
+            'score' => $score,
+            'status' => 'Próximo',
+            'detail' => 'Vence en ' . $diasRestantes . ' día(s)',
+            'class' => 'bg-warning',
+            'badge' => 'badge-warning',
+        ];
+    }
+
+    return [
+        'label' => 'Mantenimiento preventivo',
+        'icon' => 'fa-tools',
+        'score' => $score,
+        'status' => 'Al día',
+        'detail' => 'Vence en ' . $diasRestantes . ' día(s)',
+        'class' => 'bg-success',
+        'badge' => 'badge-success',
+    ];
+}
+
+private function indicadorSeguro(): array
+{
+    if (!$this->documentacion || !$this->documentacion->vigencia_seguro) {
+        return [
+            'label' => 'Seguro vehicular',
+            'icon' => 'fa-shield-alt',
+            'score' => 0,
+            'status' => 'Sin dato',
+            'detail' => 'No hay vigencia de seguro registrada',
+            'class' => 'bg-secondary',
+            'badge' => 'badge-secondary',
+        ];
+    }
+
+    $vigencia = Carbon::parse($this->documentacion->vigencia_seguro);
+    $diasRestantes = Carbon::now()->diffInDays($vigencia, false);
+
+    $score = max(0, min(100, round(($diasRestantes / 365) * 100)));
+
+    if ($diasRestantes < 0) {
+        return [
+            'label' => 'Seguro vehicular',
+            'icon' => 'fa-shield-alt',
+            'score' => 0,
+            'status' => 'Vencido',
+            'detail' => 'Venció hace ' . abs($diasRestantes) . ' día(s)',
+            'class' => 'bg-danger',
+            'badge' => 'badge-danger',
+        ];
+    }
+
+    if ($diasRestantes <= 30) {
+        return [
+            'label' => 'Seguro vehicular',
+            'icon' => 'fa-shield-alt',
+            'score' => $score,
+            'status' => 'Por vencer',
+            'detail' => 'Vence en ' . $diasRestantes . ' día(s)',
+            'class' => 'bg-warning',
+            'badge' => 'badge-warning',
+        ];
+    }
+
+    return [
+        'label' => 'Seguro vehicular',
+        'icon' => 'fa-shield-alt',
+        'score' => $score,
+        'status' => 'Vigente',
+        'detail' => 'Vence en ' . $diasRestantes . ' día(s)',
+        'class' => 'bg-success',
+        'badge' => 'badge-success',
+    ];
+}
+
+private function indicadorVidaUtil(): array
+{
+    if (!$this->fecha_adquisicion || !$this->vida_util_estimada || $this->vida_util_estimada <= 0) {
+        return [
+            'label' => 'Vida útil del activo',
+            'icon' => 'fa-chart-line',
+            'score' => 0,
+            'status' => 'Sin dato',
+            'detail' => 'No hay fecha de adquisición o vida útil registrada',
+            'class' => 'bg-secondary',
+            'badge' => 'badge-secondary',
+        ];
+    }
+
+    $fechaAdquisicion = Carbon::parse($this->fecha_adquisicion);
+    $finVidaUtil = $fechaAdquisicion->copy()->addMonths($this->vida_util_estimada);
+    $hoy = Carbon::now();
+
+    $mesesTotales = max($this->vida_util_estimada, 1);
+    $mesesRestantes = $hoy->diffInMonths($finVidaUtil, false);
+
+    $score = max(0, min(100, round(($mesesRestantes / $mesesTotales) * 100)));
+
+    if ($mesesRestantes < 0) {
+        return [
+            'label' => 'Vida útil del activo',
+            'icon' => 'fa-chart-line',
+            'score' => 0,
+            'status' => 'Agotada',
+            'detail' => 'Superó su vida útil estimada',
+            'class' => 'bg-danger',
+            'badge' => 'badge-danger',
+        ];
+    }
+
+    if ($mesesRestantes <= 6) {
+        return [
+            'label' => 'Vida útil del activo',
+            'icon' => 'fa-chart-line',
+            'score' => $score,
+            'status' => 'Finalizando',
+            'detail' => 'Restan aprox. ' . $mesesRestantes . ' mes(es)',
+            'class' => 'bg-warning',
+            'badge' => 'badge-warning',
+        ];
+    }
+
+    return [
+        'label' => 'Vida útil del activo',
+        'icon' => 'fa-chart-line',
+        'score' => $score,
+        'status' => 'Vigente',
+        'detail' => 'Restan aprox. ' . $mesesRestantes . ' mes(es)',
+        'class' => 'bg-success',
+        'badge' => 'badge-success',
+    ];
+}
 }

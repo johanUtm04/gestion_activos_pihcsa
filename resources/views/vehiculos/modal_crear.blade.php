@@ -84,6 +84,34 @@
                             <label for="fecha_ultimo_mantenimiento">Último Mantenimiento</label>
                             <input type="date" class="form-control" id="fecha_ultimo_mantenimiento" name="fecha_ultimo_mantenimiento">
                         </div>
+
+                        <div class="col-12">
+                            <h6 class="text-muted font-weight-bold my-2"><i class="fas fa-dollar-sign mr-1"></i> Control Financiero y Ciclo de Vida</h6>
+                            <hr class="mt-1 mb-3">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="valor_inicial">Valor Inicial (Costo)</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control" id="valor_inicial" name="valor_inicial" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="vida_util_estimada">Vida Útil Estimada (Años)</label>
+                            <input type="number" class="form-control" id="vida_util_estimada" name="vida_util_estimada" placeholder="Ej. 5">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="fecha_adquisicion">Fecha de Adquisición</label>
+                            <input type="date" class="form-control" id="fecha_adquisicion" name="fecha_adquisicion">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="fecha_inicio_uso">Fecha Inicio de Uso</label>
+                            <input type="date" class="form-control" id="fecha_inicio_uso" name="fecha_inicio_uso">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-light">

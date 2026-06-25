@@ -299,152 +299,197 @@ return [
     */
 
 'menu' => [
-    // ==========================================
-    // NAVBAR OPTIONS
-    // ==========================================
+
     [
         'type'         => 'fullscreen-widget',
         'topnav_right' => false,
     ],
 
-    // ==========================================
-    // SECTION: MAIN OPERATIONS
-    // ==========================================
+    /*
+    |--------------------------------------------------------------------------
+    | Gestión principal
+    |--------------------------------------------------------------------------
+    */
+
     [
-        'header' => 'ACCIONES PRINCIPALES'
-    ],
-    [
-        'text'   => 'Inventario de Equipos',
-        'url'    => '/equipos',
-        'icon'   => 'fas fa-boxes',
-        'can'    => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active' => ['equipos*'],
-    ],
-    [
-        'text'   => 'Inventario de Vehículos',
-        'url'    => '/vehiculos',
-        'icon'   => 'fas fa-car',
-        'can'    => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active' => ['vehiculos*'],
-    ],
-    [
-        'text'   => 'Perfil de Usuario',
-        'url'    => '/profile',
-        'icon'   => 'fas fa-user-cog',
-        'can'    => ['access-admin', 'access-sistemas'],
-        'active' => ['profile*'],
+        'header' => 'GESTIÓN DE ACTIVOS',
     ],
 
-    // ==========================================
-    // SECTION: FISCAL MODULE
-    // ==========================================
     [
-        'header' => 'ANÁLISIS Y DEPRECIACIÓN'
+        'text'       => 'Equipos',
+        'url'        => '/equipos',
+        'icon'       => 'fas fa-server',
+        'icon_color' => 'cyan',
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['equipos*'],
+        'label'      => 'Core',
+        'label_color'=> 'info',
     ],
+
     [
-        'text'       => 'Calcular Depreciación',
+        'text'       => 'Vehículos',
+        'url'        => '/vehiculos',
+        'icon'       => 'fas fa-truck-moving',
+        'icon_color' => 'teal',
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['vehiculos*'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Módulo fiscal
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'header' => 'FISCAL Y CÁLCULOS',
+    ],
+
+    [
+        'text'       => 'Depreciación',
         'url'        => '/depreciacion',
-        'icon'       => 'fas fa-calculator',
+        'icon'       => 'fas fa-chart-line',
         'icon_color' => 'success',
         'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
         'active'     => ['depreciacion*'],
+        'label'      => 'Fiscal',
+        'label_color'=> 'success',
     ],
+
     [
-        'text'       => 'Índices INPC',
+        'text'       => 'INPC',
         'url'        => '/configuracion/inpc',
-        'icon'       => 'fas fa-chart-bar',
+        'icon'       => 'fas fa-wave-square',
         'icon_color' => 'info',
         'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
         'active'     => ['configuracion/inpc*'],
     ],
+
     [
-        'text'       => 'Tasa de Intereses LISR',
+        'text'       => 'Tasas LISR',
         'url'        => '/configuracion/tasas',
-        'icon'       => 'fas fa-percent',
+        'icon'       => 'fas fa-percentage',
         'icon_color' => 'warning',
         'can'        => ['calcular-depreciacion'],
         'active'     => ['configuracion/tasas*'],
     ],
 
-    // ==========================================
-    // SECTION: SYSTEM CATALOGS
-    // ==========================================
+    /*
+    |--------------------------------------------------------------------------
+    | Administración
+    |--------------------------------------------------------------------------
+    */
+
     [
-        'header' => 'CATÁLOGOS ADMINISTRATIVOS',
-        'can'    => ['access-admin'], 
-    ],
-    [
-        'text'   => 'Gestión de Usuarios',
-        'url'    => '/gestionUsuarios',
-        'icon'   => 'fas fa-users-cog',
+        'header' => 'ADMINISTRACIÓN',
         'can'    => ['access-admin'],
-        'active' => ['gestionUsuarios*'],
-    ],
-    [
-        'text'   => 'Gestión de Ubicaciones',
-        'url'    => '/gestionUbicaciones',
-        'icon'   => 'fas fa-map-marker-alt',
-        'can'    => ['access-admin'],
-        'active' => ['gestionUbicaciones*'],
-    ],
-    [
-        'text'   => 'Gestión de Marcas',
-        'url'    => '/gestionMarcas',
-        'icon'   => 'fas fa-tags',
-        'can'    => ['access-admin'],
-        'active' => ['gestionMarcas*'],
-    ],
-    [
-        'text'   => 'Tipos de Activo (Equipos)',
-        'url'    => '/gestionTipoActivos', 
-        'icon'   => 'fas fa-laptop-house',
-        'can'    => ['access-admin'],
-        'active' => ['gestionTipoActivos*'],
-    ],
-    [
-        'text'   => 'Tipos de Vehículo',
-        'url'    => '/tipo_vehiculos',
-        'icon'   => 'fas fa-bus',
-        'can'    => ['access-admin'],
-        'active' => ['tipo_vehiculos*'],
-    ],
-    [
-        'text'   => 'Catálogo de Empresas',
-        'url'    => '/empresas', 
-        'icon'   => 'fas fa-building',
-        'can'    => ['access-admin'],
-        'active' => ['empresas*'],
     ],
 
-    // ==========================================
-    // SECTION: AUDITING & REPORTS
-    // ==========================================
     [
-        'header' => 'REPORTES'
-    ],
-    [
-        'text'   => 'Historial de Cambios',
-        'url'    => '/historial',
-        'icon'   => 'fas fa-history',
-        'can'    => ['access-admin', 'access-sistemas'],
-        'active' => ['historial*'],
+        'text'       => 'Catálogos del Sistema',
+        'icon'       => 'fas fa-layer-group',
+        'icon_color' => 'purple',
+        'can'        => ['access-admin'],
+        'active'     => [
+            'gestionUsuarios*',
+            'gestionUbicaciones*',
+            'gestionMarcas*',
+            'gestionTipoActivos*',
+            'tipo_vehiculos*',
+            'empresas*',
+        ],
+        'submenu' => [
+
+            [
+                'text'       => 'Usuarios',
+                'url'        => '/gestionUsuarios',
+                'icon'       => 'fas fa-user-shield',
+                'icon_color' => 'primary',
+                'active'     => ['gestionUsuarios*'],
+            ],
+
+            [
+                'text'       => 'Ubicaciones',
+                'url'        => '/gestionUbicaciones',
+                'icon'       => 'fas fa-map-marker-alt',
+                'icon_color' => 'danger',
+                'active'     => ['gestionUbicaciones*'],
+            ],
+
+            [
+                'text'       => 'Marcas',
+                'url'        => '/gestionMarcas',
+                'icon'       => 'fas fa-fingerprint',
+                'icon_color' => 'warning',
+                'active'     => ['gestionMarcas*'],
+            ],
+
+            [
+                'text'       => 'Tipos de Equipo',
+                'url'        => '/gestionTipoActivos',
+                'icon'       => 'fas fa-microchip',
+                'icon_color' => 'info',
+                'active'     => ['gestionTipoActivos*'],
+            ],
+
+            [
+                'text'       => 'Tipos de Vehículo',
+                'url'        => '/tipo_vehiculos',
+                'icon'       => 'fas fa-shuttle-van',
+                'icon_color' => 'teal',
+                'active'     => ['tipo_vehiculos*'],
+            ],
+
+            [
+                'text'       => 'Empresas',
+                'url'        => '/empresas',
+                'icon'       => 'fas fa-building',
+                'icon_color' => 'cyan',
+                'active'     => ['empresas*'],
+            ],
+        ],
     ],
 
-    // ==========================================
-    // SECTION: HELP & SUPPORT
-    // ==========================================
+    /*
+    |--------------------------------------------------------------------------
+    | Sistema
+    |--------------------------------------------------------------------------
+    */
+
     [
-        'header' => 'CONTACTO Y AYUDA'
+        'header' => 'PLATAFORMA',
     ],
+
     [
-        'text'  => 'Contacto / Ayuda',
-        'icon'  => 'fas fa-headset',
-        'route' => 'soporte.contacto',
+        'text'       => 'Auditoría',
+        'url'        => '/historial',
+        'icon'       => 'fas fa-history',
+        'icon_color' => 'orange',
+        'can'        => ['access-admin', 'access-sistemas'],
+        'active'     => ['historial*'],
     ],
+
     [
-        'text'  => 'Manual de Trabajo',
-        'icon'  => 'fas fa-book',
-        'route' => 'soporte.manual',
+        'text'       => 'Mi Perfil',
+        'url'        => '/profile',
+        'icon'       => 'fas fa-id-badge',
+        'icon_color' => 'primary',
+        'can'        => ['access-admin', 'access-sistemas'],
+        'active'     => ['profile*'],
+    ],
+
+    [
+        'text'       => 'Soporte',
+        'icon'       => 'fas fa-headset',
+        'icon_color' => 'success',
+        'route'      => 'soporte.contacto',
+    ],
+
+    [
+        'text'       => 'Manual del Sistema',
+        'icon'       => 'fas fa-book-reader',
+        'icon_color' => 'info',
+        'route'      => 'soporte.manual',
     ],
 ],
 
@@ -587,18 +632,12 @@ return [
             'use_navbar_items' => true,
         ],
     ],
-
+    
     /*
     |--------------------------------------------------------------------------
     | Livewire
     |--------------------------------------------------------------------------
-    |
-    | Here we can enable the Livewire support.
-    |
-    | For detailed instructions you can look the livewire here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
-    |
     */
 
-    'livewire' => false,
+'livewire' => false,
 ];
