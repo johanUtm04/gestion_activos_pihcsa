@@ -9,6 +9,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+
+    protected $connection = 'mysql';
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users'; // Explicitamente definido
@@ -22,8 +24,8 @@ class User extends Authenticatable
         'password',
         'rol',
         'departamento',
-        'contacto',
         'estatus',
+        'sucursal',
     ];
 
     protected $hidden = [
