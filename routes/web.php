@@ -21,6 +21,7 @@ use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\CatTipoVehiculoController;
 use App\Http\Controllers\EmpresaSeleccionController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\SucursalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,9 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
+
+    Route::post('/sucursal/cambiar', [SucursalController::class, 'cambiar'])
+    ->name('sucursal.cambiar');
 
     /* --- FLUJO OBLIGATORIO DE SELECCIÓN DE EMPRESA --- */
     // Solo se activará cuando se intente interactuar con el módulo de vehículos

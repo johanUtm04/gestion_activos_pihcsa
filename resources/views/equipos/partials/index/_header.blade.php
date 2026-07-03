@@ -5,11 +5,47 @@
         <h4 class="text-dark font-weight-bold mb-0">
             <i class="fas fa-boxes text-info mr-2"></i>Inventario de Equipos
         </h4>
-        <div class="d-flex align-items-center mt-1">
-            <small class="text-muted mr-2">Rol:</small>
-            <span class="badge badge-outline-info py-0" style="border: 1px solid #17a2b8; color: #17a2b8; font-size: 0.75rem;">
-                {{ ucfirst(auth()->user()->rol) }}
-            </span>
+        <div class="d-flex align-items-center mt-1 flex-wrap" style="gap: 8px;">
+
+            {{-- ROLE --}}
+            <div class="d-flex align-items-center">
+                <small class="text-muted mr-2">Rol:</small>
+                <span class="badge badge-outline-info py-0" style="border: 1px solid #17a2b8; color: #17a2b8; font-size: 0.75rem;">
+                    {{ ucfirst(auth()->user()->rol) }}
+                </span>
+            </div>
+
+            @php
+                $sucursales = config('sucursales.disponibles', []);
+                $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? config('sucursales.default'));
+            @endphp
+
+            {{-- BRANCH / SUCURSAL --}}
+            <div class="d-flex align-items-center">
+                <small class="text-muted mr-2">Sucursal:</small>
+
+                @if(auth()->user()->rol === 'ADMIN')
+                    <form method="POST" action="{{ route('sucursal.cambiar') }}" class="mb-0">
+                        @csrf
+
+                        <select name="sucursal"
+                                onchange="this.form.submit()"
+                                class="form-control form-control-sm py-0"
+                                style="height: 24px; font-size: 0.75rem; min-width: 110px;">
+                            @foreach ($sucursales as $key => $nombre)
+                                <option value="{{ $key }}" @selected($sucursalActiva === $key)>
+                                    {{ $nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                @else
+                    <span class="badge badge-info py-0" style="font-size: 0.75rem;">
+                        {{ $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva) }}
+                    </span>
+                @endif
+            </div>
+
         </div>
     </div>
 

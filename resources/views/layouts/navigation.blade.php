@@ -4,7 +4,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
 
-            {{-- IZQUIERDA: Logo + Sistema --}}
+            {{-- LEFT: Logo + System --}}
             <div class="flex items-center space-x-4">
 
                 {{-- Logo --}}
@@ -16,10 +16,10 @@
                     </span>
                 </a>
 
-                {{-- Separador --}}
+                {{-- Separator --}}
                 <span class="text-gray-300 hidden sm:block">|</span>
 
-                {{-- Módulo --}}
+                {{-- Module --}}
                 <a href="{{ route('equipos.index') }}"
                    class="text-sm font-medium text-gray-700 hover:text-blue-600">
                     <i class="fas fa-boxes mr-1"></i>
@@ -27,8 +27,35 @@
                 </a>
             </div>
 
-            {{-- DERECHA: Usuario --}}
-            <div class="hidden sm:flex sm:items-center">
+            {{-- RIGHT: Branch + User --}}
+            <div class="hidden sm:flex sm:items-center space-x-3">
+
+                @php
+                    $sucursales = config('sucursales.disponibles', []);
+                    $sucursalActiva = session('sucursal_activa', Auth::user()->sucursal ?? config('sucursales.default'));
+                @endphp
+
+                {{-- ADMIN branch selector --}}
+                @if (Auth::user()->rol === 'ADMIN')
+                    <form method="POST" action="{{ route('sucursal.cambiar') }}">
+                        @csrf
+
+                        <select name="sucursal"
+                                onchange="this.form.submit()"
+                                class="border-gray-300 rounded-md text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            @foreach ($sucursales as $key => $nombre)
+                                <option value="{{ $key }}" @selected($sucursalActiva === $key)>
+                                    {{ $nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                @else
+                    <div class="text-sm text-gray-600 border border-gray-300 rounded-md px-3 py-2 bg-gray-50">
+                        <i class="fas fa-map-marker-alt mr-1 text-gray-500"></i>
+                        {{ $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva) }}
+                    </div>
+                @endif
 
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -56,9 +83,29 @@
                             <div class="font-semibold text-gray-800">
                                 {{ Auth::user()->email }}
                             </div>
+
+                            <div class="mt-2">
+                                Sucursal activa:
+                                <span class="font-semibold text-gray-800">
+                                    {{ $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva) }}
+                                </span>
+                            </div>
                         </div>
 
                         <div class="border-t border-gray-200"></div>
+
+                        <x-dropdown-link :href="route('profile.edit')">
+                            Perfil
+                        </x-dropdown-link>
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                Cerrar sesión
+                            </x-dropdown-link>
+                        </form>
 
                     </x-slot>
                 </x-dropdown>
@@ -91,13 +138,41 @@
 
     {{-- RESPONSIVE --}}
     <div x-show="open" class="sm:hidden border-t border-gray-200">
+
+        @php
+            $sucursales = config('sucursales.disponibles', []);
+            $sucursalActiva = session('sucursal_activa', Auth::user()->sucursal ?? config('sucursales.default'));
+        @endphp
+
         <div class="px-4 py-3">
             <div class="font-medium text-base text-gray-800">
                 {{ Auth::user()->name }}
             </div>
+
             <div class="text-sm text-gray-500">
                 {{ Auth::user()->email }}
             </div>
+
+            <div class="text-sm text-gray-600 mt-1">
+                Sucursal activa:
+                <strong>{{ $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva) }}</strong>
+            </div>
+
+            @if (Auth::user()->rol === 'ADMIN')
+                <form method="POST" action="{{ route('sucursal.cambiar') }}" class="mt-3">
+                    @csrf
+
+                    <select name="sucursal"
+                            onchange="this.form.submit()"
+                            class="w-full border-gray-300 rounded-md text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @foreach ($sucursales as $key => $nombre)
+                            <option value="{{ $key }}" @selected($sucursalActiva === $key)>
+                                {{ $nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            @endif
         </div>
 
         <div class="px-2 pb-3 space-y-1">
