@@ -156,6 +156,10 @@
                         </thead>
                         <tbody>
                             @forelse($equipos as $equipo)
+                        @php
+                            $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? config('sucursales.default'));
+                            $nombreSucursal = config("sucursales.disponibles.$sucursalActiva", ucfirst($sucursalActiva));
+                        @endphp
                         <tr id="equipo-{{ $equipo->id }}" 
                             class="equipo-row {{ request('filter') !== 'inactivos' ? 'clickable-row' : '' }} {{ $equipo->trashed() ? 'row-inactive' : '' }}" 
                             data-url="{{ route('equipos.show', $equipo->id) }}"
@@ -188,7 +192,7 @@
             
                             data-perifericos="{{ $equipo->perifericos->where('is_active', 1)->pluck('tipo')->implode(', ') }}"
                             data-numero_factura="{{ $equipo->numero_factura ?? 'No asignada' }}"
-                            data-sucursal="{{ session('sucursal_activa') }}"
+                            data-sucursal="{{ $nombreSucursal }}"
                             style="cursor: pointer;">
                                 
                                 <td class="text-center font-weight-bold text-muted">
@@ -223,7 +227,14 @@
                                     {{ $equipo->tipoActivo?->nombre ?? 'Sin Tipo' }} 
                                     {{ $equipo->marca?->nombre ?? 'Sin Marca' }}
                                     </div>
-                                    <span class="secondary-data"><i class="fas fa-barcode mr-1"></i>{{ $equipo->serial }}</span>
+                                    <div class="secondary-data">
+                                        <i class="fas fa-barcode mr-1"></i>{{ $equipo->serial }}
+                                    </div>
+
+                                    <span class="badge badge-light border mt-1"
+                                        style="font-size: 0.62rem; color: #138496; border-color: rgba(23,162,184,.35) !important;">
+                                        <i class="fas fa-database mr-1"></i>{{ $nombreSucursal }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="font-weight-bold">{{ $equipo->usuario->name ?? 'Sin asignar' }}</div>
@@ -329,6 +340,9 @@
                     <div class="text-right mr-2 d-none d-lg-block">
                         <small class="text-muted d-block" style="font-size: 0.55rem; line-height: 1; letter-spacing: 0.5px;">SISTEMA DE GESTIÓN</small>
                         <span class="font-weight-bold text-secondary" style="font-size: 0.75rem;">ACTIVOS TI</span>
+                        <small class="d-block text-info font-weight-bold" style="font-size: 0.6rem;">
+                            {{ $nombreSucursal ?? config("sucursales.disponibles." . session('sucursal_activa'), strtoupper(session('sucursal_activa'))) }}
+                        </small>
                     </div>
                     <img src="{{ asset('vendor/adminlte/dist/img/logohd.png') }}" 
                         alt="Logo PIHCSA" 
