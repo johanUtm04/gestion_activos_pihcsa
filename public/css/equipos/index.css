@@ -592,34 +592,105 @@ body{
 }   
 
 
+/* =========================================================
+   FOOTER SIEMPRE AL FONDO - ADMINLTE
+   ========================================================= */
 
+/* AdminLTE layout base */
+.wrapper {
+    min-height: 100vh;
+}
 
-
-
-
-
-
-
-
-
-
-
-/* Forzar al contenedor de AdminLTE a ser un flexbox vertical */
 .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh !important;
+    min-height: calc(100vh - 57px) !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
-/* El contenido crece para ocupar el espacio disponible */
-.content {
-    flex: 1 0 auto;
+/* El bloque principal del contenido debe crecer */
+.content-wrapper > .content {
+    flex: 1 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
-/* El footer se queda al final */
+/* AdminLTE normalmente mete el contenido aquí */
+.content-wrapper > .content > .container-fluid {
+    flex: 1 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Tu footer se va al fondo */
 .footer-assets {
-    flex-shrink: 0;
-    margin-top: auto; /* El truco mágico de Flexbox */
-    background: white;
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
     width: 100%;
+    background: rgba(255, 255, 255, 0.92);
+    border-top: 1px solid rgba(23, 162, 184, 0.12);
+    padding: 12px 18px;
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.035);
+    border-radius: 10px 10px 0 0;
+    backdrop-filter: blur(8px);
+}
+
+/* Contenido interno del footer */
+.footer-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-left,
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: #6c757d;
+}
+
+.footer-left i {
+    color: #17a2b8;
+    text-shadow: 0 0 8px rgba(23, 162, 184, 0.25);
+}
+
+.footer-right i {
+    color: #6f42c1;
+    text-shadow: 0 0 8px rgba(111, 66, 193, 0.22);
+}
+
+.footer-assets .app-name {
+    font-weight: 800;
+    color: #34495e;
+    letter-spacing: 0.2px;
+}
+
+.footer-assets .copyright {
+    color: #adb5bd;
+    font-size: 0.72rem;
+}
+
+.footer-assets .company-tag {
+    color: #7b8a97;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .footer-assets {
+        padding: 10px 12px;
+    }
 }
