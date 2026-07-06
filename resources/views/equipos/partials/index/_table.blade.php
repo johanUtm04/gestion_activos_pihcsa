@@ -188,6 +188,7 @@
             
                             data-perifericos="{{ $equipo->perifericos->where('is_active', 1)->pluck('tipo')->implode(', ') }}"
                             data-numero_factura="{{ $equipo->numero_factura ?? 'No asignada' }}"
+                            data-sucursal="{{ session('sucursal_activa') }}"
                             style="cursor: pointer;">
                                 
                                 <td class="text-center font-weight-bold text-muted">

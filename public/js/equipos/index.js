@@ -26,7 +26,17 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
                         <i class="fas fa-barcode mr-1"></i>${d.serial} |
                         ${d.marca}  |
                         <i class="fab fa-windows mr-1"></i>${d.so} |
-                        <i class="fas fa-map-marker-alt mr-1"></i>${formatInactivo(d.ubicacion, d.ubicacion_inactiva)}
+                    <span class="mr-2">
+                        <i class="fas fa-map-marker-alt mr-1"></i>
+                        ${formatInactivo(d.ubicacion, d.ubicacion_inactiva)}
+                    </span>
+
+                    ${d.sucursal ? `
+                        <span class="badge badge-light text-info border ml-1" style="font-size: 0.68rem;">
+                            <i class="fas fa-building mr-1"></i>
+                            Sucursal: ${d.sucursal}
+                        </span>
+                    ` : ''}
                     </p>
                 </div>
                 
