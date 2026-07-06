@@ -5,6 +5,16 @@
         <h4 class="text-dark font-weight-bold mb-0">
             <i class="fas fa-boxes text-info mr-2"></i>Inventario de Equipos
         </h4>
+
+        <div class="alert alert-info py-1 px-2 mb-2" style="font-size: 0.8rem;">
+            <strong>DEBUG:</strong>
+            Sucursal activa: {{ session('sucursal_activa') }}
+            |
+            Conexión actual: {{ config('database.default') }}
+            |
+            Base de datos: {{ DB::connection()->getDatabaseName() }}
+        </div>
+        
         <div class="d-flex align-items-center mt-1 flex-wrap" style="gap: 8px;">
 
             {{-- ROLE --}}

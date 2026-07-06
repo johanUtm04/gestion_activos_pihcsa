@@ -17,6 +17,8 @@ return [
     */
     'disponibles' => [
         'morelia' => 'Morelia',
+        'cdmx'    => 'CDMX',
+        'leon'    => 'León',
     ],
     #When I add a sucursal, I gonna had too in database.php
 
