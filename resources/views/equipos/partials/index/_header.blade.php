@@ -50,7 +50,7 @@
 
         <div class="d-flex align-items-center mt-1 flex-wrap" style="gap: 8px;">
 
-            {{-- ROLE --}}
+            {{-- ROL --}}
             <div class="d-flex align-items-center">
                 <small class="text-muted mr-2">Rol:</small>
                 <span class="badge py-1 px-2"

@@ -23,7 +23,6 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="mr-2">
-                                    {{-- Cambiamos 'actualizado->id' por 'actualizado_id' --}}
                                     @if(session('actualizado_id') == $user->id)
                                         <span class="badge badge-warning badge-status-pill animate__animated animate__flash">Editado</span>
                                     @endif
