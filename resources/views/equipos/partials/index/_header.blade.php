@@ -1,7 +1,13 @@
 @section('content_header')
 
 @php
-    $sucursales = config('sucursales.disponibles', []);
+        $sucursales = \App\Models\Sucursal::activas()
+        ->orderBy('nombre')
+        ->pluck('nombre', 'clave')
+        ->toArray();
+        $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? 'morelia');
+        $nombreSucursal = $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva);
+
     $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? config('sucursales.default'));
     $nombreSucursal = $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva);
 
