@@ -6,38 +6,58 @@ use Illuminate\Console\Command;
 
 class RespaldoSemanal extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'db:respaldo-semanal';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected $description = 'Genera respaldo completo de las bases de datos del sistema PIHCSA';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
-{
+    {
+        $rutaBackups = database_path('backups');
 
-    $ruta = '/srv/www/htdocs/gestion_activos_pihcsa/database/backups/backup_actualizado.sql';
+        if (! is_dir($rutaBackups)) {
+            mkdir($rutaBackups, 0755, true);
+        }
 
-    $usuario = env('DB_USERNAME');
-    $password = env('DB_PASSWORD');
-    $baseDeDatos = env('DB_DATABASE');
+        $archivo = $rutaBackups . '/backup_pihcsa_full.sql';
 
-    $comando = "mysqldump -u $usuario -p'$password' $baseDeDatos > $ruta";
+        $usuario = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
 
-    exec($comando, $output, $resultado);
+        /*
+        |--------------------------------------------------------------------------
+        | Bases a respaldar
+        |--------------------------------------------------------------------------
+        | mysql/principal = login y usuarios
+        | sucursales = operación de activos por sucursal
+        */
+        $basesDeDatos = [
+            env('DB_DATABASE'),              // gestion_activos_pihcsa_v2
+            env('DB_DATABASE_MORELIA'),      // pihcsa_morelia
+            env('DB_DATABASE_CDMX'),         // pihcsa_cdmx
+            env('DB_DATABASE_LEON'),         // pihcsa_leon
+        ];
 
-    if ($resultado === 0) {
-        $this->info('¡El respaldo se hizo y se reemplazó el anterior!');
+        $basesDeDatos = array_filter($basesDeDatos);
+
+        $bases = implode(' ', array_map('escapeshellarg', $basesDeDatos));
+
+        if ($password === null || $password === '') {
+            $comando = "mysqldump -u " . escapeshellarg($usuario) . " --databases $bases > " . escapeshellarg($archivo);
+        } else {
+            $comando = "mysqldump -u " . escapeshellarg($usuario) . " -p" . escapeshellarg($password) . " --databases $bases > " . escapeshellarg($archivo);
+        }
+
+        exec($comando, $output, $resultado);
+
+        if ($resultado === 0) {
+            $this->info('¡Respaldo completo generado correctamente!');
+            $this->info('Archivo: ' . $archivo);
+            return Command::SUCCESS;
+        }
+
+        $this->error('Error al generar el respaldo.');
+        $this->error('Código de salida: ' . $resultado);
+
+        return Command::FAILURE;
     }
-}
 }
