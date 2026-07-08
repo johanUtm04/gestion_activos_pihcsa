@@ -492,7 +492,7 @@ return [
         'route'      => 'soporte.manual',
     ],
     [
-    'text' => 'Sucursales (Cambio de DB)',
+    'text' => 'Sucursales (Agregar Base de datos)',
     'url'  => 'sucursales',
     'icon' => 'fas fa-code-branch',
 ],
