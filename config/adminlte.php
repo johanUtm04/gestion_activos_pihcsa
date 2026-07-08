@@ -298,91 +298,204 @@ return [
     |
     */
 
-/*
-|--------------------------------------------------------------------------
-| Administración
-|--------------------------------------------------------------------------
-*/
+'menu' => [
 
-[
-    'header' => 'ADMINISTRACIÓN',
-    'can'    => ['access-admin'],
-],
-
-[
-    'text'       => 'Catálogos del Sistema',
-    'icon'       => 'fas fa-layer-group',
-    'icon_color' => 'purple',
-    'can'        => ['access-admin'],
-    'active'     => [
-        'gestionUsuarios*',
-        'gestionUbicaciones*',
-        'gestionMarcas*',
-        'gestionTipoActivos*',
-        'tipo_vehiculos*',
-        'empresas*',
+    [
+        'type'         => 'fullscreen-widget',
+        'topnav_right' => false,
     ],
-    'submenu' => [
 
-        [
-            'text'       => 'Usuarios',
-            'url'        => '/gestionUsuarios',
-            'icon'       => 'fas fa-user-shield',
-            'icon_color' => 'primary',
-            'active'     => ['gestionUsuarios*'],
+    /*
+    |--------------------------------------------------------------------------
+    | Gestión principal
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'header' => 'GESTIÓN DE ACTIVOS',
+    ],
+
+    [
+        'text'       => 'Equipos',
+        'url'        => '/equipos',
+        'icon'       => 'fas fa-server',
+        'icon_color' => 'cyan',
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['equipos*'],
+        'label'      => 'Core',
+        'label_color'=> 'info',
+    ],
+
+    [
+        'text'       => 'Vehículos',
+        'url'        => '/vehiculos',
+        'icon'       => 'fas fa-truck-moving',
+        'icon_color' => 'teal',
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['vehiculos*'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Módulo fiscal
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'header' => 'FISCAL Y CÁLCULOS',
+    ],
+
+    [
+        'text'       => 'Depreciación',
+        'url'        => '/depreciacion',
+        'icon'       => 'fas fa-chart-line',
+        'icon_color' => 'success',
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['depreciacion*'],
+        'label'      => 'Fiscal',
+        'label_color'=> 'success',
+    ],
+
+    [
+        'text'       => 'INPC',
+        'url'        => '/configuracion/inpc',
+        'icon'       => 'fas fa-wave-square',
+        'icon_color' => 'info',
+        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'     => ['configuracion/inpc*'],
+    ],
+
+    [
+        'text'       => 'Tasas LISR',
+        'url'        => '/configuracion/tasas',
+        'icon'       => 'fas fa-percentage',
+        'icon_color' => 'warning',
+        'can'        => ['calcular-depreciacion'],
+        'active'     => ['configuracion/tasas*'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Administración
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'header' => 'ADMINISTRACIÓN',
+        'can'    => ['access-admin'],
+    ],
+
+    [
+        'text'       => 'Catálogos del Sistema',
+        'icon'       => 'fas fa-layer-group',
+        'icon_color' => 'purple',
+        'can'        => ['access-admin'],
+        'active'     => [
+            'gestionUsuarios*',
+            'gestionUbicaciones*',
+            'gestionMarcas*',
+            'gestionTipoActivos*',
+            'tipo_vehiculos*',
+            'empresas*',
         ],
+        'submenu' => [
 
-        [
-            'text'       => 'Ubicaciones',
-            'url'        => '/gestionUbicaciones',
-            'icon'       => 'fas fa-map-marker-alt',
-            'icon_color' => 'danger',
-            'active'     => ['gestionUbicaciones*'],
-        ],
+            [
+                'text'       => 'Usuarios',
+                'url'        => '/gestionUsuarios',
+                'icon'       => 'fas fa-user-shield',
+                'icon_color' => 'primary',
+                'active'     => ['gestionUsuarios*'],
+            ],
 
-        [
-            'text'       => 'Marcas',
-            'url'        => '/gestionMarcas',
-            'icon'       => 'fas fa-fingerprint',
-            'icon_color' => 'warning',
-            'active'     => ['gestionMarcas*'],
-        ],
+            [
+                'text'       => 'Ubicaciones',
+                'url'        => '/gestionUbicaciones',
+                'icon'       => 'fas fa-map-marker-alt',
+                'icon_color' => 'danger',
+                'active'     => ['gestionUbicaciones*'],
+            ],
 
-        [
-            'text'       => 'Tipos de Equipo',
-            'url'        => '/gestionTipoActivos',
-            'icon'       => 'fas fa-microchip',
-            'icon_color' => 'info',
-            'active'     => ['gestionTipoActivos*'],
-        ],
+            [
+                'text'       => 'Marcas',
+                'url'        => '/gestionMarcas',
+                'icon'       => 'fas fa-fingerprint',
+                'icon_color' => 'warning',
+                'active'     => ['gestionMarcas*'],
+            ],
 
-        [
-            'text'       => 'Tipos de Vehículo',
-            'url'        => '/tipo_vehiculos',
-            'icon'       => 'fas fa-shuttle-van',
-            'icon_color' => 'teal',
-            'active'     => ['tipo_vehiculos*'],
-        ],
+            [
+                'text'       => 'Tipos de Equipo',
+                'url'        => '/gestionTipoActivos',
+                'icon'       => 'fas fa-microchip',
+                'icon_color' => 'info',
+                'active'     => ['gestionTipoActivos*'],
+            ],
 
-        [
-            'text'       => 'Empresas',
-            'url'        => '/empresas',
-            'icon'       => 'fas fa-building',
-            'icon_color' => 'cyan',
-            'active'     => ['empresas*'],
+            [
+                'text'       => 'Tipos de Vehículo',
+                'url'        => '/tipo_vehiculos',
+                'icon'       => 'fas fa-shuttle-van',
+                'icon_color' => 'teal',
+                'active'     => ['tipo_vehiculos*'],
+            ],
+
+            [
+                'text'       => 'Empresas',
+                'url'        => '/empresas',
+                'icon'       => 'fas fa-building',
+                'icon_color' => 'cyan',
+                'active'     => ['empresas*'],
+            ],
         ],
     ],
-],
 
-[
-    'text'       => 'Sucursales',
-    'url'        => '/sucursales',
-    'icon'       => 'fas fa-code-branch',
-    'icon_color' => 'cyan',
-    'can'        => ['access-admin'],
-    'active'     => ['sucursales*'],
-    'label'      => 'DB',
-    'label_color'=> 'info',
+    /*
+    |--------------------------------------------------------------------------
+    | Sistema
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'header' => 'PLATAFORMA',
+    ],
+
+    [
+        'text'       => 'Auditoría',
+        'url'        => '/historial',
+        'icon'       => 'fas fa-history',
+        'icon_color' => 'orange',
+        'can'        => ['access-admin', 'access-sistemas'],
+        'active'     => ['historial*'],
+    ],
+
+    [
+        'text'       => 'Mi Perfil',
+        'url'        => '/profile',
+        'icon'       => 'fas fa-id-badge',
+        'icon_color' => 'primary',
+        'can'        => ['access-admin', 'access-sistemas'],
+        'active'     => ['profile*'],
+    ],
+
+    [
+        'text'       => 'Soporte',
+        'icon'       => 'fas fa-headset',
+        'icon_color' => 'success',
+        'route'      => 'soporte.contacto',
+    ],
+
+    [
+        'text'       => 'Manual del Sistema',
+        'icon'       => 'fas fa-book-reader',
+        'icon_color' => 'info',
+        'route'      => 'soporte.manual',
+    ],
+    [
+    'text' => 'Sucursales',
+    'url'  => 'sucursales',
+    'icon' => 'fas fa-code-branch',
+],
 ],
 
     /*
