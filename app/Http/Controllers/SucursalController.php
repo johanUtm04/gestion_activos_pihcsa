@@ -97,13 +97,6 @@ class SucursalController extends Controller
 
             $this->registrarConexionDinamica($clave, $databaseName);
 
-            /*
-            |--------------------------------------------------------------------------
-            | Plantilla temporal
-            |--------------------------------------------------------------------------
-            | Usamos pihcsa_morelia como base plantilla porque ya tiene estructura completa.
-            | Más adelante podemos cambiarlo a pihcsa_template.
-            */
             $this->clonarEstructuraDesdePlantilla('gestion_activos_pihcsa_v2', $databaseName);
 
             Sucursal::create([
@@ -174,6 +167,7 @@ private function clonarEstructuraDesdePlantilla(string $dbPlantilla, string $dbN
         if (in_array($tabla, [
             'migrations',
             'personal_access_tokens',
+            'sucursales',
         ])) {
             continue;
         }
