@@ -136,20 +136,27 @@
                             <th>Clave</th>
                             <th>Base de datos</th>
                             <th>Estado</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @forelse($sucursales as $sucursal)
                             <tr>
-                                <td class="font-weight-bold">{{ $sucursal->nombre }}</td>
+                                <td class="font-weight-bold">
+                                    {{ $sucursal->nombre }}
+                                </td>
+
                                 <td>
                                     <span class="badge badge-light border">
                                         {{ $sucursal->clave }}
                                     </span>
                                 </td>
+
                                 <td>
                                     <code>{{ $sucursal->database_name }}</code>
                                 </td>
+
                                 <td>
                                     @if($sucursal->estatus === 'activo')
                                         <span class="badge badge-success">Activo</span>
@@ -157,10 +164,33 @@
                                         <span class="badge badge-secondary">Inactivo</span>
                                     @endif
                                 </td>
+
+                                <td class="text-center">
+                                    @if($sucursal->clave === 'principal')
+                                        <span class="badge badge-secondary">
+                                            <i class="fas fa-lock mr-1"></i>
+                                            Protegida
+                                        </span>
+                                    @else
+                                        <form method="POST"
+                                              action="{{ route('sucursales.destroy', $sucursal) }}"
+                                              class="d-inline"
+                                              onsubmit="return confirm('¿Seguro que deseas eliminar esta sucursal? Esto también borrará la base de datos {{ $sucursal->database_name }}.');">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash-alt mr-1"></i>
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-4">
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
                                     No hay sucursales registradas.
                                 </td>
                             </tr>

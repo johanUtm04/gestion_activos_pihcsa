@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sucursales/generar', [SucursalController::class, 'generar'])
         ->name('sucursales.generar');
 
+    Route::delete('/sucursales/{sucursal}', [SucursalController::class, 'destroy'])
+    ->name('sucursales.destroy');
+
     Route::post('/sucursal/cambiar', [SucursalController::class, 'cambiar'])
         ->name('sucursal.cambiar');
 

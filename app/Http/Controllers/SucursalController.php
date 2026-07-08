@@ -160,6 +160,57 @@ class SucursalController extends Controller
         ]);
     }
 
+    public function destroy(Sucursal $sucursal)
+{
+    abort_unless(auth()->user()?->rol === 'ADMIN', 403);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Protección de bases críticas
+    |--------------------------------------------------------------------------
+    */
+    $basesProtegidas = [
+        'gestion_activos_pihcsa_v2',
+    ];
+
+    $clavesProtegidas = [
+        'principal',
+    ];
+
+    if (
+        in_array($sucursal->database_name, $basesProtegidas, true) ||
+        in_array($sucursal->clave, $clavesProtegidas, true)
+    ) {
+        return back()->with('danger', 'No se puede eliminar la base principal del sistema.');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Seguridad extra: solo permitir borrar DB que empiecen con pihcsa_
+    |--------------------------------------------------------------------------
+    */
+    if (! str_starts_with($sucursal->database_name, 'pihcsa_')) {
+        return back()->with('danger', 'Por seguridad, esta base de datos no puede eliminarse desde el sistema.');
+    }
+
+    try {
+        DB::connection('mysql')->statement(
+            "DROP DATABASE IF EXISTS `{$sucursal->database_name}`"
+        );
+
+        $sucursal->delete();
+
+        if (session('sucursal_activa') === $sucursal->clave) {
+            session()->put('sucursal_activa', 'principal');
+        }
+
+        return back()->with('success', "Sucursal {$sucursal->nombre} eliminada correctamente.");
+
+    } catch (\Throwable $e) {
+        return back()->with('danger', 'Error al eliminar la sucursal: ' . $e->getMessage());
+    }
+}
+
 private function clonarEstructuraDesdePlantilla(string $dbPlantilla, string $dbNueva): void
 {
     $tablas = DB::connection('mysql')->select("SHOW TABLES FROM `$dbPlantilla`");
