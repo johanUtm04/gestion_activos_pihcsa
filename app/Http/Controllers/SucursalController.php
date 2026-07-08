@@ -104,7 +104,7 @@ class SucursalController extends Controller
             | Usamos pihcsa_morelia como base plantilla porque ya tiene estructura completa.
             | Más adelante podemos cambiarlo a pihcsa_template.
             */
-            $this->clonarEstructuraDesdePlantilla('pihcsa_morelia', $databaseName);
+            $this->clonarEstructuraDesdePlantilla('gestion_activos_pihcsa_v2', $databaseName);
 
             Sucursal::create([
                 'clave' => $clave,
