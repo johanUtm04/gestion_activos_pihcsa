@@ -104,7 +104,7 @@
 
                     <div class="alert alert-warning py-2 mb-0">
                         <i class="fas fa-exclamation-triangle mr-1"></i>
-                        Esta acción creará una nueva base de datos y copiará catálogos base desde Morelia.
+                        Esta acción creará una nueva base de datos y copiará la estructura base del sistema.
                     </div>
 
                 </div>
