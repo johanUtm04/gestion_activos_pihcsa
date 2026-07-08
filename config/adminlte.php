@@ -316,14 +316,14 @@ return [
     ],
 
     [
-        'text'       => 'Equipos',
-        'url'        => '/equipos',
-        'icon'       => 'fas fa-server',
-        'icon_color' => 'cyan',
-        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active'     => ['equipos*'],
-        'label'      => 'Core',
-        'label_color'=> 'info',
+        'text'        => 'Equipos',
+        'url'         => '/equipos',
+        'icon'        => 'fas fa-server',
+        'icon_color'  => 'cyan',
+        'can'         => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'      => ['equipos*'],
+        'label'       => 'Core',
+        'label_color' => 'info',
     ],
 
     [
@@ -346,14 +346,14 @@ return [
     ],
 
     [
-        'text'       => 'Depreciación',
-        'url'        => '/depreciacion',
-        'icon'       => 'fas fa-chart-line',
-        'icon_color' => 'success',
-        'can'        => ['access-admin', 'access-sistemas', 'access-invitado'],
-        'active'     => ['depreciacion*'],
-        'label'      => 'Fiscal',
-        'label_color'=> 'success',
+        'text'        => 'Depreciación',
+        'url'         => '/depreciacion',
+        'icon'        => 'fas fa-chart-line',
+        'icon_color'  => 'success',
+        'can'         => ['access-admin', 'access-sistemas', 'access-invitado'],
+        'active'      => ['depreciacion*'],
+        'label'       => 'Fiscal',
+        'label_color' => 'success',
     ],
 
     [
@@ -450,9 +450,20 @@ return [
         ],
     ],
 
+    [
+        'text'        => 'Sucursales / Bases',
+        'url'         => '/sucursales',
+        'icon'        => 'fas fa-code-branch',
+        'icon_color'  => 'cyan',
+        'can'         => ['access-admin'],
+        'active'      => ['sucursales*'],
+        'label'       => 'DB',
+        'label_color' => 'info',
+    ],
+
     /*
     |--------------------------------------------------------------------------
-    | Sistema
+    | Plataforma
     |--------------------------------------------------------------------------
     */
 
@@ -491,13 +502,7 @@ return [
         'icon_color' => 'info',
         'route'      => 'soporte.manual',
     ],
-    [
-    'text' => 'Sucursales (Agregar Base de datos)',
-    'url'  => 'sucursales',
-    'icon' => 'fas fa-code-branch',
 ],
-],
-
     /*
     |--------------------------------------------------------------------------
     | Menu Filters
