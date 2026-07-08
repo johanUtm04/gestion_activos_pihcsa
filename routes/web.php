@@ -39,6 +39,20 @@ Route::get('/', function () {
 */
 Route::middleware(['auth'])->group(function () {
 
+    /*
+    |--------------------------------------------------------------------------
+    | Gestión de Sucursales
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/sucursales', [SucursalController::class, 'index'])
+        ->name('sucursales.index');
+
+    Route::post('/sucursales/generar', [SucursalController::class, 'generar'])
+        ->name('sucursales.generar');
+
+    Route::post('/sucursal/cambiar', [SucursalController::class, 'cambiar'])
+        ->name('sucursal.cambiar');
+
     Route::post('/sucursal/cambiar', [SucursalController::class, 'cambiar'])
     ->name('sucursal.cambiar');
 

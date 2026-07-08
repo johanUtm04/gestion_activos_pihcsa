@@ -491,6 +491,11 @@ return [
         'icon_color' => 'info',
         'route'      => 'soporte.manual',
     ],
+    [
+    'text' => 'Sucursales',
+    'url'  => 'sucursales',
+    'icon' => 'fas fa-code-branch',
+],
 ],
 
     /*

@@ -5,10 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Sucursal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class SucursalController extends Controller
 {
+    public function index()
+    {
+        abort_unless(auth()->user()?->rol === 'ADMIN', 403);
+
+        $sucursales = Sucursal::orderBy('nombre')->get();
+
+        return view('sucursales.index', compact('sucursales'));
+    }
+
     public function cambiar(Request $request)
     {
         abort_unless($request->user()?->rol === 'ADMIN', 403);
@@ -29,7 +39,7 @@ class SucursalController extends Controller
 
         session()->put('sucursal_activa', $sucursal->clave);
 
-        // Importante para vehículos: limpiar empresa seleccionada al cambiar de sucursal
+        // Importante para vehículos: evita arrastrar empresa_id entre sucursales
         session()->forget('empresa_id');
 
         $this->aplicarConexionSucursal($sucursal->clave, $sucursal->database_name);
@@ -37,7 +47,103 @@ class SucursalController extends Controller
         return back()->with('status', 'Sucursal activa cambiada correctamente.');
     }
 
+    public function generar(Request $request)
+    {
+        abort_unless(auth()->user()?->rol === 'ADMIN', 403);
+
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:100'],
+            'clave' => [
+                'required',
+                'string',
+                'max:50',
+                'alpha_dash',
+                Rule::unique('mysql.sucursales', 'clave'),
+            ],
+            'database_name' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[a-zA-Z0-9_]+$/',
+                Rule::unique('mysql.sucursales', 'database_name'),
+            ],
+            'descripcion' => ['nullable', 'string'],
+        ]);
+
+        $clave = strtolower($data['clave']);
+        $databaseName = strtolower($data['database_name']);
+
+        if (! str_starts_with($databaseName, 'pihcsa_')) {
+            return back()
+                ->withInput()
+                ->with('danger', 'El nombre de la base debe iniciar con pihcsa_. Ejemplo: pihcsa_queretaro');
+        }
+
+        $existeDb = DB::connection('mysql')->select(
+            'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?',
+            [$databaseName]
+        );
+
+        if (! empty($existeDb)) {
+            return back()
+                ->withInput()
+                ->with('danger', "La base de datos {$databaseName} ya existe.");
+        }
+
+        try {
+            DB::connection('mysql')->statement(
+                "CREATE DATABASE `$databaseName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+            );
+
+            $this->registrarConexionDinamica($clave, $databaseName);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Plantilla temporal
+            |--------------------------------------------------------------------------
+            | Usamos pihcsa_morelia como base plantilla porque ya tiene estructura completa.
+            | Más adelante podemos cambiarlo a pihcsa_template.
+            */
+            $this->clonarEstructuraDesdePlantilla('pihcsa_morelia', $databaseName);
+
+            Sucursal::create([
+                'clave' => $clave,
+                'nombre' => $data['nombre'],
+                'database_name' => $databaseName,
+                'estatus' => 'activo',
+                'descripcion' => $data['descripcion'] ?? null,
+            ]);
+
+            return redirect()
+                ->route('sucursales.index')
+                ->with('success', "Sucursal {$data['nombre']} generada correctamente.");
+
+        } catch (\Throwable $e) {
+            // Si algo falla, intentamos limpiar la DB creada
+            try {
+                DB::connection('mysql')->statement("DROP DATABASE IF EXISTS `$databaseName`");
+            } catch (\Throwable $cleanupError) {
+                // No hacemos nada extra
+            }
+
+            return back()
+                ->withInput()
+                ->with('danger', 'Error al generar la sucursal: ' . $e->getMessage());
+        }
+    }
+
     private function aplicarConexionSucursal(string $clave, string $databaseName): void
+    {
+        $this->registrarConexionDinamica($clave, $databaseName);
+
+        config(['database.default' => $clave]);
+
+        DB::setDefaultConnection($clave);
+        DB::purge($clave);
+        DB::reconnect($clave);
+    }
+
+    private function registrarConexionDinamica(string $clave, string $databaseName): void
     {
         config([
             "database.connections.$clave" => [
@@ -55,11 +161,54 @@ class SucursalController extends Controller
                 'engine' => null,
             ],
         ]);
-
-        config(['database.default' => $clave]);
-
-        DB::setDefaultConnection($clave);
-        DB::purge($clave);
-        DB::reconnect($clave);
     }
+
+private function clonarEstructuraDesdePlantilla(string $dbPlantilla, string $dbNueva): void
+{
+    $tablas = DB::connection('mysql')->select("SHOW TABLES FROM `$dbPlantilla`");
+
+    foreach ($tablas as $tablaObj) {
+        $tablaArray = (array) $tablaObj;
+        $tabla = array_values($tablaArray)[0];
+
+        if (in_array($tabla, [
+            'migrations',
+            'personal_access_tokens',
+        ])) {
+            continue;
+        }
+
+        DB::connection('mysql')->statement(
+            "CREATE TABLE `$dbNueva`.`$tabla` LIKE `$dbPlantilla`.`$tabla`"
+        );
+    }
+
+    $tablasCatalogo = [
+        'users',
+        'ubicaciones',
+        'marcas',
+        'tipo_activos',
+        'empresas',
+        'cat_tipo_vehiculos',
+        'tasas_lisr',
+        'inpc_indices',
+        'marca_equipo_tipo_equipo',
+    ];
+
+    foreach ($tablasCatalogo as $tabla) {
+        $existe = DB::connection('mysql')->select(
+            "SELECT TABLE_NAME 
+             FROM INFORMATION_SCHEMA.TABLES 
+             WHERE TABLE_SCHEMA = ? 
+             AND TABLE_NAME = ?",
+            [$dbNueva, $tabla]
+        );
+
+        if (! empty($existe)) {
+            DB::connection('mysql')->statement(
+                "INSERT INTO `$dbNueva`.`$tabla` SELECT * FROM `$dbPlantilla`.`$tabla`"
+            );
+        }
+    }
+}
 }
