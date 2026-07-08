@@ -26,20 +26,24 @@ class SetSucursalConnection
             abort(403, 'Sucursal no válida o inactiva.');
         }
 
+        $mysql = config('database.connections.mysql');
+
         config([
             "database.connections.$sucursal->clave" => [
-                'driver' => 'mysql',
-                'host' => env('DB_HOST', '127.0.0.1'),
-                'port' => env('DB_PORT', '3306'),
+                'driver' => $mysql['driver'] ?? 'mysql',
+                'host' => $mysql['host'] ?? '127.0.0.1',
+                'port' => $mysql['port'] ?? '3306',
                 'database' => $sucursal->database_name,
-                'username' => env('DB_USERNAME', 'forge'),
-                'password' => env('DB_PASSWORD', ''),
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci',
-                'prefix' => '',
-                'prefix_indexes' => true,
-                'strict' => true,
-                'engine' => null,
+                'username' => $mysql['username'],
+                'password' => $mysql['password'],
+                'unix_socket' => $mysql['unix_socket'] ?? '',
+                'charset' => $mysql['charset'] ?? 'utf8mb4',
+                'collation' => $mysql['collation'] ?? 'utf8mb4_unicode_ci',
+                'prefix' => $mysql['prefix'] ?? '',
+                'prefix_indexes' => $mysql['prefix_indexes'] ?? true,
+                'strict' => $mysql['strict'] ?? true,
+                'engine' => $mysql['engine'] ?? null,
+                'options' => $mysql['options'] ?? [],
             ],
         ]);
 
