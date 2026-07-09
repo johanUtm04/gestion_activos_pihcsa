@@ -9,7 +9,7 @@
     <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <h3 class="text-dark font-weight-bold mb-0">
-                <i class="fas z text-primary mr-2"></i> Auditoría de Activos
+                <i class="fas fa-clipboard-list text-primary mr-2"></i> Auditoría de Activos
             </h3>
             <p class="text-muted small mb-0">Trazabilidad completa de hardware y movimientos</p>
         </div>
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-{{-- SECCIÓN DE FILTROS AVANZADOS --}}
+    {{-- SECCIÓN DE FILTROS AVANZADOS --}}
     <div class="card card-outline card-info shadow-sm mb-4">
         <div class="card-header">
             <h3 class="card-title text-info font-weight-bold">
@@ -32,9 +32,11 @@
                 </button>
             </div>
         </div>
+
         <div class="card-body">
             <form action="{{ route('historial.index') }}" method="GET">
                 <div class="row align-items-end">
+
                     {{-- Filtro por Usuario --}}
                     <div class="col-md-4">
                         <div class="form-group mb-0">
@@ -52,20 +54,32 @@
                         </div>
                     </div>
 
-                    {{-- Filtro por ID del equipo --}}
-                    <div class="col-md-4">
+                    {{-- Filtro por ID real del equipo en base de datos --}}
+                    <div class="col-md-5">
                         <div class="form-group mb-0">
                             <label class="small font-weight-bold text-muted text-uppercase">
-                                <i class="fas fa-user-tie mr-1"></i> Filtrar por Dueño del Activo
+                                <i class="fas fa-database mr-1"></i> Filtrar por ID real en BD
                             </label>
+
                             <select name="equipo_id" class="form-control form-control-sm select2">
-                                <option value="">-- Todos los IDs --</option>
+                                <option value="">-- Todos los IDs reales en BD --</option>
+
                                 @foreach($listaParaFiltro as $item)
                                     <option value="{{ $item->id }}" {{ request('equipo_id') == $item->id ? 'selected' : '' }}>
-                                        {{ $item->id }}
+                                        ID BD: {{ $item->id }}
+                                        @if(!empty($item->serial))
+                                            | Serial: {{ $item->serial }}
+                                        @endif
+                                        @if($item->usuario)
+                                            | Dueño: {{ $item->usuario->name }}
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>
+
+                            <small class="form-text text-muted mt-1">
+                                Este filtro usa el <strong>ID real guardado en la base de datos</strong>, no el número consecutivo visual de la tabla de inventario.
+                            </small>
                         </div>
                     </div>
 
@@ -80,6 +94,14 @@
                             </a>
                         </div>
                     </div>
+                </div>
+
+                {{-- Mensaje aclaratorio --}}
+                <div class="alert alert-info py-2 px-3 mt-3 mb-0 shadow-sm" style="font-size: 0.82rem;">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <strong>Importante:</strong>
+                    el filtro <strong>“ID real en BD”</strong> busca el identificador interno del activo en la base de datos.
+                    No corresponde al campo <strong>“No.”</strong> de la tabla de inventario, ya que ese solo es un contador visual por página.
                 </div>
             </form>
         </div>
@@ -102,11 +124,29 @@
                      style="width: 50px; height: 50px; border-radius: 12px;">
                     <i class="fas {{ $equipo->tipo_equipo == 'Laptop' ? 'fa-laptop text-primary' : 'fa-desktop text-purple' }} fa-lg"></i>
                 </div>
+
                 <div>
-                    <h6 class="mb-0 font-weight-bold text-dark">{{ $equipo->tipoActivo->nombre ?? 'Equipo sin nombre' }}</h6>
-                    <div class="d-flex gap-2 mt-1">
-                        <span class="badge badge-light border text-muted px-2 mr-2">ID: {{ $equipo->id }}</span>
-                        <small class="text-muted"><i class="fas fa-user-circle mr-1"></i>Dueño: {{ $equipo->usuario->name ?? 'Sin asignar' }}</small>
+                    <h6 class="mb-0 font-weight-bold text-dark">
+                        {{ $equipo->tipoActivo->nombre ?? 'Equipo sin nombre' }}
+                    </h6>
+
+                    <div class="d-flex flex-wrap align-items-center mt-1">
+                        <span class="badge badge-dark px-2 mr-2" title="ID real del registro en la base de datos">
+                            <i class="fas fa-database mr-1"></i>
+                            ID BD: {{ $equipo->id }}
+                        </span>
+
+                        @if(!empty($equipo->serial))
+                            <span class="badge badge-light border text-muted px-2 mr-2">
+                                <i class="fas fa-barcode mr-1"></i>
+                                Serial: {{ $equipo->serial }}
+                            </span>
+                        @endif
+
+                        <small class="text-muted">
+                            <i class="fas fa-user-circle mr-1"></i>
+                            Dueño: {{ $equipo->usuario->name ?? 'Sin asignar' }}
+                        </small>
                     </div>
                 </div>
             </div>
@@ -139,12 +179,10 @@
                                     $llaveFinal = 'inactivacion';
                                 } elseif (str_contains($registroOriginal, 'activacion')) {
                                     $llaveFinal = 'activacion';
-                                } 
-                                else {
+                                } else {
                                     $llaveFinal = $registroOriginal;
                                 }
 
-                                // 2. Definimos los colores (El diccionario)
                                 $config = [
                                     'creacion'          => ['bg' => 'bg-success', 'icon' => 'fa-plus-circle'],
                                     'actualizacion'     => ['bg' => 'bg-warning', 'icon' => 'fa-sync-alt'],
@@ -157,20 +195,26 @@
                                     'estado-componente' => ['bg' => 'bg-purple',  'icon' => 'fa-microchip'],
                                 ];
 
-                                // 3. Seleccionamos el estilo final
                                 $estiloActual = $config[$llaveFinal] ?? ['bg' => 'bg-secondary', 'icon' => 'fa-dot-circle'];
                             @endphp
 
-                        <div class="log-card mb-4 bg-white shadow-xs">
-                            <div class="log-header p-3 d-flex justify-content-between align-items-center border-bottom">
-                                <div class="d-flex align-items-center">
-                                    <div class="{{ $estiloActual['bg'] }} text-white rounded-circle mr-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 28px; height: 28px;">
-                                        <i class="fas {{ $estiloActual['icon'] }}" style="font-size: 12px;"></i>
+                            <div class="log-card mb-4 bg-white shadow-xs">
+                                <div class="log-header p-3 d-flex justify-content-between align-items-center border-bottom">
+                                    <div class="d-flex align-items-center">
+                                        <div class="{{ $estiloActual['bg'] }} text-white rounded-circle mr-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 28px; height: 28px;">
+                                            <i class="fas {{ $estiloActual['icon'] }}" style="font-size: 12px;"></i>
+                                        </div>
+                                        <span class="font-weight-bold text-dark mr-2">
+                                            {{ $log->tipo_registro }}
+                                        </span>
+                                        <small class="text-muted border-left pl-2">
+                                            {{ $log->created_at->format('d M, Y • H:i') }}
+                                        </small>
                                     </div>
-                                    <span class="font-weight-bold text-dark mr-2">{{ $log->tipo_registro }}</span>
-                                    <small class="text-muted border-left pl-2">{{ $log->created_at->format('d M, Y • H:i') }}</small>
-                                </div>
-                                <small class="badge badge-light text-muted font-weight-normal">{{ $log->created_at->diffForHumans() }}</small>
+
+                                    <small class="badge badge-light text-muted font-weight-normal">
+                                        {{ $log->created_at->diffForHumans() }}
+                                    </small>
                                 </div>
 
                                 <div class="p-3">
@@ -179,7 +223,8 @@
                                             @foreach($detalles['cambios'] as $campo => $valor)
                                                 <tr class="align-baseline">
                                                     <td class="text-muted small font-weight-bold pt-2" style="width: 25%">
-                                                        <i class="fas fa-caret-right text-primary mr-1"></i> {{ Str::headline($campo) }}
+                                                        <i class="fas fa-caret-right text-primary mr-1"></i>
+                                                        {{ Str::headline($campo) }}
                                                     </td>
                                                     <td class="pt-1">
                                                         <div class="d-flex align-items-center flex-wrap">
@@ -197,8 +242,12 @@
                                                                         @foreach(explode('|', $valor['despues']) as $info)
                                                                             @php $partes = explode(':', $info); @endphp
                                                                             <tr>
-                                                                                <td class="p-0 text-muted extra-small" style="width: 35%"><strong>{{ trim($partes[0] ?? '') }}:</strong></td>
-                                                                                <td class="p-0 font-weight-bold text-dark extra-small">{{ trim($partes[1] ?? '') }}</td>
+                                                                                <td class="p-0 text-muted extra-small" style="width: 35%">
+                                                                                    <strong>{{ trim($partes[0] ?? '') }}:</strong>
+                                                                                </td>
+                                                                                <td class="p-0 font-weight-bold text-dark extra-small">
+                                                                                    {{ trim($partes[1] ?? '') }}
+                                                                                </td>
                                                                             </tr>
                                                                         @endforeach
                                                                     </table>
@@ -216,14 +265,21 @@
                                     @else
                                         <div class="alert bg-light border-0 mb-0 py-2">
                                             <p class="mb-0 small text-muted font-italic">
-                                                <i class="fas fa-info-circle text-info mr-1"></i> {{ $detalles['mensaje'] ?? 'Sin descripción adicional' }}
+                                                <i class="fas fa-info-circle text-info mr-1"></i>
+                                                {{ $detalles['mensaje'] ?? 'Sin descripción adicional' }}
                                             </p>
                                         </div>
                                     @endif
                                 </div>
+
                                 <div class="log-footer px-3 py-2 bg-gray-50 border-top d-flex justify-content-between">
                                     <small class="text-muted">ID Log: #{{ $log->id }}</small>
-                                    <small class="text-muted">Operador: <span class="text-dark font-weight-bold">{{ $log->usuario->name ?? 'Sistema' }}</span></small>
+                                    <small class="text-muted">
+                                        Operador:
+                                        <span class="text-dark font-weight-bold">
+                                            {{ $log->usuario->name ?? 'Sistema' }}
+                                        </span>
+                                    </small>
                                 </div>
                             </div>
                         @empty
@@ -257,18 +313,35 @@
     .badge-primary-soft { background-color: #e0e7ff; color: #4338ca; }
 
     /* Timeline Profesional */
-    .timeline-v2 { position: relative; padding-left: 25px; border-left: 3px solid #e5e7eb; }
+    .timeline-v2 {
+        position: relative;
+        padding-left: 25px;
+        border-left: 3px solid #e5e7eb;
+    }
+
     .log-card { 
         position: relative; 
         border-radius: 10px; 
         border: 1px solid #edf2f7; 
         transition: transform 0.2s;
     }
-    .log-card:hover { transform: translateX(5px); border-color: #cbd5e0; }
+
+    .log-card:hover {
+        transform: translateX(5px);
+        border-color: #cbd5e0;
+    }
+
     .log-card::before {
-        content: ''; position: absolute; left: -32px; top: 15px;
-        width: 12px; height: 12px; background: #fff; border-radius: 50%; 
-        border: 3px solid #007bff; z-index: 10;
+        content: '';
+        position: absolute;
+        left: -32px;
+        top: 15px;
+        width: 12px;
+        height: 12px;
+        background: #fff;
+        border-radius: 50%; 
+        border: 3px solid #007bff;
+        z-index: 10;
     }
 
     /* Tipografía y Scroll */
