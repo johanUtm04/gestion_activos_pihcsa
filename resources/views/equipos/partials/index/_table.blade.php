@@ -143,11 +143,20 @@
                         <thead>
                             <tr>
                                 <th style="width: 50px">No.</th>
+
+                                @if(request('filter') == 'inactivos')
+                                    <th class="text-center" style="width: 90px">
+                                        ID en BD
+                                    </th>
+                                @endif
+
                                 <th>Activo / Serial</th>
                                 <th>Asignado a</th>
+
                                 @if(request('filter') == 'inactivos')
                                     <th>Motivo de Inactivación</th>
                                 @endif
+
                                 @if(request('filter') !== 'inactivos')
                                     <th class="text-center">Acciones</th>
                                     <th class="text-center">MANTENIMIENTO ANUAL</th>
@@ -198,6 +207,17 @@
                                 <td class="text-center font-weight-bold text-muted">
                                     {{ ($equipos->currentPage() - 1) * $equipos->perPage() + $loop->iteration }}
                                 </td>
+
+                                @if(request('filter') == 'inactivos')
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        <span class="badge badge-dark px-2 py-1" title="ID real del registro en la base de datos">
+                                            <i class="fas fa-database mr-1"></i>
+                                            {{ $equipo->id }}
+                                        </span>
+                                    </td>
+                                @endif
+
+                                <td>
                                 <td>
                         
                                     @if(session('actualizado_id') == $equipo->id)
@@ -315,7 +335,7 @@
                             </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center py-5">
+                                    <td colspan="{{ request('filter') == 'inactivos' ? 5 : 5 }}" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="fas fa-folder-open fa-3x mb-3"></i>
                                             <p class="h5">Sin Resultados</p>
