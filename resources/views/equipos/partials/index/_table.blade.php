@@ -218,7 +218,6 @@
                                 @endif
 
                                 <td>
-                                <td>
                         
                                     @if(session('actualizado_id') == $equipo->id)
                                         <span class="badge badge-warning">Editado</span>
