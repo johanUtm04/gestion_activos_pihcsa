@@ -142,7 +142,7 @@
                     <table class="table table-hover table-assets mb-0">
                         <thead>
                             <tr>
-                                <th style="width: 50px">ID</th>
+                                <th style="width: 50px">No.</th>
                                 <th>Activo / Serial</th>
                                 <th>Asignado a</th>
                                 @if(request('filter') == 'inactivos')
