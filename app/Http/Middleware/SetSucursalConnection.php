@@ -22,9 +22,17 @@ class SetSucursalConnection
             ->where('clave', $clave)
             ->first();
 
-        if (! $sucursal) {
-            abort(403, 'Sucursal no válida o inactiva.');
-        }
+            if (! $sucursal) {
+                $sucursal = Sucursal::activas()
+                    ->where('clave', 'principal')
+                    ->first();
+
+                if (! $sucursal) {
+                    abort(403, 'No existe una sucursal principal activa configurada.');
+                }
+
+                $request->session()->put('sucursal_activa', 'principal');
+            }
 
         $mysql = config('database.connections.mysql');
 
