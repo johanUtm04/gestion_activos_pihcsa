@@ -55,33 +55,33 @@
                     </div>
 
                     {{-- Filtro por ID real del equipo en base de datos --}}
-                    <div class="col-md-5">
-                        <div class="form-group mb-0">
-                            <label class="small font-weight-bold text-muted text-uppercase">
-                                <i class="fas fa-database mr-1"></i> Filtrar por ID real en BD
-                            </label>
+<div class="col-md-5">
+    <div class="form-group mb-0">
+        <label class="small font-weight-bold text-muted text-uppercase">
+            <i class="fas fa-database mr-1"></i> Filtrar por Folio
+        </label>
 
-                            <select name="equipo_id" class="form-control form-control-sm select2">
-                                <option value="">-- Todos los IDs reales en BD --</option>
+        <select name="equipo_id" class="form-control form-control-sm select2">
+            <option value="">-- Todos los activos --</option>
 
-                                @foreach($listaParaFiltro as $item)
-                                    <option value="{{ $item->id }}" {{ request('equipo_id') == $item->id ? 'selected' : '' }}>
-                                        ID BD: {{ $item->id }}
-                                        @if(!empty($item->serial))
-                                            | Serial: {{ $item->serial }}
-                                        @endif
-                                        @if($item->usuario)
-                                            | Dueño: {{ $item->usuario->name }}
-                                        @endif
-                                    </option>
-                                @endforeach
-                            </select>
+            @foreach($listaParaFiltro as $item)
+                <option value="{{ $item->id }}" {{ request('equipo_id') == $item->id ? 'selected' : '' }}>
+                    {{ str_pad($item->folio, 3, '0', STR_PAD_LEFT) }}
+                    @if(!empty($item->serial))
+                        | Serial: {{ $item->serial }}
+                    @endif
+                    @if($item->usuario)
+                        | Dueño: {{ $item->usuario->name }}
+                    @endif
+                </option>
+            @endforeach
+        </select>
 
-                            <small class="form-text text-muted mt-1">
-                                Este filtro usa el <strong>ID real guardado en la base de datos</strong>, no el número consecutivo visual de la tabla de inventario.
-                            </small>
-                        </div>
-                    </div>
+        <small class="form-text text-muted mt-1">
+            Busca por el <strong>número de folio</strong> asignado a cada activo.
+        </small>
+    </div>
+</div>
 
                     {{-- Botones de Acción --}}
                     <div class="col-md-3">
@@ -133,7 +133,7 @@
                     <div class="d-flex flex-wrap align-items-center mt-1">
                         <span class="badge badge-dark px-2 mr-2" title="ID real del registro en la base de datos">
                             <i class="fas fa-database mr-1"></i>
-                            ID BD: {{ $equipo->id }}
+                            {{ str_pad($equipo->folio, 3, '0', STR_PAD_LEFT) }}
                         </span>
 
                         @if(!empty($equipo->serial))
