@@ -153,11 +153,10 @@
                 <table class="table table-hover table-assets mb-0">
                     <thead>
                         <tr>
-                            <th style="width: 50px">ID</th>
 
                             @if(request('filter') == 'inactivos')
                                 <th class="text-center" style="width: 90px">
-                                    Folio
+                                    ID
                                 </th>
                             @endif
 
@@ -213,15 +212,10 @@
                         data-sucursal="{{ $nombreSucursal }}"
                         style="cursor: pointer;">
                             
-                            <td class="text-center font-weight-bold text-muted">
-                                    {{ str_pad($equipo->folio, 3, '0', STR_PAD_LEFT) }}
-                            </td>
-
                             @if(request('filter') == 'inactivos')
                                 <td class="text-center" style="vertical-align: middle;">
                                     <span class="badge badge-dark px-2 py-1" title="Número de folio del activo">
-                                        <i class="fas fa-database mr-1"></i>
-                                        ACT-{{ str_pad($equipo->folio, 3, '0', STR_PAD_LEFT) }}
+                                        {{ str_pad($equipo->folio, 3, '0', STR_PAD_LEFT) }}
                                     </span>
                                 </td>
                             @endif
