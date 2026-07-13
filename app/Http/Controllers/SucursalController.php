@@ -12,7 +12,7 @@ class SucursalController extends Controller
 {
     public function index()
     {
-        abort_unless(auth()->user()?->rol === 'ADMIN', 403);
+        $this->validarAdmin();
 
         $sucursales = Sucursal::orderBy('nombre')->get();
 
@@ -21,7 +21,7 @@ class SucursalController extends Controller
 
     public function cambiar(Request $request)
     {
-        abort_unless($request->user()?->rol === 'ADMIN', 403);
+        $this->validarAdmin();
 
         $request->validate([
             'sucursal' => ['required', 'string'],
@@ -49,7 +49,7 @@ class SucursalController extends Controller
 
     public function generar(Request $request)
     {
-        abort_unless(auth()->user()?->rol === 'ADMIN', 403);
+        $this->validarAdmin();
 
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:100'],
@@ -70,8 +70,8 @@ class SucursalController extends Controller
             'descripcion' => ['nullable', 'string'],
         ]);
 
-        $clave = strtolower($data['clave']);
-        $databaseName = strtolower($data['database_name']);
+        $clave = strtolower(trim($data['clave']));
+        $databaseName = strtolower(trim($data['database_name']));
 
         if (! str_starts_with($databaseName, 'pihcsa_')) {
             return back()
@@ -97,7 +97,9 @@ class SucursalController extends Controller
 
             $this->registrarConexionDinamica($clave, $databaseName);
 
-            $this->clonarEstructuraDesdePlantilla('gestion_activos_pihcsa_v2', $databaseName);
+            $dbPlantilla = config('database.connections.mysql.database');
+
+            $this->clonarEstructuraDesdePlantilla($dbPlantilla, $databaseName);
 
             Sucursal::create([
                 'clave' => $clave,
@@ -112,7 +114,6 @@ class SucursalController extends Controller
                 ->with('success', "Sucursal {$data['nombre']} generada correctamente.");
 
         } catch (\Throwable $e) {
-            // Si algo falla, intentamos limpiar la DB creada
             try {
                 DB::connection('mysql')->statement("DROP DATABASE IF EXISTS `$databaseName`");
             } catch (\Throwable $cleanupError) {
@@ -123,6 +124,56 @@ class SucursalController extends Controller
                 ->withInput()
                 ->with('danger', 'Error al generar la sucursal: ' . $e->getMessage());
         }
+    }
+
+    public function destroy(Sucursal $sucursal)
+    {
+        $this->validarAdmin();
+
+        $basesProtegidas = [
+            config('database.connections.mysql.database'),
+            'gestion_activos_pihcsa_v2',
+        ];
+
+        $clavesProtegidas = [
+            'principal',
+        ];
+
+        if (
+            in_array($sucursal->database_name, $basesProtegidas, true) ||
+            in_array($sucursal->clave, $clavesProtegidas, true)
+        ) {
+            return back()->with('danger', 'No se puede eliminar la base principal del sistema.');
+        }
+
+        if (! str_starts_with($sucursal->database_name, 'pihcsa_')) {
+            return back()->with('danger', 'Por seguridad, esta base de datos no puede eliminarse desde el sistema.');
+        }
+
+        try {
+            DB::connection('mysql')->statement(
+                "DROP DATABASE IF EXISTS `{$sucursal->database_name}`"
+            );
+
+            $sucursal->delete();
+
+            if (session('sucursal_activa') === $sucursal->clave) {
+                session()->put('sucursal_activa', 'principal');
+                session()->forget('empresa_id');
+            }
+
+            return back()->with('success', "Sucursal {$sucursal->nombre} eliminada correctamente.");
+
+        } catch (\Throwable $e) {
+            return back()->with('danger', 'Error al eliminar la sucursal: ' . $e->getMessage());
+        }
+    }
+
+    private function validarAdmin(): void
+    {
+        $rol = strtoupper(trim(auth()->user()?->rol ?? ''));
+
+        abort_unless($rol === 'ADMIN', 403);
     }
 
     private function aplicarConexionSucursal(string $clave, string $databaseName): void
@@ -160,104 +211,53 @@ class SucursalController extends Controller
         ]);
     }
 
-    public function destroy(Sucursal $sucursal)
-{
-    abort_unless(auth()->user()?->rol === 'ADMIN', 403);
+    private function clonarEstructuraDesdePlantilla(string $dbPlantilla, string $dbNueva): void
+    {
+        $tablas = DB::connection('mysql')->select("SHOW TABLES FROM `$dbPlantilla`");
 
-    /*
-    |--------------------------------------------------------------------------
-    | Protección de bases críticas
-    |--------------------------------------------------------------------------
-    */
-    $basesProtegidas = [
-        'gestion_activos_pihcsa_v2',
-    ];
+        foreach ($tablas as $tablaObj) {
+            $tablaArray = (array) $tablaObj;
+            $tabla = array_values($tablaArray)[0];
 
-    $clavesProtegidas = [
-        'principal',
-    ];
+            if (in_array($tabla, [
+                'migrations',
+                'personal_access_tokens',
+                'sucursales',
+            ], true)) {
+                continue;
+            }
 
-    if (
-        in_array($sucursal->database_name, $basesProtegidas, true) ||
-        in_array($sucursal->clave, $clavesProtegidas, true)
-    ) {
-        return back()->with('danger', 'No se puede eliminar la base principal del sistema.');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Seguridad extra: solo permitir borrar DB que empiecen con pihcsa_
-    |--------------------------------------------------------------------------
-    */
-    if (! str_starts_with($sucursal->database_name, 'pihcsa_')) {
-        return back()->with('danger', 'Por seguridad, esta base de datos no puede eliminarse desde el sistema.');
-    }
-
-    try {
-        DB::connection('mysql')->statement(
-            "DROP DATABASE IF EXISTS `{$sucursal->database_name}`"
-        );
-
-        $sucursal->delete();
-
-        if (session('sucursal_activa') === $sucursal->clave) {
-            session()->put('sucursal_activa', 'principal');
-        }
-
-        return back()->with('success', "Sucursal {$sucursal->nombre} eliminada correctamente.");
-
-    } catch (\Throwable $e) {
-        return back()->with('danger', 'Error al eliminar la sucursal: ' . $e->getMessage());
-    }
-}
-
-private function clonarEstructuraDesdePlantilla(string $dbPlantilla, string $dbNueva): void
-{
-    $tablas = DB::connection('mysql')->select("SHOW TABLES FROM `$dbPlantilla`");
-
-    foreach ($tablas as $tablaObj) {
-        $tablaArray = (array) $tablaObj;
-        $tabla = array_values($tablaArray)[0];
-
-        if (in_array($tabla, [
-            'migrations',
-            'personal_access_tokens',
-            'sucursales',
-        ])) {
-            continue;
-        }
-
-        DB::connection('mysql')->statement(
-            "CREATE TABLE `$dbNueva`.`$tabla` LIKE `$dbPlantilla`.`$tabla`"
-        );
-    }
-
-    $tablasCatalogo = [
-        'users',
-        'ubicaciones',
-        'marcas',
-        'tipo_activos',
-        'empresas',
-        'cat_tipo_vehiculos',
-        'tasas_lisr',
-        'inpc_indices',
-        'marca_equipo_tipo_equipo',
-    ];
-
-    foreach ($tablasCatalogo as $tabla) {
-        $existe = DB::connection('mysql')->select(
-            "SELECT TABLE_NAME 
-             FROM INFORMATION_SCHEMA.TABLES 
-             WHERE TABLE_SCHEMA = ? 
-             AND TABLE_NAME = ?",
-            [$dbNueva, $tabla]
-        );
-
-        if (! empty($existe)) {
             DB::connection('mysql')->statement(
-                "INSERT INTO `$dbNueva`.`$tabla` SELECT * FROM `$dbPlantilla`.`$tabla`"
+                "CREATE TABLE `$dbNueva`.`$tabla` LIKE `$dbPlantilla`.`$tabla`"
             );
         }
+
+        $tablasCatalogo = [
+            'users',
+            'ubicaciones',
+            'marcas',
+            'tipo_activos',
+            'empresas',
+            'cat_tipo_vehiculos',
+            'tasas_lisr',
+            'inpc_indices',
+            'marca_equipo_tipo_equipo',
+        ];
+
+        foreach ($tablasCatalogo as $tabla) {
+            $existe = DB::connection('mysql')->select(
+                "SELECT TABLE_NAME
+                 FROM INFORMATION_SCHEMA.TABLES
+                 WHERE TABLE_SCHEMA = ?
+                 AND TABLE_NAME = ?",
+                [$dbNueva, $tabla]
+            );
+
+            if (! empty($existe)) {
+                DB::connection('mysql')->statement(
+                    "INSERT INTO `$dbNueva`.`$tabla` SELECT * FROM `$dbPlantilla`.`$tabla`"
+                );
+            }
+        }
     }
-}
 }
