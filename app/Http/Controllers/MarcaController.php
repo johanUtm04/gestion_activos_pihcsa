@@ -54,7 +54,8 @@ public function index(Request $request)
     public function update(Request $request, Marca $marca)
     {
         $data = $request->validate([
-            'nombre' => 'required|string|max:255|unique:marcas,nombre,' . $marca->id
+            'nombre' => 'required|string|max:255|unique:marcas,nombre,' . $marca->id,
+            'tipo'   => 'required|in:TI,AUTO',
         ]);
 
         $marca->update($data);
