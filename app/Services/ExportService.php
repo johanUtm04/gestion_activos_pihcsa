@@ -37,7 +37,7 @@ class ExportService
 
             $encabezados = [
                 'No.',
-                'Base / Sucursal',cd 
+                'Base / Sucursal',
                 'Estado del activo',
                 'ID BD',
             ];
