@@ -1,17 +1,29 @@
 @section('content_header')
 
 @php
-        $sucursales = \App\Models\Sucursal::activas()
+    $sucursales = \App\Models\Sucursal::on('mysql')
+        ->activas()
         ->orderBy('nombre')
         ->pluck('nombre', 'clave')
         ->toArray();
-        $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? 'morelia');
-        $nombreSucursal = $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva);
 
-    $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? config('sucursales.default'));
-    $nombreSucursal = $sucursales[$sucursalActiva] ?? strtoupper($sucursalActiva);
+    $sucursalActiva = session('sucursal_activa', auth()->user()->sucursal ?? 'principal');
+
+    if (! array_key_exists($sucursalActiva, $sucursales)) {
+        $sucursalActiva = 'principal';
+    }
+
+    $nombreSucursal = $sucursales[$sucursalActiva] ?? 'PIHCSA General';
+
+    $rolUsuario = strtoupper(trim(auth()->user()->rol ?? ''));
 
     $sucursalStyles = [
+        'principal' => [
+            'bg' => 'linear-gradient(135deg, #f1f3f5 0%, #ffffff 70%)',
+            'border' => '#495057',
+            'color' => '#343a40',
+            'icon' => 'fas fa-server',
+        ],
         'morelia' => [
             'bg' => 'linear-gradient(135deg, #e8f8fb 0%, #ffffff 70%)',
             'border' => '#17a2b8',
@@ -39,7 +51,6 @@
         'icon' => 'fas fa-building',
     ];
 @endphp
-
 <div class="branch-header d-flex justify-content-between align-items-center mb-2 py-2 px-3"
      style="
         background: {{ $styleSucursal['bg'] }};
@@ -69,7 +80,7 @@
             <div class="d-flex align-items-center">
                 <small class="text-muted mr-2">Vista actual:</small>
 
-                @if(auth()->user()->rol === 'ADMIN')
+                @if($rolUsuario === 'ADMIN')
                     <form method="POST" action="{{ route('sucursal.cambiar') }}" class="mb-0">
                         @csrf
 
