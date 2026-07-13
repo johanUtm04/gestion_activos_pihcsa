@@ -602,6 +602,22 @@
                             <span class="input-error">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label>Pedimento</label>
+                        <input type="text"
+                            name="pedimento"
+                            class="form-control @error('pedimento') is-invalid @enderror"
+                            value="{{ old('pedimento', $vehiculo->pedimento) }}"
+                            maxlength="100"
+                            placeholder="Ej. 23 48 1234 5001234">
+                        <small class="text-muted">
+                            Solo aplica para vehículos importados o regularizados.
+                        </small>
+                        @error('pedimento')
+                            <span class="input-error">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Asignación --}}
@@ -885,6 +901,14 @@
                             {{ $vehiculo->no_serie ?? 'N/A' }}
                         </strong>
                     </div>
+
+                    <div class="d-flex justify-content-between mt-1">
+                        <span class="text-muted">Pedimento:</span>
+                        <strong class="text-truncate" style="max-width: 180px;">
+                            {{ $vehiculo->pedimento ?: 'N/A' }}
+                        </strong>
+                    </div>
+                    
                 </div>
             </div>
 

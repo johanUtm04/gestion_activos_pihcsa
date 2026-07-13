@@ -97,6 +97,7 @@ public function index(Request $request)
             'no_serie'         => 'nullable|string|max:50',
             'no_motor'         => 'nullable|string|max:50',
             'cilindros'        => 'nullable|integer|min:1',
+            'pedimento' => ['nullable', 'string', 'max:100'],
             'tipo_combustible' => 'nullable|string',
             'fecha_ultimo_mantenimiento' => 'nullable|date',
             // NUEVO: Validamos que la empresa que viene del input oculto exista en la DB
@@ -141,23 +142,37 @@ public function index(Request $request)
             'marca_id'         => 'required|exists:marcas,id',
             'usuario_id'       => 'required|exists:users,id',
             'ubicacion_id'     => 'required|exists:ubicaciones,id',
+
             'modelo'           => 'required|string|max:255',
-            'anio'             => 'required|integer|min:1900|max:'.(date('Y') + 1),
+            'anio'             => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'placas'           => 'nullable|string|max:20',
             'no_serie'         => 'nullable|string|max:50',
             'no_motor'         => 'nullable|string|max:50',
+            'cilindros'        => 'nullable|integer|min:1',
+
+            'pedimento'        => 'nullable|string|max:100',
+
+            'tipo_combustible' => 'nullable|string|max:50',
+
+            'valor_inicial'    => 'nullable|numeric|min:0',
+            'fecha_adquisicion' => 'nullable|date',
+            'vida_util_estimada' => 'nullable|integer|min:0',
+            'fecha_ultimo_mantenimiento' => 'nullable|date',
+
             'is_active'        => 'required|boolean',
             'motivo_inactivacion' => 'required_if:is_active,0|nullable|string|max:255',
         ]);
 
         // Si se vuelve a activar, limpiamos el motivo anterior de forma automática
-        if ($validated['is_active'] == 1) {
+        if ((int) $validated['is_active'] === 1) {
             $validated['motivo_inactivacion'] = null;
         }
 
         $vehiculo->update($validated);
 
-        return redirect()->route('vehiculos.index')->with('success', 'Vehículo actualizado correctamente.');
+        return redirect()
+            ->route('vehiculos.index')
+            ->with('success', 'Vehículo actualizado correctamente.');
     }
 
     /**
