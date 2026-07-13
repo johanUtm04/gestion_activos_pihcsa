@@ -10,7 +10,7 @@ class ExportService
 {
     public function exportarInventarioCsv()
     {
-        $fileName = 'Reporte_Inventario_' . now()->format('Y-m-d') . '.csv';
+        $fileName = 'Reporte_Inventario_Activos_Actuales_' . now()->format('Y-m-d') . '.csv';
 
         $headers = [
             'Content-type'        => 'text/csv; charset=UTF-8',
@@ -30,8 +30,6 @@ class ExportService
             |--------------------------------------------------------------------------
             | Compatibilidad con bases que todavía no tengan folio
             |--------------------------------------------------------------------------
-            | Como manejas múltiples bases de datos, puede pasar que una sucursal tenga
-            | la columna folio y otra todavía no. Por eso lo detectamos antes.
             */
             $tieneFolio = Schema::hasColumn('equipos', 'folio');
 
@@ -54,11 +52,11 @@ class ExportService
                 'Factura',
                 'Sistema operativo',
 
-                'Usuario responsable',
-                'Email responsable',
-                'Departamento usuario',
+                'Usuario actual',
+                'Email usuario actual',
+                'Departamento usuario actual',
                 'Departamento equipo',
-                'Ubicación',
+                'Ubicación actual',
 
                 'Valor adquisición',
                 'Fecha adquisición',
@@ -68,8 +66,6 @@ class ExportService
 
                 'Fecha registro',
                 'Fecha última actualización',
-                'Fecha inactivación',
-                'Motivo inactivación',
 
                 'Procesadores activos',
                 'Procesadores inactivos',
@@ -101,8 +97,19 @@ class ExportService
 
             $contador = 1;
 
-            Equipo::withTrashed()
-                ->with([
+            /*
+            |--------------------------------------------------------------------------
+            | IMPORTANTE:
+            |--------------------------------------------------------------------------
+            | Aquí NO usamos withTrashed().
+            |
+            | Este reporte debe reflejar la pantalla de Equipos actual:
+            | solo activos vigentes, no activos inactivos ni registros históricos.
+            |
+            | Los usuarios anteriores deben quedarse en Auditoría / Historial,
+            | no en el reporte general de inventario activo.
+            */
+            Equipo::with([
                     'usuario',
                     'ubicacion',
                     'marca',
@@ -140,7 +147,7 @@ class ExportService
                         $fila = [
                             $contador++,
                             $this->limpiarTexto($this->nombreSucursal($sucursalActiva, $databaseName)),
-                            $equipo->trashed() ? 'INACTIVO' : 'ACTIVO',
+                            'ACTIVO',
                             $equipo->id,
                         ];
 
@@ -170,8 +177,6 @@ class ExportService
 
                             $this->limpiarTexto(optional($equipo->created_at)->format('Y-m-d H:i:s') ?? 'N/A'),
                             $this->limpiarTexto(optional($equipo->updated_at)->format('Y-m-d H:i:s') ?? 'N/A'),
-                            $this->limpiarTexto(optional($equipo->deleted_at)->format('Y-m-d H:i:s') ?? 'N/A'),
-                            $this->limpiarTexto($equipo->motivo_inactivacion ?? 'N/A'),
 
                             $procesadoresActivos->count(),
                             $procesadoresInactivos->count(),
@@ -341,10 +346,7 @@ class ExportService
     {
         $texto = (string) ($texto ?? 'N/A');
 
-        // Evita saltos raros dentro del CSV
         $texto = str_replace(["\r\n", "\r", "\n"], ' ', $texto);
-
-        // Limpieza de espacios repetidos
         $texto = preg_replace('/\s+/', ' ', $texto);
 
         return trim($texto);
