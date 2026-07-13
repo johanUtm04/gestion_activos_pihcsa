@@ -22,7 +22,6 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
                     </span>
                                         
                     <p class="mb-0 opacity-8" style="font-size: 0.75rem;">
-                        ID en BD: ${d.id} | 
                         <i class="fas fa-barcode mr-1"></i>${d.serial} |
                         ${d.marca}  |
                         <i class="fab fa-windows mr-1"></i>${d.so} |
