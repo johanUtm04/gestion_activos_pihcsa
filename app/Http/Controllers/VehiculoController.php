@@ -8,6 +8,7 @@ use App\Models\Marca;
 use App\Models\Ubicacion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class VehiculoController extends Controller
 {
@@ -61,7 +62,9 @@ public function index(Request $request)
 
     // Catálogos para los selects del buscador y modales
     $tiposVehiculo = CatTipoVehiculo::select('id', 'nombre')->get();
-    $marcas        = Marca::select('id', 'nombre')->get();
+    $marcas = Marca::where('tipo', 'AUTO')
+    ->orderBy('nombre')
+    ->get();
     $usuarios      = User::select('id', 'name')->get();
     $ubicaciones   = Ubicacion::select('id', 'nombre')->get();
 
@@ -75,7 +78,10 @@ public function index(Request $request)
     {
         return response()->json([
             'tipos'       => CatTipoVehiculo::select('id', 'nombre')->get(),
-            'marcas'      => Marca::select('id', 'nombre')->get(),
+            'marcas' => Marca::where('tipo', 'AUTO')
+            ->select('id', 'nombre')
+            ->orderBy('nombre')
+            ->get(),
             'ubicaciones' => Ubicacion::select('id', 'nombre')->get(),
             'usuarios'    => User::select('id', 'name')->get(),
         ]);
@@ -88,7 +94,10 @@ public function index(Request $request)
     {
         $validated = $request->validate([
             'tipo_vehiculo_id' => 'required|exists:cat_tipo_vehiculos,id',
-            'marca_id'         => 'required|exists:marcas,id',
+            'marca_id' => [
+                'required',
+                Rule::exists('marcas', 'id')->where('tipo', 'AUTO'),
+            ],
             'usuario_id'       => 'required|exists:users,id',
             'ubicacion_id'     => 'required|exists:ubicaciones,id',
             'modelo'           => 'required|string|max:255',
@@ -139,7 +148,10 @@ public function index(Request $request)
     {
         $validated = $request->validate([
             'tipo_vehiculo_id' => 'required|exists:cat_tipo_vehiculos,id',
-            'marca_id'         => 'required|exists:marcas,id',
+            'marca_id' => [
+                'required',
+                Rule::exists('marcas', 'id')->where('tipo', 'AUTO'),
+            ],
             'usuario_id'       => 'required|exists:users,id',
             'ubicacion_id'     => 'required|exists:ubicaciones,id',
 
@@ -196,7 +208,10 @@ public function index(Request $request)
         ]);
 
         $tiposVehiculo = CatTipoVehiculo::select('id', 'nombre', 'frecuencia_meses')->get();
-        $marcas        = Marca::select('id', 'nombre')->get();
+        $marcas = Marca::where('tipo', 'AUTO')
+        ->select('id', 'nombre')
+        ->orderBy('nombre')
+        ->get();
         $usuarios      = User::select('id', 'name')->get();
         $ubicaciones   = Ubicacion::select('id', 'nombre')->get();
 
