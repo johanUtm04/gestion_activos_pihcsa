@@ -35,7 +35,8 @@ public function index(Request $request)
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nombre' => 'required|string|max:255|unique:marcas,nombre'
+            'nombre' => 'required|string|max:255|unique:marcas,nombre',
+            'tipo'   => 'required|in:TI,AUTO',
         ]);
 
         $marca = Marca::create($data);
@@ -66,13 +67,23 @@ public function index(Request $request)
     public function destroy(Marca $marca)
     {
         if ($marca->equipos()->count() > 0) {
-            return redirect()->back()->with('danger', 'No se puede eliminar: esta marca tiene equipos asociados.');
+            return redirect()
+                ->back()
+                ->with('danger', 'No se puede eliminar: esta marca tiene equipos asociados.');
+        }
+
+        if ($marca->vehiculos()->count() > 0) {
+            return redirect()
+                ->back()
+                ->with('danger', 'No se puede eliminar: esta marca tiene vehículos asociados.');
         }
 
         $page = $this->getReturnPage($marca->id);
+
         $marca->delete();
 
-        return redirect()->route('marcas.index', ['page' => $page])
+        return redirect()
+            ->route('marcas.index', ['page' => $page])
             ->with('danger', 'Marca eliminada.');
     }
 

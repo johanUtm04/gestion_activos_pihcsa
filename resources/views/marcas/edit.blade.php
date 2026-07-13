@@ -132,6 +132,38 @@
                                         Nota: El cambio de nombre se reflejará en todos los inventarios de equipos asociados.
                                     </p>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="tipo">
+                                        <i class="fas fa-layer-group"></i> Tipo de Marca:
+                                    </label>
+
+                                    <select name="tipo"
+                                            id="tipo"
+                                            class="form-control form-control-lg @error('tipo') is-invalid @enderror"
+                                            required>
+                                        <option value="">Selecciona el tipo...</option>
+
+                                        <option value="TI" {{ old('tipo', $marca->tipo) === 'TI' ? 'selected' : '' }}>
+                                            TI / Equipo de cómputo
+                                        </option>
+
+                                        <option value="AUTO" {{ old('tipo', $marca->tipo) === 'AUTO' ? 'selected' : '' }}>
+                                            AUTO / Vehículos
+                                        </option>
+                                    </select>
+
+                                    @error('tipo')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <p class="text-muted mt-2 small">
+                                        <i class="fas fa-info-circle text-info"></i>
+                                        Este campo define si la marca aparecerá en equipos de TI o en vehículos.
+                                    </p>
+                                </div>
                             </fieldset>
 
                             <div class="mt-4">
