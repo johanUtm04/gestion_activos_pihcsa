@@ -49,6 +49,14 @@
                                 <td class="font-weight-bold">Cilindros:</td>
                                 <td>{{ $vehiculo->cilindros ?? 'N/A' }}</td>
                             </tr>
+
+                            <tr>
+                                <td class="font-weight-bold">Pedimento:</td>
+                                <td>
+                                    <code>{{ $vehiculo->pedimento ?: 'N/A' }}</code>
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td class="font-weight-bold">Tipo de Combustible:</td>
                                 <td>{{ $vehiculo->tipo_combustible ?? 'N/A' }}</td>
