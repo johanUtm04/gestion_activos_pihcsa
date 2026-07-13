@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Marca extends Model
 {
     use HasFactory;
-	protected $fillable = ['nombre'];
+	protected $fillable = ['nombre', 'tipo'];
 	
 	public function equipos()
     {
