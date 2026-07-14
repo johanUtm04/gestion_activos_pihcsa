@@ -14,25 +14,24 @@ class SetSucursalConnection
     {
         $clave = $request->session()->get('sucursal_activa');
 
+        // Si aún no hay sucursal seleccionada, dejamos pasar.
+        // El middleware EnsureSucursalIsSelected se encargará de redirigir.
         if (! $clave) {
             return $next($request);
         }
 
-        $sucursal = Sucursal::activas()
+        $sucursal = Sucursal::on('mysql')
+            ->where('estatus', 'activo')
             ->where('clave', $clave)
             ->first();
 
-            if (! $sucursal) {
-                $sucursal = Sucursal::activas()
-                    ->where('clave', 'principal')
-                    ->first();
+        if (! $sucursal) {
+            $request->session()->forget('sucursal_activa');
+            $request->session()->forget('empresa_id');
 
-                if (! $sucursal) {
-                    abort(403, 'No existe una sucursal principal activa configurada.');
-                }
-
-                $request->session()->put('sucursal_activa', 'principal');
-            }
+            return redirect()->route('sucursal.seleccionar')
+                ->with('warning', 'La base seleccionada ya no está disponible. Selecciona una nuevamente.');
+        }
 
         $mysql = config('database.connections.mysql');
 
