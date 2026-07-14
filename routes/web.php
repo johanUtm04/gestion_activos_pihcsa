@@ -37,12 +37,12 @@ Route::get('/', function () {
 | Rutas Protegidas (Middleware Auth)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
 
     //Seleccionar Sucursal, justo despues de login exitoso-
-    Route::get('seleccionar-sucursal', [SurcursalController::class, 'seleccionar'])->name('sucursal.seleccionar')
-    Route::post('seleccionar-sucursal', [SucursalController::class, 'guardarSeleccion'])->name('sucursal.guardarSeleccion')
-    
+    Route::get('seleccionar-sucursal', [SurcursalController::class, 'seleccionar'])->name('sucursal.seleccionar');
+    Route::post('seleccionar-sucursal', [SucursalController::class, 'guardarSeleccion'])->name('sucursal.guardarSeleccion');
+
     /*
     |--------------------------------------------------------------------------
     | Gestión de Sucursales

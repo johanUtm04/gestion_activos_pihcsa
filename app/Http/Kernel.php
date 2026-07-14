@@ -67,6 +67,7 @@ protected $middlewareAliases = [
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'age' => \App\Http\Middleware\goku::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'EnsureSucursalIsSelected' => \App\Http\Middleware\EnsureSucursalIsSelected::class,
         'EnsureEmpresaIsSelected' => \App\Http\Middleware\EnsureEmpresaIsSelected::class,
     ];
 }
