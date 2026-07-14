@@ -496,12 +496,12 @@ return [
         'route'      => 'soporte.contacto',
     ],
 
-    [
-        'text'       => 'Manual del Sistema',
-        'icon'       => 'fas fa-book-reader',
-        'icon_color' => 'info',
-        'route'      => 'soporte.manual',
-    ],
+    // [
+    //     'text'       => 'Manual del Sistema',
+    //     'icon'       => 'fas fa-book-reader',
+    //     'icon_color' => 'info',
+    //     'route'      => 'soporte.manual',
+    // ],
 ],
     /*
     |--------------------------------------------------------------------------

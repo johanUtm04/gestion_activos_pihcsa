@@ -56,9 +56,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sucursal/cambiar', [SucursalController::class, 'cambiar'])
         ->name('sucursal.cambiar');
 
-    Route::post('/sucursal/cambiar', [SucursalController::class, 'cambiar'])
-    ->name('sucursal.cambiar');
-
     /* --- FLUJO OBLIGATORIO DE SELECCIÓN DE EMPRESA --- */
     // Solo se activará cuando se intente interactuar con el módulo de vehículos
     Route::get('seleccionar-empresa', [EmpresaSeleccionController::class, 'mostrarSelector'])->name('empresa.seleccionar');
