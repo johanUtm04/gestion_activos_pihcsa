@@ -141,9 +141,17 @@
         </div>
 
         @if(request('filter') !== 'inactivos')
-            <a href="{{ route('equipos.reporte') }}" class="btn btn-sm btn-outline-success shadow-sm">
-                <i class="fas fa-file-excel"></i> Reporte
-            </a>
+            <div class="btn-group shadow-sm">
+                <a href="{{ route('equipos.reporte') }}"
+                class="btn btn-sm btn-outline-success">
+                    <i class="fas fa-file-excel mr-1"></i> Reporte actual
+                </a>
+
+                <a href="{{ route('equipos.reporte.historico') }}"
+                class="btn btn-sm btn-outline-dark">
+                    <i class="fas fa-history mr-1"></i> Histórico
+                </a>
+            </div>
 
             <a href="{{ route('equipos.busqueda') }}" class="btn btn-sm btn-outline-secondary shadow-sm" title="Escanear Activo">
                 <i class="fas fa-barcode mr-1"></i> Escanear

@@ -21,9 +21,11 @@ use App\Http\Requests\StoreEquipoRequest;
 use App\Http\Requests\StoreWorkRequest;
 use App\Services\MantenimientoService;
 use App\Services\ExportService;
+use App\Services\ExportHistoricoService;
 use App\Http\Requests\UpdateEquipoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
 
 
 class EquipoController extends Controller
@@ -297,5 +299,12 @@ class EquipoController extends Controller
             'procesador_tipos'  => Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo'),
             'procesador_ghz' => Procesador::whereNotNull('clock_ghz')->distinct()->orderBy('clock_ghz', 'asc')->pluck('clock_ghz'),
         ];
+    }
+
+    public function exportarHistorico(ExportHistoricoService $exportService)
+    {
+        [$callback, $headers] = $exportService->exportarHistoricoCsv();
+
+        return response()->stream($callback, 200, $headers);
     }
 }

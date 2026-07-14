@@ -228,6 +228,9 @@ Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
 
     Route::get('/reporte-general-equipos', [EquipoController::class, 'exportarGeneral'])
         ->name('equipos.reporte');
+    
+    Route::get('/reporte-historico-equipos', [EquipoController::class, 'exportarHistorico'])
+        ->name('equipos.reporte.historico');
 
     Route::get('/historial', [HistorialController::class, 'index'])
         ->name('historial.index');
