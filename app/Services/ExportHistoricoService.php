@@ -19,7 +19,7 @@ class ExportHistoricoService
         $callback = function () {
             $file = fopen('php://output', 'w');
 
-            // UTF-8 BOM para Excel
+            // UTF-8 BOM para que Excel respete acentos y ñ
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             $databaseName = DB::connection()->getDatabaseName();
@@ -57,37 +57,36 @@ class ExportHistoricoService
                 ])
                 ->orderBy('created_at', 'desc')
                 ->orderBy('id', 'desc')
-                ->chunkById(200, function ($movimientos) use (
+                ->lazy(200)
+                ->each(function ($movimiento) use (
                     $file,
                     &$contador,
                     $databaseName,
                     $sucursalActiva
                 ) {
-                    foreach ($movimientos as $movimiento) {
-                        $equipo = $movimiento->equipo;
-                        $usuarioAccion = $movimiento->usuario;
+                    $equipo = $movimiento->equipo;
+                    $usuarioAccion = $movimiento->usuario;
 
-                        $fila = [
-                            $contador++,
-                            $this->limpiarTexto($this->nombreSucursal($sucursalActiva, $databaseName)),
-                            $movimiento->id,
-                            $movimiento->activo_id,
-                            $equipo?->folio ?? 'N/A',
-                            $this->limpiarTexto($equipo?->tipoActivo?->nombre ?? $equipo?->tipo_equipo ?? 'N/A'),
-                            $this->limpiarTexto($equipo?->marca?->nombre ?? $equipo?->marca_equipo ?? 'N/A'),
-                            $this->limpiarTexto($equipo?->modelo ?? 'N/A'),
-                            $this->limpiarTexto($equipo?->serial ?? 'N/A'),
-                            $this->limpiarTexto($equipo?->usuario?->name ?? 'Disponible / Sin asignar'),
-                            $this->limpiarTexto($equipo?->ubicacion?->nombre ?? 'N/A'),
-                            $this->limpiarTexto($movimiento->tipo_registro ?? 'N/A'),
-                            $this->limpiarTexto($usuarioAccion?->name ?? 'N/A'),
-                            $this->limpiarTexto($usuarioAccion?->email ?? 'N/A'),
-                            $this->limpiarTexto(optional($movimiento->created_at)->format('Y-m-d H:i:s') ?? 'N/A'),
-                            $this->formatearDetalles($movimiento->detalles_json),
-                        ];
+                    $fila = [
+                        $contador++,
+                        $this->limpiarTexto($this->nombreSucursal($sucursalActiva, $databaseName)),
+                        $movimiento->id,
+                        $movimiento->activo_id,
+                        $this->limpiarTexto($equipo?->folio ?? 'N/A'),
+                        $this->limpiarTexto($equipo?->tipoActivo?->nombre ?? $equipo?->tipo_equipo ?? 'N/A'),
+                        $this->limpiarTexto($equipo?->marca?->nombre ?? $equipo?->marca_equipo ?? 'N/A'),
+                        $this->limpiarTexto($equipo?->modelo ?? 'N/A'),
+                        $this->limpiarTexto($equipo?->serial ?? 'N/A'),
+                        $this->limpiarTexto($equipo?->usuario?->name ?? 'Disponible / Sin asignar'),
+                        $this->limpiarTexto($equipo?->ubicacion?->nombre ?? 'N/A'),
+                        $this->limpiarTexto($movimiento->tipo_registro ?? 'N/A'),
+                        $this->limpiarTexto($usuarioAccion?->name ?? 'N/A'),
+                        $this->limpiarTexto($usuarioAccion?->email ?? 'N/A'),
+                        $this->limpiarTexto(optional($movimiento->created_at)->format('Y-m-d H:i:s') ?? 'N/A'),
+                        $this->formatearDetalles($movimiento->detalles_json),
+                    ];
 
-                        fputcsv($file, $fila);
-                    }
+                    fputcsv($file, $fila);
                 });
 
             fclose($file);
@@ -127,7 +126,12 @@ class ExportHistoricoService
             $label = $prefijo ? "{$prefijo}.{$key}" : $key;
 
             if (is_array($value)) {
-                $partes[] = $this->arrayAtexto($value, $label);
+                $textoInterno = $this->arrayAtexto($value, $label);
+
+                if ($textoInterno !== '') {
+                    $partes[] = $textoInterno;
+                }
+
                 continue;
             }
 
@@ -139,10 +143,21 @@ class ExportHistoricoService
                 $value = 'N/A';
             }
 
+            $label = $this->normalizarEtiqueta($label);
+            $value = $this->limpiarTexto($value);
+
             $partes[] = "{$label}: {$value}";
         }
 
         return implode(' | ', array_filter($partes));
+    }
+
+    private function normalizarEtiqueta(string $label): string
+    {
+        $label = str_replace(['_', '-'], ' ', $label);
+        $label = str_replace('.', ' > ', $label);
+
+        return trim($label);
     }
 
     private function nombreSucursal(?string $clave, ?string $databaseName): string
@@ -157,8 +172,34 @@ class ExportHistoricoService
     {
         $texto = (string) ($texto ?? 'N/A');
 
-        $texto = str_replace(["\r\n", "\r", "\n"], ' ', $texto);
+        // Convierte saltos HTML comunes a separadores legibles antes de quitar etiquetas.
+        $texto = preg_replace('/<\s*br\s*\/?>/i', ' | ', $texto);
+        $texto = preg_replace('/<\/\s*p\s*>/i', ' | ', $texto);
+        $texto = preg_replace('/<\/\s*div\s*>/i', ' | ', $texto);
+        $texto = preg_replace('/<\/\s*li\s*>/i', ' | ', $texto);
+
+        // Quita cualquier etiqueta HTML restante.
+        $texto = strip_tags($texto);
+
+        // Decodifica entidades HTML.
+        $texto = html_entity_decode($texto, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        // Limpieza de espacios y saltos.
+        $texto = str_replace(["\r\n", "\r", "\n", "\t"], ' ', $texto);
         $texto = preg_replace('/\s+/', ' ', $texto);
+
+        // Limpieza de separadores repetidos.
+        $texto = preg_replace('/(\s*\|\s*)+/', ' | ', $texto);
+        $texto = trim($texto, " \t\n\r\0\x0B|");
+
+        if ($texto === '') {
+            $texto = 'N/A';
+        }
+
+        // Hardening contra fórmulas en Excel.
+        if (preg_match('/^[=+\-@]/', $texto)) {
+            $texto = "'" . $texto;
+        }
 
         return trim($texto);
     }
