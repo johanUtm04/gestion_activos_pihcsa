@@ -232,32 +232,22 @@ class SucursalController extends Controller
             );
         }
 
-        $tablasCatalogo = [
-            'users',
-            'ubicaciones',
-            'marcas',
-            'tipo_activos',
-            'empresas',
-            'cat_tipo_vehiculos',
-            'tasas_lisr',
-            'inpc_indices',
-            'marca_equipo_tipo_equipo',
-        ];
+        // Solo copiamos usuarios ADMIN.
+        $existeUsers = DB::connection('mysql')->select(
+            "SELECT TABLE_NAME
+            FROM INFORMATION_SCHEMA.TABLES
+            WHERE TABLE_SCHEMA = ?
+            AND TABLE_NAME = ?",
+            [$dbNueva, 'users']
+        );
 
-        foreach ($tablasCatalogo as $tabla) {
-            $existe = DB::connection('mysql')->select(
-                "SELECT TABLE_NAME
-                 FROM INFORMATION_SCHEMA.TABLES
-                 WHERE TABLE_SCHEMA = ?
-                 AND TABLE_NAME = ?",
-                [$dbNueva, $tabla]
+        if (! empty($existeUsers)) {
+            DB::connection('mysql')->statement(
+                "INSERT INTO `$dbNueva`.`users`
+                SELECT *
+                FROM `$dbPlantilla`.`users`
+                WHERE UPPER(TRIM(rol)) = 'ADMIN'"
             );
-
-            if (! empty($existe)) {
-                DB::connection('mysql')->statement(
-                    "INSERT INTO `$dbNueva`.`$tabla` SELECT * FROM `$dbPlantilla`.`$tabla`"
-                );
-            }
         }
     }
 
