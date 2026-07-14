@@ -260,4 +260,41 @@ class SucursalController extends Controller
             }
         }
     }
+
+    //Funcion para seleccionar sucursale despues del login
+    public function seleccionar(){
+        $sucursales = Sucursal::on ('mysql')
+        ->where ('estatus', 'activo')
+        ->orderBy('nombre')
+        -get();
+        return view('sucursales.seleccionar', compact(sucursales));
+    }
+
+    public function guardarSeleccion (Request $request)
+    {
+        $request -> validate ([
+            'sucursal' => ['required', 'sring'],
+        ]);
+
+        $sucursal = Sucursal::on ('mysql')
+        ->where ('estatus', 'activo')
+        ->where ('clave', $request->sucursal)
+        ->first();
+
+        if(! $sucursal){
+            throw ValidationException::withMessages([
+                'sucursal' => 'La sucursal seleccionada no existe o se encuentra incativa'
+            ]);
+        }
+
+        session()->put ('sucursal_activa', $sucursal->clave);
+        session()->forget('empresa_id');
+
+        $this->aplicarConexionSucursal($sucursal->clave, $sucursal->database_name);
+
+        return redirect ()
+        ->route('equipos.index')
+        ->with('Success', 'Base de datos seleccionada correctamente');
+    }
+
 }
