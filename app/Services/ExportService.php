@@ -26,13 +26,16 @@ class ExportService
             $databaseName = DB::connection()->getDatabaseName();
             $sucursalActiva = session('sucursal_activa', 'N/A');
 
+            $tieneFolio = Schema::hasColumn('equipos', 'folio');
+            $tieneIsActive = Schema::hasColumn('equipos', 'is_active');
+
             /*
             |--------------------------------------------------------------------------
-            | Compatibilidad con bases que todavía no tengan folio
+            | Encabezados
             |--------------------------------------------------------------------------
+            | Este reporte es de inventario actual.
+            | No incluye movimientos históricos ni componentes inactivos.
             */
-            $tieneFolio = Schema::hasColumn('equipos', 'folio');
-
             $encabezados = [
                 'No.',
                 'Base / Sucursal',
@@ -67,30 +70,20 @@ class ExportService
                 'Fecha registro',
                 'Fecha última actualización',
 
-                'Procesadores activos',
-                'Procesadores inactivos',
-                'Detalle procesadores activos',
-                'Detalle procesadores inactivos',
+                'Procesadores actuales',
+                'Detalle procesadores actuales',
 
-                'RAM activa',
-                'RAM inactiva',
-                'Detalle RAM activa',
-                'Detalle RAM inactiva',
+                'RAM actual',
+                'Detalle RAM actual',
 
-                'Discos activos',
-                'Discos inactivos',
-                'Detalle discos activos',
-                'Detalle discos inactivos',
+                'Discos actuales',
+                'Detalle discos actuales',
 
-                'Monitores activos',
-                'Monitores inactivos',
-                'Detalle monitores activos',
-                'Detalle monitores inactivos',
+                'Monitores actuales',
+                'Detalle monitores actuales',
 
-                'Periféricos activos',
-                'Periféricos inactivos',
-                'Detalle periféricos activos',
-                'Detalle periféricos inactivos',
+                'Periféricos actuales',
+                'Detalle periféricos actuales',
             ]);
 
             fputcsv($file, $encabezados);
@@ -99,28 +92,33 @@ class ExportService
 
             /*
             |--------------------------------------------------------------------------
-            | IMPORTANTE:
+            | Consulta principal
             |--------------------------------------------------------------------------
-            | Aquí NO usamos withTrashed().
+            | Regla del reporte:
+            | 1 fila = 1 activo actual.
             |
-            | Este reporte debe reflejar la pantalla de Equipos actual:
-            | solo activos vigentes, no activos inactivos ni registros históricos.
-            |
-            | Los usuarios anteriores deben quedarse en Auditoría / Historial,
-            | no en el reporte general de inventario activo.
+            | No usamos withTrashed().
+            | No generamos filas por historial.
+            | No generamos filas por movimientos.
+            | No mostramos componentes inactivos.
             */
-            Equipo::with([
-                    'usuario',
-                    'ubicacion',
-                    'marca',
-                    'tipoActivo',
-                    'procesadores',
-                    'rams',
-                    'discosDuros',
-                    'monitores',
-                    'perifericos',
-                ])
-                ->orderBy('id')
+            $query = Equipo::with([
+                'usuario',
+                'ubicacion',
+                'marca',
+                'tipoActivo',
+                'procesadores',
+                'rams',
+                'discosDuros',
+                'monitores',
+                'perifericos',
+            ]);
+
+            if ($tieneIsActive) {
+                $query->where('is_active', 1);
+            }
+
+            $query->orderBy('id')
                 ->chunkById(200, function ($equipos) use (
                     $file,
                     &$contador,
@@ -129,20 +127,18 @@ class ExportService
                     $tieneFolio
                 ) {
                     foreach ($equipos as $equipo) {
-                        $procesadoresActivos = $equipo->procesadores->where('is_active', 1);
-                        $procesadoresInactivos = $equipo->procesadores->where('is_active', 0);
-
-                        $ramsActivas = $equipo->rams->where('is_active', 1);
-                        $ramsInactivas = $equipo->rams->where('is_active', 0);
-
-                        $discosActivos = $equipo->discosDuros->where('is_active', 1);
-                        $discosInactivos = $equipo->discosDuros->where('is_active', 0);
-
-                        $monitoresActivos = $equipo->monitores->where('is_active', 1);
-                        $monitoresInactivos = $equipo->monitores->where('is_active', 0);
-
-                        $perifericosActivos = $equipo->perifericos->where('is_active', 1);
-                        $perifericosInactivos = $equipo->perifericos->where('is_active', 0);
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Solo componentes activos
+                        |--------------------------------------------------------------------------
+                        | Los componentes inactivos o movimientos anteriores pertenecen
+                        | a Historial / Auditoría, no al reporte actual.
+                        */
+                        $procesadoresActivos = $this->filtrarActivos($equipo->procesadores);
+                        $ramsActivas = $this->filtrarActivos($equipo->rams);
+                        $discosActivos = $this->filtrarActivos($equipo->discosDuros);
+                        $monitoresActivos = $this->filtrarActivos($equipo->monitores);
+                        $perifericosActivos = $this->filtrarActivos($equipo->perifericos);
 
                         $fila = [
                             $contador++,
@@ -179,7 +175,6 @@ class ExportService
                             $this->limpiarTexto(optional($equipo->updated_at)->format('Y-m-d H:i:s') ?? 'N/A'),
 
                             $procesadoresActivos->count(),
-                            $procesadoresInactivos->count(),
                             $this->formatRelacion($procesadoresActivos, function ($p) {
                                 return trim(
                                     ($p->marca ?? 'N/A') . ' ' .
@@ -187,17 +182,8 @@ class ExportService
                                     ($p->clock_ghz ? " {$p->clock_ghz}GHz" : '')
                                 );
                             }),
-                            $this->formatRelacion($procesadoresInactivos, function ($p) {
-                                return trim(
-                                    ($p->marca ?? 'N/A') . ' ' .
-                                    ($p->descripcion_tipo ?? 'N/A') .
-                                    ($p->clock_ghz ? " {$p->clock_ghz}GHz" : '') .
-                                    ' | Motivo: ' . ($p->motivo_inactivo ?? 'N/A')
-                                );
-                            }),
 
                             $this->sumarRam($ramsActivas),
-                            $this->sumarRam($ramsInactivas),
                             $this->formatRelacion($ramsActivas, function ($r) {
                                 return trim(
                                     ($r->capacidad_gb ?? 'N/A') . 'GB ' .
@@ -206,18 +192,8 @@ class ExportService
                                     ($r->serial ? " | Serial: {$r->serial}" : '')
                                 );
                             }),
-                            $this->formatRelacion($ramsInactivas, function ($r) {
-                                return trim(
-                                    ($r->capacidad_gb ?? 'N/A') . 'GB ' .
-                                    ($r->tipo_chz ?? '') .
-                                    ($r->clock_mhz ? " {$r->clock_mhz}MHz" : '') .
-                                    ($r->serial ? " | Serial: {$r->serial}" : '') .
-                                    ' | Motivo: ' . ($r->motivo_inactivo ?? 'N/A')
-                                );
-                            }),
 
                             $discosActivos->count(),
-                            $discosInactivos->count(),
                             $this->formatRelacion($discosActivos, function ($d) {
                                 return trim(
                                     ($d->capacidad ?? 'N/A') . ' ' .
@@ -226,18 +202,8 @@ class ExportService
                                     ($d->serial ? " | Serial: {$d->serial}" : '')
                                 );
                             }),
-                            $this->formatRelacion($discosInactivos, function ($d) {
-                                return trim(
-                                    ($d->capacidad ?? 'N/A') . ' ' .
-                                    ($d->tipo_hdd_ssd ?? '') .
-                                    ($d->interface ? " | Interface: {$d->interface}" : '') .
-                                    ($d->serial ? " | Serial: {$d->serial}" : '') .
-                                    ' | Motivo: ' . ($d->motivo_inactivo ?? 'N/A')
-                                );
-                            }),
 
                             $monitoresActivos->count(),
-                            $monitoresInactivos->count(),
                             $this->formatRelacion($monitoresActivos, function ($m) {
                                 return trim(
                                     ($m->marca ?? 'N/A') .
@@ -246,33 +212,14 @@ class ExportService
                                     ($m->serial ? " | Serial: {$m->serial}" : '')
                                 );
                             }),
-                            $this->formatRelacion($monitoresInactivos, function ($m) {
-                                return trim(
-                                    ($m->marca ?? 'N/A') .
-                                    ($m->escala_pulgadas ? " {$m->escala_pulgadas}\"" : '') .
-                                    ($m->interface ? " | Interface: {$m->interface}" : '') .
-                                    ($m->serial ? " | Serial: {$m->serial}" : '') .
-                                    ' | Motivo: ' . ($m->motivo_inactivo ?? 'N/A')
-                                );
-                            }),
 
                             $perifericosActivos->count(),
-                            $perifericosInactivos->count(),
                             $this->formatRelacion($perifericosActivos, function ($p) {
                                 return trim(
                                     ($p->tipo ?? 'N/A') .
                                     ($p->marca ? " {$p->marca}" : '') .
                                     ($p->interface ? " | Interface: {$p->interface}" : '') .
                                     ($p->serial ? " | Serial: {$p->serial}" : '')
-                                );
-                            }),
-                            $this->formatRelacion($perifericosInactivos, function ($p) {
-                                return trim(
-                                    ($p->tipo ?? 'N/A') .
-                                    ($p->marca ? " {$p->marca}" : '') .
-                                    ($p->interface ? " | Interface: {$p->interface}" : '') .
-                                    ($p->serial ? " | Serial: {$p->serial}" : '') .
-                                    ' | Motivo: ' . ($p->motivo_inactivo ?? 'N/A')
                                 );
                             }),
                         ]);
@@ -285,6 +232,24 @@ class ExportService
         };
 
         return [$callback, $headers];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Filtra relaciones activas
+    |--------------------------------------------------------------------------
+    | Si la relación tiene columna is_active, solo deja activos.
+    | Si no trae is_active, se conserva porque se considera dato actual.
+    */
+    private function filtrarActivos($coleccion)
+    {
+        return $coleccion->filter(function ($item) {
+            if (! isset($item->is_active)) {
+                return true;
+            }
+
+            return (int) $item->is_active === 1;
+        })->values();
     }
 
     private function formatRelacion($coleccion, callable $callback): string
