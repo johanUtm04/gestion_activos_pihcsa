@@ -39,11 +39,16 @@ Route::get('/', function () {
 */
 Route::middleware(['auth'])->group(function () {
 
+    //Seleccionar Sucursal, justo despues de login exitoso-
+    Route::get('seleccionar-sucursal', [SurcursalController::class, 'seleccionar'])->name('sucursal.seleccionar')
+    Route::post('seleccionar-sucursal', [SucursalController::class, 'guardarSeleccion'])->name('sucursal.guardarSeleccion')
+    
     /*
     |--------------------------------------------------------------------------
     | Gestión de Sucursales
     |--------------------------------------------------------------------------
     */
+    
     Route::get('/sucursales', [SucursalController::class, 'index'])
         ->name('sucursales.index');
 
@@ -58,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
     /* --- FLUJO OBLIGATORIO DE SELECCIÓN DE EMPRESA --- */
     // Solo se activará cuando se intente interactuar con el módulo de vehículos
+
     Route::get('seleccionar-empresa', [EmpresaSeleccionController::class, 'mostrarSelector'])->name('empresa.seleccionar');
     Route::post('seleccionar-empresa', [EmpresaSeleccionController::class, 'guardarSeleccion'])->name('empresa.guardar');
 
