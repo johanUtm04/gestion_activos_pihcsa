@@ -266,14 +266,15 @@ class SucursalController extends Controller
         $sucursales = Sucursal::on ('mysql')
         ->where ('estatus', 'activo')
         ->orderBy('nombre')
-        -get();
-        return view('sucursales.seleccionar', compact(sucursales));
+        ->get();
+
+        return view('sucursales.seleccionar', compact('sucursales'));
     }
 
     public function guardarSeleccion (Request $request)
     {
         $request -> validate ([
-            'sucursal' => ['required', 'sring'],
+            'sucursal' => ['required', 'string'],
         ]);
 
         $sucursal = Sucursal::on ('mysql')
