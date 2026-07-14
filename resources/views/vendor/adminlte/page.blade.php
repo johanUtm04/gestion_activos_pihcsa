@@ -54,6 +54,11 @@
             @include('adminlte::partials.sidebar.right-sidebar')
         @endif
 
+        {{-- Badge global de base activa --}}
+        @auth
+            @include('partials.db-active-badge')
+        @endauth
+
     </div>
 @stop
 
