@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Seleccionar Base | PIHCSA')
+@section('title', 'Seleccionar Empresa | PIHCSA')
 
 @section('content_header')
 @stop
@@ -17,11 +17,11 @@
                      class="mb-3">
 
                 <h3 class="font-weight-bold mb-1">
-                    Selección de Base de Datos
+                    Selección de Empresa
                 </h3>
 
                 <p class="mb-0 text-muted">
-                    Antes de continuar, selecciona el entorno operativo donde trabajarás.
+                    Antes de continuar, selecciona la empresa o entorno principal donde trabajarás.
                 </p>
             </div>
 
@@ -36,20 +36,32 @@
                         </div>
                     @endif
 
+                    @if(session('warning'))
+                        <div class="alert alert-warning">
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     <div class="form-group">
                         <label class="font-weight-bold text-uppercase text-muted">
-                            <i class="fas fa-database mr-1"></i> Base / Sucursal
+                            <i class="fas fa-building mr-1"></i> Empresa / Entorno principal
                         </label>
 
                         <select name="sucursal"
                                 class="form-control form-control-lg @error('sucursal') is-invalid @enderror"
                                 required>
-                            <option value="">Selecciona una base...</option>
+                            <option value="">Selecciona una empresa...</option>
 
                             @foreach($sucursales as $sucursal)
                                 <option value="{{ $sucursal->clave }}"
                                     {{ old('sucursal') === $sucursal->clave ? 'selected' : '' }}>
-                                    {{ $sucursal->nombre }} — {{ $sucursal->database_name }}
+                                    {{ $sucursal->nombre }}
                                 </option>
                             @endforeach
                         </select>
@@ -59,13 +71,13 @@
                         @enderror
 
                         <small class="text-muted d-block mt-2">
-                            Esta selección definirá la información visible dentro del sistema.
+                            Esta selección definirá el entorno de trabajo y la información visible dentro del sistema.
                         </small>
                     </div>
 
                     <div class="alert alert-info mt-4 mb-0">
                         <i class="fas fa-info-circle mr-1"></i>
-                        Cada base contiene información independiente de inventario, vehículos, catálogos y reportes.
+                        Dentro de cada empresa podrás administrar sus sucursales, usuarios, activos, vehículos, catálogos y reportes correspondientes.
                     </div>
                 </div>
 
