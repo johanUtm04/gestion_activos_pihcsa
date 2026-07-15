@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Selección de Empresa Activa')
+@section('title', 'Selección de Sucursal Activa')
 
 @section('css')
 <style>
@@ -63,7 +63,7 @@
             
             <div class="text-center mb-4">
                 <h5 class="section-title justify-content-center m-0">
-                    <i class="fas fa-building"></i> Control de Activos Multiempresa
+                    <i class="fas fa-building"></i> Control de Activos Multisucursal
                 </h5>
                 <p class="text-muted small mt-2">
                     Detectamos que iniciaste sesión correctamente. Por seguridad, selecciona la entidad con la que trabajarás en esta sesión.
@@ -80,7 +80,7 @@
                 @endif
 
                 <div class="form-group mb-4">
-                    <label for="empresa_id" class="label-header">Entidad o Empresa Activa</label>
+                    <label for="empresa_id" class="label-header">Entidad o Sucursal Activa</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-light border-right-0">

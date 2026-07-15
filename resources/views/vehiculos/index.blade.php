@@ -360,7 +360,7 @@
                 <i class="fas fa-user-shield mr-1"></i> Rol: {{ $rolUsuario }}
             </span>
             <span class="ops-chip ml-1">
-                <i class="fas fa-database mr-1"></i> Flota filtrada por empresa
+                <i class="fas fa-database mr-1"></i> Flota filtrada por sucursal
             </span>
         </div>
     </div>
@@ -450,7 +450,7 @@
         <a href="{{ route('vehiculos.cambiar_empresa') }}"
            class="btn btn-outline-secondary btn-sm px-3 font-weight-bold shadow-sm mb-1"
            style="border-radius: 8px;">
-            <i class="fas fa-exchange-alt mr-1"></i> Cambiar Empresa
+            <i class="fas fa-exchange-alt mr-1"></i> Cambiar Sucursal
         </a>
     </div>
 </div>

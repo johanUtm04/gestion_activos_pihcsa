@@ -1,15 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'Catálogo de Empresas')
+@section('title', 'Catálogo de Sucursales')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center px-1">
         <div>
-            <h1 class="font-weight-bold text-dark mb-1">Catálogo de Empresas</h1>
+            <h1 class="font-weight-bold text-dark mb-1">Catálogo de Sucursales</h1>
             <p class="text-muted text-sm mb-0">Control operativo e institucional de las organizaciones del sistema</p>
         </div>
         <a href="{{ route('empresas.create') }}" class="btn btn-primary btn-sm px-3 shadow-sm" style="border-radius: 8px;">
-            <i class="fas fa-plus mr-1"></i> Nueva Empresa
+            <i class="fas fa-plus mr-1"></i> Nueva Sucursal
         </a>
     </div>
 @stop
@@ -47,7 +47,7 @@
             <form action="{{ route('empresas.index') }}" method="GET">
                 <div class="row align-items-end">
                     <div class="col-md-9 form-group mb-md-0">
-                        <label for="buscar_nombre" class="text-xs text-muted font-weight-bold text-uppercase">Buscar Empresa</label>
+                        <label for="buscar_nombre" class="text-xs text-muted font-weight-bold text-uppercase">Buscar Sucursal</label>
                         <input type="text" class="form-control" id="buscar_nombre" name="nombre" value="{{ request('nombre') }}" placeholder="Ej. PIHCSA o Corporación Azul" style="border-radius: 8px;">
                     </div>
                     <div class="col-md-3">

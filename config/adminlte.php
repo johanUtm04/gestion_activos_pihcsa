@@ -441,7 +441,7 @@ return [
             ],
 
             [
-                'text'       => 'Empresas',
+                'text'       => 'Sucursales',
                 'url'        => '/empresas',
                 'icon'       => 'fas fa-building',
                 'icon_color' => 'cyan',
@@ -451,7 +451,7 @@ return [
     ],
 
     [
-        'text'        => 'Sucursales / Bases',
+        'text'        => 'Bases de datos',
         'url'         => '/sucursales',
         'icon'        => 'fas fa-code-branch',
         'icon_color'  => 'cyan',

@@ -15,7 +15,7 @@ class EnsureEmpresaIsSelected
             // Si la petición no va ya hacia las rutas del selector, redirige
             if (!$request->routeIs('empresa.seleccionar', 'empresa.guardar')) {
                 return redirect()->route('empresa.seleccionar')
-                                 ->with('error', 'Debes seleccionar una empresa para continuar.');
+                                 ->with('error', 'Debes seleccionar una sucursal para continuar.');
             }
         }
 
