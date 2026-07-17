@@ -13,13 +13,16 @@
 
 @section('content')
     <div class="container-fluid">
-        {{-- Tabla principal de depreciación --}}
+
         <div class="animated-box" style="animation-delay: 0.1s;">
             @include('depreciacion.partials._table')
         </div>
+
+        <div class="animated-box" style="animation-delay: 0.05s;">
+            @include('depreciacion.partials._concentrado_anual')
+        </div>
     </div>
 
-    {{-- Footer y Modal --}}
     @include('depreciacion.partials._footer')
     @include('depreciacion.partials._modal')
 @stop
