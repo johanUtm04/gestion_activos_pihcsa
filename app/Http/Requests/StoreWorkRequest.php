@@ -20,7 +20,6 @@ class StoreWorkRequest extends FormRequest
         ];
     }
 
-    // Aquí resolvemos lo del "OTRO_VALOR" antes de llegar al controlador
     public function getCleanData()
     {
         $data = $this->validated();

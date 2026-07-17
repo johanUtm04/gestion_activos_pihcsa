@@ -18,8 +18,10 @@ class Equipo extends Model
             $equipo->folio = (DB::table('equipos')->max('folio') ?? 0) + 1;
         });
     }
+
     use HasFactory, SoftDeletes;
 
+    //attach a custom accessor to the model's data
     protected $appends = ['semaforo'];
 
     protected $casts = [
@@ -35,32 +37,19 @@ class Equipo extends Model
         'valor_inicial','fecha_adquisicion', 'vida_util_estimada', 'motivo_inactivacion'
     ];
 
-    // ----------------------------------------------------
-    // ACCESSORS (Atributos Dinámicos)
-    // ----------------------------------------------------
-
-    /**
-     * Calcula el estado del semáforo de mantenimiento.
-     * Acceso: $equipo->semaforo
-     */
     public function getSemaforoAttribute()
     {
-        //tomamos la relacion del tipo de activo
         $tipo = $this->tipoActivo;
 
-        //ROMAMOS LA FECHA BASE, YA SEA DE ESE CAMPO EN ESPECIFICO O ALTERNARIVAS
         $fechaBase = $this->fecha_ultimo_mantenimiento 
             ?? $this->fecha_adquisicion 
             ?? $this->created_at;
 
-        //CALCULAMOS SU PROXIMA FECHA DE ACUERDO A SU COLUMNA DE FRECUENCIA_MESES de la tabla de tipo
         $proximoManto = Carbon::parse($fechaBase)->addMonths($tipo->frecuencia_meses);
 
         //
         $diasDiferencia = (int) now()->diffInDays($proximoManto, false);
 
-        //Si no viene vacio y su frecuencia es menor o igual a 0
-        // no se tomara en cuenta o bueno el objeto a la hora que se acceda sera null o datos vacios
         if (!$tipo || $tipo->frecuencia_meses <= 0) {
                 return (object) [
                     'clase' => 'badge-secondary', 
@@ -188,8 +177,6 @@ class Equipo extends Model
         //Manejo de Inactivos:
         ->when(($filtros['filter'] ?? null) == 'inactivos', fn($q) => $q->onlyTrashed());
     }
-
-
 
     public function getEstadoMantenimientoAttribute()
     {
