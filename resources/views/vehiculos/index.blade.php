@@ -712,18 +712,6 @@
 
                                 <td class="text-center no-print" onclick="event.stopPropagation();">
                                     <div class="btn-group btn-group-actions shadow-sm">
-                                        <form action="{{ route('vehiculos.registrar_mantenimiento', $vehiculo) }}"
-                                            method="POST"
-                                            class="d-inline"
-                                            onsubmit="event.stopPropagation(); return confirm('¿Registrar mantenimiento con la fecha de hoy para este vehículo?');">
-                                            @csrf
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-maintenance"
-                                                    title="Registrar mantenimiento de hoy"
-                                                    onclick="event.stopPropagation();">
-                                                <i class="fas fa-tools"></i>
-                                            </button>
-                                        </form>
                                         <a href="{{ route('vehiculos.edit', $vehiculo) }}"
                                            class="btn btn-sm btn-edit"
                                            title="Editar vehículo"
