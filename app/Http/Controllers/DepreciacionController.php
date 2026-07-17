@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{Equipo, Ubicacion, User, Marca, TipoActivo, Tasa, Inpc};
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Services\DepreciacionReportService;
 use Carbon\Carbon;
 
 class DepreciacionController extends Controller
@@ -155,5 +156,20 @@ class DepreciacionController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error en el servidor: ' . $e->getMessage()], 500);
         }
+    }
+
+
+    public function exportarReporteAnual(Request $request, DepreciacionReportService $reportService)
+    {
+        [$callback, $headers] = $reportService->exportarDetalleAnualCsv($request->all());
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportarReporteConcentrado(Request $request, DepreciacionReportService $reportService)
+    {
+        [$callback, $headers] = $reportService->exportarConcentradoAnualCsv($request->all());
+
+        return response()->stream($callback, 200, $headers);
     }
 }

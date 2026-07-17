@@ -226,6 +226,14 @@ Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
     Route::get('/depreciacion', [DepreciacionController::class, 'index'])
         ->name('depreciacion.index');
 
+    Route::get('/depreciacion', [DepreciacionController::class, 'index'])->name('depreciacion.index');
+
+    Route::get('/depreciacion/reporte-anual', [DepreciacionController::class, 'exportarReporteAnual'])
+    ->name('depreciacion.reporte.anual');
+
+    Route::get('/depreciacion/reporte-concentrado', [DepreciacionController::class, 'exportarReporteConcentrado'])
+        ->name('depreciacion.reporte.concentrado');
+        
     Route::get('/reporte-general-equipos', [EquipoController::class, 'exportarGeneral'])
         ->name('equipos.reporte');
     
