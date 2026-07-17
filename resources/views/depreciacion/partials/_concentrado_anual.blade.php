@@ -1,4 +1,4 @@
-<div class="card card-outline card-info shadow-sm mb-3" id="cardConcentradoAnual">
+<div class="card card-outline card-secondary shadow-sm mb-3" id="cardConcentradoAnual">
     <div class="card-header d-flex justify-content-between align-items-center"
          style="cursor: pointer;"
          id="toggleConcentradoAnual">
@@ -14,7 +14,7 @@
         </div>
 
         <button type="button"
-                class="btn btn-sm btn-outline-info"
+                class="btn btn-sm btn-outline-secondary"
                 id="btnToggleConcentrado">
             <i class="fas fa-chevron-down mr-1"></i>
             Mostrar
@@ -45,7 +45,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <span class="badge badge-info">
+                                        <span class="badge badge-secondary">
                                             {{ $fila['activos'] }}
                                         </span>
                                     </td>
@@ -94,7 +94,7 @@
                 </div>
             @else
                 <div class="p-4 text-center text-muted">
-                    <i class="fas fa-info-circle fa-2x mb-2"></i>
+                    <i class="fas fa-secondary-circle fa-2x mb-2"></i>
                     <p class="mb-0">
                         No hay información suficiente para calcular el concentrado anual.
                     </p>
