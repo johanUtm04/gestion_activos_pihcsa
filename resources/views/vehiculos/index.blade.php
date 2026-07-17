@@ -13,7 +13,6 @@
         --fleet-muted: #6c757d;
     }
 
-    /* --- Layout principal --- */
     .inventory-wrapper {
         display: flex;
         gap: 20px;
@@ -43,7 +42,6 @@
         transform: translateX(0);
     }
 
-    /* --- Header operativo --- */
     .ops-chip {
         display: inline-flex;
         align-items: center;
@@ -86,7 +84,6 @@
         margin-top: 4px;
     }
 
-    /* --- Panel de búsqueda --- */
     .search-panel-container {
         border-radius: 12px;
         overflow: hidden;
@@ -96,7 +93,6 @@
         background: linear-gradient(90deg, rgba(23, 162, 184, 0.08), rgba(255,255,255,1));
     }
 
-    /* --- Tabla premium --- */
     .table-assets thead th {
         position: sticky;
         top: 0;
@@ -162,7 +158,6 @@
         box-shadow: inset 4px 0 0 #6c757d;
     }
 
-    /* --- Badges operativos --- */
     .badge-status {
         font-size: 0.70rem;
         font-weight: 800;
@@ -193,7 +188,6 @@
         border: 1px solid #bcf0da;
     }
 
-    /* --- Acciones --- */
     .btn-group-actions .btn {
         border: 1px solid var(--fleet-border);
         background: #ffffff;
@@ -206,11 +200,21 @@
         transform: translateY(-1px);
     }
 
-    .btn-group-actions .btn-edit:hover { color: #ffc107; border-color: #ffc107; }
-    .btn-group-actions .btn-view:hover { color: var(--fleet-primary); border-color: var(--fleet-primary); }
-    .btn-group-actions .btn-delete:hover { color: #dc3545; border-color: #dc3545; }
+    .btn-group-actions .btn-edit:hover {
+        color: #ffc107;
+        border-color: #ffc107;
+    }
 
-    /* --- Sidebar / Command center --- */
+    .btn-group-actions .btn-view:hover {
+        color: var(--fleet-primary);
+        border-color: var(--fleet-primary);
+    }
+
+    .btn-group-actions .btn-delete:hover {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
     .asset-orb {
         width: 62px;
         height: 62px;
@@ -337,6 +341,50 @@
             margin-top: 20px;
         }
     }
+
+    @media print {
+        .main-sidebar,
+        .main-header,
+        .content-header .btn,
+        .search-panel-container,
+        .preview-sidebar,
+        .btn-group-actions,
+        .card-footer,
+        .no-print {
+            display: none !important;
+        }
+
+        .content-wrapper {
+            margin-left: 0 !important;
+        }
+
+        .inventory-wrapper {
+            display: block !important;
+        }
+
+        .table-container {
+            width: 100% !important;
+        }
+
+        .table-responsive {
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #dee2e6 !important;
+        }
+
+        .table-assets tbody tr {
+            cursor: default !important;
+        }
+
+        .table-assets tbody tr:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+    }
 </style>
 @stop
 
@@ -348,6 +396,11 @@
     $criticosPagina = $vehiculosCollection->filter(fn($item) => $item->estatus_mantenimiento === 'rojo')->count();
     $empresaContexto = App\Models\Empresa::find(session('empresa_id'));
     $rolUsuario = strtoupper(auth()->user()->rol ?? auth()->user()->role ?? 'USUARIO');
+
+    $mostrandoInactivos = request('estatus') === '0';
+    $urlToggleEstatus = $mostrandoInactivos
+        ? route('vehiculos.index', array_merge(request()->except(['page', 'estatus']), ['estatus' => 1]))
+        : route('vehiculos.index', array_merge(request()->except('page'), ['estatus' => 0]));
 @endphp
 
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
@@ -365,17 +418,18 @@
         </div>
     </div>
 
-    <div class="d-flex align-items-center flex-wrap justify-content-end">
-        <a href="{{ route('equipos.index') }}"
-           class="btn btn-sm btn-outline-info font-weight-bold mr-1 shadow-sm mb-1"
-           title="Ver Inventario de Equipos">
-            <i class="fas fa-boxes mr-1"></i> Equipos
+    <div class="d-flex align-items-center flex-wrap justify-content-end no-print">
+        <a href="{{ $urlToggleEstatus }}"
+           class="btn btn-sm {{ $mostrandoInactivos ? 'btn-outline-success' : 'btn-outline-danger' }} font-weight-bold mr-1 shadow-sm mb-1"
+           title="{{ $mostrandoInactivos ? 'Mostrar vehículos activos' : 'Mostrar vehículos inactivos' }}">
+            <i class="fas {{ $mostrandoInactivos ? 'fa-check-circle' : 'fa-ban' }} mr-1"></i>
+            {{ $mostrandoInactivos ? 'Activos' : 'Inactivos' }}
         </a>
 
-        <a href="{{ route('vehiculos.index', array_merge(request()->except('page'), ['estatus' => 0])) }}"
-           class="btn btn-sm btn-outline-danger font-weight-bold mr-1 shadow-sm mb-1"
-           title="Mostrar vehículos inactivos">
-            <i class="fas fa-ban mr-1"></i> Inactivos
+        <a href="{{ route('vehiculos.index') }}"
+           class="btn btn-sm btn-outline-secondary font-weight-bold mr-1 shadow-sm mb-1"
+           title="Limpiar filtros">
+            <i class="fas fa-undo mr-1"></i> Limpiar
         </a>
 
         <button type="button"
@@ -388,7 +442,8 @@
         <button type="button"
                 class="btn btn-sm btn-primary font-weight-bold shadow-sm px-3 mb-1"
                 data-toggle="modal"
-                data-target="#modalCrearVehiculo">
+                data-target="#modalCrearVehiculo"
+                title="Registrar nuevo vehículo">
             <i class="fas fa-plus mr-1"></i> Nuevo Vehículo
         </button>
     </div>
@@ -417,7 +472,6 @@
     </div>
 @endif
 
-{{-- Contexto y KPIs --}}
 <div class="d-flex border-0 shadow-sm p-3 bg-white mb-3 align-items-center justify-content-between flex-wrap" style="border-radius: 12px;">
     <div class="d-flex align-items-center mb-2 mb-md-0">
         <div class="rounded-circle bg-light text-primary d-flex align-items-center justify-content-center mr-3 shadow-sm"
@@ -429,12 +483,12 @@
                 Filtro Operativo de Contexto
             </span>
             <strong class="text-uppercase text-dark" style="font-size: 1.05rem;">
-                {{ $empresaContexto->nombre ?? 'Sin Empresa Asignada' }}
+                {{ $empresaContexto->nombre ?? 'Sin Sucursal Asignada' }}
             </strong>
         </div>
     </div>
 
-    <div class="d-flex align-items-center flex-wrap justify-content-end">
+    <div class="d-flex align-items-center flex-wrap justify-content-end no-print">
         <div class="kpi-card mr-2 mb-1">
             <span class="kpi-label">Total</span>
             <span class="kpi-value">{{ $totalVehiculos }}</span>
@@ -447,15 +501,16 @@
             <span class="kpi-label">Críticos</span>
             <span class="kpi-value text-danger">{{ $criticosPagina }}</span>
         </div>
+
         <a href="{{ route('vehiculos.cambiar_empresa') }}"
            class="btn btn-outline-secondary btn-sm px-3 font-weight-bold shadow-sm mb-1"
-           style="border-radius: 8px;">
+           style="border-radius: 8px;"
+           title="Cambiar sucursal operativa de vehículos">
             <i class="fas fa-exchange-alt mr-1"></i> Cambiar Sucursal
         </a>
     </div>
 </div>
 
-{{-- Panel de búsqueda avanzada --}}
 <div class="card card-outline card-info shadow-sm mb-3 search-panel-container {{ request()->anyFilled(['tipo_vehiculo_id', 'marca_id', 'ubicacion_id', 'estatus', 'buscar']) ? '' : 'collapsed-card' }}">
     <div class="card-header p-2 d-flex align-items-center search-header" data-card-widget="collapse" style="cursor: pointer;">
         <h3 class="card-title text-info font-weight-bold small mb-0 ml-2" style="letter-spacing: 0.5px;">
@@ -539,7 +594,6 @@
 </div>
 
 <div class="inventory-wrapper">
-    {{-- Tabla principal --}}
     <div class="card card-outline card-info shadow-sm table-container">
         <div class="card-body p-0">
             <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
@@ -549,8 +603,8 @@
                             <th style="width: 60px" class="text-center">ID</th>
                             <th>Vehículo / Identificación</th>
                             <th>Asignación</th>
-                            <th class="text-center" style="width: 155px;">Condición</th>
-                            <th class="text-center" style="width: 135px;">Acciones</th>
+                            <th class="text-center" style="width: 190px;">Condición</th>
+                            <th class="text-center no-print" style="width: 135px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -583,6 +637,9 @@
                                 data-doc-poliza="{{ $doc->no_poliza_seguro ?? 'N/D' }}"
                                 data-doc-vigencia="{{ $vigenciaSeguro }}"
                                 data-doc-tarjeta="{{ $doc->tarjeta_circulacion ?? 'N/D' }}"
+                                data-ultimo-mantenimiento="{{ $vehiculo->fecha_ultimo_mantenimiento ? \Carbon\Carbon::parse($vehiculo->fecha_ultimo_mantenimiento)->format('d/m/Y') : 'Sin registro' }}"
+                                data-proximo-mantenimiento="{{ $vehiculo->proximo_mantenimiento ? \Carbon\Carbon::parse($vehiculo->proximo_mantenimiento)->format('d/m/Y') : 'N/D' }}"
+                                data-dias-mantenimiento="{{ $vehiculo->dias_para_mantenimiento ?? 'N/D' }}"
                                 data-indicadores='@json($vehiculo->indicadores_operativos ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)'>
                                 <td class="text-center font-weight-bold text-muted" style="font-size: 0.85rem;">
                                     #{{ $vehiculo->id }}
@@ -597,11 +654,13 @@
                                         {{ $vehiculo->tipoVehiculo->nombre ?? 'Vehículo' }}
                                         <span class="text-info font-weight-normal">{{ $vehiculo->marca->nombre ?? 'N/A' }}</span>
                                     </div>
+
                                     <span class="secondary-data">
                                         <i class="fas fa-layer-group"></i> Mod: <strong>{{ $vehiculo->modelo }}</strong>
                                         <span class="mx-1 text-muted">|</span>
                                         <i class="fas fa-credit-card"></i> Placas: <strong class="text-secondary">{{ $vehiculo->placas ?? 'S/P' }}</strong>
                                     </span>
+
                                     <span class="secondary-data">
                                         <i class="fas fa-fingerprint"></i> Serie: <strong>{{ $vehiculo->no_serie ?? 'N/D' }}</strong>
                                     </span>
@@ -611,9 +670,11 @@
                                     <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">
                                         {{ $vehiculo->usuario->name ?? 'Sin asignar' }}
                                     </div>
+
                                     <span class="secondary-data">
                                         <i class="fas fa-map-marker-alt"></i> {{ $vehiculo->ubicacion->nombre ?? 'Sin ubicación' }}
                                     </span>
+
                                     @if($vehiculo->usuario)
                                         <span class="secondary-data">
                                             <i class="fas fa-envelope"></i> {{ $vehiculo->usuario->email }}
@@ -629,16 +690,43 @@
                                     <span class="badge-status {{ $estatusBadge }}">
                                         <i class="fas {{ $estatusIcon }} mr-1"></i> {{ $estatusLabel }}
                                     </span>
+
                                     <span class="secondary-data mt-1">
                                         {{ $vehiculo->is_active ? 'Operativo' : 'Inactivo' }}
                                     </span>
+
+                                    <span class="secondary-data mt-1">
+                                        <i class="fas fa-tools"></i>
+                                        {{ $vehiculo->fecha_ultimo_mantenimiento
+                                            ? 'Último servicio: ' . \Carbon\Carbon::parse($vehiculo->fecha_ultimo_mantenimiento)->format('d/m/Y')
+                                            : 'Sin servicio registrado' }}
+                                    </span>
+
+                                    <span class="secondary-data">
+                                        <i class="fas fa-calendar-check"></i>
+                                        {{ $vehiculo->proximo_mantenimiento
+                                            ? 'Próximo servicio: ' . \Carbon\Carbon::parse($vehiculo->proximo_mantenimiento)->format('d/m/Y')
+                                            : 'Próximo servicio: N/D' }}
+                                    </span>
                                 </td>
 
-                                <td class="text-center" onclick="event.stopPropagation();">
+                                <td class="text-center no-print" onclick="event.stopPropagation();">
                                     <div class="btn-group btn-group-actions shadow-sm">
+                                        <form action="{{ route('vehiculos.registrar_mantenimiento', $vehiculo) }}"
+                                            method="POST"
+                                            class="d-inline"
+                                            onsubmit="event.stopPropagation(); return confirm('¿Registrar mantenimiento con la fecha de hoy para este vehículo?');">
+                                            @csrf
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-maintenance"
+                                                    title="Registrar mantenimiento de hoy"
+                                                    onclick="event.stopPropagation();">
+                                                <i class="fas fa-tools"></i>
+                                            </button>
+                                        </form>
                                         <a href="{{ route('vehiculos.edit', $vehiculo) }}"
                                            class="btn btn-sm btn-edit"
-                                           title="Editar parámetros"
+                                           title="Editar vehículo"
                                            onclick="event.stopPropagation();">
                                             <i class="fas fa-pen"></i>
                                         </a>
@@ -656,7 +744,7 @@
                                               onsubmit="event.stopPropagation(); return confirm('¿Seguro que deseas dar de baja este vehículo del sistema?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-delete" title="Inactivar / eliminar activo">
+                                            <button type="submit" class="btn btn-sm btn-delete" title="Inactivar / eliminar vehículo">
                                                 <i class="fas fa-ban"></i>
                                             </button>
                                         </form>
@@ -705,11 +793,10 @@
         </div>
     </div>
 
-    {{-- Panel lateral pro --}}
     <div class="card card-outline card-info shadow-sm preview-sidebar" id="sidebarInspeccion">
         <div class="card-header p-3 d-flex align-items-center bg-light">
             <h3 class="card-title text-info font-weight-bold text-sm mb-0">
-                <i class="fas fa-satellite-dish mr-1 text-xs"></i> COMMAND CENTER DEL ACTIVO
+                <i class="fas fa-satellite-dish mr-1 text-xs"></i> COMMAND CENTER DEL VEHÍCULO
             </h3>
             <button type="button" class="close ml-auto" id="closeSidebar" style="outline:none; font-size: 1.2rem;">
                 &times;
@@ -797,6 +884,26 @@
 
             <div class="mb-3">
                 <span class="text-xs text-muted font-weight-bold text-uppercase d-block mb-2">
+                    Mantenimiento preventivo
+                </span>
+                <div class="data-panel">
+                    <div class="data-row">
+                        <span>Último servicio:</span>
+                        <strong id="sideUltimoMantenimiento">---</strong>
+                    </div>
+                    <div class="data-row">
+                        <span>Próximo servicio:</span>
+                        <strong id="sideProximoMantenimiento">---</strong>
+                    </div>
+                    <div class="data-row">
+                        <span>Días restantes:</span>
+                        <strong id="sideDiasMantenimiento">---</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <span class="text-xs text-muted font-weight-bold text-uppercase d-block mb-2">
                     Matriz de condición operativa
                 </span>
                 <div id="sideIndicadores">
@@ -848,7 +955,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sidebar = document.getElementById('sidebarInspeccion');
     const closeSidebarBtn = document.getElementById('closeSidebar');
-    const table = document.getElementById('tablaVehiculos');
     const rows = document.querySelectorAll('#tablaVehiculos tbody tr');
 
     rows.forEach((row, index) => {
@@ -885,6 +991,9 @@ document.addEventListener('DOMContentLoaded', function () {
             setText('sideSerie', dataset.serie || 'N/D');
             setText('sideMotor', dataset.motor || 'N/D');
             setText('sideCombustible', dataset.combustible || 'N/D');
+            setText('sideUltimoMantenimiento', dataset.ultimoMantenimiento || 'Sin registro');
+            setText('sideProximoMantenimiento', dataset.proximoMantenimiento || 'N/D');
+            setText('sideDiasMantenimiento', dataset.diasMantenimiento !== 'N/D' ? `${dataset.diasMantenimiento} días` : 'N/D');
             setText('sidePoliza', dataset.docPoliza || 'N/D');
             setText('sideVigencia', dataset.docVigencia || 'N/D');
             setText('sideTarjeta', dataset.docTarjeta || 'N/D');
@@ -893,13 +1002,18 @@ document.addEventListener('DOMContentLoaded', function () {
             renderHealth(scoreGlobal, indicadores.length);
             renderIndicadores(indicadores);
 
-            sidebar.classList.add('active');
+            if (sidebar) {
+                sidebar.classList.add('active');
+            }
         });
     });
 
     if (closeSidebarBtn) {
         closeSidebarBtn.addEventListener('click', function () {
-            sidebar.classList.remove('active');
+            if (sidebar) {
+                sidebar.classList.remove('active');
+            }
+
             rows.forEach(r => r.classList.remove('selected-row'));
         });
     }
@@ -973,7 +1087,7 @@ document.addEventListener('DOMContentLoaded', function () {
             container.innerHTML = `
                 <div class="text-center text-muted py-3">
                     <i class="fas fa-exclamation-circle fa-2x mb-2"></i>
-                    <p class="small mb-0">No hay indicadores disponibles para este activo.</p>
+                    <p class="small mb-0">No hay indicadores disponibles para este vehículo.</p>
                 </div>
             `;
             return;
@@ -1061,8 +1175,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.jQuery && document.getElementById('modalCrearVehiculo')) {
         $('#modalCrearVehiculo').on('show.bs.modal', function () {
             prefetchCatalogos(() => {
-                cargarOpciones('tipo_vehiculo_id', dataCatalogos.tipos, 'nombre');
-                cargarOpciones('marca_id', dataCatalogos.marcas, 'nombre');
+                cargarOpciones('tipo_vehiculo_id', dataCatalogos.tipos || [], 'nombre');
+                cargarOpciones('marca_id', dataCatalogos.marcas || [], 'nombre');
                 cargarOpciones('usuario_id', dataCatalogos.usuarios || [], 'name');
                 cargarOpciones('ubicacion_id', dataCatalogos.ubicaciones || [], 'nombre');
             });

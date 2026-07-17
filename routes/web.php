@@ -119,6 +119,9 @@ Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
             'vehiculos' => 'vehiculo',
         ]);
 
+        Route::post('/vehiculos/{vehiculo}/registrar-mantenimiento', [VehiculoController::class, 'registrarMantenimiento'])
+            ->name('vehiculos.registrar_mantenimiento');
+            
         Route::resource('tipo_vehiculos', CatTipoVehiculoController::class)
             ->names('tipo_vehiculos');
     });

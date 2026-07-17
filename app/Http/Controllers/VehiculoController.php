@@ -192,8 +192,14 @@ public function index(Request $request)
      */
     public function destroy(Vehiculo $vehiculo)
     {
-        $vehiculo->delete();
-        return redirect()->route('vehiculos.index')->with('success', 'Vehículo eliminado del inventario.');
+        $vehiculo->update([
+            'is_active' => false,
+            'motivo_inactivacion' => 'Baja operativa desde inventario de vehículos.',
+        ]);
+
+        return redirect()
+            ->route('vehiculos.index')
+            ->with('success', 'Vehículo enviado a inactivos correctamente.');
     }
 
     public function edit(Vehiculo $vehiculo)
@@ -409,5 +415,15 @@ private function indicadorVidaUtil(): array
     ];
 }
     
+    public function registrarMantenimiento(Vehiculo $vehiculo)
+    {
+        $vehiculo->update([
+            'fecha_ultimo_mantenimiento' => now()->toDateString(),
+        ]);
+
+        return redirect()
+            ->route('vehiculos.index')
+            ->with('success', 'Mantenimiento registrado correctamente para el vehículo.');
+    }
 
 }

@@ -242,61 +242,6 @@
             </div>
         </div>
 
-        {{-- Documentación --}}
-        <div class="card card-outline card-success shadow mt-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title">
-                    <i class="fas fa-file-invoice mr-2"></i> Documentación y Seguro
-                </h3>
-            </div>
-
-            <div class="card-body p-0">
-                @if($vehiculo->documentacion)
-                    <table class="table table-sm table-striped my-0">
-                        <tbody>
-                            <tr>
-                                <td class="font-weight-bold" style="width: 40%;">No. Póliza de Seguro:</td>
-                                <td><code>{{ $vehiculo->documentacion->no_poliza_seguro ?: 'N/A' }}</code></td>
-                            </tr>
-
-                            <tr>
-                                <td class="font-weight-bold">Vigencia del Seguro:</td>
-                                <td>
-                                    {{ $vehiculo->documentacion->vigencia_seguro ? $formatoFecha($vehiculo->documentacion->vigencia_seguro) : 'N/A' }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="font-weight-bold">Tarjeta de Circulación:</td>
-                                <td><code>{{ $vehiculo->documentacion->tarjeta_circulacion ?: 'N/A' }}</code></td>
-                            </tr>
-
-                            @if(isset($vehiculo->documentacion->verificacion))
-                                <tr>
-                                    <td class="font-weight-bold">Verificación:</td>
-                                    <td><code>{{ $vehiculo->documentacion->verificacion ?: 'N/A' }}</code></td>
-                                </tr>
-                            @endif
-
-                            @if(isset($vehiculo->documentacion->observaciones))
-                                <tr>
-                                    <td class="font-weight-bold">Observaciones:</td>
-                                    <td>{{ $vehiculo->documentacion->observaciones ?: 'N/A' }}</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                @else
-                    <div class="p-3 text-center text-muted">
-                        <p class="mb-2">
-                            <i class="fas fa-folder-open fa-2x text-secondary"></i>
-                        </p>
-                        <span>No se ha registrado la documentación legal de este vehículo.</span>
-                    </div>
-                @endif
-            </div>
-        </div>
-
         {{-- Datos del Sistema --}}
         <div class="card card-outline card-secondary shadow mt-3">
             <div class="card-header">
