@@ -92,6 +92,11 @@ class Vehiculo extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function mantenimientos()
+    {
+        return $this->hasMany(MantenimientoVehiculo::class, 'vehiculo_id')->orderBy('fecha_evento', 'desc');
+    }
+
     public function getProximoMantenimientoAttribute()
     {
         if (
