@@ -50,7 +50,21 @@
         'color' => '#495057',
         'icon' => 'fas fa-building',
     ];
+
+    // Saludo amigable dinámico por horario
+    $hora = date('H');
+    if ($hora >= 5 && $hora < 12) {
+        $saludo = '¡Buen día';
+    } elseif ($hora >= 12 && $hora < 19) {
+        $saludo = '¡Buenas tardes';
+    } else {
+        $saludo = '¡Buenas noches';
+    }
+    
+    // Obtener primer nombre del usuario
+    $primerNombre = explode(' ', trim(auth()->user()->name ?? 'Usuario'))[0];
 @endphp
+
 <div class="branch-header d-flex justify-content-between align-items-center mb-2 py-2 px-3"
      style="
         background: {{ $styleSucursal['bg'] }};
@@ -60,6 +74,11 @@
      ">
 
     <div>
+        {{-- Mensaje de bienvenida amigable --}}
+        <span class="text-muted d-block mb-0" style="font-size: 0.85rem; font-weight: 500; letter-spacing: 0.3px;">
+            {{ $saludo }}, <strong style="color: {{ $styleSucursal['color'] }};">{{ $primerNombre }}</strong>. Qué bueno verte de nuevo.
+        </span>
+
         <h4 class="text-dark font-weight-bold mb-1">
             <i class="fas fa-boxes mr-2" style="color: {{ $styleSucursal['color'] }};"></i>
             Inventario de Equipos
