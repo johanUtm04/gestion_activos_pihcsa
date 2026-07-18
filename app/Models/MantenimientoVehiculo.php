@@ -23,11 +23,11 @@ class MantenimientoVehiculo extends Model
 
     public function vehiculo()
     {
-        return $table->belongsTo(Vehiculo::class, 'vehiculo_id');
+        return $this->belongsTo(Vehiculo::class, 'vehiculo_id');
     }
 
     public function usuario()
     {
-        return $table->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 }

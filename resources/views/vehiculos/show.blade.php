@@ -162,7 +162,7 @@
                         <tr>
                             <td class="font-weight-bold">Último Mantenimiento:</td>
                             <td>
-                                {{ $vehiculo->fecha_ultimo_mantenimiento ? $formatoFecha($vehiculo->fecha_ultimo_mantenimiento) : 'Ninguno registrado' }}
+                                {{ $vehiculo->mantenimientos->first() ? $formatoFecha($vehiculo->mantenimientos->first()->fecha_evento) : 'Ninguno registrado' }}
                             </td>
                         </tr>
                     </tbody>
@@ -280,5 +280,79 @@
         </div>
     </div>
 
+</div>
+
+{{-- NUEVA SECCIÓN: HISTORIAL DE MANTENIMIENTOS Y BITÁCORA --}}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card card-outline card-teal shadow">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title font-weight-bold text-teal">
+                    <i class="fas fa-history mr-2"></i> Historial de Mantenimientos y Eventos
+                </h3>
+                <div class="card-tools">
+                    <a href="{{ route('vehiculos.addwork', $vehiculo) }}" class="btn btn-sm btn-success font-weight-bold">
+                        <i class="fas fa-plus-circle mr-1"></i> Registrar Evento
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card-body p-0">
+                @if($vehiculo->mantenimientos->isEmpty())
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-folder-open fa-3x mb-3 text-secondary"></i>
+                        <p class="mb-0 font-weight-bold">No se han registrado eventos o mantenimientos para esta unidad todavía.</p>
+                    </div>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped my-0 align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th style="width: 12%">Fecha</th>
+                                    <th style="width: 20%">Tipo de Evento</th>
+                                    <th style="width: 15%">Kilometraje</th>
+                                    <th>Contexto / Descripción</th>
+                                    <th style="width: 12%">Costo</th>
+                                    <th style="width: 15%">Registrado por</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($vehiculo->mantenimientos as $mantenimiento)
+                                    <tr>
+                                        <td class="font-weight-bold text-secondary">
+                                            {{ $formatoFecha($mantenimiento->fecha_evento) }}
+                                        </td>
+                                        <td>
+                                            @if(str_contains(strtolower($mantenimiento->tipo_evento), 'preventivo'))
+                                                <span class="badge badge-success px-2 py-1"><i class="fas fa-shield-alt mr-1"></i> {{ $mantenimiento->tipo_evento }}</span>
+                                            @elseif(str_contains(strtolower($mantenimiento->tipo_evento), 'correctivo'))
+                                                <span class="badge badge-danger px-2 py-1"><i class="fas fa-exclamation-triangle mr-1"></i> {{ $mantenimiento->tipo_evento }}</span>
+                                            @elseif(str_contains(strtolower($mantenimiento->tipo_evento), 'combustible'))
+                                                <span class="badge badge-info px-2 py-1"><i class="fas fa-gas-pump mr-1"></i> {{ $mantenimiento->tipo_evento }}</span>
+                                            @else
+                                                <span class="badge badge-secondary px-2 py-1"><i class="fas fa-wrench mr-1"></i> {{ $mantenimiento->tipo_evento }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="font-weight-bold">{{ number_format($mantenimiento->kilometraje) }}</span> <small class="text-muted">KM</small>
+                                        </td>
+                                        <td class="text-wrap" style="max-width: 300px;">
+                                            {{ $mantenimiento->contexto }}
+                                        </td>
+                                        <td class="font-weight-bold text-dark">
+                                            {{ $mantenimiento->costo ? $formatoDinero($mantenimiento->costo) : '—' }}
+                                        </td>
+                                        <td>
+                                            <small class="text-muted"><i class="fas fa-user mr-1"></i> {{ $mantenimiento->usuario->name ?? 'Sistema' }}</small>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 @stop
