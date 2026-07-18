@@ -7,6 +7,7 @@ use App\Models\CatTipoVehiculo;
 use App\Models\Marca;
 use App\Models\Ubicacion;
 use App\Models\User;
+use App\Models\MantenimientoVehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -428,16 +429,41 @@ private function indicadorVidaUtil(): array
 
     public function indexaddwork(Vehiculo $vehiculo)
     {
-        // Retorna la vista pasando el objeto del vehículo específico
         return view('vehiculos.addworkVehicle', compact('vehiculo'));
     }
 
     public function saveWork(Request $request, Vehiculo $vehiculo)
-    {
-        // Aquí validaremos y guardaremos los datos en el siguiente paso
-        
-        return redirect()->route('vehiculos.index')
-            ->with('success', 'El registro de mantenimiento se ha guardado correctamente.');
+{
+    $validated = $request->validate([
+        'tipo_evento'       => 'required|string|max:255',
+        'tipo_evento_input' => 'nullable|string|max:255',
+        'usuario_id'        => 'required|exists:users,id',
+        'kilometraje'       => 'required|integer|min:0',
+        'fecha_evento'      => 'required|date',
+        'contexto'          => 'required|string',
+        'costo'             => 'nullable|numeric|min:0',
+    ]);
+
+    $tipoEventoFinal = $validated['tipo_evento'];
+    if ($tipoEventoFinal === 'OTRO_VALOR' && !empty($validated['tipo_evento_input'])) {
+        $tipoEventoFinal = $validated['tipo_evento_input'];
     }
+
+    MantenimientoVehiculo::create([
+        'vehiculo_id'  => $vehiculo->id,
+        'usuario_id'   => $validated['usuario_id'],
+        'tipo_evento'  => $tipoEventoFinal,
+        'kilometraje'  => $validated['kilometraje'],
+        'fecha_evento' => $validated['fecha_evento'],
+        'contexto'     => $validated['contexto'],
+        'costo'        => $validated['costo'],
+    ]);
+
+    // 4. Opcional: Actualizar el kilometraje
+    // $vehiculo->update(['kilometraje_actual' => $validated['kilometraje']]);
+
+    return redirect()->route('vehiculos.index')
+        ->with('success', 'Mantenimiento registrado correctamente en la bitácora del vehículo.');
+}
 
 }
