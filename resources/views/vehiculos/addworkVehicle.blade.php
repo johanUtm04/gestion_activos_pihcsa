@@ -1,76 +1,172 @@
 @extends('adminlte::page')
 
-@section('title', 'Mantenimiento de Activo')
+@section('title', 'Mantenimiento de Vehículo')
 
+@section('css')
+<style>
+    .fieldset-group {
+        border: 1px solid #ced4da;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: .25rem;
+        background-color: #ffffff;
+    }
+
+    .fieldset-group legend {
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    .form-group label {
+        font-weight: 600;
+    }
+
+    .custom-input { display: none; margin-top: 10px; }
+</style>
+@stop
 
 @section('content_header')
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1><i class="fas fa-tools mr-2 text-warning"></i>Bitácora de Mantenimiento</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('vehiculos.index') }}">Inventario</a></li>
-                    <li class="breadcrumb-item active">Añadir Trabajo</li>
-                </ol>
-            </div>
-        </div>
+<div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="{{ route('vehiculos.index') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left"></i> Volver al inventario
+        </a>
     </div>
+</div>
 @stop
 
 @section('content')
 <div class="container-fluid">
-    <div class="row">
-        <!-- Tarjeta de Información de la Unidad -->
-        <div class="col-md-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Datos del Vehículo</h3>
+                    <h3 class="card-title font-weight-bold">
+                        <i class="fas fa-tools"></i>
+                        Mantenimiento de Vehículo: {{ $vehiculo->marca->nombre ?? '[Vehículo]' }} | Placas: {{ $vehiculo->placas ?? 'S/P' }}
+                    </h3>
                 </div>
-                <div class="card-body box-profile">
-                    <div class="text-center mb-3">
-                        <i class="fas fa-car fa-3x text-secondary"></i>
+                
+                <form method="POST" action="{{ route('vehiculos.addwork.store', $vehiculo) }}">
+                    @csrf
+
+                    <div class="card-body">
+                        <fieldset class="fieldset-group">
+                            <legend>
+                                <i class="fas fa-clipboard-list"></i>
+                                Detalle del evento operativo
+                            </legend>
+
+                            <div class="form-group">
+                                <label>Tipo de evento</label>
+                                <select class="form-control" id="tipo_evento" name="tipo_evento" required>
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Mantenimiento preventivo">Mantenimiento preventivo (Afinación, Aceite)</option>
+                                    <option value="Mantenimiento correctivo">Mantenimiento correctivo (Reparación)</option>
+                                    <option value="Carga de combustible">Carga de combustible</option>
+                                    <option value="Verificación / Seguro">Trámite (Verificación / Seguro)</option>
+                                    <option value="OTRO_VALOR">-- Otro evento (Escribir) --</option>
+                                </select>
+                                <input type="text" name="tipo_evento_input" id="tipo_evento_input" 
+                                       class="form-control custom-input" 
+                                       placeholder="Ej. Cambio de neumáticos, Ajuste de frenos..."
+                                       value="{{ old('tipo_evento_input') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Usuario que realiza la acción</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user-check"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{ auth()->user()->name }}" disabled>
+                                    <input type="hidden" name="usuario_id" value="{{ auth()->user()->id }}">
+                                </div>
+                                <small class="text-muted">El registro quedará vinculado a tu sesión actual.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kilometraje">Kilometraje Actual</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-tachometer-alt"></i></span>
+                                    </div>
+                                    <input type="number" min="0" class="form-control" name="kilometraje" placeholder="Ej. 85400" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">KM</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Fecha del evento</label>
+                                <input type="date" class="form-control" name="fecha_evento" value="{{ date('Y-m-d') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Contexto del evento / Notas detalladas</label>
+                                <textarea class="form-control" rows="4" name="contexto"
+                                          placeholder="Descripción clara de los servicios aplicados al coche o motivo de la incidencia..." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Costo (opcional)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" step="0.01" min="0" class="form-control" name="costo" placeholder="0.00">
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                    <h3 class="profile-username text-center">{{ $vehiculo->marca->nombre ?? 'Vehículo' }}</h3>
-                    <p class="text-muted text-center">Placas: <strong>{{ $vehiculo->placas ?? 'S/P' }}</strong></p>
 
-                    <ul class="list-group list-group-unbordered mb-3">
-                        <li class="list-group-item">
-                            <b>ID Interno:</b> <a class="float-right">#{{ $vehiculo->id }}</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Serie:</b> <a class="float-right">{{ $vehiculo->serie ?? 'N/D' }}</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Condición actual:</b> 
-                            <span class="badge badge-success float-right">Operativo</span>
-                        </li>
-                    </ul>
-                    <a href="{{ route('vehiculos.index') }}" class="btn btn-default btn-block"><b>Volver al Inventario</b></a>
-                </div>
+                    <div class="card-footer text-right">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Registrar mantenimiento
+                        </button>
+                        <a href="{{ route('vehiculos.index') }}" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+
             </div>
-        </div>
 
-        <!-- Formulario de Registro -->
-        <div class="col-md-8">
-            <div class="card card-warning card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">Registrar Nuevo Trabajo / Incidencia</h3>
-                </div>
-                <div class="card-body">
-                    <!-- El formulario apunta a la ruta POST que acabamos de crear -->
-                    <form action="{{ route('vehiculos.addwork.store', $vehiculo) }}" method="POST">
-                        @csrf
-                        
-                        {{-- Aquí pondremos los campos del formulario en el siguiente paso --}}
-                        <p class="text-muted">Formulario listo para recibir los campos de captura...</p>
-
-                        <button type="submit" class="btn btn-warning font-weight-bold">Guardar Cambios</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function() {
+
+        function setupSelectOtro(selectId, inputId) {
+            const $select = $(`#${selectId}`);
+            const $input = $(`#${inputId}`);
+
+            $select.on('change', function() {
+                if ($(this).val() === 'OTRO_VALOR') {
+                    $input.fadeIn().focus().prop('required', true);
+                } else {
+                    $input.hide().val($(this).val()).prop('required', false); 
+                }
+            });
+
+            let initialVal = $input.val();
+            if(initialVal && !$select.find(`option[value='${initialVal}']`).length && initialVal !== '') {
+                $select.val('OTRO_VALOR');
+                $input.show().prop('required', true);
+            }
+        }
+
+        setupSelectOtro('tipo_evento', 'tipo_evento_input');
+    });
+</script>
 @stop
