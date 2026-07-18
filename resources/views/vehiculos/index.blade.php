@@ -205,6 +205,11 @@
         border-color: #ffc107;
     }
 
+    .btn-mantenimiento:hover {
+        color: #007BFF;
+        border-color: #007BFF;
+    }
+
     .btn-group-actions .btn-view:hover {
         color: var(--fleet-primary);
         border-color: var(--fleet-primary);
@@ -724,6 +729,13 @@
                                            title="Ver ficha técnica"
                                            onclick="event.stopPropagation();">
                                             <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        <a href="{{ route('vehiculos.show', $vehiculo) }}"
+                                           class="btn btn-sm btn-mantenimiento"
+                                           title="Añadir Mantenimiento"
+                                           onclick="event.stopPropagation();">
+                                            <i class="fas fa-tools"></i>
                                         </a>
 
                                         <form action="{{ route('vehiculos.destroy', $vehiculo) }}"

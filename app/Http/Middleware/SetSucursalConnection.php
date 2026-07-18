@@ -14,8 +14,6 @@ class SetSucursalConnection
     {
         $clave = $request->session()->get('sucursal_activa');
 
-        // Si aún no hay sucursal seleccionada, dejamos pasar.
-        // El middleware EnsureSucursalIsSelected se encargará de redirigir.
         if (! $clave) {
             return $next($request);
         }
