@@ -1,140 +1,125 @@
 $(document).ready(function() {
-    
-$('.equipo-row').on('mouseenter', function() {
-    const d = $(this).data();
+    $('.equipo-row').on('mouseenter', function() {
+        const d = $(this).data();
 
-    const formatInactivo = (valor, estaInactivo) => {
-        return estaInactivo ? `${valor} <span class="text-danger small font-italic">(Inactivado)</span>` : valor;
-    };
+        const formatInactivo = (valor, estaInactivo) => {
+            return estaInactivo ? `${valor} <span class="text-danger small font-italic">(Inactivado)</span>` : valor;
+        };
 
+        const html = `
+            <div class="animate-details">
+                <div class="detail-header-premium p-2"> 
+                    <div class="d-flex justify-content-between align-items-center"> 
+                        <div>
+                            <span class="badge ${d.equipo_inactivo ? 'badge-danger' : 'badge-light text-info'} mb-1" style="font-size: 0.7rem;">
+                                ${d.tipo} ${d.equipo_inactivo ? '- INACTIVO' : ''}
+                            </span>
+                            <p class="mb-0 opacity-8" style="font-size: 0.75rem;">
+                                <i class="fas fa-barcode mr-1"></i>${d.serial} |
+                                ${d.marca}  |
+                                <i class="fab fa-windows mr-1"></i>${d.so} |
+                                <span class="mr-2">
+                                    <i class="fas fa-map-marker-alt mr-1"></i>
+                                    ${formatInactivo(d.ubicacion, d.ubicacion_inactiva)}
+                                </span>
+                                ${d.sucursal ? `
+                                    <span class="badge badge-light text-info border ml-1" style="font-size: 0.68rem;">
+                                        <i class="fas fa-building mr-1"></i>
+                                        Sucursal: ${d.sucursal}
+                                    </span>
+                                ` : ''}
+                            </p>
+                        </div>
+                        <i class="fas fa-laptop-code fa-2x opacity-2"></i>
+                    </div>
+                </div>
 
-const modelosCPU = d.procesador_modelo ? d.procesador_modelo.split(',') : [];
-const coresCPU = d.procesador_cores ? d.procesador_cores.split(',') : [];
-const ghzCPU = d.clock_mhz_cpu ? d.clock_mhz_cpu.split(',') : [];
-const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split(',') : [];
+                <div class="section-divider">Responsable del Activo</div>
+                <div class="p-1 d-flex align-items-center">
+                    <div class="bg-light rounded-circle p-1 mr-1">
+                        <i class="fas fa-user-tie fa-1x text-secondary"></i>
+                    </div>
+                    <div>
+                        <div class="font-weight-bold text-dark" style="font-size: 0.65rem; text-uppercase">${formatInactivo(d.usuario, d.usuario_inactivo)}</div>
+                        <div class="small text-muted" style="font-size: 0.65rem; text-uppercase">${d.email}</div>
+                        <div class="small text-muted" style="font-size: 0.65rem;">${d.departamento}</div>
+                    </div>
+                </div>
 
-    // Estructura Profesional Dinámica
-    const html = `
-        <div class="animate-details">
-        <div class="detail-header-premium p-2"> <div class="d-flex justify-content-between align-items-center"> <div>
-                    <span class="badge ${d.equipo_inactivo ? 'badge-danger' : 'badge-light text-info'} mb-1" style="font-size: 0.7rem;">
-                        ${d.tipo} ${d.equipo_inactivo ? '- INACTIVO' : ''}
+                <div class="section-divider">Arquitectura de Hardware</div>
+                <div class="info-box-custom">
+                    <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-microchip mr-1"></i> Procesamiento</span>
+                    <span class="info-value" style="font-size: 0.65rem; text-uppercase">
+                        ${d.procesadores} Activo(s) 
+                        ${d.procesadores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.procesadores_inactivos} inactivos)</span>` : ''}
                     </span>
-                                        
-                    <p class="mb-0 opacity-8" style="font-size: 0.75rem;">
-                        <i class="fas fa-barcode mr-1"></i>${d.serial} |
-                        ${d.marca}  |
-                        <i class="fab fa-windows mr-1"></i>${d.so} |
-                    <span class="mr-2">
-                        <i class="fas fa-map-marker-alt mr-1"></i>
-                        ${formatInactivo(d.ubicacion, d.ubicacion_inactiva)}
-                    </span>
+                </div>
 
-                    ${d.sucursal ? `
-                        <span class="badge badge-light text-info border ml-1" style="font-size: 0.68rem;">
-                            <i class="fas fa-building mr-1"></i>
-                            Sucursal: ${d.sucursal}
-                        </span>
-                    ` : ''}
-                    </p>
+                <div class="info-box-custom">
+                    <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-memory mr-1"></i> Memoria RAM</span>
+                    <span class="info-value" style="font-size: 0.65rem; text-uppercase">
+                        ${d.ram || '0'} GB Activa(s) 
+                        ${d.ram_inactiva && d.ram_inactiva != 0 ? `<span class="text-danger small font-italic">(${d.ram_inactiva} GB inactivas)</span>` : ''}
+                    </span>
+                </div>
+
+                <div class="info-box-custom">
+                    <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-hdd mr-1"></i> Almacenamiento</span>
+                    <span class="info-value" style="font-size: 0.65rem; text-uppercase">
+                        ${d.discos} Disco(s) Activo(s) 
+                        ${d.discos_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.discos_inactivos} inactivos)</span>` : ''}
+                    </span>
                 </div>
                 
-                <i class="fas fa-laptop-code fa-2x opacity-2"></i>
-            </div>
-        </div>
-
-            <div class="section-divider">Responsable del Activo</div>
-            <div class="p-1 d-flex align-items-center">
-                <div class="bg-light rounded-circle p-1 mr-1">
-                    <i class="fas fa-user-tie fa-1x text-secondary"></i>
-                </div>
-                <div>
-                    <div class="font-weight-bold text-dark" style="font-size: 0.65rem; text-uppercase">${formatInactivo(d.usuario, d.usuario_inactivo)}</div>
-                    <div class="small text-muted" style="font-size: 0.65rem; text-uppercase">${d.email}</div>
-                    <div class="small text-muted" style="font-size: 0.65rem; ">${d.departamento}</div>
-                </div>
-            </div>
-
-            <div class="section-divider">Arquitectura de Hardware</div>
-                        
-            <div class="info-box-custom">
-                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-microchip mr-1"></i> Procesamiento</span>
-                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
-                    ${d.procesadores} Activo(s) 
-                    ${d.procesadores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.procesadores_inactivos} inactivos)</span>` : ''}
-                </span>
-            </div>
-
-            <div class="info-box-custom">
-                <span class="info-label" style="font-size: 0.65rem; text-uppercase">
-                    <i class="fas fa-memory mr-1"></i> Memoria RAM
-                </span>
-                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
-                    ${d.ram || '0'} GB Activa(s) 
-                    ${d.ram_inactiva && d.ram_inactiva != 0 ? `
-                        <span class="text-danger small font-italic">
-                            (${d.ram_inactiva} GB inactivas)
-                        </span>
-                    ` : ''}
-                </span>
-            </div>
-            <div class="info-box-custom">
-                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-hdd mr-1"></i> Almacenamiento</span>
-                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
-                    ${d.discos} Disco(s) Activo(s) 
-                    ${d.discos_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.discos_inactivos} inactivos)</span>` : ''}
-                </span>
-            </div>
-            
-            <div class="info-box-custom">
-                <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-desktop mr-1"></i> Monitores</span>
-                <span class="info-value" style="font-size: 0.65rem; text-uppercase">
-                    ${d.monitores} Activo(s) 
-                    ${d.monitores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.monitores_inactivos} inactivados)</span>` : ''}
-                </span>
-            </div>
-
-            <div class="p-3 border-bottom">
-                <span class="info-label d-block mb-2" style="font-size: 0.65rem; text-uppercase">Otros Periféricos</span>
-                <p class="small text-dark mb-1" style="font-size: 0.65rem; text-uppercase">
-                    <i class="fas fa-keyboard mr-1 text-muted"></i>
-                    ${d.perifericos || '<span class="text-muted">Ninguno activo</span>'}
-                </p>
-                ${d.perifericos_inactivos ? `
-                    <p class="small text-danger mb-0 font-italic" style="opacity: 0.8;">
-                        <i class="fas fa-times-circle mr-1"></i> Inactivos: 
-                        <span style="text-decoration: line-through;">${d.perifericos_inactivos}</span>
-                    </p>
-                ` : ''}
-            </div>
-            <div class="section-divider">Datos Económicos</div>
-            <div class="p-3 bg-light">
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="small font-weight-bold text-muted">Número Factura</span>
-                    <span class="small badge badge-secondary">
-                        <i class="fas fa-file-invoice-dollar mr-1"></i>
-                        ${d.numero_factura || 'No asignada'}
+                <div class="info-box-custom">
+                    <span class="info-label" style="font-size: 0.65rem; text-uppercase"><i class="fas fa-desktop mr-1"></i> Monitores</span>
+                    <span class="info-value" style="font-size: 0.65rem; text-uppercase">
+                        ${d.monitores} Activo(s) 
+                        ${d.monitores_inactivos > 0 ? `<span class="text-danger small font-italic">(${d.monitores_inactivos} inactivados)</span>` : ''}
                     </span>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="small font-weight-bold text-muted">Valor de Adquisición</span>
-                    <span class="text-success font-weight-bold">$${d.valor}</span>
+
+                <div class="p-3 border-bottom">
+                    <span class="info-label d-block mb-2" style="font-size: 0.65rem; text-uppercase">Otros Periféricos</span>
+                    <p class="small text-dark mb-1" style="font-size: 0.65rem; text-uppercase">
+                        <i class="fas fa-keyboard mr-1 text-muted"></i>
+                        ${d.perifericos || '<span class="text-muted">Ninguno activo</span>'}
+                    </p>
+                    ${d.perifericos_inactivos ? `
+                        <p class="small text-danger mb-0 font-italic" style="opacity: 0.8;">
+                            <i class="fas fa-times-circle mr-1"></i> Inactivos: 
+                            <span style="text-decoration: line-through;">${d.perifericos_inactivos}</span>
+                        </p>
+                    ` : ''}
                 </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="small font-weight-bold text-muted">Fecha Compra</span>
-                    <span class="small">${d.fecha}</span>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span class="small font-weight-bold text-muted">Vida Útil Restante</span>
-                    <span class="badge badge-warning text-dark">${d.vida} años</span>
+
+                <div class="section-divider">Datos Económicos</div>
+                <div class="p-3 bg-light">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small font-weight-bold text-muted">Número Factura</span>
+                        <span class="small badge badge-secondary">
+                            <i class="fas fa-file-invoice-dollar mr-1"></i>
+                            ${d.numero_factura || 'No asignada'}
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="small font-weight-bold text-muted">Valor de Adquisición</span>
+                        <span class="text-success font-weight-bold">$${d.valor}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="small font-weight-bold text-muted">Fecha Compra</span>
+                        <span class="small">${d.fecha}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="small font-weight-bold text-muted">Vida Útil Restante</span>
+                        <span class="badge badge-warning text-dark">${d.vida} años</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
-    $('#detail-content').html(html);
-});
+        `;
+        $('#detail-content').html(html);
+    });
 
-    // LÓGICA DE MENSAJES Y SCROLL PARA EL USUARIO
     const scrollId = "{{ session('new_id') ?? session('actualizado_id') }}";    
     if (scrollId) {
         const targetRow = document.getElementById('equipo-' + scrollId);
@@ -147,7 +132,6 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
         }
     }
 
-    // Setup para select de "Otro"
     function setupSelectOtro(selectId, inputId) {
         const $select = $(`#${selectId}`);
         const $input = $(`#${inputId}`);
@@ -160,9 +144,23 @@ const descripcionesCPU = d.descripcion_tipo_cpu ? d.descripcion_tipo_cpu.split('
         });
     }
     setupSelectOtro('tipo_activo', 'tipo_input');
+
+    const marker = document.getElementById('scroll-target-marker');
+    if (marker) {
+        const equipoId = marker.getAttribute('data-id');
+        const targetRow = document.getElementById('equipo-' + equipoId);
+        if (targetRow) {
+            targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            $(targetRow).css('background-color', '#fff3cd');
+            $(targetRow).fadeOut(400).fadeIn(400).fadeOut(400).fadeIn(400, function() {
+                setTimeout(() => {
+                    $(this).animate({ backgroundColor: "transparent" }, 2000);
+                }, 3000);
+            });
+        }
+    }
 });
 
-// --- Funciones Globales ---
 function togglePanel() {
     const body = document.getElementById('searchBody');
     const icon = document.getElementById('toggle-icon');
@@ -205,8 +203,6 @@ function ejecutarInactivacion(elemento) {
     $('#modalInactivar').modal('show');
 }
 
-
-
 $('#btnConfirmarInactivacion').on('click', function() {
     const motivo = $('#motivo_texto').val().trim();
     if (motivo.length < 10) {
@@ -218,29 +214,3 @@ $('#btnConfirmarInactivacion').on('click', function() {
     $(this).html('<i class="fas fa-spinner fa-spin"></i> Procesando...').prop('disabled', true);
     formularioActual[0].submit();
 });
-
-$(document).ready(function() {
-    const marker = document.getElementById('scroll-target-marker');
-
-    if (marker) {
-        const equipoId = marker.getAttribute('data-id');
-        const targetRow = document.getElementById('equipo-' + equipoId);
-
-        if (targetRow) {
-            targetRow.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-            });
-
-            $(targetRow).css('background-color', '#fff3cd');
-            
-            $(targetRow).fadeOut(400).fadeIn(400).fadeOut(400).fadeIn(400, function() {
-                setTimeout(() => {
-                    $(this).animate({ backgroundColor: "transparent" }, 2000);
-                }, 3000);
-            });
-        }
-    }
-});
-
-
