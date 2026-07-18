@@ -817,7 +817,7 @@
                 </span>
             </div>
 
-            <div class="row align-items-center mb-3">
+            <!-- <div class="row align-items-center mb-3">
                 <div class="col-5 text-center">
                     <div class="health-orb" id="sideHealthOrb" style="--score: 0;">
                         <span class="health-orb-value" id="sideHealthScore">0%</span>
@@ -832,7 +832,7 @@
                         El índice se deriva de los indicadores reales del modelo.
                     </small>
                 </div>
-            </div>
+            </div> -->
 
             <div class="mb-3">
                 <span class="text-xs text-muted font-weight-bold text-uppercase d-block mb-2">
