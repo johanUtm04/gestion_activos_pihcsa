@@ -426,4 +426,18 @@ private function indicadorVidaUtil(): array
             ->with('success', 'Mantenimiento registrado correctamente para el vehículo.');
     }
 
+    public function indexaddwork(Vehiculo $vehiculo)
+    {
+        // Retorna la vista pasando el objeto del vehículo específico
+        return view('vehiculos.addworkVehicle', compact('vehiculo'));
+    }
+
+    public function saveWork(Request $request, Vehiculo $vehiculo)
+    {
+        // Aquí validaremos y guardaremos los datos en el siguiente paso
+        
+        return redirect()->route('vehiculos.index')
+            ->with('success', 'El registro de mantenimiento se ha guardado correctamente.');
+    }
+
 }

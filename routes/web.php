@@ -119,6 +119,12 @@ Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
             'vehiculos' => 'vehiculo',
         ]);
 
+        Route::get('/vehiculos/{vehiculo}/addwork', [VehiculoController::class, 'indexaddwork'])
+            ->name('vehiculos.addwork');
+
+        Route::post('/vehiculos/{vehiculo}/addwork', [VehiculoController::class, 'saveWork'])
+            ->name('vehiculos.addwork.store');
+
         Route::post('/vehiculos/{vehiculo}/registrar-mantenimiento', [VehiculoController::class, 'registrarMantenimiento'])
             ->name('vehiculos.registrar_mantenimiento');
             

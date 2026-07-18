@@ -731,7 +731,7 @@
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        <a href="{{ route('vehiculos.show', $vehiculo) }}"
+                                        <a href="{{ route('vehiculos.addwork', $vehiculo) }}"
                                            class="btn btn-sm btn-mantenimiento"
                                            title="Añadir Mantenimiento"
                                            onclick="event.stopPropagation();">
