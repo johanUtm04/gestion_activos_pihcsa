@@ -91,42 +91,47 @@ public function index(Request $request)
     /**
      * Almacena un vehículo nuevo.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'tipo_vehiculo_id' => 'required|exists:cat_tipo_vehiculos,id',
-            'marca_id' => [
-                'required',
-                Rule::exists('marcas', 'id')->where('tipo', 'AUTO'),
-            ],
-            'usuario_id'       => 'required|exists:users,id',
-            'ubicacion_id'     => 'required|exists:ubicaciones,id',
-            'modelo'           => 'required|string|max:255',
-            'anio'             => 'required|integer|min:1900|max:'.(date('Y') + 1),
-            'placas'           => 'nullable|string|max:20',
-            'no_serie'         => 'nullable|string|max:50',
-            'no_motor'         => 'nullable|string|max:50',
-            'cilindros'        => 'nullable|integer|min:1',
-            'pedimento' => ['nullable', 'string', 'max:100'],
-            'tipo_combustible' => 'nullable|string',
-            'fecha_ultimo_mantenimiento' => 'nullable|date',
-            // NUEVO: Validamos que la empresa que viene del input oculto exista en la DB
-            'empresa_id'       => 'required|exists:empresas,id', 
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'tipo_vehiculo_id' => 'required|exists:cat_tipo_vehiculos,id',
+        'marca_id' => [
+            'required',
+            Rule::exists('marcas', 'id')->where('tipo', 'AUTO'),
+        ],
+        'usuario_id'       => 'required|exists:users,id',
+        'ubicacion_id'     => 'required|exists:ubicaciones,id',
+        'modelo'           => 'required|string|max:255',
+        'anio'             => 'required|integer|min:1900|max:'.(date('Y') + 1),
+        
+        // Opcionales que ya tenías
+        'placas'           => 'nullable|string|max:20',
+        'no_serie'         => 'nullable|string|max:50',
+        'no_motor'         => 'nullable|string|max:50',
+        'cilindros'        => 'nullable|integer|min:1',
+        'pedimento'        => ['nullable', 'string', 'max:100'],
+        'tipo_combustible' => 'nullable|string',
+        'fecha_ultimo_mantenimiento' => 'nullable|date',
+        
+        // NUEVOS: Agrega los campos financieros que te faltaban aquí
+        'valor_inicial'      => 'nullable|numeric|min:0',
+        'fecha_adquisicion'  => 'nullable|date',
+        'vida_util_estimada' => 'nullable|integer|min:0',
+        'fecha_inicio_uso'   => 'nullable|date', // Verifica si en tu BD se llama así
+        
+        'empresa_id'       => 'required|exists:empresas,id', 
+    ]);
 
-        // Por defecto entra como activo
-        $validated['is_active'] = true;
+    $validated['is_active'] = true;
 
-        // DOBLE CANDADO: Si por algún motivo el input oculto falló, lo planchamos con la sesión activa
-        if (!isset($validated['empresa_id'])) {
-            $validated['empresa_id'] = session('empresa_id');
-        }
-
-        Vehiculo::create($validated);
-
-        return redirect()->route('vehiculos.index')->with('success', 'Vehículo registrado exitosamente.');
+    if (!isset($validated['empresa_id'])) {
+        $validated['empresa_id'] = session('empresa_id');
     }
 
+    Vehiculo::create($validated);
+
+    return redirect()->route('vehiculos.index')->with('success', 'Vehículo registrado exitosamente.');
+}
     /**
      * Doble propósito: Si es petición AJAX, retorna JSON (para editar).
      * Si es una navegación común, retorna la vista de detalles.
