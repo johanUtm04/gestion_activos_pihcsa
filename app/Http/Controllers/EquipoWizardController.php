@@ -380,6 +380,7 @@ class EquipoWizardController extends Controller
             'modelo'                     => $wizard['equipo']['modelo'],
             'marca_id'                   => $wizard['equipo']['marca_id'], 
             'tipo_activo_id'             => $wizard['equipo']['tipo_activo_id'],
+            'pedimento'                  => $wizard['equipo']['pedimento'] ?? null, 
             'ubicacion_id'               => $wizard['ubicacion']['ubicacion_id'] ?? null,
             'departamento_perteneciente' => $wizard['ubicacion']['departamento_perteneciente'] ?? null,
         ]);

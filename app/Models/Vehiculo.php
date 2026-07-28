@@ -33,6 +33,7 @@ class Vehiculo extends Model
         'no_motor',
         'cilindros',
         'pedimento',
+        'cuenta_contable',
         'tipo_combustible',
         'valor_inicial',
         'fecha_adquisicion',

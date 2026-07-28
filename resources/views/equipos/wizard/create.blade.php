@@ -185,6 +185,22 @@
                             oninput="this.value = this.value.toUpperCase()"> {{-- Convierte a mayúsculas mientras escribe --}}
                         <small id="serial-feedback" style="display:none; font-weight:bold;"></small>
                     </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-file-invoice"></i> Pedimento</label>
+                        <input type="text" name="pedimento" id="pedimento" class="form-control"
+                            placeholder="Número de pedimento (si aplica)"
+                            value="{{ old('pedimento', $equipo['pedimento'] ?? '') }}">
+                        <small class="text-muted">Dejar en blanco si el activo no cuenta con pedimento de importación.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-file-invoice"></i> Cuenta contable</label>
+                        <input type="text" name="pedimento" id="pedimento" class="form-control"
+                            placeholder="Número de pedimento (si aplica)"
+                            value="{{ old('pedimento', $equipo['pedimento'] ?? '') }}">
+                    </div>
+                    
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>SO</label>

@@ -162,11 +162,15 @@
                             <span class="text-muted">| {{ $equipo->ubicacion->nombre ?? 'N/A' }}</span>
                                 
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="label-header">Sistema Operativo</div>
                             <div class="value-text text-info">
                                 <i class="fab fa-windows mr-1"></i> {{ $equipo->sistema_operativo ?? 'No especificado' }}
                             </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="label-header">Pedimento</div>
+                            <span class="font-weight-bold text-dark"> {{ $equipo->pedimento ?? 'N/A' }}</span>
                         </div>
                     </div>
                 </div>

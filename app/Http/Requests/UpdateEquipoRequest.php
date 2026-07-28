@@ -22,6 +22,7 @@ class UpdateEquipoRequest extends FormRequest
             'modelo'             => 'nullable|string|max:100',
             'departamento_perteneciente' => 'nullable|string|max:100',
             'fecha_adquisicion'  => 'required|date',
+            'pedimento' => 'nullable|string|max:255',
             'fecha_inicio_uso'  => [
                 'nullable',
                 'date',

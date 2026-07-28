@@ -32,7 +32,7 @@ class Equipo extends Model
 
     protected $fillable = [
         'marca_equipo','marca_id', 'modelo', 'fecha_ultimo_mantenimiento', 'folio',
-        'tipo_equipo','tipo_activo_id', 'serial', 'numero_factura', 'fecha_inicio_uso',
+        'tipo_equipo','tipo_activo_id', 'serial', 'numero_factura', 'pedimento', 'cuenta_contable', 'fecha_inicio_uso',
         'sistema_operativo', 'usuario_id', 'ubicacion_id','departamento_perteneciente',
         'valor_inicial','fecha_adquisicion', 'vida_util_estimada', 'motivo_inactivacion'
     ];

@@ -53,6 +53,7 @@ class ExportService
                 'Modelo',
                 'Serial',
                 'Factura',
+                'Pedimento',
                 'Sistema operativo',
 
                 'Usuario actual',
@@ -157,6 +158,7 @@ class ExportService
                             $this->limpiarTexto($equipo->modelo ?? 'N/A'),
                             $this->limpiarTexto($equipo->serial ?? 'N/A'),
                             $this->limpiarTexto($equipo->numero_factura ?? 'N/A'),
+                            $this->limpiarTexto($equipo->pedimento ?? 'N/A'),
                             $this->limpiarTexto($this->formatearSistemaOperativo($equipo->sistema_operativo)),
 
                             $this->limpiarTexto($equipo->usuario?->name ?? 'Disponible / Sin asignar'),

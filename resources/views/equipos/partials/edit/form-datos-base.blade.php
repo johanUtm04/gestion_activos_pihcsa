@@ -56,6 +56,21 @@
                     <small class="text-muted">Identificador único de fábrica (S/N).</small>
                 </div>
             </div>
+
+            <div class="row">
+                {{-- PEDIMENTO --}}
+                <div class="form-group col-md-6">
+                    <label><i class="fas fa-file-invoice"></i> Pedimento</label>
+                    <input type="text" name="pedimento" class="form-control" value="{{ old('pedimento', $equipo->pedimento) }}">
+                    <small class="text-muted">Número de pedimento aduanal (si aplica).</small>
+                </div>
+                {{-- Cuenta contable --}}
+                <div class="form-group col-md-6">
+                    <label><i class="fas fa-file-invoice"></i> Cuenta contable</label>
+                    <input type="text" name="cuenta_contable" class="form-control" value="{{ old('cuenta_contable', $equipo->cuenta_contable) }}">
+                </div>
+            </div>
+            
         </fieldset>
     </div>
 </div>
