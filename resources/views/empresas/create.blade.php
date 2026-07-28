@@ -26,11 +26,11 @@
             <div class="card-body py-4">
                 <div class="row">
                     <div class="col-md-8 form-group">
-                        <label for="nombre" class="text-sm text-muted font-weight-bold">Razón Social / Nombre Oficial <span class="text-danger">*</span></label>
+                        <label for="nombre" class="text-sm text-muted font-weight-bold">Area <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre') }}" placeholder="Ej. Corporación Azul" style="border-radius: 8px;" required>
                     </div>
                     <div class="col-md-4 form-group">
-                        <label for="rfc" class="text-sm text-muted font-weight-bold">RFC / Registro Fiscal</label>
+                        <label for="rfc" class="text-sm text-muted font-weight-bold">Descripcion</label>
                         <input type="text" class="form-control text-uppercase" id="rfc" name="rfc" value="{{ old('rfc') }}" placeholder="Ej. CAZ120345XYZ" maxlength="13" style="border-radius: 8px;">
                     </div>
                 </div>

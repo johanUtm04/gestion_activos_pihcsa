@@ -327,7 +327,7 @@ return [
     ],
 
     [
-        'text'       => 'Vehículos',
+        'text'       => 'Activos',
         'url'        => '/vehiculos',
         'icon'       => 'fas fa-truck-moving',
         'icon_color' => 'teal',
@@ -425,7 +425,7 @@ return [
             ],
 
             [
-                'text'       => 'Tipos de Equipo',
+                'text'       => 'Tipos de Activo',
                 'url'        => '/gestionTipoActivos',
                 'icon'       => 'fas fa-microchip',
                 'icon_color' => 'info',
@@ -441,7 +441,7 @@ return [
             ],
 
             [
-                'text'       => 'Sucursales',
+                'text'       => 'Areas',
                 'url'        => '/empresas',
                 'icon'       => 'fas fa-building',
                 'icon_color' => 'cyan',
@@ -472,7 +472,7 @@ return [
     ],
 
     [
-        'text'       => 'Auditoría',
+        'text'       => 'Bitácora',
         'url'        => '/historial',
         'icon'       => 'fas fa-history',
         'icon_color' => 'orange',
