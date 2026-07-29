@@ -93,6 +93,7 @@ public function index(Request $request)
      */
 public function store(Request $request)
 {
+
     $validated = $request->validate([
         'tipo_vehiculo_id' => 'required|exists:cat_tipo_vehiculos,id',
         'marca_id' => [

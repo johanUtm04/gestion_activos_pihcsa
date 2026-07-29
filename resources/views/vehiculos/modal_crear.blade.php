@@ -133,6 +133,15 @@
                         </div>
 
                         <div class="col-md-4 form-group">
+                            <label for="cuenta_contable">Cuenta contable</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="cuenta_contable"
+                                   name="cuenta_contable"
+                                   placeholder="Ej. 55 48 1234 5001234">
+                        </div>
+
+                        <div class="col-md-4 form-group">
                             <label for="tipo_combustible">Combustible</label>
                             <select class="form-control" id="tipo_combustible" name="tipo_combustible">
                                 <option value="" selected disabled>Selecciona...</option>

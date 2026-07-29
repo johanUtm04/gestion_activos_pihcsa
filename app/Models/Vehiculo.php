@@ -39,6 +39,7 @@ class Vehiculo extends Model
         'fecha_adquisicion',
         'vida_util_estimada',
         'fecha_ultimo_mantenimiento',
+        'fecha_inicio_uso',
         'is_active',
         'motivo_inactivacion',
     ];
