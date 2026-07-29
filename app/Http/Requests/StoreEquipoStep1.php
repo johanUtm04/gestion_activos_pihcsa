@@ -29,8 +29,8 @@ class StoreEquipoStep1 extends FormRequest
             'valor_inicial'      => 'nullable|numeric|min:0|max:99999999.99',
             'fecha_adquisicion'  => 'required|date',
             'vida_util_estimada' => 'required|integer|min:1|max:50',
-            'pedimento' => 'nullable|string|max:255',
             'cuenta_contable' => 'nullable|string|max:255',
+            'pedimento' => 'nullable|string|max:255',
         ];
         [
         'serial.unique' => '¡Error! Este número de serial ya está registrado en el sistema.',

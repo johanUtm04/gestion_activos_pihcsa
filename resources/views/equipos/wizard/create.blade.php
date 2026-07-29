@@ -196,9 +196,9 @@
 
                     <div class="form-group">
                         <label><i class="fas fa-file-invoice"></i> Cuenta contable</label>
-                        <input type="text" name="pedimento" id="pedimento" class="form-control"
-                            placeholder="Número de pedimento (si aplica)"
-                            value="{{ old('pedimento', $equipo['pedimento'] ?? '') }}">
+                        <input type="text" name="cuenta_contable" id="cuenta_contable" class="form-control"
+                            placeholder="Número de cuenta contable (si aplica)"
+                            value="{{ old('cuenta_contable', $equipo['cuenta_contable'] ?? '') }}">
                     </div>
                     
                     <div class="row">

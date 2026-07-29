@@ -20,6 +20,7 @@ class StoreEquipoRequest extends FormRequest
             'usuario_id'         => 'required|integer|exists:users,id',
             'ubicacion_id'       => 'nullable|integer|exists:ubicaciones,id',
             'valor_inicial'      => 'nullable|numeric|min:0',
+            'cuenta_contable' => 'nullable|string|max:255',
             'pedimento' => 'nullable|string|max:255',
             'fecha_inicio_uso'  => [
                 'nullable',

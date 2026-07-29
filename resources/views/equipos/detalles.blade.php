@@ -150,13 +150,13 @@
                         </div>
                     </div>
                     <div class="row border-top pt-3">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="label-header">Usuario Responsable</div>
                             <div class="value-text text-primary">
                                 <i class="fas fa-user-circle mr-1"></i> {{ $equipo->usuario->name ?? 'Disponible' }}
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="label-header">Departamento / Ubicación</div>
                             <span class="font-weight-bold text-dark"> {{ $equipo->departamento_perteneciente ?? 'N/A' }}</span>
                             <span class="text-muted">| {{ $equipo->ubicacion->nombre ?? 'N/A' }}</span>
@@ -171,6 +171,10 @@
                         <div class="col-sm-2">
                             <div class="label-header">Pedimento</div>
                             <span class="font-weight-bold text-dark"> {{ $equipo->pedimento ?? 'N/A' }}</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="label-header">Cuenta Contable</div>
+                            <span class="font-weight-bold text-dark"> {{ $equipo->cuenta_contable ?? 'N/A' }}</span>
                         </div>
                     </div>
                 </div>

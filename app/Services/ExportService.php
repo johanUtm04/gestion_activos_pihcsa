@@ -53,6 +53,7 @@ class ExportService
                 'Modelo',
                 'Serial',
                 'Factura',
+                'Cuenta Contable',
                 'Pedimento',
                 'Sistema operativo',
 
@@ -158,6 +159,7 @@ class ExportService
                             $this->limpiarTexto($equipo->modelo ?? 'N/A'),
                             $this->limpiarTexto($equipo->serial ?? 'N/A'),
                             $this->limpiarTexto($equipo->numero_factura ?? 'N/A'),
+                            $this->limpiarTexto($equipo->cuenta_contable ?? 'N/A'),
                             $this->limpiarTexto($equipo->pedimento ?? 'N/A'),
                             $this->limpiarTexto($this->formatearSistemaOperativo($equipo->sistema_operativo)),
 

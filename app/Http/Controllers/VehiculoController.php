@@ -109,6 +109,7 @@ public function store(Request $request)
         'no_serie'         => 'nullable|string|max:50',
         'no_motor'         => 'nullable|string|max:50',
         'cilindros'        => 'nullable|integer|min:1',
+        'cuenta_contable'        => ['nullable', 'string', 'max:100'],
         'pedimento'        => ['nullable', 'string', 'max:100'],
         'tipo_combustible' => 'nullable|string',
         'fecha_ultimo_mantenimiento' => 'nullable|date',
@@ -168,6 +169,7 @@ public function store(Request $request)
             'no_motor'         => 'nullable|string|max:50',
             'cilindros'        => 'nullable|integer|min:1',
 
+            'cuenta_contable'        => 'nullable|string|max:100',
             'pedimento'        => 'nullable|string|max:100',
 
             'tipo_combustible' => 'nullable|string|max:50',
