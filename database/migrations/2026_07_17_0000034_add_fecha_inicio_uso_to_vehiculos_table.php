@@ -8,24 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('equipos', function (Blueprint $table) {
-            $table->string('cuenta_contable')->nullable()->after('pedimento');
-        });
-
         Schema::table('vehiculos', function (Blueprint $table) {
-            $table->string('cuenta_contable')->nullable()->after('no_motor');
+            if (!Schema::hasColumn('vehiculos', 'fecha_inicio_uso')) {
+                $table->date('fecha_inicio_uso')->nullable()->after('fecha_adquisicion');
+            }
         });
     }
 
     public function down(): void
     {
-        Schema::table('equipos', function (Blueprint $table) {
-            $table->dropColumn('cuenta_contable');
-        });
-
         Schema::table('vehiculos', function (Blueprint $table) {
-            $table->dropColumn('cuenta_contable');
+            if (Schema::hasColumn('vehiculos', 'fecha_inicio_uso')) {
+                $table->dropColumn('fecha_inicio_uso');
+            }
         });
     }
 };
-
