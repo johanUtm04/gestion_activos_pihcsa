@@ -120,7 +120,7 @@
                                    placeholder="Ej. 4">
                         </div>
 
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-2 form-group">
                             <label for="pedimento">Pedimento</label>
                             <input type="text"
                                    class="form-control"
@@ -131,7 +131,6 @@
                                 Solo aplica para vehículos importados o regularizados.
                             </small>
                         </div>
-
                         <div class="col-md-4 form-group">
                             <label for="cuenta_contable">Cuenta contable</label>
                             <input type="text"

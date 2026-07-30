@@ -632,6 +632,8 @@
                                 data-placas="{{ $vehiculo->placas ?? 'S/P' }}"
                                 data-serie="{{ $vehiculo->no_serie ?? 'N/D' }}"
                                 data-motor="{{ $vehiculo->no_motor ?? 'N/D' }}"
+                                data-cuenta-contable="{{ $vehiculo->cuenta_contable ?? 'N/D' }}"
+                                data-pedimento="{{ $vehiculo->pedimento ?? 'N/D' }}"
                                 data-combustible="{{ $vehiculo->tipo_combustible ?? 'N/D' }}"
                                 data-usuario="{{ $vehiculo->usuario->name ?? 'Sin asignar' }}"
                                 data-email="{{ $vehiculo->usuario->email ?? 'N/D' }}"
@@ -879,6 +881,10 @@
                         <span>Combustible:</span>
                         <strong id="sideCombustible">---</strong>
                     </div>
+                    <div class="data-row">
+                         <span>Cuenta contable:</span>
+                         <strong id="sideCuentaContable">---</strong>
+                     </div>
                 </div>
             </div>
 
@@ -991,6 +997,8 @@ document.addEventListener('DOMContentLoaded', function () {
             setText('sideSerie', dataset.serie || 'N/D');
             setText('sideMotor', dataset.motor || 'N/D');
             setText('sideCombustible', dataset.combustible || 'N/D');
+        
+            setText('sideCuentaContable', dataset.cuentaContable || 'N/D');
             setText('sideUltimoMantenimiento', dataset.ultimoMantenimiento || 'Sin registro');
             setText('sideProximoMantenimiento', dataset.proximoMantenimiento || 'N/D');
             setText('sideDiasMantenimiento', dataset.diasMantenimiento !== 'N/D' ? `${dataset.diasMantenimiento} días` : 'N/D');

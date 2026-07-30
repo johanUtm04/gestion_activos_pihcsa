@@ -618,6 +618,21 @@
                             <span class="input-error">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label>Cuenta contable:</label>
+                        <input type="text"
+                            name="cuenta_contable"
+                            class="form-control @error('cuenta_contable') is-invalid @enderror"
+                            value="{{ old('cuenta_contable', $vehiculo->cuenta_contable) }}"
+                            maxlength="100"
+                            placeholder="Ej. 12345">
+                        @error('cuenta_contable')
+                            <span class="input-error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+
                 </div>
 
                 {{-- Asignación --}}

@@ -121,6 +121,11 @@
                             <td class="font-weight-bold">Tipo de Combustible:</td>
                             <td>{{ $vehiculo->tipo_combustible ?: 'N/A' }}</td>
                         </tr>
+
+                        <tr>
+                        <td class="font-weight-bold">Cuenta contable:</td>
+                            <td>{{ $vehiculo->cuenta_contable ?: 'N/A' }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
