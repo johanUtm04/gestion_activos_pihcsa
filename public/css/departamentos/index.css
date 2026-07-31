@@ -39,3 +39,33 @@
     border-color: #e06d10 !important;
     color: #ffffff !important;
 }
+
+
+/* Footer 🦵 */
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-left, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.app-name {
+    font-weight: bold;
+    color: #495057;
+}
+
+.footer-right {
+    color: #868e96;
+}
+
+.footer-left strong {
+    color: #343a40;
+}
