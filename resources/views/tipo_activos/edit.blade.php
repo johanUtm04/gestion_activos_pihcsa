@@ -39,7 +39,7 @@
 
 @section('content_header')
     <h1 class="font-weight-bold text-center">
-        <i class="fas fa-microchip text-danger"></i> 
+        <i class="fas fa-microchip text-info"></i> 
         Edición de Categoría: {{ strtoupper($tipo_activo->nombre) }}
     </h1>
     <a href="{{ route('tipo_activos.index') }}" class="btn btn-secondary btn-sm shadow-sm">
@@ -51,13 +51,13 @@
         <div class="row">
             {{-- COLUMNA IZQUIERDA: VISTA PREVIA --}}
             <div class="col-md-5">
-                <div class="card card-outline card-danger shadow-sm">
+                <div class="card card-outline card-info shadow-sm">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fas fa-eye"></i> Vista Previa Actual</h3>
                     </div>
                     <div class="card-body">
                         <fieldset class="border p-3 mb-4">
-                            <legend class="w-auto px-2 text-danger font-weight-bold">
+                            <legend class="w-auto px-2 text-info font-weight-bold">
                                 <i class="fas fa-info-circle"></i> Detalles del Catálogo
                             </legend>
 
@@ -80,7 +80,7 @@
 
                             <div class="data-item">
                                 <span class="data-label"><i class="fas fa-boxes"></i> Equipos vinculados:</span> 
-                                <span class="float-right badge badge-danger">
+                                <span class="float-right badge badge-info">
                                     {{ $tipo_activo->equipos->count() }} Activos
                                 </span>
                             </div>

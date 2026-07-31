@@ -2,7 +2,7 @@
 @php 
     $alertTypes = [
         'success' => 'fa-check-circle', 
-        'danger'  => 'fa-exclamation-circle', 
+        'info'  => 'fa-exclamation-circle', 
         'warning' => 'fa-exclamation-triangle', 
         'info'    => 'fa-info-circle', 
         'primary' => 'fa-user'

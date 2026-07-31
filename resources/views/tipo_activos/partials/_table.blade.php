@@ -57,7 +57,7 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group shadow-sm">
-                                <a href="{{ route('tipo_activos.edit', $tipo) }}" class="btn btn-sm btn-outline-danger" title="Editar">
+                                <a href="{{ route('tipo_activos.edit', $tipo) }}" class="btn btn-sm btn-outline-info" title="Editar">
                                     <i class="fas fa-pen"></i>
                                 </a>
                                 <form action="{{ route('tipo_activos.destroy', $tipo) }}" method="POST" class="d-inline">

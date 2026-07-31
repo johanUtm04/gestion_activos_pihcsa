@@ -1,0 +1,41 @@
+.table-departamentos { border-radius: 12px; overflow: hidden; }
+.table-departamentos thead th {
+    background-color: #fff3cd; 
+    color: #FD7E14;            
+    font-weight: 800;
+    border-bottom: 3px solid #FD7E14; 
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 15px;
+}
+.table-departamentos tbody td { vertical-align: middle; padding: 15px; }
+.table-departamentos tbody tr:hover { 
+    background-color: rgba(253, 126, 20, 0.03) !important;
+}
+.secondary-data { color: #888; font-size: 0.85em; display: block; }
+.badge-status { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+
+/* Utilidades de color naranja 🟠*/
+.text-orange-pure {
+    color: #FD7E14 !important;
+}
+
+.card-orange-pure {
+    border-top: 3px solid #FD7E14 !important;
+}
+
+.btn-tool.text-orange-pure:hover {
+    color: #e06d10 !important;
+}
+.btn-orange {
+    background-color: #FD7E14 !important;
+    border-color: #FD7E14 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.btn-orange:hover {
+    background-color: #e06d10 !important;
+    border-color: #e06d10 !important;
+    color: #ffffff !important;
+}

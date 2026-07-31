@@ -1,13 +1,13 @@
-<div class="card card-outline card-danger shadow-sm mb-2"> {{-- Cambiado a card-danger (Azul) para diferenciar de Marcas --}}
+<div class="card card-outline card-info shadow-sm mb-2"> {{-- Cambiado a card-info (Azul) para diferenciar de Marcas --}}
     <div class="search-header border-0 shadow-none" onclick="togglePanel()" 
          style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; background: transparent;">
         
-        <h3 class="card-title text-danger font-weight-bold mb-0" style="font-size: 1rem;">
+        <h3 class="card-title text-info font-weight-bold mb-0" style="font-size: 1rem;">
             <i class="fas fa-search mr-2"></i> Panel de Búsqueda de Tipos de Activo
         </h3>
         
         <div class="card-tools">
-            <button type="button" class="btn btn-tool text-danger">
+            <button type="button" class="btn btn-tool text-info">
                 <i class="fas fa-plus" id="toggle-icon"></i>
             </button>
         </div>
@@ -40,11 +40,11 @@
                     <div class="col-md-3 text-right">
                         <div class="form-group mb-1">
                             <div class="btn-group w-100">
-                                <button type="submit" class="btn btn-danger btn-sm shadow-sm">
+                                <button type="submit" class="btn btn-info btn-sm shadow-sm">
                                     <i class="fas fa-filter mr-1"></i> FILTRAR
                                 </button>
                                 <a href="{{ route('tipo_activos.index') }}" class="btn btn-default btn-sm shadow-sm" title="Limpiar">
-                                    <i class="fas fa-sync-alt text-danger"></i>
+                                    <i class="fas fa-sync-alt text-info"></i>
                                 </a>
                             </div>
                         </div>

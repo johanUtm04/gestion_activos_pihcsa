@@ -394,6 +394,7 @@ return [
             'gestionUsuarios*',
             'gestionUbicaciones*',
             'gestionMarcas*',
+            'gestionDepartamentos*',
             'gestionTipoActivos*',
             'tipo_vehiculos*',
             'empresas*',
@@ -430,6 +431,14 @@ return [
                 'icon'       => 'fas fa-microchip',
                 'icon_color' => 'info',
                 'active'     => ['gestionTipoActivos*'],
+            ],
+
+            [
+                'text'       => 'Departamentos',
+                'url'        => '/gestionDepartamentos',
+                'icon'       => 'fas fa-building',
+                'icon_color' => 'orange',
+                'active'     => ['gestionDepartamentos*'],
             ],
 
             [

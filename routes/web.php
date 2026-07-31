@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     SoporteController,
     InpcController,
     TasasController,
+    DepartamentoController,
 };
 
 use App\Http\Controllers\VehiculoController;
@@ -295,6 +296,10 @@ Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
     Route::resource('gestionMarcas', MarcaController::class)
         ->names('marcas')
         ->parameters(['gestionMarcas' => 'marca']);
+
+    Route::resource('gestionDepartamentos', DepartamentoController::class)
+        ->names('departamentos')
+        ->parameters(['gestionDepartamentos' => 'departamento']);
 
     Route::resource('gestionTipoActivos', TipoActivoController::class)
         ->names('tipo_activos')

@@ -1,9 +1,9 @@
 .table-tipos { border-radius: 12px; overflow: hidden; }
 .table-tipos thead th {
-    background-color: #fdecea;
-    color: #dc3545;
+    background-color: #daf3f7;
+    color: #17A2B8;
     font-weight: 800;
-    border-bottom: 3px solid #dc3545;
+    border-bottom: 3px solid #17A2B8;
     text-transform: uppercase;
     font-size: 0.85rem;
     padding: 15px;

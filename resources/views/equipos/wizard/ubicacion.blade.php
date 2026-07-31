@@ -163,21 +163,13 @@
                                 -- Seleccione --
                             </option>
 
-                            @php
-                                $departamentos = [
-                                    'ADMINISTRACION', 'ALMACEN', 'CALIDAD', 'COBRANZA', 'COMPRAS', 
-                                    'CONTABILIDAD', 'CREDITO', 'CULTURA Y TALENTO', 'DIRECCION', 
-                                    'EMBARQUES', 'INVENTARIOS', 'JURIDICO', 'LOGISTICA', 
-                                    'SISTEMAS', 'VENTAS'
-                                ];
-                            @endphp
-
-                            @foreach($departamentos as $dep)
-                                <option value="{{ $dep }}" 
-                                    {{ old('departamento_perteneciente', $equipo['departamento_perteneciente'] ?? '') == $dep ? 'selected' : '' }}>
-                                    {{ $dep }}
+                            @foreach(\App\Models\Departamento::orderBy('nombre')->get() as $dep)
+                                <option value="{{ $dep->nombre }}"
+                                    {{ old('departamento_perteneciente', $equipo['departamento_perteneciente'] ?? '') == $dep->nombre ? 'selected' : '' }}>
+                                    {{ $dep->nombre }}
                                 </option>
                             @endforeach
+
                         </select>
 
                         <small class="form-text text-muted">
