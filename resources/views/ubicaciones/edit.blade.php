@@ -15,7 +15,6 @@
     .data-item {
         margin-bottom: 10px;
         padding-bottom: 6px;
-        /* Línea punteada eliminada */
         border-bottom: none; 
     }
 
@@ -23,12 +22,7 @@
         font-weight: 600;
         color: #495057;
     }
-
-    .card-outline.card-danger {
-        border-top: 3px solid #dc3545;
-    }
     
-    /* Ajuste opcional para que el fieldset se vea bien en modo lectura */
     fieldset.border {
         border: 1px solid #dee2e6 !important;
         padding: 0 1.4em 1.4em 1.4em !important;
@@ -40,7 +34,7 @@
 
 @section('content_header')
     <h1 class="font-weight-bold text-center">
-        <i class="fas fa-map-marker-alt text-danger"></i>
+        <i class="fas fa-map-marker-alt text-red-pure"></i>
         Edición de Ubicación: {{ strtoupper($ubicacion->nombre) }}
     </h1>
 
@@ -54,7 +48,7 @@
     <div class="row">
 
         <div class="col-md-5">
-            <div class="card card-outline card-danger shadow-sm">
+            <div class="card card-outline card-red-pure shadow-sm">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-clipboard-list"></i> Detalle Actual
@@ -62,9 +56,8 @@
                 </div>
 
                 <div class="card-body">
-                    {{-- Cambiamos el h5 por un fieldset para mantener consistencia visual --}}
                     <fieldset class="border p-3 mb-4">
-                        <legend class="w-auto px-2 text-danger">
+                        <legend class="w-auto px-2 text-red-pure">
                             <i class="fas fa-map"></i> Información de Ubicación
                         </legend>
 
@@ -94,7 +87,7 @@
         </div>
 
         <div class="col-md-7">
-            <div class="card card-outline card-danger shadow-sm">
+            <div class="card card-outline card-red-pure shadow-sm">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-pen-square"></i> Modificación de Datos
@@ -107,14 +100,14 @@
                         @method('PUT')
 
                         <fieldset class="border p-3 mb-4">
-                            <legend class="w-auto px-2 text-danger">
+                            <legend class="w-auto px-2 text-red-pure">
                                 <i class="fas fa-info-circle"></i> Datos Base
                             </legend>
 
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="nombre">
-                                        <i class="fas fa-map-marker-alt"></i> Nombre
+                                        <i class="fas fa-map-marker-alt text-red-pure"></i> Nombre
                                     </label>
                                     <input type="text" name="nombre" id="nombre" class="form-control"
                                            value="{{ old('nombre', $ubicacion->nombre) }}">
@@ -122,7 +115,7 @@
 
                                 <div class="form-group col-md-6">
                                     <label for="codigo">
-                                        <i class="fas fa-barcode"></i> Código
+                                        <i class="fas fa-barcode text-red-pure"></i> Código
                                     </label>
                                     <input type="text" name="codigo" id="codigo" class="form-control"
                                            value="{{ old('codigo', $ubicacion->codigo) }}">
@@ -131,7 +124,7 @@
                         </fieldset>
 
                         <div class="mt-4">
-                            <button type="submit" class="btn btn-danger btn-lg btn-block shadow">
+                            <button type="submit" class="btn btn-red-pure btn-lg btn-block shadow">
                                 <i class="fas fa-save"></i> Guardar Cambios
                             </button>
                         </div>

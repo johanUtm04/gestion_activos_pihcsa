@@ -11,7 +11,6 @@ function togglePanel() {
         
         icon.style.transform = "rotate(180deg)";
     } else {
-
         body.style.maxHeight = "0";
         body.style.opacity = "0";
         
@@ -22,13 +21,12 @@ function togglePanel() {
     }
 }
 
-
 $(document).ready(function() {
     const marker = document.getElementById('scroll-target-marker');
 
     if (marker) {
-        const equipoId = marker.getAttribute('data-id');
-        const targetRow = document.getElementById('ubicacion-' + equipoId);
+        const ubicacionId = marker.getAttribute('data-id');
+        const targetRow = document.getElementById('ubicacion-' + ubicacionId);
 
         if (targetRow) {
             targetRow.scrollIntoView({ 

@@ -46,21 +46,19 @@
 @section('content_header')
 <div class="mb-3">
     <h1 class="font-weight-bold mb-1">
-        <i class="fas fa-map-marker-alt text-danger"></i> Registrar Nueva Ubicación
+        <i class="fas fa-map-marker-alt text-red-pure"></i> Registrar Nueva Ubicación
     </h1>
     <a href="{{ route('ubicaciones.index') }}" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver a gestion de ubicaciones
     </a>
 </div>
 
-
-{{-- WIZARD SIMPLE --}}
 <div class="card mb-3">
     <div class="card-body p-3">
         <div class="d-flex justify-content-around text-center">
-            <div class="wizard-step active">
+            <div class="wizard-step active text-red-pure">
                 <i class="fas fa-map"></i>
-                <div>Ubicación</div>
+                <div class="font-weight-bold">Ubicación</div>
             </div>
             <div class="wizard-step">
                 <i class="fas fa-check-circle"></i>
@@ -73,7 +71,6 @@
 
 @section('content')
 
-{{-- ERRORES --}}
 @if ($errors->any())
 <div class="alert alert-danger alert-dismissible fade show">
     <strong><i class="fas fa-exclamation-triangle"></i> Revisa los datos</strong>
@@ -91,13 +88,12 @@
 <form action="{{ route('ubicaciones.store') }}" method="POST">
 @csrf
 
-<div class="card card-outline card-danger">
+<div class="card card-outline card-red-pure">
     <div class="card-body">
 
         <fieldset class="fieldset-group">
-            <legend><i class="fas fa-info-circle"></i> Información de la Ubicación</legend>
+            <legend><i class="fas fa-info-circle text-red-pure"></i> Información de la Ubicación</legend>
 
-            {{-- ICONO --}}
             <div class="text-center mb-4 text-muted">
                 <i class="fas fa-building fa-3x"></i>
                 <div class="small mt-1">Datos generales</div>
@@ -129,9 +125,8 @@
 
     </div>
 
-    {{-- FOOTER --}}
     <div class="card-footer text-right">
-        <button type="submit" class="btn btn-danger btn-lg">
+        <button type="submit" class="btn btn-red-pure btn-lg">
             <i class="fas fa-save"></i> Guardar Ubicación
         </button>
 
@@ -141,5 +136,4 @@
     </div>
 </div>
 </form>
-
 @stop

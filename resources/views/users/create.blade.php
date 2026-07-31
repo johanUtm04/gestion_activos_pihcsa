@@ -5,31 +5,57 @@
 @section('css')
 <style>
     .fieldset-group {
-        border: 1px solid #ced4da;
-        padding: 20px;
+        border: 1px solid #dee2e6;
+        border-top: 3px solid #198754;
+        padding: 25px 20px 20px 20px;
         margin-bottom: 20px;
-        border-radius: .25rem;
+        border-radius: 8px;
         background-color: #ffffff;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     }
 
     .fieldset-group legend {
         width: inherit;
-        padding: 0 10px;
+        padding: 0 12px;
         border-bottom: none;
-        font-size: 1.1em;
-        font-weight: 600;
+        font-size: 1.05em;
+        font-weight: 700;
         color: #198754;
+        background-color: #ffffff;
+        border-radius: 4px;
+        margin-top: -15px;
     }
 
     .fieldset-group i.fa-3x {
-        opacity: 0.25;
+        opacity: 0.15;
     }
 
     .form-group label {
-        font-weight: 500;
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+
+    .btn-green-pure {
+        background-color: #198754 !important;
+        border-color: #198754 !important;
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+
+    .btn-green-pure:hover {
+        background-color: #146c43 !important;
+        border-color: #146c43 !important;
     }
 </style>
 @stop
+
+
 
 @section('content_header')
 <div class="mb-3">
@@ -40,21 +66,6 @@
     <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver a gestion de usuarios
     </a>
-</div>
-
-<div class="card mb-3">
-    <div class="card-body p-3">
-        <div class="d-flex justify-content-around text-center">
-            <div class="wizard-step active text-green-pure">
-                <i class="fas fa-user"></i>
-                <div class="font-weight-bold">Usuario</div>
-            </div>
-            <div class="wizard-step">
-                <i class="fas fa-check-circle"></i>
-                <div>Confirmar</div>
-            </div>
-        </div>
-    </div>
 </div>
 @stop
 
