@@ -400,12 +400,11 @@ return [
             'empresas*',
         ],
         'submenu' => [
-
             [
                 'text'       => 'Usuarios',
                 'url'        => '/gestionUsuarios',
                 'icon'       => 'fas fa-user-shield',
-                'icon_color' => 'primary',
+                'icon_color' => 'success',
                 'active'     => ['gestionUsuarios*'],
             ],
 

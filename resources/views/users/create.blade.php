@@ -34,20 +34,20 @@
 @section('content_header')
 <div class="mb-3">
     <h1 class="font-weight-bold mb-1">
-        <i class="fas fa-user-plus text-success"></i> Registrar Nuevo Usuario
+        <i class="fas fa-user-plus text-green-pure"></i> Registrar Nuevo Usuario
     </h1>
 
     <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left"></i> Volver a gestion de usuarios
     </a>
 </div>
-{{-- WIZARD SIMPLE --}}
+
 <div class="card mb-3">
     <div class="card-body p-3">
         <div class="d-flex justify-content-around text-center">
-            <div class="wizard-step active">
+            <div class="wizard-step active text-green-pure">
                 <i class="fas fa-user"></i>
-                <div>Usuario</div>
+                <div class="font-weight-bold">Usuario</div>
             </div>
             <div class="wizard-step">
                 <i class="fas fa-check-circle"></i>
@@ -56,12 +56,10 @@
         </div>
     </div>
 </div>
-
 @stop
 
 @section('content')
 
-{{-- ERRORES --}}
 @if ($errors->any())
 <div class="alert alert-danger alert-dismissible fade show">
     <strong><i class="fas fa-exclamation-triangle"></i> Revisa los datos</strong>
@@ -79,15 +77,13 @@
 <form action="{{ route('users.store')}}" method="POST">
 @csrf
 
-<div class="card card-outline card-success">
+<div class="card card-outline card-green-pure">
     <div class="card-body">
-
         <div class="row">
 
-            {{-- COLUMNA IZQUIERDA --}}
             <div class="col-md-6">
                 <fieldset class="fieldset-group">
-                    <legend><i class="fas fa-user"></i> Información del Usuario</legend>
+                    <legend><i class="fas fa-user text-green-pure"></i> Información del Usuario</legend>
 
                     <div class="text-center mb-3 text-muted">
                         <i class="fas fa-user-circle fa-3x"></i>
@@ -123,7 +119,6 @@
                                required>
                     </div>
 
-
                     <div class="form-group">
                         <label>Confirmar contraseña </label>
                         <input type="password"
@@ -135,10 +130,9 @@
                 </fieldset>
             </div>
 
-            {{-- COLUMNA DERECHA --}}
             <div class="col-md-6">
                 <fieldset class="fieldset-group">
-                    <legend><i class="fas fa-user-shield"></i> Rol y Estado</legend>
+                    <legend><i class="fas fa-user-shield text-green-pure"></i> Rol y Estado</legend>
 
                     <div class="text-center mb-3 text-muted">
                         <i class="fas fa-users-cog fa-3x"></i>
@@ -156,7 +150,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="departamento"><i class="fas fa-building"></i> Departamento</label>
+                        <label for="departamento"><i class="fas fa-building text-green-pure"></i> Departamento</label>
                         <select name="departamento" id="departamento" class="form-control select2 @error('departamento') is-invalid @enderror" required>
                             <option value="" disabled {{ old('departamento', $equipo->departamento ?? '') == '' ? 'selected' : '' }}>
                                 -- Seleccione un departamento --
@@ -199,16 +193,14 @@
                             </option>
                         </select>
                     </div>
-
                 </fieldset>
             </div>
 
         </div>
     </div>
 
-    {{-- FOOTER --}}
     <div class="card-footer text-right">
-        <button type="submit" class="btn btn-success btn-lg">
+        <button type="submit" class="btn btn-green-pure btn-lg">
             <i class="fas fa-save"></i> Guardar Usuario
         </button>
 
@@ -218,5 +210,4 @@
     </div>
 </div>
 </form>
-
 @stop

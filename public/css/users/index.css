@@ -1,0 +1,71 @@
+.table-users { border-radius: 12px; overflow: hidden; }
+.table-users thead th {
+    background-color: #d1e7dd; 
+    color: #198754;            
+    font-weight: 800;
+    border-bottom: 3px solid #198754; 
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 15px;
+}
+.table-users tbody td { vertical-align: middle; padding: 15px; }
+.table-users tbody tr:hover { 
+    background-color: rgba(25, 135, 84, 0.03) !important;
+}
+.secondary-data { color: #888; font-size: 0.85em; display: block; }
+.badge-status { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+
+/* Utilidades de color verde 🟩*/
+.text-green-pure {
+    color: #198754 !important;
+}
+
+.card-green-pure {
+    border-top: 3px solid #198754 !important;
+}
+
+.btn-green-pure {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.btn-green-pure:hover {
+    background-color: #146c43 !important;
+    border-color: #146c43 !important;
+    color: #ffffff !important;
+}
+
+.btn-tool.text-green-pure:hover {
+    color: #146c43 !important;
+}
+
+/* Footer 🦵 */
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-left, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.app-name {
+    font-weight: bold;
+    color: #495057;
+}
+
+.footer-right {
+    color: #868e96;
+}
+
+.footer-left strong {
+    color: #343a40;
+}

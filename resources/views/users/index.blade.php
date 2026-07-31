@@ -11,13 +11,11 @@
 @stop
 
 @section('content')
-    {{-- Alertas de Sesión --}}
     @include('users.partials._alerts')
     @include('users.partials._filters')
 
     <div class="row">
         <div class="col-12">
-            {{-- Tabla de Usuarios --}}
             @include('users.partials._table')
         </div>
     </div>

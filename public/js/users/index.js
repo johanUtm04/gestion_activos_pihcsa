@@ -11,7 +11,6 @@ function togglePanel() {
         
         icon.style.transform = "rotate(180deg)";
     } else {
-
         body.style.maxHeight = "0";
         body.style.opacity = "0";
         
@@ -26,8 +25,8 @@ $(document).ready(function() {
     const marker = document.getElementById('scroll-target-marker');
 
     if (marker) {
-        const equipoId = marker.getAttribute('data-id');
-        const targetRow = document.getElementById('user-' + equipoId);
+        const usuarioId = marker.getAttribute('data-id');
+        const targetRow = document.getElementById('user-' + usuarioId);
 
         if (targetRow) {
             targetRow.scrollIntoView({ 
@@ -35,7 +34,7 @@ $(document).ready(function() {
                 block: 'center' 
             });
 
-            $(targetRow).css('background-color', '#e9f7ef');
+            $(targetRow).css('background-color', '#d1e7dd');
             
             $(targetRow).fadeOut(400).fadeIn(400).fadeOut(400).fadeIn(400, function() {
                 setTimeout(() => {
@@ -45,5 +44,3 @@ $(document).ready(function() {
         }
     }
 });
-
-

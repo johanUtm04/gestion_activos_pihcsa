@@ -180,13 +180,13 @@
 
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label for="email"><i class="fas fa-barcode"></i> Correo Electronico:</label>
+                                        <label for="email"><i class="fas fa-envelope text-green-pure"></i> Correo Electrónico:</label>
                                         <input type="text" name="email" id="email" class="form-control"
                                         value="{{ old('email', $user->email) }}">
                                     </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="departamento"><i class="fas fa-building"></i> Departamento: </label>
+                                    <label for="departamento"><i class="fas fa-building text-green-pure"></i> Departamento: </label>
                                     <select name="departamento" id="departamento" class="form-control @error('departamento') is-invalid @enderror">
                                         <option value="" disabled {{ old('departamento', $user->departamento) == '' ? 'selected' : '' }}>-- Seleccione --</option>
                                         
@@ -218,7 +218,7 @@
                             </fieldset>
                             {{-- BOTÓN FINAL --}}
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                <button type="submit" class="btn btn-green-pure btn-lg btn-block">
                                     <i class="fas fa-database"></i> Aplicar Cambios y Registrar Historial
                                 </button>
                             </div>

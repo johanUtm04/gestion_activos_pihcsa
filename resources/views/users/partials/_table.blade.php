@@ -46,7 +46,7 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group shadow-sm">
-                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-outline-success" title="Editar">
+                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-outline-success" style="color: #198754; border-color: #198754;" title="Editar">
                                     <i class="fas fa-pen"></i>
                                 </a>
                                 <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
