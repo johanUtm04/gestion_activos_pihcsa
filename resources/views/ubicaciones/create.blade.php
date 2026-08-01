@@ -3,44 +3,45 @@
 @section('title', 'Registrar Ubicación')
 
 @section('css')
-<style>
-    .fieldset-group {
-        border: 1px solid #f5c6cb;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: .25rem;
-        background-color: #ffffff;
-    }
+    <link rel="stylesheet" href="{{ asset('css/ubicaciones/index.css') }}">
+    <style>
+        .fieldset-group {
+            border: 1px solid #f5c6cb;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: .25rem;
+            background-color: #ffffff;
+        }
 
-    .fieldset-group legend {
-        width: inherit;
-        padding: 0 10px;
-        border-bottom: none;
-        font-size: 1.1em;
-        font-weight: 600;
-        color: #dc3545;
-    }
+        .fieldset-group legend {
+            width: inherit;
+            padding: 0 10px;
+            border-bottom: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #dc3545;
+        }
 
-    .form-group label {
-        font-weight: 500;
-    }
+        .form-group label {
+            font-weight: 500;
+        }
 
-    .wizard-step {
-        color: #adb5bd;
-        font-size: 14px;
-    }
+        .wizard-step {
+            color: #adb5bd;
+            font-size: 14px;
+        }
 
-    .wizard-step.active {
-        color: #dc3545;
-        font-weight: 600;
-    }
+        .wizard-step.active {
+            color: #dc3545;
+            font-weight: 600;
+        }
 
-    .wizard-step i {
-        font-size: 22px;
-        display: block;
-        margin-bottom: 4px;
-    }
-</style>
+        .wizard-step i {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
 @stop
 
 @section('content_header')
@@ -53,20 +54,6 @@
     </a>
 </div>
 
-<div class="card mb-3">
-    <div class="card-body p-3">
-        <div class="d-flex justify-content-around text-center">
-            <div class="wizard-step active text-red-pure">
-                <i class="fas fa-map"></i>
-                <div class="font-weight-bold">Ubicación</div>
-            </div>
-            <div class="wizard-step">
-                <i class="fas fa-check-circle"></i>
-                <div>Confirmar</div>
-            </div>
-        </div>
-    </div>
-</div>
 @stop
 
 @section('content')

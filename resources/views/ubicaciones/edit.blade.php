@@ -3,33 +3,34 @@
 @section('title', 'Editar Ubicación | Activos TI')
 
 @section('css')
-<style>
-    .section-title {
-        border-bottom: 2px solid #dc3545;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
-        color: #dc3545;
-        font-weight: 600;
-    }
+    <link rel="stylesheet" href="{{ asset('css/ubicaciones/index.css') }}">
+    <style>
+        .section-title {
+            border-bottom: 2px solid #dc3545;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #dc3545;
+            font-weight: 600;
+        }
 
-    .data-item {
-        margin-bottom: 10px;
-        padding-bottom: 6px;
-        border-bottom: none; 
-    }
+        .data-item {
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: none; 
+        }
 
-    .data-label {
-        font-weight: 600;
-        color: #495057;
-    }
-    
-    fieldset.border {
-        border: 1px solid #dee2e6 !important;
-        padding: 0 1.4em 1.4em 1.4em !important;
-        margin: 0 0 1.5em 0 !important;
-        border-radius: 8px;
-    }
-</style>
+        .data-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        fieldset.border {
+            border: 1px solid #dee2e6 !important;
+            padding: 0 1.4em 1.4em 1.4em !important;
+            margin: 0 0 1.5em 0 !important;
+            border-radius: 8px;
+        }
+    </style>
 @stop
 
 @section('content_header')

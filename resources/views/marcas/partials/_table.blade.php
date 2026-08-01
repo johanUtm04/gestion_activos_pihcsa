@@ -43,7 +43,7 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group shadow-sm">
-                                <a href="{{ route('marcas.edit', $marca) }}" class="btn btn-sm btn-outline-danger" title="Editar">
+                                <a href="{{ route('marcas.edit', $marca) }}" class="btn btn-sm btn-outline-warning" title="Editar">
                                     <i class="fas fa-pen"></i>
                                 </a>
                                 <form action="{{ route('marcas.destroy', $marca) }}" method="POST" class="d-inline">
