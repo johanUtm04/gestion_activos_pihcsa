@@ -3,9 +3,7 @@
 @section('title', 'Nueva Marca')
 
 @section('content_header')
-    <h1 class="font-weight-bold text-dark">
-        <i class="fas fa-plus-circle text-danger mr-2"></i>Nueva Marca
-    </h1>
+    <h1 class="font-weight-bold text-dark"><i class="fas fa-plus-circle mr-2" style="color: #FFC107;"></i>Nueva Marca</h1>
 @stop
 
 @section('content')
@@ -55,7 +53,7 @@
         </div>
 
         <div class="card-footer bg-white border-top-0">
-            <button type="submit" class="btn btn-danger px-4 shadow-sm font-weight-bold">
+            <button type="submit" class="btn px-4 shadow-sm font-weight-bold" style="background-color: #FFC107; border-color: #FFC107; color: #212529;">
                 <i class="fas fa-save mr-1"></i> Guardar Marca
             </button>
 

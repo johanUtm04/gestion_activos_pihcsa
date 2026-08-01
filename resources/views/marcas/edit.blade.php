@@ -4,41 +4,19 @@
 
 @section('css')
 <style>
-    .section-title {
-        border-bottom: 2px solid #dc3545; 
-        padding-bottom: 5px;
-        margin-bottom: 15px;
-        color: #dc3545; 
-        font-weight: 600;
-    }
-
-    .data-item {
-        margin-bottom: 10px;
-        padding-bottom: 5px;
-        /* Línea punteada quitada */
-        border-bottom: none;
-    }
-
-    .data-item:last-child {
-        border-bottom: none;
-    }
-
-    .data-label {
-        font-weight: 600;
-        color: #495057;
-    }
-
-    /* Mejora visual para los fieldsets */
+    .data-item { margin-bottom: 10px; padding-bottom: 5px; border-bottom: none; }
+    .data-label { font-weight: 600; color: #495057; }
     fieldset.border {
         border: 1px solid #dee2e6 !important;
         border-radius: 8px;
+        background-color: #fdfdfd;
     }
 </style>
 @stop
 
 @section('content_header')
     <h1 class="font-weight-bold text-center">
-        <i class="fas fa-tags text-danger"></i> 
+        <i class="fas fa-tags" style="color: #FFC107;"></i>
         Edición de Marca: {{ strtoupper($marca->nombre) }}
     </h1>
     <a href="{{ route('marcas.index') }}" class="btn btn-secondary btn-sm shadow-sm">
@@ -51,7 +29,7 @@
         <div class="row">
 
             <div class="col-md-5">
-                <div class="card card-outline card-danger shadow-sm">
+                <div class="card card-outline shadow-sm" style="border-top: 3px solid #FFC107;">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-info-circle"></i> Estado Actual en Catálogo
@@ -59,7 +37,7 @@
                     </div>
                     <div class="card-body">
                         <fieldset class="border p-3 mb-4">
-                            <legend class="w-auto px-2 text-danger font-weight-bold">
+                            <legend class="w-auto px-2 font-weight-bold" style="color: #FFC107;">
                                 <i class="fas fa-industry"></i> Información Registrada
                             </legend>
 
@@ -88,7 +66,9 @@
                                 <span class="data-label">
                                     <i class="fas fa-laptop"></i> Equipos Vinculados:
                                 </span> 
-                                <span class="float-right badge badge-info">{{ $marca->equipos->count() }} equipos</span>
+                                <span class="float-right badge text-white" style="background-color: #FFC107; color: #212529 !important;">
+                                    {{ $marca->equipos->count() }} equipos
+                                </span>
                             </div>
                         </fieldset>
                     </div>
@@ -96,7 +76,7 @@
             </div>
 
             <div class="col-md-7">
-                <div class="card card-outline card-danger shadow-sm">
+                <div class="card card-outline shadow-sm" style="border-top: 3px solid #FFC107;">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="fas fa-edit"></i> Actualizar Nombre del Fabricante
@@ -109,7 +89,7 @@
                             @method('PUT')
 
                             <fieldset class="border p-4 mb-4">
-                                <legend class="w-auto px-2 text-danger font-weight-bold">
+                                <legend class="w-auto px-2 font-weight-bold" style="color: #FFC107;">
                                     <i class="fas fa-database"></i> Datos de la Marca
                                 </legend>
 
@@ -167,7 +147,7 @@
                             </fieldset>
 
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-danger btn-lg btn-block shadow">
+                                <button type="submit" class="btn btn-lg btn-block shadow" style="background-color: #FFC107; border-color: #FFC107; color: #212529;">
                                     <i class="fas fa-sync-alt"></i> Guardar Cambios en Catálogo
                                 </button>
                             </div>

@@ -1,13 +1,13 @@
-<div class="card card-outline card-danger shadow-sm mb-2">
+<div class="card card-outline card-yellow-pure shadow-sm mb-2">
     <div class="search-header border-0 shadow-none" onclick="togglePanel()" 
          style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 8px 15px; background: transparent;">
         
-        <h3 class="card-title text-danger font-weight-bold mb-0" style="font-size: 1rem;">
+        <h3 class="card-title text-yellow-pure font-weight-bold mb-0" style="font-size: 1rem;">
             <i class="fas fa-search mr-2"></i> Panel de Búsqueda de Marcas
         </h3>
         
         <div class="card-tools">
-            <button type="button" class="btn btn-tool text-danger">
+            <button type="button" class="btn btn-tool text-yellow-pure">
                 <i class="fas fa-plus" id="toggle-icon"></i>
             </button>
         </div>
@@ -41,11 +41,11 @@
                     <div class="col-md-3 text-right">
                         <div class="form-group mb-1">
                             <div class="btn-group w-100">
-                                <button type="submit" class="btn btn-danger btn-sm shadow-sm">
+                                <button type="submit" class="btn btn-yellow btn-sm shadow-sm">
                                     <i class="fas fa-filter mr-1"></i> FILTRAR
                                 </button>
                                 <a href="{{ route('marcas.index') }}" class="btn btn-default btn-sm shadow-sm" title="Limpiar">
-                                    <i class="fas fa-sync-alt text-danger"></i>
+                                    <i class="fas fa-sync-alt text-yellow-pure"></i>
                                 </a>
                             </div>
                         </div>
