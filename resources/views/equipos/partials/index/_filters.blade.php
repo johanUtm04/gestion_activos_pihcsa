@@ -47,28 +47,9 @@
                 <label class="small font-weight-bold text-muted text-uppercase">Departamento</label>
                 <select name="departamento" class="form-control form-control-sm shadow-sm">
                     <option value="">-- Todos --</option>
-                    @php
-                        $departamentos = [
-                            'ADMINISTRACION',
-                            'ALMACEN',
-                            'CALIDAD',
-                            'COBRANZA',
-                            'COMPRAS',
-                            'CONTABILIDAD',
-                            'CREDITO',
-                            'CULTURA Y TALENTO',
-                            'DIRECCION',      
-                            'EMBARQUES',       
-                            'INVENTARIOS',     
-                            'JURIDICO',
-                            'LOGISTICA',       
-                            'SISTEMAS',
-                            'VENTAS'
-                        ];
-                    @endphp
                     @foreach($departamentos as $dep)
-                        <option value="{{ $dep }}" @selected(request('departamento') == $dep)>
-                            {{ $dep }}
+                        <option value="{{ $dep->nombre }}" @selected(request('departamento') == $dep->nombre)>
+                            {{ $dep->nombre }}
                         </option>
                     @endforeach
                 </select>

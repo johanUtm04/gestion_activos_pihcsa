@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\MantenimientoVehiculo;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class VehiculoController extends Controller
 {
@@ -146,7 +147,14 @@ public function store(Request $request)
             return response()->json($vehiculo);
         }
 
-        return view('vehiculos.show', compact('vehiculo'));
+        // Historial de mantenimientos para mostrarlo en la ficha del vehículo,
+        // con los archivos adjuntos (orden de servicio / factura) si existen.
+        $mantenimientos = MantenimientoVehiculo::where('vehiculo_id', $vehiculo->id)
+            ->with('usuario')
+            ->orderByDesc('fecha_evento')
+            ->get();
+
+        return view('vehiculos.show', compact('vehiculo', 'mantenimientos'));
     }
 
     /**
@@ -445,11 +453,15 @@ private function indicadorVidaUtil(): array
     $validated = $request->validate([
         'tipo_evento'       => 'required|string|max:255',
         'tipo_evento_input' => 'nullable|string|max:255',
+        'proveedor'         => 'nullable|string|max:255',
         'usuario_id'        => 'required|exists:users,id',
         'kilometraje'       => 'required|integer|min:0',
         'fecha_evento'      => 'required|date',
         'contexto'          => 'required|string',
         'costo'             => 'nullable|numeric|min:0',
+        // Ambos archivos son opcionales (el usuario puede no tenerlos)
+        'orden_servicio'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        'factura'           => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
     ]);
 
     $tipoEventoFinal = $validated['tipo_evento'];
@@ -457,21 +469,100 @@ private function indicadorVidaUtil(): array
         $tipoEventoFinal = $validated['tipo_evento_input'];
     }
 
+    // Subimos los archivos (si vinieron) al disco público
+    $ordenServicioPath = null;
+    if ($request->hasFile('orden_servicio')) {
+        $ordenServicioPath = $request->file('orden_servicio')
+            ->store('mantenimientos/ordenes_servicio', 'public');
+    }
+
+    $facturaPath = null;
+    if ($request->hasFile('factura')) {
+        $facturaPath = $request->file('factura')
+            ->store('mantenimientos/facturas', 'public');
+    }
+
     MantenimientoVehiculo::create([
-        'vehiculo_id'  => $vehiculo->id,
-        'usuario_id'   => $validated['usuario_id'],
-        'tipo_evento'  => $tipoEventoFinal,
-        'kilometraje'  => $validated['kilometraje'],
-        'fecha_evento' => $validated['fecha_evento'],
-        'contexto'     => $validated['contexto'],
-        'costo'        => $validated['costo'],
+        'vehiculo_id'          => $vehiculo->id,
+        'usuario_id'           => $validated['usuario_id'],
+        'tipo_evento'          => $tipoEventoFinal,
+        'proveedor'            => $validated['proveedor'] ?? null,
+        'kilometraje'          => $validated['kilometraje'],
+        'fecha_evento'         => $validated['fecha_evento'],
+        'contexto'             => $validated['contexto'],
+        'costo'                => $validated['costo'],
+        'orden_servicio_path'  => $ordenServicioPath,
+        'factura_path'         => $facturaPath,
     ]);
 
-    // 4. Opcional: Actualizar el kilometraje
-    // $vehiculo->update(['kilometraje_actual' => $validated['kilometraje']]);
+    // Mantenemos actualizada la fecha de último mantenimiento del vehículo
+    $vehiculo->update(['fecha_ultimo_mantenimiento' => $validated['fecha_evento']]);
 
     return redirect()->route('vehiculos.index')
         ->with('success', 'Mantenimiento registrado correctamente en la bitácora del vehículo.');
 }
+
+    public function adjuntarArchivos(Request $request, MantenimientoVehiculo $mantenimiento)
+    {
+        $validated = $request->validate([
+            'orden_servicio' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'factura'        => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        ]);
+
+        if ($request->hasFile('orden_servicio')) {
+            if ($mantenimiento->orden_servicio_path) {
+                Storage::disk('public')->delete($mantenimiento->orden_servicio_path);
+            }
+
+            $mantenimiento->orden_servicio_path = $request->file('orden_servicio')
+                ->store('mantenimientos/ordenes_servicio', 'public');
+        }
+
+        if ($request->hasFile('factura')) {
+            if ($mantenimiento->factura_path) {
+                Storage::disk('public')->delete($mantenimiento->factura_path);
+            }
+
+            $mantenimiento->factura_path = $request->file('factura')
+                ->store('mantenimientos/facturas', 'public');
+        }
+
+        $mantenimiento->save();
+
+        return redirect()
+            ->route('vehiculos.show', $mantenimiento->vehiculo_id)
+            ->with('success', 'Documento adjuntado correctamente al mantenimiento.');
+    }
+
+    public function verArchivo(MantenimientoVehiculo $mantenimiento, string $tipo)
+    {
+        $campo = $this->campoArchivo($tipo);
+
+        if (!$campo || !$mantenimiento->{$campo} || !Storage::disk('public')->exists($mantenimiento->{$campo})) {
+            abort(404, 'Archivo no encontrado.');
+        }
+
+        return Storage::disk('public')->response($mantenimiento->{$campo});
+    }
+
+    public function descargarArchivo(MantenimientoVehiculo $mantenimiento, string $tipo)
+    {
+        $campo = $this->campoArchivo($tipo);
+
+        if (!$campo || !$mantenimiento->{$campo} || !Storage::disk('public')->exists($mantenimiento->{$campo})) {
+            abort(404, 'Archivo no encontrado.');
+        }
+
+        return Storage::disk('public')->download($mantenimiento->{$campo});
+    }
+
+    private function campoArchivo(string $tipo): ?string
+    {
+        return match ($tipo) {
+            'orden_servicio' => 'orden_servicio_path',
+            'factura'        => 'factura_path',
+            default          => null,
+        };
+    }
 
 }

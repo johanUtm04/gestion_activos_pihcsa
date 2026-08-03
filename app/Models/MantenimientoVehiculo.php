@@ -15,10 +15,13 @@ class MantenimientoVehiculo extends Model
         'vehiculo_id',
         'usuario_id',
         'tipo_evento',
+        'proveedor',
         'kilometraje',
         'fecha_evento',
         'contexto',
         'costo',
+        'orden_servicio_path',
+        'factura_path',
     ];
 
     public function vehiculo()
@@ -29,5 +32,33 @@ class MantenimientoVehiculo extends Model
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
+    }
+
+    public function getOrdenServicioVerUrlAttribute()
+    {
+        return $this->orden_servicio_path
+            ? route('mantenimientos.ver', [$this->id, 'orden_servicio'])
+            : null;
+    }
+
+    public function getOrdenServicioDescargaUrlAttribute()
+    {
+        return $this->orden_servicio_path
+            ? route('mantenimientos.descargar', [$this->id, 'orden_servicio'])
+            : null;
+    }
+
+    public function getFacturaVerUrlAttribute()
+    {
+        return $this->factura_path
+            ? route('mantenimientos.ver', [$this->id, 'factura'])
+            : null;
+    }
+
+    public function getFacturaDescargaUrlAttribute()
+    {
+        return $this->factura_path
+            ? route('mantenimientos.descargar', [$this->id, 'factura'])
+            : null;
     }
 }

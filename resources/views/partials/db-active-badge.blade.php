@@ -19,7 +19,7 @@
     .db-active-badge {
         position: fixed;
         right: 18px;
-        bottom: 18px;
+        bottom: 188px;
         z-index: 9999;
         background: rgba(33, 37, 41, 0.92);
         color: #ffffff;
@@ -59,7 +59,7 @@
 
 <div class="db-active-badge">
     <span class="db-title">
-        <i class="fas fa-database mr-1"></i> Base activa
+        <i class="fas fa-database mr-10"></i> Base activa
     </span>
 
     <span class="db-name">

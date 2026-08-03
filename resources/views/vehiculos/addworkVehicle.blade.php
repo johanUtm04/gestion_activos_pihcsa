@@ -26,6 +26,11 @@
     }
 
     .custom-input { display: none; margin-top: 10px; }
+
+    .file-hint {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
 </style>
 @stop
 
@@ -51,8 +56,9 @@
                         Mantenimiento de Vehículo: {{ $vehiculo->marca->nombre ?? '[Vehículo]' }} | Placas: {{ $vehiculo->placas ?? 'S/P' }}
                     </h3>
                 </div>
-                
-                <form method="POST" action="{{ route('vehiculos.addwork.store', $vehiculo) }}">
+
+                {{-- enctype es obligatorio para poder subir los archivos --}}
+                <form method="POST" action="{{ route('vehiculos.addwork.store', $vehiculo) }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="card-body">
@@ -76,6 +82,18 @@
                                        class="form-control custom-input" 
                                        placeholder="Ej. Cambio de neumáticos, Ajuste de frenos..."
                                        value="{{ old('tipo_evento_input') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="proveedor">Nombre del proveedor / taller</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-store"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="proveedor" id="proveedor"
+                                           placeholder="Ej. Refaccionaria Morelia, Taller Hnos. Ramírez..."
+                                           value="{{ old('proveedor') }}">
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -124,6 +142,41 @@
                                 </div>
                             </div>
                         </fieldset>
+
+                        <fieldset class="fieldset-group">
+                            <legend>
+                                <i class="fas fa-paperclip"></i>
+                                Documentos del servicio (opcional)
+                            </legend>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="orden_servicio">Orden de servicio</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="orden_servicio"
+                                               name="orden_servicio" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label class="custom-file-label" for="orden_servicio">Seleccionar archivo...</label>
+                                    </div>
+                                    <span class="file-hint">PDF o imagen, máx. 5MB. Solo si la tienes.</span>
+                                    @error('orden_servicio')
+                                        <span class="text-danger d-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="factura">Factura</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="factura"
+                                               name="factura" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label class="custom-file-label" for="factura">Seleccionar archivo...</label>
+                                    </div>
+                                    <span class="file-hint">PDF o imagen, máx. 5MB. Solo si la tienes.</span>
+                                    @error('factura')
+                                        <span class="text-danger d-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
 
                     <div class="card-footer text-right">
@@ -167,6 +220,11 @@
         }
 
         setupSelectOtro('tipo_evento', 'tipo_evento_input');
+
+        $('.custom-file-input').on('change', function () {
+            const fileName = this.files[0] ? this.files[0].name : 'Seleccionar archivo...';
+            $(this).next('.custom-file-label').html(fileName);
+        });
     });
 </script>
 @stop

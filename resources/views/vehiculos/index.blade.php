@@ -798,7 +798,7 @@
     <div class="card card-outline card-info shadow-sm preview-sidebar" id="sidebarInspeccion">
         <div class="card-header p-3 d-flex align-items-center bg-light">
             <h3 class="card-title text-info font-weight-bold text-sm mb-0">
-                <i class="fas fa-satellite-dish mr-1 text-xs"></i> COMMAND CENTER DEL VEHÍCULO
+                <i class="fas fa-satellite-dish mr-1 text-xs"></i> COMMAND CENTER DEL VEHICULO
             </h3>
             <button type="button" class="close ml-auto" id="closeSidebar" style="outline:none; font-size: 1.2rem;">
                 &times;

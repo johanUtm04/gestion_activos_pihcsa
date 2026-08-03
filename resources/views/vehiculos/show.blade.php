@@ -47,7 +47,6 @@
 
 <div class="row">
 
-    {{-- Ficha Técnica --}}
     <div class="col-md-6">
         <div class="card card-outline card-primary shadow">
             <div class="card-header">
@@ -131,7 +130,6 @@
             </div>
         </div>
 
-        {{-- Datos Financieros --}}
         <div class="card card-outline card-warning shadow mt-3">
             <div class="card-header">
                 <h3 class="card-title">
@@ -170,13 +168,19 @@
                                 {{ $vehiculo->mantenimientos->first() ? $formatoFecha($vehiculo->mantenimientos->first()->fecha_evento) : 'Ninguno registrado' }}
                             </td>
                         </tr>
+
+                        <tr>
+                            <td class="font-weight-bold">Último Proveedor:</td>
+                            <td>
+                                {{ $vehiculo->mantenimientos->first()->proveedor ?? 'N/A' }}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    {{-- Control Operativo --}}
     <div class="col-md-6">
         <div class="card card-outline card-info shadow">
             <div class="card-header">
@@ -247,7 +251,6 @@
             </div>
         </div>
 
-        {{-- Datos del Sistema --}}
         <div class="card card-outline card-secondary shadow mt-3">
             <div class="card-header">
                 <h3 class="card-title">
@@ -287,7 +290,6 @@
 
 </div>
 
-{{-- NUEVA SECCIÓN: HISTORIAL DE MANTENIMIENTOS Y BITÁCORA --}}
 <div class="row mt-4">
     <div class="col-md-12">
         <div class="card card-outline card-teal shadow">
@@ -301,7 +303,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <div class="card-body p-0">
                 @if($vehiculo->mantenimientos->isEmpty())
                     <div class="text-center py-5 text-muted">
@@ -313,12 +315,14 @@
                         <table class="table table-hover table-striped my-0 align-middle">
                             <thead class="bg-light">
                                 <tr>
-                                    <th style="width: 12%">Fecha</th>
-                                    <th style="width: 20%">Tipo de Evento</th>
-                                    <th style="width: 15%">Kilometraje</th>
+                                    <th style="width: 10%">Fecha</th>
+                                    <th style="width: 16%">Tipo de Evento</th>
+                                    <th style="width: 12%">Proveedor</th>
+                                    <th style="width: 10%">Kilometraje</th>
                                     <th>Contexto / Descripción</th>
-                                    <th style="width: 12%">Costo</th>
-                                    <th style="width: 15%">Registrado por</th>
+                                    <th style="width: 10%">Costo</th>
+                                    <th style="width: 12%">Registrado por</th>
+                                    <th style="width: 12%" class="text-center">Documentos</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -339,6 +343,9 @@
                                             @endif
                                         </td>
                                         <td>
+                                            <small class="text-dark">{{ $mantenimiento->proveedor ?: '—' }}</small>
+                                        </td>
+                                        <td>
                                             <span class="font-weight-bold">{{ number_format($mantenimiento->kilometraje) }}</span> <small class="text-muted">KM</small>
                                         </td>
                                         <td class="text-wrap" style="max-width: 300px;">
@@ -350,6 +357,66 @@
                                         <td>
                                             <small class="text-muted"><i class="fas fa-user mr-1"></i> {{ $mantenimiento->usuario->name ?? 'Sistema' }}</small>
                                         </td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                @if($mantenimiento->orden_servicio_path)
+                                                    <a href="{{ $mantenimiento->orden_servicio_ver_url }}" target="_blank" class="btn btn-outline-primary" title="Ver orden de servicio">
+                                                        <i class="fas fa-file-alt"></i>
+                                                    </a>
+                                                @endif
+
+                                                @if($mantenimiento->factura_path)
+                                                    <a href="{{ $mantenimiento->factura_ver_url }}" target="_blank" class="btn btn-outline-success" title="Ver factura">
+                                                        <i class="fas fa-file-invoice-dollar"></i>
+                                                    </a>
+                                                @endif
+
+                                                <button type="button" class="btn btn-outline-warning" title="Adjuntar o reemplazar documentos" data-toggle="modal" data-target="#adjuntarModal{{ $mantenimiento->id }}">
+                                                    <i class="fas fa-paperclip"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal fade" id="adjuntarModal{{ $mantenimiento->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <form method="POST" action="{{ route('mantenimientos.adjuntar', $mantenimiento) }}" enctype="multipart/form-data">
+                                                            @csrf
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Adjuntar o reemplazar documentos</h5>
+                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                    <span>&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body text-left">
+                                                                <div class="form-group">
+                                                                    <label>Orden de servicio</label>
+                                                                    <div class="custom-file">
+                                                                        <input type="file" class="custom-file-input" id="orden_servicio{{ $mantenimiento->id }}" name="orden_servicio" accept=".pdf,.jpg,.jpeg,.png">
+                                                                        <label class="custom-file-label" for="orden_servicio{{ $mantenimiento->id }}">
+                                                                            {{ $mantenimiento->orden_servicio_path ? 'Reemplazar archivo actual...' : 'Seleccionar archivo...' }}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Factura</label>
+                                                                    <div class="custom-file">
+                                                                        <input type="file" class="custom-file-input" id="factura{{ $mantenimiento->id }}" name="factura" accept=".pdf,.jpg,.jpeg,.png">
+                                                                        <label class="custom-file-label" for="factura{{ $mantenimiento->id }}">
+                                                                            {{ $mantenimiento->factura_path ? 'Reemplazar archivo actual...' : 'Seleccionar archivo...' }}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -360,4 +427,15 @@
         </div>
     </div>
 </div>
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '.custom-file-input', function () {
+            const fileName = this.files[0] ? this.files[0].name : 'Seleccionar archivo...';
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
+</script>
 @stop

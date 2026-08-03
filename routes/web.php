@@ -128,7 +128,16 @@ Route::middleware(['auth', 'EnsureSucursalIsSelected'])->group(function () {
 
         Route::post('/vehiculos/{vehiculo}/registrar-mantenimiento', [VehiculoController::class, 'registrarMantenimiento'])
             ->name('vehiculos.registrar_mantenimiento');
-            
+
+        Route::post('/mantenimientos/{mantenimiento}/adjuntar', [VehiculoController::class, 'adjuntarArchivos'])
+            ->name('mantenimientos.adjuntar');
+
+        Route::get('/mantenimientos/{mantenimiento}/ver/{tipo}', [VehiculoController::class, 'verArchivo'])
+            ->name('mantenimientos.ver');
+
+        Route::get('/mantenimientos/{mantenimiento}/descargar/{tipo}', [VehiculoController::class, 'descargarArchivo'])
+            ->name('mantenimientos.descargar');
+
         Route::resource('tipo_vehiculos', CatTipoVehiculoController::class)
             ->names('tipo_vehiculos');
     });

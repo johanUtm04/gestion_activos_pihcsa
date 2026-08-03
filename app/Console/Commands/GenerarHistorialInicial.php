@@ -53,7 +53,6 @@ class GenerarHistorialInicial extends Command
                         'Modelo'            => ['antes' => 'N/A', 'despues' => $equipo->modelo ?? 'N/A'],
                         'Marca'             => ['antes' => 'N/A', 'despues' => $equipo->marca->nombre ?? 'N/A'],
                         'Ubicación'         => ['antes' => 'N/A', 'despues' => $equipo->ubicacion->nombre ?? 'N/A'], 
-                        'Departamente'      => ['antes' => 'N/A', 'despues' => $equipo->departamento_perteneciente ?? 'N/A'], 
                         'Sistema Operativo' => ['antes' => 'N/A', 'despues' => str_replace('|', ', ', $equipo->sistema_operativo)],
                         'Valor Inicial'     => ['antes' => 'N/A', 'despues' => '$' . number_format((float)$equipo->valor_inicial, 2)],
                         'Fecha Adquisición' => ['antes' => 'N/A', 'despues' => $equipo->fecha_adquisicion ?? 'N/A'],

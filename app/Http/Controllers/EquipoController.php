@@ -15,6 +15,7 @@ use App\Models\{
     Procesador,
     Marca,
     TipoActivo,
+    Departamento,
 };
 
 use App\Http\Requests\StoreEquipoRequest;
@@ -282,6 +283,7 @@ class EquipoController extends Controller
             'ubicaciones' => Ubicacion::all(),
             'marcas'      => Marca::all(),
             'tiposActivo' => TipoActivo::all(),
+            'departamentos' => Departamento::all(),
 
             'marcas_monitores'  => Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca'),
             'escalas_pulgadas'  => Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas'),
