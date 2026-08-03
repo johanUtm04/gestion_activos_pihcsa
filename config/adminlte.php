@@ -447,12 +447,11 @@ return [
                 'icon_color' => 'teal',
                 'active'     => ['tipo_vehiculos*'],
             ],
-
             [
-                'text'       => 'Areas',
+                'text'       => 'Áreas',
                 'url'        => '/empresas',
-                'icon'       => 'fas fa-building',
-                'icon_color' => 'cyan',
+                'icon'       => 'fas fa-sitemap',
+                'icon_color' => 'pink',
                 'active'     => ['empresas*'],
             ],
         ],

@@ -1,0 +1,150 @@
+.table-empresas {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table-empresas thead th {
+    background-color: #fce4ef;
+    color: #E83E8C;
+    font-weight: 800;
+    border-bottom: 3px solid #E83E8C;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 15px;
+}
+
+.table-empresas tbody td {
+    vertical-align: middle;
+    padding: 15px;
+}
+
+.table-empresas tbody tr:hover {
+    background-color: rgba(232, 62, 140, 0.03) !important;
+}
+
+.table-empresas .btn-group {
+    display: inline-flex;
+    align-items: center;
+}
+
+.table-empresas .btn-group .btn {
+    min-width: 34px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 9px;
+}
+
+.table-empresas .btn-group form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.table-empresas .btn-pink-pure {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.table-empresas .btn-outline-secondary {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.secondary-data {
+    color: #888;
+    font-size: 0.85em;
+    display: block;
+}
+
+.badge-status-pill {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+/* Utilidades de color rosa 🩷 */
+.text-pink-pure {
+    color: #E83E8C !important;
+}
+
+.card-pink-pure {
+    border-top: 3px solid #E83E8C !important;
+}
+
+.btn-pink-pure {
+    background-color: #E83E8C !important;
+    border-color: #E83E8C !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.btn-pink-pure:hover {
+    background-color: #c92f76 !important;
+    border-color: #bd2b6e !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-pink-pure {
+    color: #E83E8C !important;
+    border-color: #E83E8C !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-pink-pure:hover {
+    background-color: #E83E8C !important;
+    color: #ffffff !important;
+}
+
+.btn-tool.text-pink-pure:hover {
+    color: #c92f76 !important;
+}
+
+.fa-building {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Footer 🦵 */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-left,
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-name {
+    font-weight: bold;
+    color: #495057;
+}
+
+.footer-right {
+    color: #868e96;
+}
+
+.footer-left strong {
+    color: #343a40;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

@@ -1,44 +1,79 @@
 @extends('adminlte::page')
 
-@section('title', 'Registrar Empresa')
+@section('title', 'Registrar Área')
 
 @section('content_header')
-    <div class="px-1">
-        <h1 class="font-weight-bold text-dark mb-1">Registrar Nueva Empresa</h1>
-        <p class="text-muted text-sm mb-0">Agrega una nueva organización al sistema central</p>
-    </div>
+    <h1 class="font-weight-bold text-dark">
+        <i class="fas fa-plus-circle mr-2" style="color: #E83E8C;"></i>
+        Registrar Nueva Área
+    </h1>
 @stop
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger border-0 shadow-sm mb-3" style="border-radius: 8px;">
-            <ul class="mb-0 list-unstyled">
-                @foreach ($errors->all() as $error)
-                    <li><i class="fas fa-exclamation-circle mr-2"></i> {{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+<div class="card shadow-sm border-0" style="border-radius: 12px;">
+    <form action="{{ route('empresas.store') }}" method="POST">
+        @csrf
 
-    <div class="card shadow-sm border-0" style="border-radius: 12px;">
-        <form action="{{ route('empresas.store') }}" method="POST">
-            @csrf
-            <div class="card-body py-4">
-                <div class="row">
-                    <div class="col-md-8 form-group">
-                        <label for="nombre" class="text-sm text-muted font-weight-bold">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre') }}" placeholder="Ej. Corporación Azul" style="border-radius: 8px;" required>
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <label for="rfc" class="text-sm text-muted font-weight-bold">Descripcion</label>
-                        <input type="text" class="form-control text-uppercase" id="rfc" name="rfc" value="{{ old('rfc') }}" placeholder="Ej. CAZ120345XYZ" maxlength="13" style="border-radius: 8px;">
-                    </div>
-                </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nombre">Nombre del Área</label>
+
+                <input type="text"
+                       name="nombre"
+                       id="nombre"
+                       class="form-control @error('nombre') is-invalid @enderror"
+                       placeholder="Ej: Recursos Humanos, Sistemas, Contabilidad..."
+                       value="{{ old('nombre') }}"
+                       required
+                       autofocus>
+
+                @error('nombre')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                @enderror
             </div>
-            <div class="card-footer bg-light border-top-0 d-flex justify-content-end py-3" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
-                <a href="{{ route('empresas.index') }}" class="btn btn-link text-muted font-weight-bold mr-2">Cancelar</a>
-                <button type="submit" class="btn btn-primary px-4 font-weight-bold shadow-sm" style="border-radius: 8px;">Guardar Registro</button>
+
+            <div class="form-group">
+                <label for="rfc">Descripción</label>
+
+                <input type="text"
+                       name="rfc"
+                       id="rfc"
+                       class="form-control @error('rfc') is-invalid @enderror"
+                       placeholder="Ej: Área encargada de la gestión administrativa..."
+                       value="{{ old('rfc') }}"
+                       maxlength="13">
+
+                <small class="text-muted">
+                    Agrega una descripción breve que permita identificar el área.
+                </small>
+
+                @error('rfc')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                @enderror
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="card-footer bg-white border-top-0">
+            <button type="submit"
+                    class="btn px-4 shadow-sm font-weight-bold"
+                    style="background-color: #E83E8C;
+                           border-color: #E83E8C;
+                           color: #ffffff;">
+
+                <i class="fas fa-save mr-1"></i>
+                Guardar Área
+            </button>
+
+            <a href="{{ route('empresas.index') }}"
+               class="btn btn-outline-secondary ml-2">
+
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
 @stop

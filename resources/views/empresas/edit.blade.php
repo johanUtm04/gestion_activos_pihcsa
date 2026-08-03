@@ -1,45 +1,222 @@
 @extends('adminlte::page')
 
-@section('title', 'Modificar Empresa')
+@section('title', 'Editar Área | Activos TI')
+
+@section('css')
+<style>
+    .data-item {
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: none;
+    }
+
+    .data-label {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    fieldset.border {
+        border: 1px solid #dee2e6 !important;
+        border-radius: 8px;
+        background-color: #fdfdfd;
+    }
+</style>
+@stop
 
 @section('content_header')
-    <div class="px-1">
-        <h1 class="font-weight-bold text-dark mb-1">Modificar Datos de la Empresa</h1>
-        <p class="text-muted text-sm mb-0">Actualiza la información correspondiente del registro administrativo</p>
-    </div>
+    <h1 class="font-weight-bold text-center">
+        <i class="fas fa-building" style="color: #E83E8C;"></i>
+        Edición de Área: {{ strtoupper($empresa->nombre) }}
+    </h1>
+
+    <a href="{{ route('empresas.index') }}"
+       class="btn btn-secondary btn-sm shadow-sm">
+
+        <i class="fas fa-arrow-left"></i>
+        Volver al catálogo de áreas
+    </a>
 @stop
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger border-0 shadow-sm mb-3" style="border-radius: 8px;">
-            <ul class="mb-0 list-unstyled">
-                @foreach ($errors->all() as $error)
-                    <li><i class="fas fa-exclamation-circle mr-2"></i> {{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <div class="container-fluid">
+        <div class="row">
 
-    <div class="card shadow-sm border-0" style="border-radius: 12px;">
-        <form action="{{ route('empresas.update', $empresa->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="card-body py-4">
-                <div class="row">
-                    <div class="col-md-8 form-group">
-                        <label for="nombre" class="text-sm text-muted font-weight-bold">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', $empresa->nombre) }}" style="border-radius: 8px;" required>
+            {{-- COLUMNA IZQUIERDA: INFORMACIÓN ACTUAL --}}
+            <div class="col-md-5">
+                <div class="card card-outline shadow-sm"
+                     style="border-top: 3px solid #E83E8C;">
+
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-info-circle"></i>
+                            Estado Actual en Catálogo
+                        </h3>
                     </div>
-                    <div class="col-md-4 form-group">
-                        <label for="rfc" class="text-sm text-muted font-weight-bold">Descripcion</label>
-                        <input type="text" class="form-control text-uppercase" id="rfc" name="rfc" value="{{ old('rfc', $empresa->rfc) }}" maxlength="13" style="border-radius: 8px;">
+
+                    <div class="card-body">
+                        <fieldset class="border p-3 mb-4">
+                            <legend class="w-auto px-2 font-weight-bold"
+                                    style="color: #E83E8C;">
+
+                                <i class="fas fa-building"></i>
+                                Información Registrada
+                            </legend>
+
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-id-card"></i>
+                                    ID del Sistema:
+                                </span>
+
+                                <span class="float-right font-weight-bold">
+                                    {{ $empresa->id }}
+                                </span>
+                            </div>
+
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-building"></i>
+                                    Nombre Actual:
+                                </span>
+
+                                <span class="float-right text-muted text-uppercase">
+                                    {{ $empresa->nombre }}
+                                </span>
+                            </div>
+
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-align-left"></i>
+                                    Descripción Actual:
+                                </span>
+
+                                <span class="float-right text-muted">
+                                    {{ $empresa->rfc ?: 'Sin descripción' }}
+                                </span>
+                            </div>
+
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Fecha de Registro:
+                                </span>
+
+                                <span class="float-right">
+                                    {{ $empresa->created_at?->format('d/m/Y H:i') }}
+                                </span>
+                            </div>
+
+                            <div class="data-item">
+                                <span class="data-label">
+                                    <i class="fas fa-history"></i>
+                                    Última Actualización:
+                                </span>
+
+                                <span class="float-right text-muted">
+                                    {{ $empresa->updated_at?->diffForHumans() }}
+                                </span>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
-            <div class="card-footer bg-light border-top-0 d-flex justify-content-end py-3" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
-                <a href="{{ route('empresas.index') }}" class="btn btn-link text-muted font-weight-bold mr-2">Cancelar</a>
-                <button type="submit" class="btn btn-warning text-dark font-weight-bold px-4 shadow-sm" style="border-radius: 8px;">Actualizar Cambios</button>
+
+            {{-- COLUMNA DERECHA: FORMULARIO --}}
+            <div class="col-md-7">
+                <div class="card card-outline shadow-sm"
+                     style="border-top: 3px solid #E83E8C;">
+
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-edit"></i>
+                            Actualizar Datos del Área
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="{{ route('empresas.update', $empresa->id) }}"
+                              method="POST">
+
+                            @csrf
+                            @method('PUT')
+
+                            <fieldset class="border p-4 mb-4">
+                                <legend class="w-auto px-2 font-weight-bold"
+                                        style="color: #E83E8C;">
+
+                                    <i class="fas fa-database"></i>
+                                    Datos del Área
+                                </legend>
+
+                                <div class="form-group">
+                                    <label for="nombre">
+                                        <i class="fas fa-file-signature"></i>
+                                        Nombre del Área:
+                                    </label>
+
+                                    <input type="text"
+                                           name="nombre"
+                                           id="nombre"
+                                           class="form-control form-control-lg @error('nombre') is-invalid @enderror"
+                                           value="{{ old('nombre', $empresa->nombre) }}"
+                                           placeholder="Ej: RECURSOS HUMANOS, SISTEMAS, CONTABILIDAD..."
+                                           required>
+
+                                    @error('nombre')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <p class="text-muted mt-2 small">
+                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                        El cambio de nombre se reflejará en los registros asociados a esta área.
+                                    </p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="rfc">
+                                        <i class="fas fa-align-left"></i>
+                                        Descripción:
+                                    </label>
+
+                                    <input type="text"
+                                           name="rfc"
+                                           id="rfc"
+                                           class="form-control form-control-lg @error('rfc') is-invalid @enderror"
+                                           value="{{ old('rfc', $empresa->rfc) }}"
+                                           placeholder="Ej: Área encargada de la gestión administrativa..."
+                                           maxlength="13">
+
+                                    @error('rfc')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <p class="text-muted mt-2 small">
+                                        <i class="fas fa-info-circle text-info"></i>
+                                        Agrega una descripción breve que permita identificar el área.
+                                    </p>
+                                </div>
+                            </fieldset>
+
+                            <div class="mt-4">
+                                <button type="submit"
+                                        class="btn btn-lg btn-block shadow font-weight-bold"
+                                        style="background-color: #E83E8C;
+                                               border-color: #E83E8C;
+                                               color: #ffffff;">
+
+                                    <i class="fas fa-sync-alt"></i>
+                                    Guardar Cambios en Catálogo
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+
+        </div>
     </div>
 @stop
