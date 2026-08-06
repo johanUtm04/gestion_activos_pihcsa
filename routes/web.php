@@ -1,5 +1,29 @@
 <?php
 
+// Querido programador:
+//
+// Cuando escribí este código, solo Dios y yo
+// sabíamos cómo funcionaba.
+// Ahora, solo Dios lo sabe.
+//
+// Por lo tanto, si intentas optimizar esta rutina
+// y falla —lo más probable—, incrementa este
+// contador como advertencia para la siguiente persona:
+//
+// total_horas_perdidas_aqui = 1254;
+
+// Dear programmer:
+//
+// When I wrote this code, only God and I
+// knew how it worked.
+// Now, only God knows.
+//
+// Therefore, if you try to optimize this routine
+// and it fails —as it most likely will—, increase
+// this counter as a warning for the next person:
+//
+// total_hours_wasted_here = 1254;
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
