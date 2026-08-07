@@ -16,6 +16,7 @@ use App\Models\{
     Marca,
     TipoActivo,
     Departamento,
+    Empresa,
 };
 
 use App\Http\Requests\StoreEquipoRequest;
@@ -68,7 +69,7 @@ class EquipoController extends Controller
 
     public function edit(Equipo $equipo)
     {
-        $equipo->load(['usuario', 'ubicacion', 'marca', 'tipoActivo']);
+        $equipo->load(['usuario', 'ubicacion', 'empresa', 'marca', 'tipoActivo']);
         $catalogos = $this->getFilterData();
 
         return view('equipos.edit', compact('equipo'))->with($catalogos);
@@ -284,7 +285,7 @@ class EquipoController extends Controller
             'marcas'      => Marca::all(),
             'tiposActivo' => TipoActivo::all(),
             'departamentos' => Departamento::all(),
-
+            
             'marcas_monitores'  => Monitor::distinct()->orderBy('marca', 'asc')->pluck('marca'),
             'escalas_pulgadas'  => Monitor::distinct()->orderBy('escala_pulgadas', 'asc')->pluck('escala_pulgadas'),
             'monitor_interface' => Monitor::distinct()->orderBy('interface', 'asc')->pluck('interface'),
@@ -297,6 +298,8 @@ class EquipoController extends Controller
             'rams_clocks'      => Ram::distinct()->orderBy('clock_mhz', 'asc')->pluck('clock_mhz'),
             'rams_tipos'       => Ram::distinct()->orderBy('tipo_chz', 'asc')->pluck('tipo_chz'),
 
+            'empresas' => Empresa::where('activo', 1)->orderBy('nombre', 'asc')->get(),
+            
             'procesador_marcas' => Procesador::distinct()->orderBy('marca', 'asc')->pluck('marca'),
             'procesador_tipos'  => Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo'),
             'procesador_ghz' => Procesador::whereNotNull('clock_ghz')->distinct()->orderBy('clock_ghz', 'asc')->pluck('clock_ghz'),

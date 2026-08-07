@@ -9,10 +9,19 @@ class Empresa extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'rfc', 'activo'];
+    protected $fillable = [
+        'nombre',
+        'rfc',
+        'activo'
+    ];
 
     public function vehiculos()
     {
         return $this->hasMany(Vehiculo::class, 'empresa_id');
+    }
+
+    public function equipos()
+    {
+        return $this->hasMany(Equipo::class, 'empresa_id');
     }
 }

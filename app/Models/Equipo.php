@@ -31,10 +31,27 @@ class Equipo extends Model
     ];
 
     protected $fillable = [
-        'marca_equipo','marca_id', 'modelo', 'fecha_ultimo_mantenimiento', 'folio',
-        'tipo_equipo','tipo_activo_id', 'serial', 'numero_factura', 'pedimento', 'cuenta_contable', 'fecha_inicio_uso',
-        'sistema_operativo', 'usuario_id', 'ubicacion_id','departamento_perteneciente',
-        'valor_inicial','fecha_adquisicion', 'vida_util_estimada', 'motivo_inactivacion'
+        'marca_equipo',
+        'marca_id',
+        'modelo',
+        'fecha_ultimo_mantenimiento',
+        'folio',
+        'tipo_equipo',
+        'tipo_activo_id',
+        'serial',
+        'numero_factura',
+        'pedimento',
+        'cuenta_contable',
+        'fecha_inicio_uso',
+        'sistema_operativo',
+        'usuario_id',
+        'ubicacion_id',
+        'empresa_id',
+        'departamento_perteneciente',
+        'valor_inicial',
+        'fecha_adquisicion',
+        'vida_util_estimada',
+        'motivo_inactivacion'
     ];
 
     public function getSemaforoAttribute()
@@ -86,7 +103,10 @@ class Equipo extends Model
     public function procesadores() { return $this->hasMany(Procesador::class, 'equipo_id'); }
     public function historials()   { return $this->hasMany(Historial_log::class, 'activo_id'); }
 
-
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
     // ----------------------------------------------------
     // SCOPES (Lógica de filtrado centralizada)
     // ----------------------------------------------------    

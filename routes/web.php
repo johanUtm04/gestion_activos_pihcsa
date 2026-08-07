@@ -6,11 +6,11 @@
 // sabíamos cómo funcionaba.
 // Ahora, solo Dios lo sabe.
 //
-// Por lo tanto, si intentas optimizar esta rutina
+// Por lo tanto, si intentas optimizar estas rutas
 // y falla —lo más probable—, incrementa este
 // contador como advertencia para la siguiente persona:
 //
-// total_horas_perdidas_aqui = 1254;
+// total_horas_perdidas_aqui = 4454;
 
 // Dear programmer:
 //
@@ -18,11 +18,11 @@
 // knew how it worked.
 // Now, only God knows.
 //
-// Therefore, if you try to optimize this routine
+// Therefore, if you try to optimize this routes
 // and it fails —as it most likely will—, increase
 // this counter as a warning for the next person:
 //
-// total_hours_wasted_here = 1254;
+// total_hours_wasted_here = 4454;
 
 use Illuminate\Support\Facades\Route;
 
