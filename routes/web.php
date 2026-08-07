@@ -24,9 +24,7 @@
 //
 // total_hours_wasted_here = 4454;
 //
-//
-//*bromita xd :v hail grasa papus, en lugar de hornear unos momos me puse a hornear una buena erp
-// when haces tus momos en un marco de trabajo backend: el futuro es hoy oiste viejo.jpeg*
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{
