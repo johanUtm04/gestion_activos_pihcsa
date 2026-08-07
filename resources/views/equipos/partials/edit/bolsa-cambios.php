@@ -41,7 +41,8 @@
             </span>
         </div>
         <div class="text-right">
-            <small class="text-muted italic">Revisa los cambios antes de procesar la actualización.</small>
+            <small class="text-muted italic">Audita los edictos del tutelado real antes de ratificar el decreto
+            joven obrero informatico .</small>
         </div>
     </div>
 </div>
