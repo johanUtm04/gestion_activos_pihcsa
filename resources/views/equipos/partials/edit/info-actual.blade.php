@@ -39,8 +39,17 @@
                 <span class="float-right">{{ $equipo->ubicacion->nombre ?? 'Sin ubicar' }}</span>
             </div>
             <div class="data-item">
-                <span class="data-label text-muted">Ubicación:</span> 
-                <span class="float-right">{{ $equipo->departamento_perteneciente ?? 'Sin Departamento' }}</span>
+                <span class="data-label text-muted">Área:</span>
+                <span class="float-right">
+                    {{ $equipo->empresa?->nombre ?? 'Sin Área' }}
+                </span>
+            </div>
+
+            <div class="data-item">
+                <span class="data-label text-muted">Departamento:</span>
+                <span class="float-right">
+                    {{ $equipo->departamento_perteneciente ?? 'Sin Departamento' }}
+                </span>
             </div>
         </fieldset>
 
