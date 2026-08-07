@@ -316,7 +316,7 @@ return [
     ],
 
     [
-        'text'        => 'Equipos',
+        'text'        => 'Activos',
         'url'         => '/equipos',
         'icon'        => 'fas fa-server',
         'icon_color'  => 'cyan',
@@ -327,7 +327,7 @@ return [
     ],
 
     [
-        'text'       => 'Activos',
+        'text'       => 'Vehiculos',
         'url'        => '/vehiculos',
         'icon'       => 'fas fa-truck-moving',
         'icon_color' => 'teal',

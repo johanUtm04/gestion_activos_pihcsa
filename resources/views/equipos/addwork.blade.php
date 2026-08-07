@@ -52,7 +52,9 @@
                         Mantenimiento de {{ $equipo->tipoActivo->nombre ?? '[Activo]' }} | Marca: {{ $equipo->marca->nombre ?? '[Activo]' }}
                     </h3>
                 </div>
-                <form method="POST" action="{{ route('equipos.addwork.store', $equipo) }}">
+                <form method="POST"
+                    action="{{ route('equipos.addwork.store', $equipo) }}"
+                    enctype="multipart/form-data">
                     @csrf
 
                     <div class="card-body">
@@ -95,9 +97,78 @@
                                 <small class="text-muted">El registro quedará vinculado a tu sesión actual.</small>
                             </div>
 
-                            <div class="form-group">
-                                <label>Fecha del evento </label>
-                                <input type="date" class="form-control" name="fecha_evento" required>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Fecha del evento</label>
+            <input
+                type="date"
+                class="form-control"
+                name="fecha_evento"
+                value="{{ old('fecha_evento') }}"
+                required
+            >
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Proveedor</label>
+            <input
+                type="text"
+                class="form-control"
+                name="proveedor"
+                value="{{ old('proveedor') }}"
+                placeholder="Ej. Office Depot, HP, Dell..."
+            >
+        </div>
+    </div>
+
+</div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            <i class="fas fa-file-alt"></i>
+                                            Orden de servicio
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            class="form-control-file"
+                                            name="orden_servicio"
+                                            accept=".pdf,.jpg,.jpeg,.png"
+                                        >
+
+                                        <small class="text-muted">
+                                            PDF, JPG o PNG. Máximo 5 MB.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            <i class="fas fa-file-invoice-dollar"></i>
+                                            Factura
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            class="form-control-file"
+                                            name="factura"
+                                            accept=".pdf,.jpg,.jpeg,.png"
+                                        >
+
+                                        <small class="text-muted">
+                                            PDF, JPG o PNG. Máximo 5 MB.
+                                        </small>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
