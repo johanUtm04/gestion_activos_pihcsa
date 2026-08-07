@@ -81,37 +81,102 @@ class EquipoController extends Controller
 
         DB::beginTransaction();
 
-        $equipo->update($data);
-
         try {
-            $equipo->update($request->getProcessedData());
 
-            $this->syncRelation($equipo->perifericos(),  $request->input('periferico', []));
-            $this->syncRelation($equipo->rams(),         $request->input('ram', []));
-            $this->syncRelation($equipo->procesadores(), $request->input('procesador', []));
-            $this->syncRelation($equipo->monitores(),    $request->input('monitor', []));
-            $this->syncRelation($equipo->discosDuros(),  $request->input('discoDuro', []));
+            /*
+            |--------------------------------------------------------------------------
+            | 1. Actualizar datos generales del equipo
+            |--------------------------------------------------------------------------
+            */
+            $equipo->update($data);
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | 2. Sincronizar componentes
+            |--------------------------------------------------------------------------
+            */
+            $this->syncRelation(
+                $equipo->perifericos(),
+                $request->input('periferico', [])
+            );
+
+            $this->syncRelation(
+                $equipo->rams(),
+                $request->input('ram', [])
+            );
+
+            $this->syncRelation(
+                $equipo->procesadores(),
+                $request->input('procesador', [])
+            );
+
+            $this->syncRelation(
+                $equipo->monitores(),
+                $request->input('monitor', [])
+            );
+
+            $this->syncRelation(
+                $equipo->discosDuros(),
+                $request->input('discoDuro', [])
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. Confirmar transacción
+            |--------------------------------------------------------------------------
+            */
             DB::commit();
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | 4. Regresar al inventario
+            |--------------------------------------------------------------------------
+            */
             $perPage = 10;
-            $position = Equipo::where('id', '<=', $equipo->id)->count();
-            $page = ceil($position / $perPage);
+
+            $position = Equipo::where(
+                'id',
+                '<=',
+                $equipo->id
+            )->count();
+
+            $page = ceil(
+                $position / $perPage
+            );
+
 
             return redirect()
-                ->route('equipos.index', ['page' => $page])
-                ->with('warning', 'Equipo actualizado')
-                ->with('actualizado_id', $equipo->id);
+                ->route('equipos.index', [
+                    'page' => $page
+                ])
+                ->with(
+                    'warning',
+                    'Equipo actualizado'
+                )
+                ->with(
+                    'actualizado_id',
+                    $equipo->id
+                );
 
         } catch (\Exception $e) {
+
             DB::rollBack();
 
-            Log::error("Error actualizando equipo {$equipo->id}: " . $e->getMessage());
-
-            return back()->with(
-                'error',
-                'Ocurrió un error técnico al guardar. Los cambios no se aplicaron.'
+            Log::error(
+                "Error actualizando equipo {$equipo->id}: "
+                . $e->getMessage()
             );
+
+
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Ocurrió un error técnico al guardar. Los cambios no se aplicaron.'
+                );
         }
     }
 
@@ -299,7 +364,7 @@ class EquipoController extends Controller
             'rams_tipos'       => Ram::distinct()->orderBy('tipo_chz', 'asc')->pluck('tipo_chz'),
 
             'empresas' => Empresa::where('activo', 1)->orderBy('nombre', 'asc')->get(),
-            
+
             'procesador_marcas' => Procesador::distinct()->orderBy('marca', 'asc')->pluck('marca'),
             'procesador_tipos'  => Procesador::distinct()->orderBy('descripcion_tipo', 'asc')->pluck('descripcion_tipo'),
             'procesador_ghz' => Procesador::whereNotNull('clock_ghz')->distinct()->orderBy('clock_ghz', 'asc')->pluck('clock_ghz'),

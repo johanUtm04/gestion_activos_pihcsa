@@ -2051,7 +2051,7 @@ $(document).ready(function () {
 
                     <p class="text-muted small">
 
-                        Revisa los cambios antes de confirmar:
+                        Examina las prerrogativas de tu tutelado antes de conceder la gracia de la ascensión:
 
                     </p>
 
@@ -2121,7 +2121,7 @@ $(document).ready(function () {
             Swal.fire({
 
                 title:
-                    '¿Confirmar cambios?',
+                    'Os desea ¿Confirmar cambios caballero?',
 
 
                 html:

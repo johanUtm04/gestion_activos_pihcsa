@@ -81,6 +81,22 @@ protected static $registrado = false;
                     $despues = \App\Models\Ubicacion::find($nuevoValor)?->nombre ?? 'N/A';
                     $label   = 'Ubicación';
                 }
+                elseif ($atributo === 'empresa_id') {
+                    $antes = $valorAnterior
+                        ? \App\Models\Empresa::find($valorAnterior)?->nombre ?? 'Sin Área'
+                        : 'Sin Área';
+
+                    $despues = $nuevoValor
+                        ? \App\Models\Empresa::find($nuevoValor)?->nombre ?? 'Sin Área'
+                        : 'Sin Área';
+
+                    $label = 'Área';
+                }
+                elseif ($atributo === 'departamento_perteneciente') {
+                    $antes   = $valorAnterior ?? 'Sin Departamento';
+                    $despues = $nuevoValor ?? 'Sin Departamento';
+                    $label   = 'Departamento';
+                }
                 elseif ($atributo === 'valor_inicial') {
                     $antes   = '$' . number_format($valorAnterior, 2);
                     $despues = '$' . number_format($nuevoValor, 2);
