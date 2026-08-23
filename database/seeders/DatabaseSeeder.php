@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             EquiposSeeder::class,
             VehiculosSeeder::class,
 
+            SucursalesSeeder::class,
+
             ProcesadoresSeeder::class,
             RamsSeeder::class,
             DiscosDurosSeeder::class,
