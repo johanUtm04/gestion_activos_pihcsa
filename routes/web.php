@@ -10,7 +10,7 @@
 // y falla —lo más probable—, incrementa este
 // contador como advertencia para la siguiente persona:
 //
-// total_horas_perdidas_aqui = 4457;
+// total_horas_perdidas_aqui = 4478;
 
 // Dear programmer:
 //
@@ -22,7 +22,7 @@
 // and it fails —as it most likely will—, increase
 // this counter as a warning for the next person:
 //
-// total_hours_wasted_here = 4457;
+// total_hours_wasted_here = 4478;
 //
 
 use Illuminate\Support\Facades\Route;

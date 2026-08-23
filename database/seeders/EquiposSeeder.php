@@ -12,6 +12,7 @@ class EquiposSeeder extends Seeder
         $rows = [
             [
                 'id' => 1,
+                'folio' => 1001,
                 'marca_equipo' => 'Dell',
                 'marca_id' => 1,
                 'tipo_equipo' => 'Laptop',
@@ -29,6 +30,7 @@ class EquiposSeeder extends Seeder
             ],
             [
                 'id' => 2,
+                'folio' => 1002,
                 'marca_equipo' => 'HP',
                 'marca_id' => 2,
                 'tipo_equipo' => 'Desktop',
@@ -46,6 +48,7 @@ class EquiposSeeder extends Seeder
             ],
             [
                 'id' => 3,
+                'folio' => 1003,
                 'marca_equipo' => 'Lenovo',
                 'marca_id' => 3,
                 'tipo_equipo' => 'Laptop',

@@ -12,7 +12,7 @@ public function run(): void
     DB::table('sucursales')->insert([
         'clave' => 'SUC-MORE-01',
         'nombre' => 'Sucursal Central',
-        'database_name' => 'gestion_activos_pihcsa_v2',
+        'database_name' => 'gestion_activos_pihcsa',
         'estatus' => 'activo',
         'descripcion' => 'Oficina principal corporativa y almacén central de activos.',
         'created_at' => now(),
