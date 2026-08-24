@@ -254,7 +254,7 @@
                         'fecha_adquisicion',
                         $equipo->fecha_adquisicion?->format('Y-m-d')
                     ) }}"
-                    data-current="{{ $equipo->fecha_adquisicion?->format('Y-m-d') }}"
+                    data-current="{{ $equipo->fecha_adquisicion ? \Carbon\Carbon::parse($equipo->fecha_adquisicion)->format('Y-m-d') : '' }}"
                     data-motivo-input="#motivo_cambio_fecha"
                 >
 
@@ -295,15 +295,13 @@
                     name="fecha_inicio_uso"
                     id="fecha_inicio_uso"
                     class="form-control border-success @error('fecha_inicio_uso') is-invalid @enderror"
-                    value="{{ old(
-                        'fecha_inicio_uso',
-                        $equipo->fecha_inicio_uso?->format('Y-m-d')
-                    ) }}"
-                    data-current="{{ $equipo->fecha_inicio_uso?->format('Y-m-d') }}"
-                    data-label="Fecha Inicio de Uso"
+  value="{{ old(
+    'fecha_inicio_uso', 
+    isset($equipo->fecha_inicio_uso) ? \Carbon\Carbon::parse($equipo->fecha_inicio_uso)->format('Y-m-d') : ''
+) }}"
+data-current="{{ isset($equipo->fecha_inicio_uso) ? \Carbon\Carbon::parse($equipo->fecha_inicio_uso)->format('Y-m-d') : '' }}"                    data-label="Fecha Inicio de Uso"
                     data-motivo-input="#motivo_cambio_inicio_uso"
                 >
-
                 @error('fecha_inicio_uso')
                     <span class="invalid-feedback">
                         {{ $message }}
@@ -316,10 +314,24 @@
 
                 <input
                     type="hidden"
-                    name="motivo_cambio_inicio_uso"
+                    name="motivo_cambio_inicio_uso"fecha_inicio_uso
                     id="motivo_cambio_inicio_uso"
                 >
             </div>
+
+
+                <input
+                    type="date"
+                    name="fecha_adquisicion"
+                    id="fecha_adquisicion"
+                    class="form-control @error('fecha_adquisicion') is-invalid @enderror"
+                    value="{{ old(
+                        'fecha_adquisicion',
+                        $equipo->fecha_adquisicion?->format('Y-m-d')
+                    ) }}"
+                    data-current="{{ $equipo->fecha_adquisicion?->format('Y-m-d') }}"
+                    data-motivo-input="#motivo_cambio_fecha"
+                >
 
 
             {{-- Vida Útil Estimada --}}
